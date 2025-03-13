@@ -88,8 +88,8 @@ async function get_doctor_sessions_taken(patient_id) {
   try {
     const query = `
       SELECT *
-      FROM sessions
-      WHERE patient_id = ? AND session_type = 'doctor'
+      FROM doctor_session
+      WHERE patient_ID = ? 
     `;
     const result = await executeQuery(query, [patient_id]);
 
@@ -107,10 +107,10 @@ async function get_doctor_sessions_taken(patient_id) {
 async function get_group_Sessions_taken(patient_id) {
   try {
     const query = `
-      SELECT gs.*
-      FROM group_sessions_participants gsp
-      JOIN group_sessions gs ON gsp.session_id = gs.id
-      WHERE gsp.patient_id = ?
+      SELECT *
+      FROM 	patient_lifecoach_session
+      JOIN 	life_coach_session ON patient_ID = session_ID
+      WHERE patient_ID = ?
     `;
     const result = await executeQuery(query, [patient_id]);
 
@@ -129,8 +129,8 @@ async function get_emergency_team_sessions_taken(patient_id) {
   try {
     const query = `
       SELECT *
-      FROM emergency_sessions
-      WHERE patient_id = ?
+      FROM emergency_team_session
+      WHERE patient_ID = ?
     `;
     const result = await executeQuery(query, [patient_id]);
 
@@ -148,7 +148,7 @@ async function get_emergency_team_sessions_taken(patient_id) {
 async function Write_in_journal(patient_id, entry_content) {
   try {
     const query = `
-      INSERT INTO journals (patient_id, entry_content, created_at)
+      INSERT INTO journal (patient_ID, journal_content, time  )
       VALUES (?, ?, NOW())
     `;
     const result = await executeQuery(query, [patient_id, entry_content]);
@@ -171,8 +171,8 @@ async function Write_in_journal(patient_id, entry_content) {
 async function delete_from_journal(patient_id, journal_id) {
   try {
     const query = `
-      DELETE FROM journals
-      WHERE id = ? AND patient_id = ?
+      DELETE FROM journal
+      WHERE id = ? AND patient_ID = ?
     `;
     const result = await executeQuery(query, [journal_id, patient_id]);
 

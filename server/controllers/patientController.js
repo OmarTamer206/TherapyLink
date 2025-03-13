@@ -168,13 +168,13 @@ async function Write_in_journal(patient_id, entry_content) {
 }
 
 // Delete a specific journal entry for a patient
-async function delete_from_journal(patient_id, journal_id) {
+async function delete_from_journal(journal_id) {
   try {
     const query = `
       DELETE FROM journal
-      WHERE id = ? AND patient_ID = ?
+      WHERE id = ?
     `;
-    const result = await executeQuery(query, [journal_id, patient_id]);
+    const result = await executeQuery(query, [journal_id]);
 
     if (result.affectedRows > 0) {
       return { success: true, message: "Journal entry deleted successfully." };

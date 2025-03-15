@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-admin',
+  selector: 'app-doctor',
   standalone: true,
-  imports: [],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css'
+  imports: [RouterModule],
+  templateUrl: './doctor.component.html',
+  styleUrl: './doctor.component.css',
 })
-export class AdminComponent {
-
-}
+export class DoctorComponent {}

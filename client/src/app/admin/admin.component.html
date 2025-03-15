@@ -1,1 +1,25 @@
 <p>admin works!</p>
+<header>
+    <div class="left">
+      <img src="image.png" alt="" />
+      <p>Admin Dashboard</p>
+    </div>
+    <button>Logout</button>
+  </header>
+  <section>
+    <nav>
+      <ul>
+        <li routerLink="dashboard">Dashboard</li>
+        <li routerLink="products">Session Analytics</li>
+        <li routerLink="orders">Patient Analytics</li>
+        <li routerLink="users">Refund</li>
+        <li routerLink="settings">WorkForce Manager</li>
+        <li routerLink="settings">Settings</li>
+      </ul>
+    </nav>
+  
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+  

@@ -11,7 +11,11 @@ async function get_today_sessions(doctor_id, type) {
 
     return { success: true, data: result };
   } catch (error) {
-    return { success: false, message: "Error retrieving today's sessions.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving today's sessions.",
+      error: error.message,
+    };
   }
 }
 
@@ -27,7 +31,11 @@ async function get_new_patients_this_month(doctor_id, type) {
 
     return { success: true, data: result[0] };
   } catch (error) {
-    return { success: false, message: "Error retrieving new patients for this month.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving new patients for this month.",
+      error: error.message,
+    };
   }
 }
 
@@ -43,7 +51,11 @@ async function get_total_patients(doctor_id, type) {
 
     return { success: true, data: result[0] };
   } catch (error) {
-    return { success: false, message: "Error retrieving total patients.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving total patients.",
+      error: error.message,
+    };
   }
 }
 
@@ -60,7 +72,11 @@ async function get_patients_data(doctor_id, type) {
 
     return { success: true, data: result };
   } catch (error) {
-    return { success: false, message: "Error retrieving patient data.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving patient data.",
+      error: error.message,
+    };
   }
 }
 
@@ -68,14 +84,18 @@ async function get_patients_data(doctor_id, type) {
 async function get_patient_data(patient_id) {
   try {
     const reportsQuery = `SELECT * FROM patient_reports WHERE patient_id = ?`;
-    const journalQuery = `SELECT * FROM journals WHERE patient_id = ?`;
+    const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
 
     const reports = await executeQuery(reportsQuery, [patient_id]);
     const journals = await executeQuery(journalQuery, [patient_id]);
 
     return { success: true, data: { reports, journals } };
   } catch (error) {
-    return { success: false, message: "Error retrieving patient data.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving patient data.",
+      error: error.message,
+    };
   }
 }
 
@@ -100,7 +120,11 @@ async function update_patient_report(doctor_id, session_data) {
       return { success: false, message: "Failed to update patient report." };
     }
   } catch (error) {
-    return { success: false, message: "Error updating patient report.", error: error.message };
+    return {
+      success: false,
+      message: "Error updating patient report.",
+      error: error.message,
+    };
   }
 }
 
@@ -115,7 +139,11 @@ async function view_available_time(date, doctor_id) {
 
     return { success: true, data: result };
   } catch (error) {
-    return { success: false, message: "Error retrieving available times.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving available times.",
+      error: error.message,
+    };
   }
 }
 
@@ -135,7 +163,11 @@ async function update_available_time(timestamp, doctor_id) {
       return { success: false, message: "Failed to update availability." };
     }
   } catch (error) {
-    return { success: false, message: "Error updating availability.", error: error.message };
+    return {
+      success: false,
+      message: "Error updating availability.",
+      error: error.message,
+    };
   }
 }
 //U DO IT :-
@@ -157,14 +189,22 @@ async function get_patient_analytics(doctor_id, type) {
       ) AS patient_data;
     `;
 
-    const result = await executeQuery(query, [doctor_id, type, doctor_id, type]);
+    const result = await executeQuery(query, [
+      doctor_id,
+      type,
+      doctor_id,
+      type,
+    ]);
 
     return { success: true, data: result[0] };
   } catch (error) {
-    return { success: false, message: "Error retrieving patient analytics.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving patient analytics.",
+      error: error.message,
+    };
   }
 }
-
 
 // View all doctors of a specific type (e.g., therapists, life coaches)
 async function View_all_doctors(doctor_type) {
@@ -178,7 +218,11 @@ async function View_all_doctors(doctor_type) {
 
     return { success: true, data: result };
   } catch (error) {
-    return { success: false, message: "Error retrieving doctor list.", error: error.message };
+    return {
+      success: false,
+      message: "Error retrieving doctor list.",
+      error: error.message,
+    };
   }
 }
 

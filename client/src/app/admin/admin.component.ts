@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-doctor',
+  selector: 'app-admin',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './doctor.component.html',
-  styleUrl: './doctor.component.css',
+  templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css',
 })
-export class DoctorComponent {}
+export class AdminComponent {}

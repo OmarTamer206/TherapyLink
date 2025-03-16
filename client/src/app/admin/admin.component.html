@@ -1,0 +1,27 @@
+<header>
+    <div class="left">
+      <img src="image.png" alt="" />
+      <p>Admin Dashboard</p>
+    </div>
+    <button>Logout</button>
+  </header>
+  
+  <section>
+    <nav>
+      <ul>
+        <li><a routerLink="dashboard">Dashboard</a></li>
+        <li><a routerLink="products">Session Analytics</a></li>
+        <li><a routerLink="orders">Patient Analytics</a></li>
+        <li><a routerLink="users">Refund</a></li>
+        <li><a routerLink="settings">WorkForce Manager</a></li>
+        <li><a routerLink="settings">Settings</a></li>
+      </ul>
+    </nav>
+  
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+  
+  <p>admin-dashboard works!</p>
+  

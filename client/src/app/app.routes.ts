@@ -8,6 +8,7 @@ import { DoctorComponent } from './doctor/doctor.component';
 import { LifeCoachComponent } from './life-coach/life-coach.component';
 import { AdminComponent } from './admin/admin.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -38,6 +39,12 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    children: [
+      {
+        path: 'dashboard',
+        component: AdminDashboardComponent,
+      },
+    ],
   },
   {
     path: 'manager',

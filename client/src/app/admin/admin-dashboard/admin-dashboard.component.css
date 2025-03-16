@@ -1,0 +1,120 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 40px;
+    align-items: center;
+    height: 10%;
+    border-bottom: 1px solid #ccc; 
+  }
+  
+  header .left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  header p {
+    font-size: 2em;
+  }
+  
+  header img {
+    width: 200px;
+  }
+  
+  section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  
+  section nav {
+    width: 17%;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-right: 1px solid #ccc; 
+  }
+  
+  nav ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 60%;
+  }
+  
+  li {
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap; 
+  }
+  
+  section .content {
+    width: 85%;
+    padding: 20px;
+    background-color: #e8f4f8; 
+  }
+  
+  .dashboard-cards {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    width: 23%;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card p {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .card h2 {
+    font-size: 2.5em;
+    margin: 0 0 20px 0;
+    color: #000;
+  }
+  
+  .status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    width: fit-content;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .status.up {
+    background-color: #d4f8d4; 
+    color: #34a853; 
+  }
+  
+  .status.down {
+    background-color: #f8d4d4; 
+    color: #ea4335; 
+  }
+  
+  .status img {
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+  }
+  

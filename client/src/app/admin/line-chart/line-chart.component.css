@@ -1,0 +1,14 @@
+.chart-container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto; /* centers the chart */
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  width: 100% !important;
+  height: 450px !important;
+}

@@ -1,0 +1,46 @@
+/* app.component.css */
+.report-container {
+  width: 100%;
+  max-width: 800px;
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.chart-container {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 30px;
+}
+
+.query-options {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.query-options label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.date-range {
+  display: flex;
+  gap: 10px;
+}
+
+.date-range input {
+  width: 160px;
+}

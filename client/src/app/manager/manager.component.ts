@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-manager',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterModule],
   templateUrl: './manager.component.html',
   styleUrl: './manager.component.css',
 })

@@ -1,25 +1,32 @@
-.session-metrics {
+.dashboard-container {
     display: flex;
     justify-content: space-between;
     padding: 20px;
+  }
+  
+  .session-metrics {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    width: 55%; /* Adjust width to fit better */
   }
   
   .metric-card {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 10px; /* Reduced padding for smaller cards */
     text-align: center;
-    width: 30%;
+    width: 30%; /* Adjust width for smaller cards */
   }
   
   .metric-card h3 {
-    font-size: 16px;
+    font-size: 14px; /* Reduced font size for headings */
     color: #333;
   }
   
   .metric-card p {
-    font-size: 24px;
+    font-size: 18px; /* Reduced font size for the metrics */
     font-weight: bold;
     color: #555;
   }

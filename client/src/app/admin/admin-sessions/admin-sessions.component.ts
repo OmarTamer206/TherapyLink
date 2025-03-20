@@ -5,9 +5,9 @@ import { LineChartComponent } from '../line-chart/line-chart.component';
 @Component({
   selector: 'app-admin-sessions',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, LineChartComponent],
   templateUrl: './admin-sessions.component.html',
-  styleUrl: './admin-sessions.component.css'
+  styleUrls: ['./admin-sessions.component.css']
 })
 export class AdminSessionsComponent {
   bookedSessions: number = 50;

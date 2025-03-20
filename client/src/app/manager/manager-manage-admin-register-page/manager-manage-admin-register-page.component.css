@@ -1,0 +1,86 @@
+/* app.component.css */
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  /* display: none; */
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.dob-container {
+  display: flex;
+  gap: 10px;
+}
+
+.dob-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+  width: 80px;
+}
+
+.add-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #00b8b8;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-button:hover {
+  background-color: #009c9c;
+}
+#register-edit {
+  width: 600px;
+}
+.selector {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.namediv {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.namediv input {
+  flex: 1;
+}
+
+.hide {
+  display: none;
+}

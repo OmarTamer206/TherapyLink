@@ -56,7 +56,7 @@ export const routes: Routes = [
         path: 'admin-workforce',
         component: AdminWorkforceComponent,
       },
-    ],
+    ],  
   },
   {
     path: 'manager',

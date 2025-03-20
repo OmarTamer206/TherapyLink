@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './manager-manage-admin-register-page.component.css',
 })
 export class ManagerManageAdminRegisterPageComponent {
-  registerElementClass: string = 'hide';
-  editElementClass: string = '';
+  registerElementClass: string = '';
+  editElementClass: string = 'hide';
 
   checkState(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;

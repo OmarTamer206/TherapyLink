@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 export class ManagerManageAdminRegisterPageComponent {
   registerElementClass: string = 'hide';
   editElementClass: string = '';
+  admins: any;
   checkState(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     if (selectedValue === 'register') {

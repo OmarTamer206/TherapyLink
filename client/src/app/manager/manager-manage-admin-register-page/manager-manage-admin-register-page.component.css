@@ -84,3 +84,110 @@ label {
 .hide {
   display: none;
 }
+
+/* app.component.css */
+.manage-admin-container {
+  width: 100%;
+  max-width: 800px;
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.filters-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.filter {
+  width: 100%;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.search-container {
+  flex-grow: 1;
+}
+
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.admin-name {
+  font-size: 16px;
+  color: #333;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button,
+.delete-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #00b8b8;
+  color: white;
+}
+
+.delete-button {
+  background-color: #f3b4a1;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #009c9c;
+}
+
+.delete-button:hover {
+  background-color: #e07a55;
+}

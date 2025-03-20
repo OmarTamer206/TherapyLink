@@ -9,6 +9,7 @@ import { AdminComponent } from './admin/admin.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { ManagerDashboardComponent } from './manager/manager-dashboard/manager-dashboard.component';
+import { AdminSessionsComponent } from './admin/admin-sessions/admin-sessions.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: AdminDashboardComponent,
+      },
+      {
+        path: 'admin-sessions',  
+        component: AdminSessionsComponent,
       },
     ],
   },

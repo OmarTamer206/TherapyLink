@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-sessions',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './admin-sessions.component.html',
   styleUrl: './admin-sessions.component.css'
 })
 export class AdminSessionsComponent {
-
+  bookedSessions: number = 50;
+  availableSessions: number = 10;
+  cancelledSessions: number = 5;
 }

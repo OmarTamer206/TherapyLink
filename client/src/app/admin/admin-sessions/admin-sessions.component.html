@@ -1,17 +1,58 @@
 <div class="dashboard-container">
-    <!-- Session Metrics -->
-    <div class="session-metrics">
-      <div class="metric-card">
-        <h3>Booked Sessions</h3>
-        <p>{{ bookedSessions }}</p>
-      </div>
-      <div class="metric-card">
-        <h3>Available Sessions</h3>
-        <p>{{ availableSessions }}</p>
-      </div>
-      <div class="metric-card">
-        <h3>Cancelled Sessions</h3>
-        <p>{{ cancelledSessions }}</p>
+    <!-- Left Side (Session Metrics) -->
+    <div class="left-panel">
+      <!-- Session Metrics -->
+      <div class="session-metrics">
+        <div class="metric-card">
+          <h3>Booked Sessions</h3>
+          <p>{{ bookedSessions }}</p>
+        </div>
+        <div class="metric-card">
+          <h3>Available Sessions</h3>
+          <p>{{ availableSessions }}</p>
+        </div>
+        <div class="metric-card">
+          <h3>Cancelled Sessions</h3>
+          <p>{{ cancelledSessions }}</p>
+        </div>
       </div>
     </div>
+  
+    <!-- Right Side (Session Analytics and Monthly Reports) -->
+    <div class="right-panel">
+      <!-- Session Analytics -->
+      <div class="session-analytics">
+        <canvas id="sessionChart"></canvas>
+      </div>
+  
+      <!-- Monthly Reports -->
+      <div class="monthly-reports">
+        <h3>Monthly Reports</h3>
+        <div class="report-cards">
+          <div class="report-card">
+            <h4>January</h4>
+            <ul>
+              <li>Cancelled Sessions: 5</li>
+              <li>Booked Sessions: 50</li>
+            </ul>
+          </div>
+          <div class="report-card">
+            <h4>February</h4>
+            <ul>
+              <li>Cancelled Sessions: 3</li>
+              <li>Booked Sessions: 45</li>
+            </ul>
+          </div>
+          <div class="report-card">
+            <h4>March</h4>
+            <ul>
+              <li>Cancelled Sessions: 2</li>
+              <li>Booked Sessions: 55</li>
+            </ul>
+          </div>
+          <!-- Add more months as needed -->
+        </div>
+      </div>
+    </div>
+  </div>
   

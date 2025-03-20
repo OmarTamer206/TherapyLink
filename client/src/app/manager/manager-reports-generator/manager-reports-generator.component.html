@@ -1,0 +1,25 @@
+<!-- app.component.html -->
+<div class="report-container">
+  <div class="chart-container">
+    <canvas id="reportChart"></canvas>
+  </div>
+
+  <div class="query-options">
+    <div class="query-side">
+      <label for="query-select">Query Options</label>
+      <select id="query-select" class="input-field">
+        <option>Emergency Requests</option>
+        <option>Appointments</option>
+        <option>Revenue</option>
+      </select>
+    </div>
+
+    <div class="date-range">
+      <label for="start-date">From</label>
+      <input type="date" id="start-date" class="input-field" />
+
+      <label for="end-date">To</label>
+      <input type="date" id="end-date" class="input-field" />
+    </div>
+  </div>
+</div>

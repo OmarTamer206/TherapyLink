@@ -11,7 +11,7 @@ import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard
 import { ManagerDashboardComponent } from './manager/manager-dashboard/manager-dashboard.component';
 import { ManagerManageAdminRegisterPageComponent } from './manager/manager-manage-admin-register-page/manager-manage-admin-register-page.component';
 import { AdminSessionsComponent } from './admin/admin-sessions/admin-sessions.component';
-
+import { ManagerReportsGeneratorComponent } from './manager/manager-reports-generator/manager-reports-generator.component';
 
 export const routes: Routes = [
   {
@@ -48,10 +48,9 @@ export const routes: Routes = [
         component: AdminDashboardComponent,
       },
       {
-        path: 'admin-sessions',  
+        path: 'admin-sessions',
         component: AdminSessionsComponent,
       },
-      
     ],
   },
   {
@@ -65,6 +64,10 @@ export const routes: Routes = [
       {
         path: 'manage-admins',
         component: ManagerManageAdminRegisterPageComponent,
+      },
+      {
+        path: 'reports-generator',
+        component: ManagerReportsGeneratorComponent,
       },
     ],
   },

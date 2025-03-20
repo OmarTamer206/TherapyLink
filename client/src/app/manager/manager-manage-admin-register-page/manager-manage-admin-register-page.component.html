@@ -1,12 +1,12 @@
 <!-- app.component.html -->
 <div class="form-section selector">
   <label for="register-edit">Registering / Editing *</label>
-  <select id="register-edit" class="input-field">
-    <option>Register</option>
-    <option>Edit</option>
+  <select id="register-edit" class="input-field" (change)="checkState($event)">
+    <option value="register">Register</option>
+    <option value="edit">Edit</option>
   </select>
 </div>
-<div class="form-container">
+<div class="form-container" [ngClass]="registerElementClass">
   <div class="form-section">
     <label for="first-name">Name *</label>
     <div class="namediv">
@@ -100,4 +100,8 @@
   </div>
 
   <button class="add-button">Add</button>
+</div>
+
+<div class="edit-section" [ngClass]="editElementClass">
+  dsfsdfaslkfhklashlsaa
 </div>

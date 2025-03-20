@@ -131,6 +131,7 @@ label {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  width: 100%;
 }
 
 .admin-item {
@@ -190,4 +191,7 @@ label {
 
 .delete-button:hover {
   background-color: #e07a55;
+}
+.edit-section {
+  width: 100%;
 }

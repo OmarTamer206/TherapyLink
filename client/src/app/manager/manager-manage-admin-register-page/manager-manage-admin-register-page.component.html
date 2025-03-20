@@ -106,14 +106,6 @@
   <!-- app.component.html -->
   <div class="manage-admin-container">
     <div class="filters-container">
-      <div class="filter">
-        <label for="register-edit">Registering / Editing *</label>
-        <select id="register-edit" class="input-field">
-          <option>Register</option>
-          <option>Edit</option>
-        </select>
-      </div>
-
       <div class="search-container">
         <label for="search">Search</label>
         <input
@@ -128,7 +120,7 @@
     <div class="admin-list">
       <div *ngFor="let admin of admins" class="admin-item">
         <div class="admin-info">
-          <img src="assets/avatar.png" alt="Admin Image" class="admin-avatar" />
+          <img src="profile png.png" alt="Admin Image" class="admin-avatar" />
           <div class="admin-name">{{ admin.name }}</div>
         </div>
         <div class="admin-actions">

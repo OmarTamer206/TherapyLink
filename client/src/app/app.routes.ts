@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { ManagerComponent } from './manager/manager.component';
-import { ManagerHomeComponent } from './manager/manager-home/manager-home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { PatientComponent } from './patient/patient.component';
@@ -9,6 +8,7 @@ import { LifeCoachComponent } from './life-coach/life-coach.component';
 import { AdminComponent } from './admin/admin.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { ManagerDashboardComponent } from './manager/manager-dashboard/manager-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -51,8 +51,8 @@ export const routes: Routes = [
     component: ManagerComponent,
     children: [
       {
-        path: 'home',
-        component: ManagerHomeComponent,
+        path: 'dashboard',
+        component: ManagerDashboardComponent,
       },
     ],
   },

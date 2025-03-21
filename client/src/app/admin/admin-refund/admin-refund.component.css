@@ -100,7 +100,7 @@
 
 /* Refund item styling */
 .refund-item {
-    background-color: #ffffff;
+    background-color: yellow; 
     padding: 20px;
     margin-bottom: 15px;
     border-radius: 8px;
@@ -135,4 +135,82 @@
 /* Add the hover effect for the refunded button */
 .refunded:hover {
     background-color: #004d40;
+}
+/* General container layout for the entire dashboard */
+.dashboard-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+/* Left panel (Session Metrics and Graph) */
+.left-panel {
+  width: 48%;
+}
+
+/* Right panel (Refund History) */
+.right-panel {
+  width: 48%;
+  background-color: #f9fbfc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Refund History Header */
+.refund-history h3 {
+  color: #4d96b1;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Refund items container */
+.refund-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));  /* Responsive grid layout */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Refund item styling */
+.refund-item {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Refund details inside each item */
+.refund-item .refund-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Styling for each Refunded button */
+.refunded {
+  background-color: #00796b;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  align-self: flex-start;
+  text-align: center;
+}
+
+/* Add hover effect for refunded button */
+.refunded:hover {
+  background-color: #004d40;
 }

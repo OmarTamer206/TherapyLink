@@ -1,5 +1,5 @@
 <div class="main-content">
-    <!-- Refund Form Section -->
+    <!-- Refund Form Section (Left Panel) -->
     <div class="refund-form">
         <h3>Fill in this form to refund</h3>
         <form (ngSubmit)="submitRefund()">
@@ -13,15 +13,17 @@
         </form>
     </div>
 
-    <!-- Refund History Section -->
+    <!-- Refund History Section (Right Panel) -->
     <div class="refund-history">
         <h3>Refund History</h3>
-        <div class="refund-item" *ngFor="let refund of refundHistory">
-            <div class="refund-details">
-                <span>{{ refund.name }}</span>
-                <span>{{ refund.date }}</span>
-                <span>{{ refund.reason }}</span>
-                <button class="refunded">Refunded</button>
+        <div class="refund-items">
+            <div class="refund-item" *ngFor="let refund of refundHistory">
+                <div class="refund-details">
+                    <span class="refund-name">{{ refund.name }}</span>
+                    <span class="refund-date">{{ refund.date }}</span>
+                    <span class="refund-reason">{{ refund.reason }}</span>
+                    <button class="refunded">Refunded</button>
+                </div>
             </div>
         </div>
     </div>

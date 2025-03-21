@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class AdminWorkforceComponent {
   selectedJob: string = '';  // Holds selected job
   selectedAction: string = '';  // Holds selected action (register/edit)
+  selectedDoctor: any = {};  // Holds the currently selected doctor for editing
 
   // Initialize job forms data
   doctor = { name: 'Youssef Ahmed', email: 'example@gmail.com', phone: '+20 30100214231' };
@@ -49,12 +50,12 @@ export class AdminWorkforceComponent {
 
   // Methods for editing and registering doctors
   editDoctor() {
-    console.log('Doctor Edited:', this.doctor);
+    console.log('Doctor Edited:', this.selectedDoctor);
     // Implement save logic for the doctor form
   }
 
   registerDoctor() {
-    console.log('Doctor Registered:', this.doctor);
+    console.log('Doctor Registered:', this.selectedDoctor);
     // Implement register logic for the doctor form
   }
 
@@ -80,9 +81,9 @@ export class AdminWorkforceComponent {
     // Implement register logic for the emergency team form
   }
 
-  // Method to handle user edit
-  editUser(user: any) {
-    console.log('Editing user:', user);
-    // Implement user edit logic
+  // Method to handle user selection for doctor editing
+  selectDoctor(user: any) {
+    this.selectedDoctor = user;  // Set the selected doctor to edit
+    console.log('Editing Doctor:', user);
   }
 }

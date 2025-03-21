@@ -57,6 +57,10 @@ export const routes: Routes = [
         path: 'admin-refund',
         component: AdminRefundComponent,
       },
+      {
+        path: 'admin-workforce',
+        component: AdminWorkforceComponent,
+      }
     ],  
   },
   {

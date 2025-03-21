@@ -1,1 +1,54 @@
-<p>admin-workforce works!</p>
+<div class="main-container">
+    <div class="left-panel">
+      <!-- Job Description Dropdown -->
+      <div class="dropdown-container">
+        <label for="job-description">Job Description:</label>
+        <select id="job-description" [(ngModel)]="selectedJob" (change)="onJobChange()">
+          <option value="">Select a job...</option>
+          <option value="doctor">Doctor</option>
+          <option value="life-coach">Life Coach</option>
+          <option value="emergency-team">Emergency Team</option>
+        </select>
+      </div>
+  
+      <!-- Register/Edit Dropdown -->
+      <div class="dropdown-container">
+        <label for="register-edit">Register/Edit:</label>
+        <select id="register-edit" [(ngModel)]="selectedAction" (change)="onActionChange()">
+          <option value="">Select action...</option>
+          <option value="register">Register</option>
+          <option value="edit">Edit</option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Right-side Form Container -->
+    <div class="form-container">
+      <!-- Doctor Form (When Doctor is selected and Edit is chosen) -->
+      <div *ngIf="selectedJob === 'doctor' && selectedAction === 'edit'" class="form-section">
+        <h3>Edit Doctor</h3>
+        <div class="input-group">
+          <input type="text" placeholder="Name" [(ngModel)]="doctor.name" />
+          <input type="email" placeholder="Email" [(ngModel)]="doctor.email" />
+          <input type="text" placeholder="Phone" [(ngModel)]="doctor.phone" />
+        </div>
+        <button type="button" class="btn-primary" (click)="editDoctor()">Save Changes</button>
+      </div>
+  
+      <!-- Users List (for Editing) -->
+      <div *ngIf="selectedAction === 'edit'" class="users-list">
+        <h3>Users</h3>
+        <div *ngFor="let user of users" class="user-card">
+          <div class="user-info">
+            <img [src]="user.image" alt="User Image" />
+            <div class="user-details">
+              <p>{{ user.name }}</p>
+              <p>{{ user.email }}</p>
+            </div>
+          </div>
+          <button class="edit-btn" (click)="editUser(user)">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

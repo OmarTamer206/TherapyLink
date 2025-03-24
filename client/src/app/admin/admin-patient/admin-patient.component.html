@@ -1,1 +1,34 @@
-<p>admin-patient works!</p>
+<div class="metrics-container">
+    <!-- Patients Use Card -->
+    <div class="metric-card">
+      <p class="metric-label">Patients Use</p>
+      <h2 class="metric-value">{{ patientUse }}</h2>
+      <div class="metric-growth">
+        {{ patientUseGrowth }}% <span class="icon">📈</span>
+      </div>
+    </div>
+  
+    <!-- New Patients Card -->
+    <div class="metric-card">
+      <p class="metric-label">New Patients</p>
+      <h2 class="metric-value">{{ newPatients }}</h2>
+      <div class="metric-growth">
+        {{ newPatientsGrowth }}% <span class="icon">📈</span>
+      </div>
+    </div>
+  
+    <!-- Average Patients Age Chart Card (Chart.js) -->
+    <div class="metric-card chart-card">
+      <p class="metric-label">Average Patients Age</p>
+      <canvas #ageChartCanvas width="160" height="160"></canvas>
+    </div>
+  </div>
+  
+  <!-- Appointments Summary Chart (under the main cards) -->
+  <div class="appointments-chart-container">
+    <div class="metric-card chart-card">
+      <p class="metric-label">Summary Appointments</p>
+      <canvas #appointmentsChartCanvas width="400" height="200"></canvas>
+    </div>
+  </div>
+  

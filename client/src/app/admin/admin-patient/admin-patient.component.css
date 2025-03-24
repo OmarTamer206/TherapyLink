@@ -1,0 +1,85 @@
+/* Layout for the metrics cards */
+.metrics-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns for the cards */
+    gap: 1.5rem; /* Adjust the gap to match image spacing */
+    padding: 2rem;
+    background-color: #e6f4f8; /* Background to match the light blue */
+  }
+  
+  /* Base Card Styling */
+  .metric-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 280px; /* Set a fixed width to ensure all cards are the same size */
+    min-width: 260px; /* Ensure the cards have equal size */
+    margin: 0 auto;
+  }
+  
+  /* Labels */
+  .metric-label {
+    font-size: 0.95rem;
+    color: #777;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Main Numbers */
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  /* Growth Tag */
+  .metric-growth {
+    display: inline-flex;
+    align-items: center;
+    background-color: #d4fcd7;
+    color: green;
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+  }
+  
+  .icon {
+    margin-left: 0.3rem;
+  }
+  
+  /* Chart.js Card */
+  .chart-card {
+    width: 100%;
+    padding: 2rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Canvas Styling */
+  canvas {
+    width: 100% !important; /* Ensures the chart takes up full width */
+    height: 200px !important; /* Set height for charts */
+  }
+  
+  /* Appointment Chart Styling */
+  .appointments-chart-container {
+    margin-top: 3rem; /* Adjusted margin for better spacing */
+    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .chart-legend {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  

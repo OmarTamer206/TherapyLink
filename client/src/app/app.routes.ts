@@ -61,6 +61,10 @@ export const routes: Routes = [
         path: 'admin-workforce',
         component: AdminWorkforceComponent,
       },
+      {
+        path: 'admin-settings',
+        component: AdminSettingsComponent,
+      },
     ],  
   },
   {

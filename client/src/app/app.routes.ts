@@ -14,6 +14,8 @@ import { AdminSessionsComponent } from './admin/admin-sessions/admin-sessions.co
 import { ManagerReportsGeneratorComponent } from './manager/manager-reports-generator/manager-reports-generator.component';
 import { AdminWorkforceComponent } from './admin/admin-workforce/admin-workforce.component';
 import { AdminRefundComponent } from './admin/admin-refund/admin-refund.component';
+import { AdminPatientComponent } from './admin/admin-patient/admin-patient.component';
+import { AdminSettingsComponent } from './admin/admin-settings/admin-settings.component';
 
 export const routes: Routes = [
   {
@@ -60,6 +62,10 @@ export const routes: Routes = [
       {
         path: 'admin-workforce',
         component: AdminWorkforceComponent,
+      },
+      {
+        path: 'admin-patient',
+        component: AdminPatientComponent,
       },
       {
         path: 'admin-settings',

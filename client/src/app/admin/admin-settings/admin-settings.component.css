@@ -1,36 +1,72 @@
-.profile-container {
-    display: flex;
-    gap: 30px;
-    background-color: #eaf4f9;
-    padding: 20px;
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f8ff;  /* Light background to match the design */
+
+  .profile {
+    text-align: center;
+    margin-right: 20px;  /* Adjust space between the image and form */
   }
-  
-  .profile-info {
-    display: flex;
-    gap: 30px;
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;  /* Make the image circular */
+    object-fit: cover;
+    border: 3px solid #007bff;  /* Optional: Add a border around the image */
   }
-  
-  .profile-picture img {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
+
+  .doctor-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 15px;  /* Adjust spacing below the image */
+    color: #333;
   }
-  
-  .profile-details {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+
+  .doctor-form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
     max-width: 400px;
   }
-  
-  .profile-details label {
-    font-weight: bold;
+
+  .form-group {
+    margin-bottom: 20px;  /* Increase space between the fields */
   }
-  
-  .profile-details input {
+
+  label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;  /* Adjust space below the label */
+    display: block;
+  }
+
+  .form-control {
+    width: 100%;
     padding: 10px;
-    font-size: 16px;
+    font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    margin-top: 5px;
   }
-  
+
+  .submit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-top: 20px;
+  }
+
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+}

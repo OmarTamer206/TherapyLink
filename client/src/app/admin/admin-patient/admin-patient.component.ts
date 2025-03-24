@@ -18,7 +18,7 @@ export class AdminPatientComponent {
   patientUse: number = 200;
   newPatients: number = 150;
   patientUseGrowth: number = 10;
-  newPatientsGrowth: number = 5;
+  newPatientsGrowth: number = 10;
 
   age21to30: number = 50;
   age40to50: number = 50;

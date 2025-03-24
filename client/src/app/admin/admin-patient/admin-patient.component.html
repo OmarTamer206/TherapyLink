@@ -1,34 +1,50 @@
-<div class="metrics-container">
-    <!-- Patients Use Card -->
-    <div class="metric-card">
-      <p class="metric-label">Patients Use</p>
-      <h2 class="metric-value">{{ patientUse }}</h2>
-      <div class="metric-growth">
-        {{ patientUseGrowth }}% <span class="icon">📈</span>
+<div class="container">
+    <!-- Left Panel with Metrics Cards and Graphs -->
+    <div class="left-panel">
+      <div class="metrics-container">
+        <!-- Patients Use Card -->
+        <div class="metric-card">
+          <p class="metric-label">Patients Use</p>
+          <h2 class="metric-value">{{ patientUse }}</h2>
+          <div class="metric-growth">
+            {{ patientUseGrowth }}% <span class="icon">📈</span>
+          </div>
+        </div>
+  
+        <!-- New Patients Card -->
+        <div class="metric-card">
+          <p class="metric-label">New Patients</p>
+          <h2 class="metric-value">{{ newPatients }}</h2>
+          <div class="metric-growth">
+            {{ newPatientsGrowth }}% <span class="icon">📈</span>
+          </div>
+        </div>
+  
+        <!-- Average Patients Age Chart Card (Chart.js) -->
+        <div class="metric-card chart-card">
+          <p class="metric-label">Average Patients Age</p>
+          <canvas #ageChartCanvas width="160" height="160"></canvas>
+        </div>
+      </div>
+  
+      <!-- Appointments Summary Chart (under the main cards) -->
+      <div class="appointments-chart-container">
+        <div class="metric-card chart-card">
+          <p class="metric-label">Summary Appointments</p>
+          <canvas #appointmentsChartCanvas width="400" height="200"></canvas>
+        </div>
       </div>
     </div>
   
-    <!-- New Patients Card -->
-    <div class="metric-card">
-      <p class="metric-label">New Patients</p>
-      <h2 class="metric-value">{{ newPatients }}</h2>
-      <div class="metric-growth">
-        {{ newPatientsGrowth }}% <span class="icon">📈</span>
+    <!-- Right Panel (if needed for other content or reports) -->
+    <div class="right-panel">
+      <div class="monthly-report">
+        <p class="report-label">Monthly Report</p>
+        <!-- Example monthly report content -->
+        <div class="report-item">January: Active Doctors: 10, New Appointments: 10</div>
+        <div class="report-item">February: Active Doctors: 12, New Appointments: 15</div>
+        <!-- Add more report items as needed -->
       </div>
-    </div>
-  
-    <!-- Average Patients Age Chart Card (Chart.js) -->
-    <div class="metric-card chart-card">
-      <p class="metric-label">Average Patients Age</p>
-      <canvas #ageChartCanvas width="160" height="160"></canvas>
-    </div>
-  </div>
-  
-  <!-- Appointments Summary Chart (under the main cards) -->
-  <div class="appointments-chart-container">
-    <div class="metric-card chart-card">
-      <p class="metric-label">Summary Appointments</p>
-      <canvas #appointmentsChartCanvas width="400" height="200"></canvas>
     </div>
   </div>
   

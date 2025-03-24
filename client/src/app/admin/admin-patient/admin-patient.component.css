@@ -1,10 +1,29 @@
-/* Layout for the metrics cards */
-.metrics-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns for the cards */
-    gap: 1.5rem; /* Adjust the gap to match image spacing */
+/* Container to wrap the left and right panels */
+.container {
+    display: flex;
+    justify-content: space-between;
     padding: 2rem;
-    background-color: #e6f4f8; /* Background to match the light blue */
+  }
+  
+  /* Left Panel (Metrics Cards and Graphs) */
+  .left-panel {
+    flex: 0 0 70%; /* Adjust the width of the left panel */
+  }
+  
+  /* Right Panel (Optional for reports or additional content) */
+  .right-panel {
+    flex: 0 0 28%; /* Adjust the width of the right panel */
+    padding-left: 1.5rem; /* Optional: adds space between left and right panel */
+    background-color: #f8f8f8; /* Optional background color */
+    border-radius: 1rem;
+  }
+  
+  /* Layout for the metrics cards */
+  .metrics-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal-width columns for the cards */
+    gap: 1.5rem;
+    margin-bottom: 2rem;
   }
   
   /* Base Card Styling */
@@ -77,9 +96,22 @@
     justify-content: center;
   }
   
-  .chart-legend {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    text-align: center;
+  /* Monthly Report Section */
+  .monthly-report {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  }
+  
+  .report-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .report-item {
+    font-size: 1rem;
+    margin-bottom: 1rem;
   }
   

@@ -108,7 +108,7 @@ label {
 
 .remember-me {
   display: flex;
-  padding: 0px 5px;
+  padding: 10px 5px;
   font-size: 12px;
   justify-content: space-between;
   align-items: center;

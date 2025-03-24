@@ -1,1 +1,67 @@
-<p>login works!</p>
+<img src="image.png" id="header" alt="TherapyLink Logo" class="logo" />
+
+<div class="login-container">
+  <div class="left-section">
+    <img
+      src="soret el mask.png"
+      alt="Therapy Illustration"
+      class="login-image"
+    />
+    <p class="tagline">
+      "Find the support you need, connect with the right therapist, and start
+      your journey toward healing because everyone deserves a safe space to
+      talk."
+    </p>
+  </div>
+
+  <div class="right-section">
+    <h2>Welcome back!</h2>
+    <p>Please enter your details.</p>
+
+    <!-- Google login button -->
+    <button class="google-login">
+      <img src="logo google.png" alt="Google Logo" class="google-logo-img" />
+      Log In with Google
+    </button>
+
+    <div class="or-divider">Or</div>
+
+    <form (submit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="input-field"
+          placeholder="Email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="input-field"
+          placeholder="Password"
+          required
+        />
+      </div>
+
+      <div class="remember-me">
+        <input type="checkbox" id="remember" />
+        <label for="remember">Remember for 30 days</label>
+        <div class="forgot-password">
+          <a href="/forgot-password">Forgot Password?</a>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-button">Log In</button>
+    </form>
+
+    <p class="login-link">
+      Don't have an account? <a (click)="goToSignup()">Sign Up</a>
+    </p>
+  </div>
+</div>

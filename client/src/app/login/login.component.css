@@ -1,0 +1,153 @@
+/* app.component.css */
+.login-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  max-width: 150px; /* Adjust logo size */
+  margin-bottom: 15px;
+}
+
+.login-image {
+  max-width: 70%;
+  height: auto;
+}
+
+.tagline {
+  font-size: 25px;
+  font-style: italic, bold;
+  color: #00b8b8;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 50px;
+}
+h2 {
+  text-align: center;
+  color: #00b8b8;
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+p {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.google-login {
+  background-color: #fff;
+  color: #333;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.google-logo-img {
+  width: 18px;
+  height: 18px;
+}
+
+.or-divider {
+  text-align: center;
+  margin: 10px 0;
+  color: #333;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 15px;
+  color: #333;
+}
+
+.input-field {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  background-color: #fff;
+  margin-bottom: 8px;
+}
+
+.remember-me {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.forgot-password {
+  display: flex;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  justify-content: right;
+}
+
+.forgot-password a {
+  color: #00b8b8;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.submit-button {
+  background-color: #00b8b8;
+  color: white;
+  padding: 10px; /* Reduced padding */
+  border-radius: 6px; /* Slightly smaller border radius */
+  font-size: 14px; /* Smaller button text */
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #009c9c;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 15px; /* Reduced margin */
+}
+
+.login-link a {
+  color: #00b8b8;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px; /* Smaller link font size */
+}

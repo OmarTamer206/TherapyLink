@@ -1,1 +1,114 @@
-<p>signup works!</p>
+<!-- app.component.html -->
+<div class="signup-container">
+  <div class="left-section">
+    <img src="image.png" alt="TherapyLink Logo" class="logo" />
+  </div>
+  <div class="left-section">
+    <img
+      src="soret el mask.png"
+      alt="Therapy Illustration"
+      class="signup-image"
+    />
+    <p class="tagline">
+      "Find the support you need, connect with the right therapist, and start
+      your journey toward healing because everyone deserves a safe space to
+      talk."
+    </p>
+  </div>
+
+  <div class="right-section">
+    <h2>Welcome to TherapyLink!</h2>
+    <form (submit)="onSubmit()" class="signup-form">
+      <div class="form-group">
+        <label for="full-name">Full Name</label>
+        <input
+          type="text"
+          id="full-name"
+          class="input-field"
+          placeholder="Full Name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" class="input-field" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input
+          type="number"
+          id="age"
+          class="input-field"
+          placeholder="Age"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="status">Martial Status</label>
+        <select id="status" class="input-field" required>
+          <option value="">Select Martial Status</option>
+          <option value="Single">Single</option>
+          <option value="Married">Married</option>
+          <option value="Divorced">Divorced</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="phone-number">Phone Number</label>
+        <input
+          type="tel"
+          id="phone-number"
+          class="input-field"
+          placeholder="Phone Number"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="input-field"
+          placeholder="Email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="input-field"
+          placeholder="Password"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input
+          type="password"
+          id="confirm-password"
+          class="input-field"
+          placeholder="Confirm Password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="submit-button">Sign Up</button>
+    </form>
+
+    <p class="login-link">
+      Already have an account? <a href="/login">Log In</a>
+    </p>
+  </div>
+</div>

@@ -1,4 +1,10 @@
-/* app.component.css */
+#header {
+  width: 300px;
+  position: absolute;
+  top: 27px;
+  left: 42px;
+}
+
 .login-container {
   display: flex;
   justify-content: space-between;
@@ -9,20 +15,15 @@
 }
 
 .left-section {
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.logo {
-  max-width: 150px; /* Adjust logo size */
-  margin-bottom: 15px;
-}
-
 .login-image {
-  max-width: 70%;
+  max-width: 50%;
   height: auto;
 }
 
@@ -107,8 +108,15 @@ label {
 
 .remember-me {
   display: flex;
-  gap: 8px;
+  padding: 0px 5px;
   font-size: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remember-me div:nth-child(1) {
+  display: flex;
+  gap: 5px;
 }
 
 .forgot-password {
@@ -150,4 +158,5 @@ label {
   text-decoration: none;
   font-weight: bold;
   font-size: 14px; /* Smaller link font size */
+  cursor: pointer;
 }

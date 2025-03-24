@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,12 +9,11 @@ import { Component } from '@angular/core';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  constructor(private router: Router) {}
   goToSignup() {
-    throw new Error('Method not implemented.');
+    this.router.navigate(['/signup']);
   }
-  goToLogin() {
-    throw new Error('Method not implemented.');
-  }
+
   onSubmit() {
     throw new Error('Method not implemented.');
   }

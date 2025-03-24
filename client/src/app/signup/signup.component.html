@@ -1,6 +1,5 @@
-<div class="header">
-  <img src="image.png" alt="TherapyLink Logo" class="logo" />
-</div>
+<img src="image.png" id="header" alt="TherapyLink Logo" class="logo" />
+
 <div class="signup-container">
   <div class="left-section">
     <img
@@ -38,25 +37,26 @@
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="age">Age</label>
-        <input
-          type="number"
-          id="age"
-          class="input-field"
-          placeholder="Age"
-          required
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="status">Martial Status</label>
-        <select id="status" class="input-field" required>
-          <option value="">Select Martial Status</option>
-          <option value="Single">Single</option>
-          <option value="Married">Married</option>
-          <option value="Divorced">Divorced</option>
-        </select>
+      <div class="form-group two-side">
+        <div>
+          <label for="age">Age</label>
+          <input
+            type="number"
+            id="age"
+            class="input-field"
+            placeholder="Age"
+            required
+          />
+        </div>
+        <div>
+          <label for="status">Martial Status</label>
+          <select id="status" class="input-field" required>
+            <option value="">Select Martial Status</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Divorced">Divorced</option>
+          </select>
+        </div>
       </div>
 
       <div class="form-group">
@@ -107,7 +107,7 @@
     </form>
 
     <p class="login-link">
-      Already have an account? <a href="/login">Log In</a>
+      Already have an account? <a (click)="goToLogin()">Log In</a>
     </p>
   </div>
 </div>

@@ -1,14 +1,20 @@
 import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
 export class SignupComponent {
+  constructor(private router: Router) {}
   onSubmit() {
-    throw new Error('Method not implemented.');
+    console.log('Signup done');
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 }

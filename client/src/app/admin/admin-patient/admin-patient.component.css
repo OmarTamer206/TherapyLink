@@ -1,14 +1,15 @@
 /* Container to wrap the left and right panels */
 .container {
   display: flex;
-  justify-content: center; /* Centering the content */
+  justify-content: space-between;
   padding: 2rem;
 }
 
-/* Left Panel (Metrics Cards and Monthly Report) */
+/* Left Panel (Metrics Cards) */
 .left-panel {
-  flex: 0 0 100%; /* Make the left panel full width */
-  max-width: 1200px; /* Optional: Limit max width for better control */
+  flex: 0 0 70%; /* Make the left panel take 70% of the width */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Layout for the metrics cards (3 cards in a row) */
@@ -48,24 +49,6 @@
   margin: 0;
 }
 
-/* Growth Tag */
-.metric-growth {
-  display: inline-flex;
-  align-items: center;
-  background-color: #d4fcd7;
-  color: green;
-  border-radius: 0.5rem;
-  padding: 0.3rem 0.6rem;
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  font-weight: 500;
-}
-
-.icon {
-  margin-left: 0.3rem;
-}
-
 /* Chart.js Card */
 .chart-card {
   width: 100%;
@@ -81,22 +64,57 @@ canvas {
   height: 400px !important;  /* Increased the height to make the chart larger */
 }
 
+/* Right Panel (Monthly Reports) */
+.right-panel {
+  flex: 0 0 28%; /* Make the right panel take 28% of the width */
+  display: flex;
+  flex-direction: column;
+}
+
 /* Monthly Report Section */
-.monthly-report {
-  background-color: #f8f8f8; /* Optional background color */
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  margin-top: 2rem;
+.monthly-reports {
+  background-color: #eaf5f8;
+  padding: 30px;
+  border-radius: 12px;
+  height: 100%;
 }
 
-.report-label {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+.monthly-reports h3 {
+  font-size: 24px;
+  color: #1e88e5;
+  margin-bottom: 30px;
 }
 
-.report-item {
-  font-size: 1rem;
-  margin-bottom: 1rem;
+.report-cards {
+  display: block; /* Ensures reports are displayed vertically under each other */
+  gap: 30px;
+}
+
+.report-card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.report-card h4 {
+  font-size: 22px;
+  color: #1e88e5;
+  margin-bottom: 15px;
+}
+
+.report-card ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.report-card li {
+  font-size: 18px;
+  color: #757575;
+}
+
+.report-card strong {
+  color: #1e88e5;
 }

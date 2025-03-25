@@ -1,5 +1,5 @@
 <div class="container">
-  <!-- Left Panel with Metrics Cards and Monthly Report -->
+  <!-- Left Panel with Metrics Cards -->
   <div class="left-panel">
     <!-- Patient Metrics Cards -->
     <div class="metrics-container">
@@ -21,15 +21,39 @@
         <canvas #ageChartCanvas width="160" height="160"></canvas>
       </div>
     </div>
+  </div>
 
-    <!-- Monthly Report (below the cards) -->
-    <div class="monthly-report">
-      <p class="report-label">Monthly Report</p>
-      <!-- Example monthly report items -->
-      <div class="report-item">January: Active Doctors: 10, New Appointments: 10</div>
-      <div class="report-item">February: Active Doctors: 12, New Appointments: 15</div>
-      <div class="report-item">March: Active Doctors: 14, New Appointments: 18</div>
-      <!-- Add more report items as needed -->
+  <!-- Right Panel for Monthly Report -->
+  <div class="right-panel">
+    <div class="monthly-reports">
+      <h3>Monthly Reports</h3>
+      <div class="report-cards">
+        <div class="report-card">
+          <h4>January</h4>
+          <ul>
+            <li><strong>Cancelled Sessions:</strong> 5</li>
+            <li><strong>Booked Sessions:</strong> 50</li>
+            <li><strong>Available Sessions:</strong> 20</li>
+          </ul>
+        </div>
+        <div class="report-card">
+          <h4>February</h4>
+          <ul>
+            <li><strong>Cancelled Sessions:</strong> 3</li>
+            <li><strong>Booked Sessions:</strong> 45</li>
+            <li><strong>Available Sessions:</strong> 25</li>
+          </ul>
+        </div>
+        <div class="report-card">
+          <h4>March</h4>
+          <ul>
+            <li><strong>Cancelled Sessions:</strong> 2</li>
+            <li><strong>Booked Sessions:</strong> 55</li>
+            <li><strong>Available Sessions:</strong> 30</li>
+          </ul>
+        </div>
+        <!-- Add more report cards as needed -->
+      </div>
     </div>
   </div>
 </div>

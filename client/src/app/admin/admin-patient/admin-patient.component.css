@@ -5,7 +5,7 @@
   padding: 2rem;
 }
 
-/* Left Panel (Metrics Cards) */
+/* Left Panel (Metrics Cards and Summary Graph) */
 .left-panel {
   flex: 0 0 70%; /* Make the left panel take 70% of the width */
   display: flex;
@@ -24,27 +24,27 @@
 .metric-card {
   background: white;
   border-radius: 1rem;
-  padding: 1.5rem 2rem;
+  padding: 1rem; /* Reduced padding to make the cards more compact */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 280px;
-  min-width: 260px;
+  max-width: 220px; /* Reduced max-width to match the card size in the image */
+  min-width: 200px; /* Reduced min-width to make the cards more compact */
   margin: 0 auto;
 }
 
 /* Labels */
 .metric-label {
-  font-size: 0.95rem;
+  font-size: 0.85rem; /* Reduced font size */
   color: #777;
   margin-bottom: 0.5rem;
 }
 
 /* Main Numbers */
 .metric-value {
-  font-size: 2rem;
+  font-size: 1.75rem; /* Reduced font size */
   font-weight: 700;
   margin: 0;
 }
@@ -52,7 +52,7 @@
 /* Chart.js Card */
 .chart-card {
   width: 100%;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 1rem 1rem 1rem 1rem; /* Reduced padding for more compact size */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,7 +61,7 @@
 /* Canvas Styling */
 canvas {
   width: 100% !important;
-  height: 400px !important;  /* Increased the height to make the chart larger */
+  height: 200px !important;  /* Reduced the height for the canvas */
 }
 
 /* Right Panel (Monthly Reports) */
@@ -74,35 +74,35 @@ canvas {
 /* Monthly Report Section */
 .monthly-reports {
   background-color: #eaf5f8;
-  padding: 30px;
+  padding: 20px; /* Reduced padding for a more compact look */
   border-radius: 12px;
   height: 100%;
 }
 
 .monthly-reports h3 {
-  font-size: 24px;
+  font-size: 22px; /* Reduced heading font size */
   color: #1e88e5;
-  margin-bottom: 30px;
+  margin-bottom: 20px; /* Reduced margin for better spacing */
 }
 
 .report-cards {
   display: block; /* Ensures reports are displayed vertically under each other */
-  gap: 30px;
+  gap: 20px; /* Adjusted the gap for better spacing */
 }
 
 .report-card {
   background-color: #fff;
-  padding: 25px;
+  padding: 20px; /* Reduced padding */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 20px; /* More space between each report card */
 }
 
 .report-card h4 {
-  font-size: 22px;
+  font-size: 20px; /* Reduced font size */
   color: #1e88e5;
-  margin-bottom: 15px;
+  margin-bottom: 10px; /* Adjusted margin for better spacing */
 }
 
 .report-card ul {
@@ -111,7 +111,7 @@ canvas {
 }
 
 .report-card li {
-  font-size: 18px;
+  font-size: 16px; /* Reduced font size */
   color: #757575;
 }
 

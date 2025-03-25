@@ -1,117 +1,102 @@
 /* Container to wrap the left and right panels */
 .container {
-    display: flex;
-    justify-content: space-between;
-    padding: 2rem;
-  }
-  
-  /* Left Panel (Metrics Cards and Graphs) */
-  .left-panel {
-    flex: 0 0 70%; /* Adjust the width of the left panel */
-  }
-  
-  /* Right Panel (Optional for reports or additional content) */
-  .right-panel {
-    flex: 0 0 28%; /* Adjust the width of the right panel */
-    padding-left: 1.5rem; /* Optional: adds space between left and right panel */
-    background-color: #f8f8f8; /* Optional background color */
-    border-radius: 1rem;
-  }
-  
-  /* Layout for the metrics cards */
-  .metrics-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 equal-width columns for the cards */
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  /* Base Card Styling */
-  .metric-card {
-    background: white;
-    border-radius: 1rem;
-    padding: 1.5rem 2rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-width: 280px; /* Set a fixed width to ensure all cards are the same size */
-    min-width: 260px; /* Ensure the cards have equal size */
-    margin: 0 auto;
-  }
-  
-  /* Labels */
-  .metric-label {
-    font-size: 0.95rem;
-    color: #777;
-    margin-bottom: 0.5rem;
-  }
-  
-  /* Main Numbers */
-  .metric-value {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0;
-  }
-  
-  /* Growth Tag */
-  .metric-growth {
-    display: inline-flex;
-    align-items: center;
-    background-color: #d4fcd7;
-    color: green;
-    border-radius: 0.5rem;
-    padding: 0.3rem 0.6rem;
-    margin-top: 1rem;
-    font-size: 0.85rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    font-weight: 500;
-  }
-  
-  .icon {
-    margin-left: 0.3rem;
-  }
-  
-  /* Chart.js Card */
-  .chart-card {
-    width: 100%;
-    padding: 2rem 1rem 1rem 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Canvas Styling */
-  canvas {
-    width: 100% !important; /* Ensures the chart takes up full width */
-    height: 200px !important; /* Set height for charts */
-  }
-  
-  /* Appointment Chart Styling */
-  .appointments-chart-container {
-    margin-top: 3rem; /* Adjusted margin for better spacing */
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
-  }
-  
-  /* Monthly Report Section */
-  .monthly-report {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  }
-  
-  .report-label {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-  
-  .report-item {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-  
+  display: flex;
+  justify-content: center; /* Centering the content */
+  padding: 2rem;
+}
+
+/* Left Panel (Metrics Cards and Monthly Report) */
+.left-panel {
+  flex: 0 0 100%; /* Make the left panel full width */
+  max-width: 1200px; /* Optional: Limit max width for better control */
+}
+
+/* Layout for the metrics cards (3 cards in a row) */
+.metrics-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns for the cards */
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Base Card Styling */
+.metric-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 280px;
+  min-width: 260px;
+  margin: 0 auto;
+}
+
+/* Labels */
+.metric-label {
+  font-size: 0.95rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+
+/* Main Numbers */
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Growth Tag */
+.metric-growth {
+  display: inline-flex;
+  align-items: center;
+  background-color: #d4fcd7;
+  color: green;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-weight: 500;
+}
+
+.icon {
+  margin-left: 0.3rem;
+}
+
+/* Chart.js Card */
+.chart-card {
+  width: 100%;
+  padding: 2rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Canvas Styling */
+canvas {
+  width: 100% !important;
+  height: 400px !important;  /* Increased the height to make the chart larger */
+}
+
+/* Monthly Report Section */
+.monthly-report {
+  background-color: #f8f8f8; /* Optional background color */
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+.report-label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.report-item {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}

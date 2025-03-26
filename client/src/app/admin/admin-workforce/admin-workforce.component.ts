@@ -13,16 +13,25 @@ import { CommonModule } from '@angular/common';  // Import CommonModule for ngIf
 export class AdminWorkforceComponent {
   registerElementClass: string = '';
   editElementClass: string = 'hide';
+  jobDescription: string = '';  // Store selected job description
+  isEditing: boolean = false;  // Flag to track if in 'edit' mode
 
   checkState(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     if (selectedValue === 'register') {
       this.registerElementClass = '';
       this.editElementClass = 'hide';
+      this.isEditing = false;  // Not in edit mode
     } else if (selectedValue === 'edit') {
       this.registerElementClass = 'hide';
       this.editElementClass = '';
+      this.isEditing = true;  // In edit mode
     }
+  }
+
+  // Handle job description change
+  onJobDescriptionChange(event: Event) {
+    this.jobDescription = (event.target as HTMLSelectElement).value;
   }
 
   admins = [

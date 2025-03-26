@@ -1,42 +1,50 @@
+<!-- app.component.html -->
 <div class="main-container">
+  <!-- Left Panel: Job Description and Registering/Editing -->
   <div class="left-panel">
-    <!-- Job Description Dropdown -->
-    <div class="dropdown-container">
-      <label for="job-description">Job Description:</label>
-      <select id="job-description" [(ngModel)]="selectedJob" (change)="onJobChange()">
-        <option value="">Select a job...</option>
+    <div class="form-section selector">
+      <label for="job-description">Job Description *</label>
+      <select id="job-description" class="input-field">
         <option value="doctor">Doctor</option>
         <option value="life-coach">Life Coach</option>
         <option value="emergency-team">Emergency Team</option>
       </select>
     </div>
 
-    <!-- Register/Edit Dropdown -->
-    <div class="dropdown-container">
-      <label for="register-edit">Register/Edit:</label>
-      <select id="register-edit" [(ngModel)]="selectedAction" (change)="onActionChange()">
-        <option value="">Select action...</option>
+    <div class="form-section selector">
+      <label for="register-edit">Registering / Editing *</label>
+      <select id="register-edit" class="input-field" (change)="checkState($event)">
         <option value="register">Register</option>
         <option value="edit">Edit</option>
       </select>
     </div>
   </div>
 
-  <!-- Right-side Form Container -->
-  <div class="form-container" *ngIf="showFormContainer">
-    <!-- Emergency Team Form (When Emergency Team is selected and Register is chosen) -->
-    <div *ngIf="selectedJob === 'emergency-team' && selectedAction === 'register'" class="form-section">
-      <h3>Register Emergency Team</h3>
-      <div class="input-group">
-        <input type="text" placeholder="First Name" [(ngModel)]="emergencyTeam.firstName" />
-        <input type="text" placeholder="Last Name" [(ngModel)]="emergencyTeam.lastName" />
-        <input type="email" placeholder="Email" [(ngModel)]="emergencyTeam.email" />
-        <input type="text" placeholder="Phone" [(ngModel)]="emergencyTeam.phone" />
-        <input type="date" placeholder="Date of Birth" [(ngModel)]="emergencyTeam.dob" />
-        <input type="password" placeholder="Password" [(ngModel)]="emergencyTeam.password" />
-        <input type="password" placeholder="Confirm Password" [(ngModel)]="emergencyTeam.confirmPassword" />
+  <!-- Right Panel: Search, Name, and Pictures -->
+  <div class="form-container">
+    <!-- Edit Section -->
+    <div class="edit-section" [ngClass]="editElementClass">
+      <div class="manage-admin-container">
+        <!-- Search Filters -->
+        <div class="filters-container">
+          <div class="search-container">
+            <input type="text" id="search" class="input-field" placeholder="Search" />
+          </div>
+        </div>
+
+        <!-- Admin List -->
+        <div class="admin-list">
+          <div *ngFor="let admin of admins" class="admin-item">
+            <div class="admin-info">
+              <img src="profile png.png" alt="Admin Image" class="admin-avatar" />
+              <div class="admin-name">{{ admin.name }}</div>
+            </div>
+            <div class="admin-actions">
+              <button class="edit-button">🖊️</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <button type="button" class="btn-primary" (click)="registerEmergencyTeam()">Add</button>
     </div>
   </div>
 </div>

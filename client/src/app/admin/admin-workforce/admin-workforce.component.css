@@ -7,15 +7,18 @@
 .left-panel {
   width: 250px;
   background-color: #f1f8f6;
-  padding: 20px;
+  padding: 15px; /* Reduced padding for more compact space */
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Reduced box-shadow for a lighter effect */
 }
 
 .form-container {
   flex-grow: 1;
   padding: 20px;
   margin-left: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .title {
@@ -41,11 +44,17 @@ select {
   margin-top: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  transition: border 0.3s ease;
+}
+
+select:focus {
+  border: 1px solid #4CAF50;
 }
 
 .form-section {
   background-color: #fff;
-  padding: 20px;
+  padding: 15px;  /* Reduced padding for compact space */
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
@@ -70,6 +79,12 @@ input {
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
+  background-color: #f9f9f9;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border: 1px solid #4CAF50;
 }
 
 button {
@@ -135,11 +150,98 @@ button:focus {
   background-color: #45a049;
 }
 
-/* Initial state to hide the right-side content */
+/* Adjustments to form section and edit section layout */
 .form-container {
-  display: none; /* Initially hidden */
+  display: block; /* Ensure it's visible when in register mode */
 }
 
 .users-list {
-  display: none; /* Initially hidden */
+  display: block; /* Ensure it's visible when in edit mode */
+}
+
+.form-section {
+  margin-bottom: 15px;
+}
+
+button.add-button {
+  background-color: #007BFF; /* Blue for Add button */
+}
+
+button.add-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+button.edit-button, button.delete-button {
+  background-color: #FFC107; /* Yellow for edit and delete buttons */
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+button.edit-button:hover, button.delete-button:hover {
+  background-color: #e0a800; /* Darker yellow on hover */
+}
+
+.edit-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.manage-admin-container {
+  margin-top: 20px;
+}
+
+.filters-container {
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.search-container label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.admin-list {
+  margin-top: 20px;
+}
+
+.admin-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-info {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.admin-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }

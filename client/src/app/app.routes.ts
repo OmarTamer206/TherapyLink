@@ -16,6 +16,7 @@ import { AdminWorkforceComponent } from './admin/admin-workforce/admin-workforce
 import { AdminRefundComponent } from './admin/admin-refund/admin-refund.component';
 import { AdminPatientComponent } from './admin/admin-patient/admin-patient.component';
 import { AdminSettingsComponent } from './admin/admin-settings/admin-settings.component';
+import { EmergencyTeamComponent } from './emergency-team/emergency-team.component';
 
 export const routes: Routes = [
   {
@@ -91,6 +92,11 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'emergency-team',
+    component: EmergencyTeamComponent,
+  },
+  // Uncomment and configure if you need a NotFound component for unknown routes
   // {
   //   path: '**',
   //   component: NotFoundComponent,

@@ -1,33 +1,31 @@
 <p>emergency-team-chat works!</p>
 <div class="chat-container">
-    <div class="chat-list">
-      <input type="text" class="search" placeholder="Search">
-      <div class="chat-item" *ngFor="let chat of chats">
-        <div class="chat-header">
-          <div class="chat-avatar">
-            <img src="path/to/avatar.jpg" alt="avatar" />
-          </div>
-          <div class="chat-details">
-            <div class="chat-name">{{ chat.name }}</div>
-            <div class="chat-date">{{ chat.date }}</div>
-          </div>
+  <div class="chat-list">
+    <input type="text" class="search" placeholder="Search" />
+    <div class="chat-item" *ngFor="let chat of chats">
+      <div class="chat-header">
+        <div class="chat-avatar">
+          <img src="profile png.png" alt="avatar" />
         </div>
-       
-      </div>
-    </div>
-    <div class="chat-content">
-      <div class="chat-message-sent">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      </div>
-      <div class="chat-message-received">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      </div>
-      <div class="chat-message-sent">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      </div>
-      <div class="chat-message-received">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        <div class="chat-details">
+          <div class="chat-name">{{ chat.name }}</div>
+          <div class="chat-date">{{ chat.date }}</div>
+        </div>
       </div>
     </div>
   </div>
-  
+  <div class="chat-content">
+    <div class="chat-message-sent">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    </div>
+    <div class="chat-message-received">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    </div>
+    <div class="chat-message-sent">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    </div>
+    <div class="chat-message-received">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    </div>
+  </div>
+</div>

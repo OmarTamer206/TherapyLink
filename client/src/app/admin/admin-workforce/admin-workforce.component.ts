@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';  // Import FormsModule for ngModel
+import { CommonModule } from '@angular/common';  // Import CommonModule for ngIf
 
 @Component({
   selector: 'app-admin-workforce',
   standalone: true,
-  imports: [RouterModule, FormsModule],
+  imports: [RouterModule, FormsModule, CommonModule],  // Include CommonModule for ngIf
   templateUrl: './admin-workforce.component.html',
   styleUrls: ['./admin-workforce.component.css']
 })

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';  // Import FormsModule for ngModel
+import { CommonModule } from '@angular/common';  // Import CommonModule to use ngFor
 
 @Component({
   selector: 'app-admin-refund',
   standalone: true,
-  imports: [RouterModule, FormsModule],  // Include FormsModule for ngModel
+  imports: [RouterModule, FormsModule, CommonModule],  // Add CommonModule here
   templateUrl: './admin-refund.component.html',
   styleUrls: ['./admin-refund.component.css']  // Corrected to styleUrls
 })

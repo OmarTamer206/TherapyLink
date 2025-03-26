@@ -134,3 +134,12 @@ button:focus {
 .edit-btn:hover {
   background-color: #45a049;
 }
+
+/* Initial state to hide the right-side content */
+.form-container {
+  display: none; /* Initially hidden */
+}
+
+.users-list {
+  display: none; /* Initially hidden */
+}

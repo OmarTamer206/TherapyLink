@@ -23,31 +23,20 @@
   </div>
 
   <!-- Right-side Form Container -->
-  <div class="form-container">
-    <!-- Doctor Form (When Doctor is selected and Edit is chosen) -->
-    <div *ngIf="selectedJob === 'doctor' && selectedAction === 'edit'" class="form-section">
-      <h3>Edit Doctor</h3>
+  <div class="form-container" *ngIf="showFormContainer">
+    <!-- Emergency Team Form (When Emergency Team is selected and Register is chosen) -->
+    <div *ngIf="selectedJob === 'emergency-team' && selectedAction === 'register'" class="form-section">
+      <h3>Register Emergency Team</h3>
       <div class="input-group">
-        <input type="text" placeholder="Name" [(ngModel)]="selectedDoctor.name" />
-        <input type="email" placeholder="Email" [(ngModel)]="selectedDoctor.email" />
-        <input type="text" placeholder="Phone" [(ngModel)]="selectedDoctor.phone" />
+        <input type="text" placeholder="First Name" [(ngModel)]="emergencyTeam.firstName" />
+        <input type="text" placeholder="Last Name" [(ngModel)]="emergencyTeam.lastName" />
+        <input type="email" placeholder="Email" [(ngModel)]="emergencyTeam.email" />
+        <input type="text" placeholder="Phone" [(ngModel)]="emergencyTeam.phone" />
+        <input type="date" placeholder="Date of Birth" [(ngModel)]="emergencyTeam.dob" />
+        <input type="password" placeholder="Password" [(ngModel)]="emergencyTeam.password" />
+        <input type="password" placeholder="Confirm Password" [(ngModel)]="emergencyTeam.confirmPassword" />
       </div>
-      <button type="button" class="btn-primary" (click)="editDoctor()">Save Changes</button>
-    </div>
-
-    <!-- Users List (for Editing) -->
-    <div *ngIf="selectedAction === 'edit'" class="users-list">
-      <h3>Users</h3>
-      <div *ngFor="let user of users" class="user-card">
-        <div class="user-info">
-          <img [src]="user.image" alt="User Image" />
-          <div class="user-details">
-            <p>{{ user.name }}</p>
-            <p>{{ user.email }}</p>
-          </div>
-        </div>
-        <button class="edit-btn" (click)="selectDoctor(user)">Edit</button>
-      </div>
+      <button type="button" class="btn-primary" (click)="registerEmergencyTeam()">Add</button>
     </div>
   </div>
 </div>

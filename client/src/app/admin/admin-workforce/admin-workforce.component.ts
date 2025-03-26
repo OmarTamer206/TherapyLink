@@ -42,11 +42,22 @@ export class AdminWorkforceComponent {
   // Handle job change selection
   onJobChange() {
     console.log('Job Changed:', this.selectedJob);
+    this.resetForm(); // Reset form on job change
   }
 
   // Handle action change selection (Register/Edit)
   onActionChange() {
     console.log('Action Changed:', this.selectedAction);
+    if (this.selectedJob && this.selectedAction) {
+      this.showFormContainer = true; // Show form container when both job and action are selected
+    } else {
+      this.showFormContainer = false; // Hide form if conditions are not met
+    }
+  }
+
+  // Reset selectedDoctor when the job changes
+  resetForm() {
+    this.selectedDoctor = {}; // Reset the doctor form when job changes
   }
 
   // Methods for editing and registering doctors
@@ -87,4 +98,7 @@ export class AdminWorkforceComponent {
     this.selectedDoctor = user;  // Set the selected doctor to edit
     console.log('Editing Doctor:', user);
   }
+
+  // Flag to control form visibility
+  showFormContainer: boolean = false;
 }

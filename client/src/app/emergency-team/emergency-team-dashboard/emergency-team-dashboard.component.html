@@ -1,1 +1,13 @@
-<p>emergency-team-dashboard works!</p>
+<div class="container">
+    <h1>Emergency Requests</h1>
+    <div class="request-list">
+      <div class="request-item" *ngFor="let request of requests">
+        <div class="profile-info">
+          <img [src]="request.image" alt="Profile Image" class="profile-image" />
+          <span class="request-name">{{ request.name }}</span>
+        </div>
+        <button class="accept-button">Accept</button>
+      </div>
+    </div>
+  </div>
+  

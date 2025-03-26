@@ -17,6 +17,10 @@ import { AdminRefundComponent } from './admin/admin-refund/admin-refund.componen
 import { AdminPatientComponent } from './admin/admin-patient/admin-patient.component';
 import { AdminSettingsComponent } from './admin/admin-settings/admin-settings.component';
 import { EmergencyTeamComponent } from './emergency-team/emergency-team.component';
+import { EmergencyTeamDashboardComponent } from './emergency-team/emergency-team-dashboard/emergency-team-dashboard.component';
+import { EmergencyTeamChatComponent } from './emergency-team/emergency-team-chat/emergency-team-chat.component';
+import { EmergencyTeamOperationsComponent } from './emergency-team/emergency-team-operations/emergency-team-operations.component';
+import { EmergencyTeamSettingsComponent } from './emergency-team/emergency-team-settings/emergency-team-settings.component';
 
 export const routes: Routes = [
   {
@@ -95,6 +99,24 @@ export const routes: Routes = [
   {
     path: 'emergency-team',
     component: EmergencyTeamComponent,
+    children: [
+      {
+        path: 'emergency-team-dashboard',
+        component: EmergencyTeamDashboardComponent,
+      },
+      {
+        path: 'emergency-team-operations',
+        component: EmergencyTeamOperationsComponent,
+      },
+      {
+        path: 'emergency-team-chat',
+        component: EmergencyTeamChatComponent,
+      },
+      {
+        path: 'emergency-team-settings',
+        component: EmergencyTeamSettingsComponent,
+      },
+    ],
   },
   // Uncomment and configure if you need a NotFound component for unknown routes
   // {

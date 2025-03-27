@@ -28,12 +28,13 @@
       <!-- Doctor and Life Coach Registration Form -->
       <div *ngIf="(jobDescription === 'doctor' || jobDescription === 'life-coach') && !isEditing">
         <div class="input-group">
+          <!-- Reordered fields as requested -->
           <div class="name-section">
             <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
             <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
           </div>
 
-          <!-- Date of Birth Section with Month, Day, and Year Dropdowns -->
+          <!-- Date of Birth Section -->
           <div class="date-of-birth">
             <select [(ngModel)]="birthMonth" class="input-field" required>
               <option value="" disabled selected>MM</option>
@@ -49,8 +50,8 @@
             </select>
           </div>
 
+          <input type="tel" placeholder="Phone Number" [(ngModel)]="phone" />
           <input type="email" placeholder="Email" [(ngModel)]="email" />
-          <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
           <input type="password" placeholder="Password" [(ngModel)]="password" />
           <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
           <input type="text" placeholder="Specialization" [(ngModel)]="specialization" />
@@ -68,12 +69,13 @@
       <!-- Emergency Team Registration Form -->
       <div *ngIf="jobDescription === 'emergency-team' && !isEditing">
         <div class="input-group">
+          <!-- Reordered fields as requested for emergency team -->
           <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
           <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
           <input type="email" placeholder="Email" [(ngModel)]="email" />
           <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
           
-          <!-- Date of Birth Section with Month, Day, and Year Dropdowns -->
+          <!-- Date of Birth Section -->
           <div class="date-of-birth">
             <select [(ngModel)]="birthMonth" class="input-field" required>
               <option value="" disabled selected>MM</option>

@@ -28,11 +28,11 @@
       <!-- Doctor and Life Coach Registration Form -->
       <div *ngIf="(jobDescription === 'doctor' || jobDescription === 'life-coach') && !isEditing">
         <div class="input-group">
-          <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
-          <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
-          <input type="email" placeholder="Email" [(ngModel)]="email" />
-          <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
-          
+          <div class="name-section">
+            <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
+            <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
+          </div>
+
           <!-- Date of Birth Section with Month, Day, and Year Dropdowns -->
           <div class="date-of-birth">
             <select [(ngModel)]="birthMonth" class="input-field" required>
@@ -49,6 +49,8 @@
             </select>
           </div>
 
+          <input type="email" placeholder="Email" [(ngModel)]="email" />
+          <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
           <input type="password" placeholder="Password" [(ngModel)]="password" />
           <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
           <input type="text" placeholder="Specialization" [(ngModel)]="specialization" />
@@ -119,6 +121,8 @@
           </div>
           <div class="admin-actions">
             <button class="edit-button" (click)="onEdit(admin.id)">🖊️</button>
+            <!-- Added Delete Button -->
+            <button class="delete-button" (click)="onDelete(admin.id)">❌</button>
           </div>
         </div>
       </div>

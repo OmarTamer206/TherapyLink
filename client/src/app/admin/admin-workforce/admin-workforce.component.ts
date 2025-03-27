@@ -35,6 +35,19 @@ export class AdminWorkforceComponent {
   days = Array.from({length: 31}, (_, i) => i + 1); // Days 1-31
   years = Array.from({length: 101}, (_, i) => 1920 + i); // Years 1920-2020
 
+  // Dummy Admin Data for editing
+  admins = [
+    { name: 'John Doe', id: 1 },
+    { name: 'Jane Smith', id: 2 },
+  ];
+
+  // Filtered Admins based on search query
+  get filteredAdmins() {
+    return this.admins.filter(admin => 
+      admin.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+  }
+
   // Handle Register/Edit state changes
   checkState(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
@@ -89,17 +102,10 @@ export class AdminWorkforceComponent {
     this.salary = 0;  // Reset salary field
   }
 
-  // Dummy Admin Data for editing
-  admins = [
-    { name: 'John Doe', id: 1 },
-    { name: 'Jane Smith', id: 2 },
-  ];
-
-  // Filtered Admins based on search query
-  get filteredAdmins() {
-    return this.admins.filter(admin => 
-      admin.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
+  // Delete admin method
+  onDelete(adminId: number) {
+    this.admins = this.admins.filter(admin => admin.id !== adminId);
+    console.log(`Admin with id ${adminId} deleted.`);
   }
 
   onEdit(adminId: number) {

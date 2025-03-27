@@ -150,6 +150,20 @@ button:focus {
   background-color: #45a049;
 }
 
+.delete-button {
+  background-color: #FF5733;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background-color: #e04e2c;
+}
+
 /* Adjustments to form section and edit section layout */
 .form-container {
   display: block; /* Ensure it's visible when in register mode */
@@ -244,4 +258,36 @@ button.edit-button:hover, button.delete-button:hover {
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+.date-of-birth {
+  display: flex;
+  gap: 10px; /* Add space between the fields */
+}
+
+.date-of-birth select {
+  width: auto; /* Allow select to adjust its width according to the content */
+  flex-grow: 1; /* Allow the selects to grow equally */
+}
+
+.date-of-birth {
+  display: flex;
+  gap: 10px; /* Add space between the fields */
+  width: auto;
+  flex-wrap: nowrap;
+}
+
+.date-of-birth select {
+  flex-grow: 1; /* Allow select to grow equally */
+  width: auto; /* Let them auto adjust */
+}
+
+.name-section {
+  display: flex;
+  gap: 10px; /* Add space between First Name and Last Name fields */
+  width: 100%;
+}
+
+.input-group input {
+  margin-bottom: 15px; /* Adjust margin for better spacing */
 }

@@ -42,10 +42,6 @@ export class AdminWorkforceComponent {
     { name: 'Khaled Nasser', id: 5 },
   ];
 
-  // For managing search and filters
-  jobDescriptionFilter = '';
-  registerEditFilter = '';
-
   onEdit(adminId: number) {
     console.log('Editing admin with id:', adminId);
   }

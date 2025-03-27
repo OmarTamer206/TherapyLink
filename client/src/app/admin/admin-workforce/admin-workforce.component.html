@@ -1,10 +1,9 @@
-<!-- app.component.html -->
 <div class="main-container">
   <!-- Left Panel: Job Description and Registering/Editing -->
   <div class="left-panel">
     <div class="form-section selector">
       <label for="job-description">Job Description *</label>
-      <select id="job-description" class="input-field">
+      <select id="job-description" class="input-field" [(ngModel)]="jobDescription" (change)="onJobDescriptionChange($event)">
         <option value="doctor">Doctor</option>
         <option value="life-coach">Life Coach</option>
         <option value="emergency-team">Emergency Team</option>
@@ -22,26 +21,28 @@
 
   <!-- Right Panel: Search, Name, and Pictures -->
   <div class="form-container">
-    <!-- Edit Section -->
-    <div class="edit-section" [ngClass]="editElementClass">
-      <div class="manage-admin-container">
-        <!-- Search Filters -->
-        <div class="filters-container">
-          <div class="search-container">
-            <input type="text" id="search" class="input-field" placeholder="Search" />
-          </div>
-        </div>
+    <!-- Register Section -->
+    <div *ngIf="!isEditing">
+      <h3>Register New {{ jobDescription | titlecase }}</h3>
+      <!-- Your Registration Form -->
+      <div class="input-group">
+        <input type="text" placeholder="Enter Name" />
+        <input type="email" placeholder="Enter Email" />
+        <button>Submit</button>
+      </div>
+    </div>
 
-        <!-- Admin List -->
-        <div class="admin-list">
-          <div *ngFor="let admin of admins" class="admin-item">
-            <div class="admin-info">
-              <img src="profile png.png" alt="Admin Image" class="admin-avatar" />
-              <div class="admin-name">{{ admin.name }}</div>
-            </div>
-            <div class="admin-actions">
-              <button class="edit-button">🖊️</button>
-            </div>
+    <!-- Edit Section -->
+    <div *ngIf="isEditing">
+      <h3>Edit {{ jobDescription | titlecase }} Information</h3>
+      <div class="admin-list">
+        <div *ngFor="let admin of admins" class="admin-item">
+          <div class="admin-info">
+            <img src="profile png.png" alt="Admin Image" class="admin-avatar" />
+            <div class="admin-name">{{ admin.name }}</div>
+          </div>
+          <div class="admin-actions">
+            <button class="edit-button" (click)="onEdit(admin.id)">🖊️</button>
           </div>
         </div>
       </div>

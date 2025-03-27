@@ -24,19 +24,93 @@
     <!-- Register Section -->
     <div *ngIf="!isEditing">
       <h3>Register New {{ jobDescription | titlecase }}</h3>
-      <!-- Your Registration Form -->
-      <div class="input-group">
-        <input type="text" placeholder="Enter Name" />
-        <input type="email" placeholder="Enter Email" />
-        <button>Submit</button>
+      
+      <!-- Doctor and Life Coach Registration Form -->
+      <div *ngIf="(jobDescription === 'doctor' || jobDescription === 'life-coach') && !isEditing">
+        <div class="input-group">
+          <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
+          <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
+          <input type="email" placeholder="Email" [(ngModel)]="email" />
+          <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
+          
+          <!-- Date of Birth Section with Month, Day, and Year Dropdowns -->
+          <div class="date-of-birth">
+            <select [(ngModel)]="birthMonth" class="input-field" required>
+              <option value="" disabled selected>MM</option>
+              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+            <select [(ngModel)]="birthDay" class="input-field" required>
+              <option value="" disabled selected>DD</option>
+              <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+            </select>
+            <select [(ngModel)]="birthYear" class="input-field" required>
+              <option value="" disabled selected>YYYY</option>
+              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+
+          <input type="password" placeholder="Password" [(ngModel)]="password" />
+          <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
+          <input type="text" placeholder="Specialization" [(ngModel)]="specialization" />
+          <input type="text" placeholder="Description" [(ngModel)]="description" />
+          <input type="text" placeholder="Session Price" [(ngModel)]="sessionPrice" />
+          <select [(ngModel)]="gender" class="input-field" required>
+            <option value="" disabled selected>Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <button (click)="addUser()">Add</button>
+        </div>
+      </div>
+
+      <!-- Emergency Team Registration Form -->
+      <div *ngIf="jobDescription === 'emergency-team' && !isEditing">
+        <div class="input-group">
+          <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
+          <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
+          <input type="email" placeholder="Email" [(ngModel)]="email" />
+          <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
+          
+          <!-- Date of Birth Section with Month, Day, and Year Dropdowns -->
+          <div class="date-of-birth">
+            <select [(ngModel)]="birthMonth" class="input-field" required>
+              <option value="" disabled selected>MM</option>
+              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+            <select [(ngModel)]="birthDay" class="input-field" required>
+              <option value="" disabled selected>DD</option>
+              <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+            </select>
+            <select [(ngModel)]="birthYear" class="input-field" required>
+              <option value="" disabled selected>YYYY</option>
+              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+
+          <input type="password" placeholder="Password" [(ngModel)]="password" />
+          <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
+          <input type="text" placeholder="Salary" [(ngModel)]="salary" />
+          <button (click)="addUser()">Add</button>
+        </div>
       </div>
     </div>
 
     <!-- Edit Section -->
     <div *ngIf="isEditing">
       <h3>Edit {{ jobDescription | titlecase }} Information</h3>
+      <!-- Search Bar -->
+      <div class="search-container">
+        <input 
+          type="text" 
+          id="search" 
+          class="input-field" 
+          placeholder="Search by name"
+          [(ngModel)]="searchQuery"
+        />
+      </div>
+
       <div class="admin-list">
-        <div *ngFor="let admin of admins" class="admin-item">
+        <div *ngFor="let admin of filteredAdmins" class="admin-item">
           <div class="admin-info">
             <img src="profile png.png" alt="Admin Image" class="admin-avatar" />
             <div class="admin-name">{{ admin.name }}</div>

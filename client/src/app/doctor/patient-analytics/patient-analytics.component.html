@@ -1,0 +1,37 @@
+<div class="analytics-container">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button [class.active]="activeTab === 'rating'" (click)="switchTab('rating')">Rating</button>
+      <button [class.active]="activeTab === 'count'" (click)="switchTab('count')">Patient Count</button>
+      <button [class.active]="activeTab === 'returning'" (click)="switchTab('returning')">Returning Patient</button>
+    </div>
+  
+    <!-- Rating Section -->
+    <div *ngIf="activeTab === 'rating'" class="rating-section">
+      <h2>Overall Rating</h2>
+      <h1>{{ selectedRating }}.0</h1>
+  
+      <div class="stars">
+        <span *ngFor="let star of [1,2,3,4,5]" 
+              [class.filled]="star <= selectedRating">
+          ★
+        </span>
+      </div>
+      <p>based on 23 reviews</p>
+  
+      <div class="rating-bars">
+        <div *ngFor="let rate of ratings" class="bar-container">
+          <span class="bar-label">{{ rate.label }}</span>
+          <div class="bar">
+            <div class="fill" [style.width.%]="rate.value" [style.background]="rate.color"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Patient Count & Returning Patient -->
+    <div *ngIf="activeTab === 'count' || activeTab === 'returning'" class="chart-section">
+      <canvas id="patientChart"></canvas>
+    </div>
+  </div>
+  

@@ -1,1 +1,58 @@
-<p>doctor-dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Stats Cards -->
+  <div class="stats-cards">
+    <div class="card">
+      <h3>Today Sessions</h3>
+      <p class="count">40</p>
+    </div>
+    <div class="card">
+      <h3>New Patients</h3>
+      <div class="count-row">
+        <p class="count">40</p>
+        <span class="badge positive">51%</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Total Patients</h3>
+      <div class="count-row">
+        <p class="count">40</p>
+        <span class="badge negative">20%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patients Data Table -->
+  <div class="patients-data">
+    <h3>Patients Data</h3>
+    <!-- Table Header -->
+    <table class="table-header">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Name</th>
+          <th>Date Of The Session</th>
+          <th>Duration</th>
+          <th>Reports/Journals</th>
+        </tr>
+      </thead>
+    </table>
+
+    <!-- Scrollable Table Body -->
+    <div class="table-body-scroll">
+      <table class="table-body">
+        <tbody>
+          <tr *ngFor="let patient of patients; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.date }}</td>
+            <td>{{ patient.duration }}</td>
+            <td>
+              <button class="btn report">Report</button>
+              <button class="btn journal">Journal</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

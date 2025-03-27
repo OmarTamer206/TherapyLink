@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="session-availability">
+      <h2>Session Availability</h2>
+      <div class="calendar">
+        <div class="month">
+          <button (click)="prevMonth()">&#8249;</button>
+          <span class="month-text">{{ getMonthYear() }}</span>
+          <button (click)="nextMonth()">&#8250;</button>
+        </div>
+        <button class="today-btn" (click)="goToToday()">Today</button>
+        <div class="days">
+          <span 
+            *ngFor="let day of days" 
+            [class.active]="day === selectedDay"
+            (click)="selectDay(day)"
+          >
+            {{ day }}
+          </span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="patient-reports">
+      <div class="header">
+        <h3>Patient Reports</h3>
+        <button class="add-btn">Add</button>
+      </div>
+  
+      <div class="report-card" *ngFor="let report of reports">
+        <div class="date-box">
+          <div class="day">Sat</div>
+          <div class="number">8</div>
+        </div>
+        <div class="report-details">
+          <div class="top-row">
+            <div class="time">🕒 {{ report.time }}</div>
+            <button class="delete-btn">🗑️</button>
+          </div>
+          <div class="bottom-row">
+            <div class="patient-name">👤 {{ report.name }}</div>
+            <a href="#">View Report</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

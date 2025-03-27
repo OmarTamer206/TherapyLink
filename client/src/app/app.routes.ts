@@ -23,6 +23,10 @@ import { EmergencyTeamOperationsComponent } from './emergency-team/emergency-tea
 import { EmergencyTeamSettingsComponent } from './emergency-team/emergency-team-settings/emergency-team-settings.component';
 import { HomeComponent } from './patient/home/home.component';
 import { DoctorDashboardComponent } from './doctor/doctor-dashboard/doctor-dashboard.component';
+import { ScheduleManagementComponent } from './doctor/schedule-management/schedule-management.component';
+import { PatientAnalyticsComponent } from './doctor/patient-analytics/patient-analytics.component';
+import { ReportsComponent } from './doctor/reports/reports.component';
+import { ProfileComponent } from './doctor/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -51,9 +55,27 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DoctorDashboardComponent,
+
+      },
+      {
+        path: 'schedule-management',
+        component: ScheduleManagementComponent,
+      },
+      {
+        path: 'patient-analytics',
+        component: PatientAnalyticsComponent,
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
       },
     ],
   },
+  
   {
     path: 'life_coach',
     component: LifeCoachComponent,

@@ -1,0 +1,30 @@
+<div class="reports-container">
+    <h2>Reports of Upcoming Sessions</h2>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Date Of The Session</th>
+            <th>Duration of the Session</th>
+            <th>Reports/Journals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of reports; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ report.name }}</td>
+            <td>{{ report.date }}</td>
+            <td>{{ report.duration }}</td>
+            <td>
+              <button class="report-btn">Report</button>
+              <button class="journal-btn">Journal</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

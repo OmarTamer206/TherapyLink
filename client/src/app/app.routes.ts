@@ -21,6 +21,7 @@ import { EmergencyTeamDashboardComponent } from './emergency-team/emergency-team
 import { EmergencyTeamChatComponent } from './emergency-team/emergency-team-chat/emergency-team-chat.component';
 import { EmergencyTeamOperationsComponent } from './emergency-team/emergency-team-operations/emergency-team-operations.component';
 import { EmergencyTeamSettingsComponent } from './emergency-team/emergency-team-settings/emergency-team-settings.component';
+import { HomeComponent } from './patient/home/home.component';
 
 export const routes: Routes = [
   {
@@ -39,7 +40,9 @@ export const routes: Routes = [
   {
     path: 'patient',
     component: PatientComponent,
+    children: [{ path: 'patient/home', component: HomeComponent }],
   },
+
   {
     path: 'doctor',
     component: DoctorComponent,
@@ -76,7 +79,7 @@ export const routes: Routes = [
         path: 'admin-settings',
         component: AdminSettingsComponent,
       },
-    ],  
+    ],
   },
   {
     path: 'manager',

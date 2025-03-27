@@ -89,7 +89,9 @@
 
           <input type="password" placeholder="Password" [(ngModel)]="password" />
           <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
-          <input type="text" placeholder="Salary" [(ngModel)]="salary" />
+          
+          <!-- Salary Field with ngModel binding -->
+          <input type="number" placeholder="Salary" [(ngModel)]="salary" />
           <button (click)="addUser()">Add</button>
         </div>
       </div>

@@ -29,6 +29,7 @@ export class AdminWorkforceComponent {
   description: string = '';
   sessionPrice: string = '';
   gender: string = '';
+  salary: number = 0;  // Salary field declaration
 
   months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   days = Array.from({length: 31}, (_, i) => i + 1); // Days 1-31
@@ -53,19 +54,6 @@ export class AdminWorkforceComponent {
     this.jobDescription = (event.target as HTMLSelectElement).value;
   }
 
-  // Dummy Admin Data for editing
-  admins = [
-    { name: 'John Doe', id: 1 },
-    { name: 'Jane Smith', id: 2 },
-  ];
-
-  // Filtered Admins based on search query
-  get filteredAdmins() {
-    return this.admins.filter(admin => 
-      admin.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-  }
-
   // Handle adding new user (Doctor/Life Coach Registration)
   addUser() {
     console.log('User Added:', {
@@ -81,7 +69,8 @@ export class AdminWorkforceComponent {
       specialization: this.specialization,
       description: this.description,
       sessionPrice: this.sessionPrice,
-      gender: this.gender
+      gender: this.gender,
+      salary: this.salary  // Including salary in the logged output
     });
     // Reset form after adding user
     this.firstName = '';
@@ -97,6 +86,20 @@ export class AdminWorkforceComponent {
     this.description = '';
     this.sessionPrice = '';
     this.gender = '';
+    this.salary = 0;  // Reset salary field
+  }
+
+  // Dummy Admin Data for editing
+  admins = [
+    { name: 'John Doe', id: 1 },
+    { name: 'Jane Smith', id: 2 },
+  ];
+
+  // Filtered Admins based on search query
+  get filteredAdmins() {
+    return this.admins.filter(admin => 
+      admin.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
   }
 
   onEdit(adminId: number) {

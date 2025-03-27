@@ -1,92 +1,74 @@
+/* Main container to center everything and start from the top of the page */
 .main-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Align to the left side */
+  align-items: flex-start; /* Align content at the top vertically */
+  height: 100%; /* Ensure it fills the whole viewport height */
   padding: 20px;
+  flex-direction: row; /* Align the left and right panels horizontally */
 }
 
+/* Left Panel: Job Description and Registering/Editing */
 .left-panel {
-  width: 250px;
+  width: 30%; /* Set left panel to 30% width */
   background-color: #f1f8f6;
-  padding: 15px; /* Reduced padding for more compact space */
+  padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Reduced box-shadow for a lighter effect */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-right: 20px; /* Space between left and right panel */
 }
 
+/* Right Panel: Registration Form */
 .form-container {
-  flex-grow: 1;
+  width: 70%; /* Set right panel to 70% width */
+  background-color: #f0f9ff;
   padding: 20px;
-  margin-left: 20px;
-  background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.title {
-  color: #333;
-  font-size: 24px;
-  text-align: center;
-}
-
-.dropdown-container {
-  margin-bottom: 20px;
-}
-
-label {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-select {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  margin-top: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-  transition: border 0.3s ease;
-}
-
-select:focus {
-  border: 1px solid #4CAF50;
-}
-
+/* Form section styling */
 .form-section {
-  background-color: #fff;
-  padding: 15px;  /* Reduced padding for compact space */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
+/* Header styling */
 h3 {
   color: #333;
+  font-size: 22px; /* Adjust font size */
   margin-bottom: 15px;
-  font-size: 20px;
 }
 
+/* Input group styling */
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px; /* Space between inputs */
+  width: 100%;
 }
 
-input {
+/* Styling for input fields */
+input,
+select {
   padding: 12px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #ddd; /* Light border for inputs */
   border-radius: 5px;
   width: 100%;
-  box-sizing: border-box;
   background-color: #f9f9f9;
   transition: border 0.3s ease;
 }
 
-input:focus {
-  border: 1px solid #4CAF50;
+input:focus,
+select:focus {
+  outline: none;
+  background-color: #f1f1f1;
+  border-color: #4CAF50;
 }
 
+/* Button styling */
 button {
   padding: 12px;
   font-size: 16px;
@@ -96,130 +78,56 @@ button {
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 button:hover {
   background-color: #45a049;
 }
 
-button:focus {
-  outline: none;
+/* Selector styling for Job Description and Registering/Editing */
+.selector {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.users-list {
+/* Hide elements */
+.hide {
+  display: none;
+}
+
+/* Date of Birth section styling (Make them appear in a single row) */
+.date-of-birth {
+  display: flex;
+  gap: 10px; /* Add space between the fields */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  width: 100%; /* Full width to make it responsive */
+}
+
+.date-of-birth select {
+  flex-grow: 1; /* Allow the select elements to grow equally */
+  width: auto; /* Let them adjust their width automatically */
+}
+
+/* Admin list styling */
+.admin-list {
   margin-top: 20px;
-}
-
-.user-card {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  background-color: #fff;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.user-info {
-  display: flex;
-  gap: 10px;
-}
-
-.user-info img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.user-details {
   display: flex;
   flex-direction: column;
 }
 
-.edit-btn {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  cursor: pointer;
-}
-
-.edit-btn:hover {
-  background-color: #45a049;
-}
-
-/* Adjustments to form section and edit section layout */
-.form-container {
-  display: block; /* Ensure it's visible when in register mode */
-}
-
-.users-list {
-  display: block; /* Ensure it's visible when in edit mode */
-}
-
-.form-section {
-  margin-bottom: 15px;
-}
-
-button.add-button {
-  background-color: #007BFF; /* Blue for Add button */
-}
-
-button.add-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-button.edit-button, button.delete-button {
-  background-color: #FFC107; /* Yellow for edit and delete buttons */
-  color: #fff;
-  padding: 8px 15px;
-  border-radius: 5px;
-}
-
-button.edit-button:hover, button.delete-button:hover {
-  background-color: #e0a800; /* Darker yellow on hover */
-}
-
-.edit-section {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.manage-admin-container {
-  margin-top: 20px;
-}
-
-.filters-container {
-  margin-bottom: 20px;
-}
-
-.search-container input {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.search-container label {
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.admin-list {
-  margin-top: 20px;
-}
-
+/* Admin item styling */
 .admin-item {
   display: flex;
   justify-content: space-between;
-  padding: 15px;
+  padding: 10px;
   background-color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -230,8 +138,8 @@ button.edit-button:hover, button.delete-button:hover {
 }
 
 .admin-avatar {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 
@@ -244,4 +152,32 @@ button.edit-button:hover, button.delete-button:hover {
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+/* Action buttons styling */
+.edit-button,
+.delete-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.delete-button {
+  background-color: #FF5733;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button:hover {
+  background-color: #e04e2c;
 }

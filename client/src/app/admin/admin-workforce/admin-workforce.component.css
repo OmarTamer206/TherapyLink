@@ -1,92 +1,63 @@
+/* Main container to center everything */
 .main-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full viewport height */
   padding: 20px;
+  flex-direction: column; /* Stack the panels vertically */
+  overflow: hidden; /* Prevent scroll */
 }
 
-.left-panel {
-  width: 250px;
-  background-color: #f1f8f6;
-  padding: 15px; /* Reduced padding for more compact space */
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Reduced box-shadow for a lighter effect */
-}
-
+/* Form container settings */
 .form-container {
-  flex-grow: 1;
-  padding: 20px;
-  margin-left: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-  color: #333;
-  font-size: 24px;
-  text-align: center;
-}
-
-.dropdown-container {
-  margin-bottom: 20px;
-}
-
-label {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-select {
   width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  margin-top: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-  transition: border 0.3s ease;
+  max-width: 600px;
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
 }
 
-select:focus {
-  border: 1px solid #4CAF50;
-}
-
+/* Form section styling */
 .form-section {
-  background-color: #fff;
-  padding: 15px;  /* Reduced padding for compact space */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 h3 {
   color: #333;
-  margin-bottom: 15px;
-  font-size: 20px;
+  font-size: 20px; /* Adjust font size */
+  margin-bottom: 15px; /* Adjust margin for better spacing */
 }
 
+/* Input group styling */
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px; /* Space between inputs */
+  width: 100%;
 }
 
-input {
+/* Styling for input fields */
+input,
+select {
   padding: 12px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: none; /* Remove border */
   border-radius: 5px;
   width: 100%;
-  box-sizing: border-box;
   background-color: #f9f9f9;
   transition: border 0.3s ease;
 }
 
-input:focus {
-  border: 1px solid #4CAF50;
+input:focus,
+select:focus {
+  outline: none; /* Remove focus outline */
+  background-color: #f1f1f1; /* Slight change in background on focus */
 }
 
+/* Button styling */
 button {
   padding: 12px;
   font-size: 16px;
@@ -96,7 +67,7 @@ button {
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 15px; /* Adjust margin */
 }
 
 button:hover {
@@ -107,109 +78,27 @@ button:focus {
   outline: none;
 }
 
-.users-list {
-  margin-top: 20px;
-}
-
-.user-card {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  background-color: #fff;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.user-info {
-  display: flex;
-  gap: 10px;
-}
-
-.user-info img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.user-details {
+/* Selector styling for Job Description and Registering/Editing */
+.selector {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
-.edit-btn {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  cursor: pointer;
+/* Hide elements */
+.hide {
+  display: none;
 }
 
-.edit-btn:hover {
-  background-color: #45a049;
-}
-
-.delete-button {
-  background-color: #FF5733;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.delete-button:hover {
-  background-color: #e04e2c;
-}
-
-/* Adjustments to form section and edit section layout */
-.form-container {
-  display: block; /* Ensure it's visible when in register mode */
-}
-
-.users-list {
-  display: block; /* Ensure it's visible when in edit mode */
-}
-
-.form-section {
-  margin-bottom: 15px;
-}
-
-button.add-button {
-  background-color: #007BFF; /* Blue for Add button */
-}
-
-button.add-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-button.edit-button, button.delete-button {
-  background-color: #FFC107; /* Yellow for edit and delete buttons */
-  color: #fff;
-  padding: 8px 15px;
-  border-radius: 5px;
-}
-
-button.edit-button:hover, button.delete-button:hover {
-  background-color: #e0a800; /* Darker yellow on hover */
-}
-
-.edit-section {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-}
-
+/* Admin management container */
 .manage-admin-container {
   margin-top: 20px;
 }
 
-.filters-container {
-  margin-bottom: 20px;
-}
-
+/* Search bar styling */
 .search-container input {
   width: 100%;
   padding: 12px;
@@ -219,15 +108,12 @@ button.edit-button:hover, button.delete-button:hover {
   background-color: #f9f9f9;
 }
 
-.search-container label {
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
+/* Admin list styling */
 .admin-list {
   margin-top: 20px;
 }
 
+/* Admin item styling */
 .admin-item {
   display: flex;
   justify-content: space-between;
@@ -238,6 +124,7 @@ button.edit-button:hover, button.delete-button:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Admin info section */
 .admin-info {
   display: flex;
   gap: 10px;
@@ -260,34 +147,70 @@ button.edit-button:hover, button.delete-button:hover {
   align-items: center;
 }
 
-.date-of-birth {
-  display: flex;
-  gap: 10px; /* Add space between the fields */
+/* Delete button styling */
+.delete-button {
+  background-color: #FF5733;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
-.date-of-birth select {
-  width: auto; /* Allow select to adjust its width according to the content */
-  flex-grow: 1; /* Allow the selects to grow equally */
+.delete-button:hover {
+  background-color: #e04e2c;
 }
 
+/* Date of Birth section styling */
 .date-of-birth {
   display: flex;
-  gap: 10px; /* Add space between the fields */
+  gap: 10px;
   width: auto;
   flex-wrap: nowrap;
 }
 
 .date-of-birth select {
-  flex-grow: 1; /* Allow select to grow equally */
-  width: auto; /* Let them auto adjust */
+  flex-grow: 1;
+  width: auto;
 }
 
+/* Name section styling */
 .name-section {
   display: flex;
-  gap: 10px; /* Add space between First Name and Last Name fields */
+  gap: 10px;
   width: 100%;
 }
 
+/* Adjust input margin in the group */
 .input-group input {
-  margin-bottom: 15px; /* Adjust margin for better spacing */
+  margin-bottom: 15px;
+}
+
+/* Adjust margins for button section */
+.form-section {
+  margin-bottom: 20px;
+}
+
+/* Add button styling */
+button.add-button {
+  background-color: #007BFF;
+}
+
+button.add-button:hover {
+  background-color: #0056b3;
+}
+
+/* Edit and Delete button styling */
+button.edit-button,
+button.delete-button {
+  background-color: #FFC107;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+button.edit-button:hover,
+button.delete-button:hover {
+  background-color: #e0a800;
 }

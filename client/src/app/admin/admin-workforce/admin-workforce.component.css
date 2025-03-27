@@ -25,17 +25,19 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 /* Form section styling */
 .form-section {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 /* Header styling */
 h3 {
   color: #333;
-  font-size: 20px;
+  font-size: 22px; /* Adjust font size */
   margin-bottom: 15px;
 }
 
@@ -43,7 +45,7 @@ h3 {
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 15px; /* Space between inputs */
   width: 100%;
 }
 
@@ -52,7 +54,7 @@ input,
 select {
   padding: 12px;
   font-size: 16px;
-  border: none;
+  border: 1px solid #ddd; /* Light border for inputs */
   border-radius: 5px;
   width: 100%;
   background-color: #f9f9f9;
@@ -63,6 +65,7 @@ input:focus,
 select:focus {
   outline: none;
   background-color: #f1f1f1;
+  border-color: #4CAF50;
 }
 
 /* Button styling */
@@ -98,18 +101,83 @@ button:hover {
   display: none;
 }
 
+/* Date of Birth section styling (Make them appear in a single row) */
+.date-of-birth {
+  display: flex;
+  gap: 10px; /* Add space between the fields */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  width: 100%; /* Full width to make it responsive */
+}
+
+.date-of-birth select {
+  flex-grow: 1; /* Allow the select elements to grow equally */
+  width: auto; /* Let them adjust their width automatically */
+}
+
 /* Admin list styling */
 .admin-list {
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Admin item styling */
 .admin-item {
   display: flex;
   justify-content: space-between;
-  padding: 15px;
+  padding: 10px;
   background-color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-info {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.admin-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Action buttons styling */
+.edit-button,
+.delete-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.delete-button {
+  background-color: #FF5733;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button:hover {
+  background-color: #e04e2c;
 }

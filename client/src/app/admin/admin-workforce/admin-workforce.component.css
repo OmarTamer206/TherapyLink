@@ -1,23 +1,30 @@
-/* Main container to center everything */
+/* Main container to center everything and start from the top of the page */
 .main-container {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh; /* Full viewport height */
+  justify-content: flex-start; /* Align to the left side */
+  align-items: flex-start; /* Align content at the top vertically */
+  height: 100%; /* Ensure it fills the whole viewport height */
   padding: 20px;
-  flex-direction: column; /* Stack the panels vertically */
-  overflow: hidden; /* Prevent scroll */
+  flex-direction: row; /* Align the left and right panels horizontally */
 }
 
-/* Form container settings */
+/* Left Panel: Job Description and Registering/Editing */
+.left-panel {
+  width: 30%; /* Set left panel to 30% width */
+  background-color: #f1f8f6;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-right: 20px; /* Space between left and right panel */
+}
+
+/* Right Panel: Registration Form */
 .form-container {
-  width: 100%;
-  max-width: 600px;
+  width: 70%; /* Set right panel to 70% width */
   background-color: #f0f9ff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
 }
 
 /* Form section styling */
@@ -25,17 +32,18 @@
   margin-bottom: 20px;
 }
 
+/* Header styling */
 h3 {
   color: #333;
-  font-size: 20px; /* Adjust font size */
-  margin-bottom: 15px; /* Adjust margin for better spacing */
+  font-size: 20px;
+  margin-bottom: 15px;
 }
 
 /* Input group styling */
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Space between inputs */
+  gap: 15px;
   width: 100%;
 }
 
@@ -44,7 +52,7 @@ input,
 select {
   padding: 12px;
   font-size: 16px;
-  border: none; /* Remove border */
+  border: none;
   border-radius: 5px;
   width: 100%;
   background-color: #f9f9f9;
@@ -53,8 +61,8 @@ select {
 
 input:focus,
 select:focus {
-  outline: none; /* Remove focus outline */
-  background-color: #f1f1f1; /* Slight change in background on focus */
+  outline: none;
+  background-color: #f1f1f1;
 }
 
 /* Button styling */
@@ -67,45 +75,27 @@ button {
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
-  margin-top: 15px; /* Adjust margin */
+  margin-top: 15px;
 }
 
 button:hover {
   background-color: #45a049;
 }
 
-button:focus {
-  outline: none;
-}
-
 /* Selector styling for Job Description and Registering/Editing */
 .selector {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+  gap: 5px;
   width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Hide elements */
 .hide {
   display: none;
-}
-
-/* Admin management container */
-.manage-admin-container {
-  margin-top: 20px;
-}
-
-/* Search bar styling */
-.search-container input {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
 }
 
 /* Admin list styling */
@@ -122,95 +112,4 @@ button:focus {
   margin-bottom: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Admin info section */
-.admin-info {
-  display: flex;
-  gap: 10px;
-}
-
-.admin-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.admin-name {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.admin-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Delete button styling */
-.delete-button {
-  background-color: #FF5733;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.delete-button:hover {
-  background-color: #e04e2c;
-}
-
-/* Date of Birth section styling */
-.date-of-birth {
-  display: flex;
-  gap: 10px;
-  width: auto;
-  flex-wrap: nowrap;
-}
-
-.date-of-birth select {
-  flex-grow: 1;
-  width: auto;
-}
-
-/* Name section styling */
-.name-section {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
-
-/* Adjust input margin in the group */
-.input-group input {
-  margin-bottom: 15px;
-}
-
-/* Adjust margins for button section */
-.form-section {
-  margin-bottom: 20px;
-}
-
-/* Add button styling */
-button.add-button {
-  background-color: #007BFF;
-}
-
-button.add-button:hover {
-  background-color: #0056b3;
-}
-
-/* Edit and Delete button styling */
-button.edit-button,
-button.delete-button {
-  background-color: #FFC107;
-  color: #fff;
-  padding: 8px 15px;
-  border-radius: 5px;
-}
-
-button.edit-button:hover,
-button.delete-button:hover {
-  background-color: #e0a800;
 }

@@ -3,7 +3,12 @@
   <div class="left-panel">
     <div class="form-section selector">
       <label for="job-description">Job Description *</label>
-      <select id="job-description" class="input-field" [(ngModel)]="jobDescription" (change)="onJobDescriptionChange($event)">
+      <select
+        id="job-description"
+        class="input-field"
+        [(ngModel)]="jobDescription"
+        (change)="onJobDescriptionChange($event)"
+      >
         <option value="doctor">Doctor</option>
         <option value="life-coach">Life Coach</option>
         <option value="emergency-team">Emergency Team</option>
@@ -12,7 +17,11 @@
 
     <div class="form-section selector">
       <label for="register-edit">Registering / Editing *</label>
-      <select id="register-edit" class="input-field" (change)="checkState($event)">
+      <select
+        id="register-edit"
+        class="input-field"
+        (change)="checkState($event)"
+      >
         <option value="register">Register</option>
         <option value="edit">Edit</option>
       </select>
@@ -24,13 +33,22 @@
     <!-- Register Section -->
     <div *ngIf="!isEditing">
       <h3>Register New {{ jobDescription | titlecase }}</h3>
-      
+
       <!-- Doctor and Life Coach Registration Form -->
-      <div *ngIf="(jobDescription === 'doctor' || jobDescription === 'life-coach') && !isEditing">
+      <div
+        *ngIf="
+          (jobDescription === 'doctor' || jobDescription === 'life-coach') &&
+          !isEditing
+        "
+      >
         <div class="input-group">
           <!-- Reordered fields as requested -->
           <div class="name-section">
-            <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
+            <input
+              type="text"
+              placeholder="First Name"
+              [(ngModel)]="firstName"
+            />
             <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
           </div>
 
@@ -38,7 +56,9 @@
           <div class="date-of-birth">
             <select [(ngModel)]="birthMonth" class="input-field" required>
               <option value="" disabled selected>MM</option>
-              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+              <option *ngFor="let month of months" [value]="month">
+                {{ month }}
+              </option>
             </select>
             <select [(ngModel)]="birthDay" class="input-field" required>
               <option value="" disabled selected>DD</option>
@@ -46,17 +66,39 @@
             </select>
             <select [(ngModel)]="birthYear" class="input-field" required>
               <option value="" disabled selected>YYYY</option>
-              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
             </select>
           </div>
 
           <input type="tel" placeholder="Phone Number" [(ngModel)]="phone" />
           <input type="email" placeholder="Email" [(ngModel)]="email" />
-          <input type="password" placeholder="Password" [(ngModel)]="password" />
-          <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
-          <input type="text" placeholder="Specialization" [(ngModel)]="specialization" />
-          <input type="text" placeholder="Description" [(ngModel)]="description" />
-          <input type="text" placeholder="Session Price" [(ngModel)]="sessionPrice" />
+          <input
+            type="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            [(ngModel)]="confirmPassword"
+          />
+          <input
+            type="text"
+            placeholder="Specialization"
+            [(ngModel)]="specialization"
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            [(ngModel)]="description"
+          />
+          <input
+            type="text"
+            placeholder="Session Price"
+            [(ngModel)]="sessionPrice"
+          />
           <select [(ngModel)]="gender" class="input-field" required>
             <option value="" disabled selected>Gender</option>
             <option value="male">Male</option>
@@ -72,14 +114,12 @@
           <!-- Reordered fields as requested for emergency team -->
           <input type="text" placeholder="First Name" [(ngModel)]="firstName" />
           <input type="text" placeholder="Last Name" [(ngModel)]="lastName" />
-          <input type="email" placeholder="Email" [(ngModel)]="email" />
-          <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
-          
-          <!-- Date of Birth Section -->
           <div class="date-of-birth">
             <select [(ngModel)]="birthMonth" class="input-field" required>
               <option value="" disabled selected>MM</option>
-              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+              <option *ngFor="let month of months" [value]="month">
+                {{ month }}
+              </option>
             </select>
             <select [(ngModel)]="birthDay" class="input-field" required>
               <option value="" disabled selected>DD</option>
@@ -87,13 +127,27 @@
             </select>
             <select [(ngModel)]="birthYear" class="input-field" required>
               <option value="" disabled selected>YYYY</option>
-              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
             </select>
           </div>
+          <input type="tel" placeholder="Phone" [(ngModel)]="phone" />
+          <input type="email" placeholder="Email" [(ngModel)]="email" />
 
-          <input type="password" placeholder="Password" [(ngModel)]="password" />
-          <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
-          
+          <!-- Date of Birth Section -->
+
+          <input
+            type="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            [(ngModel)]="confirmPassword"
+          />
+
           <!-- Salary Field with ngModel binding -->
           <input type="number" placeholder="Salary" [(ngModel)]="salary" />
           <button (click)="addUser()">Add</button>
@@ -106,10 +160,10 @@
       <h3>Edit {{ jobDescription | titlecase }} Information</h3>
       <!-- Search Bar -->
       <div class="search-container">
-        <input 
-          type="text" 
-          id="search" 
-          class="input-field" 
+        <input
+          type="text"
+          id="search"
+          class="input-field"
           placeholder="Search by name"
           [(ngModel)]="searchQuery"
         />
@@ -124,7 +178,9 @@
           <div class="admin-actions">
             <button class="edit-button" (click)="onEdit(admin.id)">🖊️</button>
             <!-- Added Delete Button -->
-            <button class="delete-button" (click)="onDelete(admin.id)">❌</button>
+            <button class="delete-button" (click)="onDelete(admin.id)">
+              ❌
+            </button>
           </div>
         </div>
       </div>

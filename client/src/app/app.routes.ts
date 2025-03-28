@@ -27,6 +27,7 @@ import { ScheduleManagementComponent } from './doctor/schedule-management/schedu
 import { PatientAnalyticsComponent } from './doctor/patient-analytics/patient-analytics.component';
 import { ReportsComponent } from './doctor/reports/reports.component';
 import { ProfileComponent } from './doctor/profile/profile.component';
+import { SessionComponent } from './doctor/session/session.component';
 
 export const routes: Routes = [
   {
@@ -72,6 +73,10 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
+      },
+      {
+        path: 'session',
+        component: SessionComponent,
       },
     ],
   },

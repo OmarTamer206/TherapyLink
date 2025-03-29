@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-sessions',
+  selector: 'app-journal',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './session.component.html',
-  styleUrls: ['./session.component.css'],
+  templateUrl: './journal.component.html',
+  styleUrls: ['./journal.component.css'],
 })
-export class SessionComponent {}
+export class JournalComponent {}

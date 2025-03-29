@@ -1,192 +1,199 @@
 /* General Styles */
 body {
     font-family: Arial, sans-serif;
+    background-color: #fff;  /* Set background color to white */
     margin: 0;
     padding: 0;
-    background-color: #e7f0f6;
-}
-
-.container {
-    padding: 20px;
-    max-width: 900px;
-    margin: auto;
-}
-
-/* Header */
-.header {
+  }
+  
+  section {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 18px;
+    flex-direction: column;  /* Stack the containers vertically */
+    padding: 20px;
+  }
+  
+  /* Each container */
+  .container {
+    width: 68%;  /* Set the width for all containers */
+    height: auto;  /* Let the height adjust based on content */
+    background-color: #fff; /* White background */
     margin-bottom: 20px;
-}
-
-/* Session Container */
-.session-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-/* Session Card */
-.session-card {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    flex-grow: 1;
-    max-width: 600px; /* Match session details width */
+    border: 2px solid #fff; /* White borders */
+  }
+  
+  /* Top Section: Life Coach Sessions */
+  .first {
+    height: 120px;  /* Increased the height of the first container */
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-/* Session Info (Left Side) */
-.session-info {
+  }
+  
+  .session-info {
     display: flex;
-    flex-direction: column;
-}
-
-/* Session Status (Right Side) */
-.session-status {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-}
-
-/* Blue Box for "Session Starts In" */
-.session-timer {
-    background: #d9efff;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #003f67;
+  }
+  
+  .image-placeholder {
+    width: 60px;
+    height: 60px;
+    background-color: black;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .name {
+    font-size: 18px;
     font-weight: bold;
-    text-align: center;
-    margin-bottom: 10px;
-}
+    color: #333;
+  }
+  
+  .specialization {
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+  
 
-/* Start Session Button */
-.btn {
-    background: #003f67;
+  .start-session {
+    background-color: #003355; /* Same color as View Journal button */
     color: white;
-    padding: 10px 15px;
     border: none;
+    padding: 10px 30px; /* Ensure both buttons are the same size */
+    font-size: 16px; /* Same font size */
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
-}
-
-.btn.red {
-    background: red;
-}
-
-/* Adjusted spacing for buttons */
-.top-buttons {
+    width: 249px; /* Adjust the width as desired */
+  }
+  
+  .start-session:hover {
+    background-color: #002a39;
+  }
+  
+  .start-session:focus {
+    outline: none;
+  }
+  
+  /* Start Session and Session Starts In Button */
+  .start-session-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+  }
+  
+  .session-timer-btn, .start-session {
+    background-color: #003355; /* Same color as View Journal button */
+    color: white;
+    border: none;
+    padding: 10px 30px; /* Ensure both buttons are the same size */
+    font-size: 16px; /* Same font size */
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .session-timer-btn:hover, .start-session:hover {
+    background-color: #002a39;
+  }
+  
+  .session-timer-btn:focus, .start-session:focus {
+    outline: none;
+  }
+  
+  /* View Report Button */
+  .session-timer-btn {
+    background-color: transparent;
+    border: 2px solid #3498db; /* Restored the previous border color */
+    color: #3498db; /* Restored the previous text color */
+  }
+  
+  .session-timer-btn:hover {
+    background-color: #3498db;
+    color: white;
+  }
+  
+ /* Second Container: Session Date & Duration */
+.second {
+    height: 50px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;  /* Add some horizontal padding */
+    border: 2px solid #fff; /* White borders */
+  }
+  
+  .session-date {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Black color for session date */
+  }
+  
+  .session-duration {
+    font-size: 16px;
+    color: #7f8c8d; /* Gray color for session duration */
+  }
+  
+  
+  /* Third Container: Video Call */
+  .third {
+    height: 400px;
+    background-color:white;
+  }
+  
+  /* Right Section (Buttons Outside Containers) */
+  .right {
+    position: absolute;
+    top: 110px;
+    right: 150px;
+  }
+  
+  /* Button Container */
+  .buttons-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px; /* Lower the buttons */
-}
-
-.top-buttons .btn {
-    background: #003f67;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
+  }
+  
+  /* Button Styles */
+  .view-report, .view-journal {
+    padding: 15px 30px; /* Increase the padding for bigger buttons */
+    font-size: 18px; /* Increase font size for larger text */
+    border-radius: 8px; /* Optionally adjust border radius for a smoother look */
     cursor: pointer;
-    font-size: 14px;
-    width: 120px; /* Fixed width */
-    text-align: center;
-}
-
-/* Space between first two containers */
-.session-container + .session-details {
-    margin-top: 15px; /* Add space */
-}
-
-/* Session Details (Now same width as session-card) */
-.session-details {
-    display: flex;
-    justify-content: space-between;
-    background: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: bold;
-    max-width: 600px; /* Match session card width */
-}
-
-/* Session Date and Duration Text */
-.session-date {
-    text-align: left;
-}
-
-.session-duration {
-    text-align: right;
-    color: grey;
-}
-
-/* Video and Journal Section */
-.video-journal-container {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-/* Video Call Section */
-.video-call {
-    background: white;
-    padding: 30px;
-    text-align: center;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-    width: 60%;
-}
-
-.black-div {
-    width: 120px;
-    height: 120px;
-    background: black;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
-/* Call Controls */
-.call-controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-/* Journal Entries (Now next to the Video Call) */
-.journal {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    width: 35%;
-    text-align: left;
-}
-
-.entry {
-    margin-bottom: 15px;
-}
-
-.entry h4 {
-    margin: 0;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.entry p {
-    font-size: 12px;
-    color: #555;
-    margin-top: 5px;
-}
+    transition: background-color 0.3s ease;
+    width: auto; /* You can adjust this if you want them to be a fixed width */
+  }
+  
+  /* View Report Button */
+  .view-report {
+    background-color: transparent;
+    border: 2px solid #00253d;
+    color: #002843;
+  }
+  
+  .view-report:hover {
+    background-color: #012b46;
+    color: white;
+  }
+  
+  /* View Journal Button */
+  .view-journal {
+    background-color: #003355;
+    color: white;
+    border: none;
+  }
+  
+  .view-journal:hover {
+    background-color: #002a39;
+  }
+  
+  .view-report:focus, .view-journal:focus {
+    outline: none;
+  }
+  

@@ -14,6 +14,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFE1F1F6),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -23,18 +24,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               const SizedBox(height: 40),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 120,
+                    height: 120,
+                  ),
+                  const SizedBox(height: 40),
+                 const Text(
                     'TherapyLink',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF06303E),
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
+                 const Text(
                     '"Find the support you need, Connect with the right therapist, and start your journey toward healing because everyone deserves a safe space to talk."',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF149FA8),
+                      fontStyle: FontStyle.italic,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
@@ -205,7 +218,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff06303E),
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -214,14 +232,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       );
                     }
                   },
-                  child: const Text('Sign Up'),
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
               const SizedBox(height: 15),
               Center(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Already have an account? Log In'),
+                child: RichText(
+                  text: const TextSpan(
+                    text: 'Already have an account? ',
+                    style:  TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Log In',
+                        style: TextStyle(
+                          color:  Color(0xFF149FA8),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

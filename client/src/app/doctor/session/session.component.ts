@@ -4,14 +4,14 @@ import { JournalComponent } from './journal/journal.component';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  standalone:true,
-  imports:[ReportComponent,JournalComponent,NgIf],
+  standalone: true,
+  imports: [ReportComponent, JournalComponent, NgIf],
   selector: 'app-session',
   templateUrl: './session.component.html',
-  styleUrls: ['./session.component.css']
+  styleUrls: ['./session.component.css'],
 })
 export class SessionComponent {
-  showReport = true;
+  showReport = false;
   showJournal = false;
 
   // Toggle visibility for the Report
@@ -25,6 +25,8 @@ export class SessionComponent {
   // Toggle visibility for the Journal
   toggleJournal() {
     this.showJournal = !this.showJournal;
+    console.log(this.showJournal);
+
     if (this.showJournal) {
       this.showReport = false; // Close Report if Journal is shown
     }

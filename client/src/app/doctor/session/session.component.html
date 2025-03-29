@@ -1,47 +1,47 @@
 <section>
-  <!-- Top Section: Life Coach Sessions -->
-  <div class="container first">
-    <!-- Name and Session Info -->
-    <div class="session-info">
-      <div class="image-placeholder"></div> <!-- Black background div -->
-      <div class="info">
-        <p class="name">Yara Maged</p>
-        <p class="specialization">Trauma</p>
+  <div class="left">
+    <div class="container first">
+      <div class="session-info">
+        <div class="image-placeholder"></div>
+        <div class="info">
+          <p class="name">Yara Maged</p>
+          <p class="specialization">Trauma</p>
+        </div>
+      </div>
+      <div class="start-session-container">
+        <button class="session-timer-btn">Session Starts in 5:43:20</button>
+        <button class="start-session">Start Session</button>
       </div>
     </div>
-    <!-- Start Session Button -->
-    <div class="start-session-container">
-      <button class="session-timer-btn">Session Starts in 5:43:20</button>
-      <button class="start-session">Start Session</button>
+
+    <div class="container second">
+      <span class="session-date">Session Date: 2 / 4 / 2024</span>
+      <span class="session-duration">Duration: 7:00 PM</span>
+    </div>
+
+    <div class="container third">
+      <p>Video Call</p>
     </div>
   </div>
 
-  <!-- Middle Section: Session Date & Duration -->
-  <div class="container second">
-    <span class="session-date">Session Date: 2 / 4 / 2024</span>
-    <span class="session-duration">Duration: 7:00 PM</span>
-  </div>
-
-  <!-- Bottom Section: Video Call -->
-  <div class="container third">
-    <p>Video Call</p>
-  </div>
-
-  <!-- Right Section: Buttons Outside Containers -->
   <div class="right">
-    <div class="buttons-container">
-      <button class="view-report" (click)="toggleReport()">View Report</button>
-      <button class="view-journal" (click)="toggleJournal()">View Journal</button>
+    <div class="top">
+      <div class="buttons-container">
+        <button class="view-report" (click)="toggleReport()">
+          View Report
+        </button>
+        <button class="view-journal" (click)="toggleJournal()">
+          View Journal
+        </button>
+      </div>
     </div>
-  </div>
-
-  <!-- Section to show the Report -->
-  <div *ngIf="showReport" class="right-content">
-    <app-reports></app-reports> <!-- Report Component -->
-  </div>
-
-  <!-- Section to show the Journal -->
-  <div *ngIf="showJournal" class="right-content">
-    <app-journal></app-journal> <!-- Journal Component -->
+    <div class="bottom">
+      <div *ngIf="showReport" class="right-content">
+        <app-reports></app-reports>
+      </div>
+      <div *ngIf="showJournal" class="right-content">
+        <app-journal></app-journal>
+      </div>
+    </div>
   </div>
 </section>

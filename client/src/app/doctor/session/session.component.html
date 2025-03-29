@@ -16,11 +16,11 @@
     </div>
   </div>
 
-<!-- Middle Section: Session Date & Duration -->
-<div class="container second">
-  <span class="session-date">Session Date: 2 / 4 / 2024</span>
-  <span class="session-duration">Duration: 7:00 PM</span>
-</div>
+  <!-- Middle Section: Session Date & Duration -->
+  <div class="container second">
+    <span class="session-date">Session Date: 2 / 4 / 2024</span>
+    <span class="session-duration">Duration: 7:00 PM</span>
+  </div>
 
   <!-- Bottom Section: Video Call -->
   <div class="container third">
@@ -30,8 +30,18 @@
   <!-- Right Section: Buttons Outside Containers -->
   <div class="right">
     <div class="buttons-container">
-      <button class="view-report">View Report</button>
-      <button class="view-journal">View Journal</button>
+      <button class="view-report" (click)="toggleReport()">View Report</button>
+      <button class="view-journal" (click)="toggleJournal()">View Journal</button>
     </div>
+  </div>
+
+  <!-- Section to show the Report -->
+  <div *ngIf="showReport">
+    <app-reports></app-reports> <!-- Report Component -->
+  </div>
+
+  <!-- Section to show the Journal -->
+  <div *ngIf="showJournal">
+    <app-journal></app-journal> <!-- Journal Component -->
   </div>
 </section>

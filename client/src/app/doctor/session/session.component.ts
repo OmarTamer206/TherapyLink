@@ -1,11 +1,32 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ReportComponent } from './report/report.component';
+import { JournalComponent } from './journal/journal.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-sessions',
-  standalone: true,
-  imports: [CommonModule],
+  standalone:true,
+  imports:[ReportComponent,JournalComponent,NgIf],
+  selector: 'app-session',
   templateUrl: './session.component.html',
-  styleUrls: ['./session.component.css'],
+  styleUrls: ['./session.component.css']
 })
-export class SessionComponent {}
+export class SessionComponent {
+  showReport = true;
+  showJournal = false;
+
+  // Toggle visibility for the Report
+  toggleReport() {
+    this.showReport = !this.showReport;
+    if (this.showReport) {
+      this.showJournal = false; // Close Journal if Report is shown
+    }
+  }
+
+  // Toggle visibility for the Journal
+  toggleJournal() {
+    this.showJournal = !this.showJournal;
+    if (this.showJournal) {
+      this.showReport = false; // Close Report if Journal is shown
+    }
+  }
+}

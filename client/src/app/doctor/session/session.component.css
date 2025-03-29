@@ -29,11 +29,13 @@ body {
     align-items: center;
   }
   
+  /* Session Info */
   .session-info {
     display: flex;
     align-items: center;
   }
   
+  /* Image placeholder */
   .image-placeholder {
     width: 60px;
     height: 60px;
@@ -42,6 +44,7 @@ body {
     margin-right: 20px;
   }
   
+  /* Name and Specialization */
   .info {
     display: flex;
     flex-direction: column;
@@ -56,26 +59,6 @@ body {
   .specialization {
     font-size: 14px;
     color: #7f8c8d;
-  }
-  
-
-  .start-session {
-    background-color: #003355; /* Same color as View Journal button */
-    color: white;
-    border: none;
-    padding: 10px 30px; /* Ensure both buttons are the same size */
-    font-size: 16px; /* Same font size */
-    border-radius: 5px;
-    cursor: pointer;
-    width: 249px; /* Adjust the width as desired */
-  }
-  
-  .start-session:hover {
-    background-color: #002a39;
-  }
-  
-  .start-session:focus {
-    outline: none;
   }
   
   /* Start Session and Session Starts In Button */
@@ -105,45 +88,30 @@ body {
     outline: none;
   }
   
-  /* View Report Button */
-  .session-timer-btn {
-    background-color: transparent;
-    border: 2px solid #3498db; /* Restored the previous border color */
-    color: #3498db; /* Restored the previous text color */
-  }
-  
-  .session-timer-btn:hover {
-    background-color: #3498db;
-    color: white;
-  }
-  
- /* Second Container: Session Date & Duration */
-.second {
+  /* Second Container: Session Date & Duration */
+  .second {
     height: 50px;
     background-color: white;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;  /* Add some horizontal padding */
-    border: 2px solid #fff; /* White borders */
+    padding: 0 20px;
   }
   
   .session-date {
     font-size: 16px;
     font-weight: bold;
-    color: #333; /* Black color for session date */
+    color: #333;
   }
   
   .session-duration {
     font-size: 16px;
-    color: #7f8c8d; /* Gray color for session duration */
+    color: #7f8c8d;
   }
-  
   
   /* Third Container: Video Call */
   .third {
     height: 400px;
-    background-color:white;
+    background-color: white;
   }
   
   /* Right Section (Buttons Outside Containers) */
@@ -162,15 +130,13 @@ body {
   
   /* Button Styles */
   .view-report, .view-journal {
-    padding: 15px 30px; /* Increase the padding for bigger buttons */
-    font-size: 18px; /* Increase font size for larger text */
-    border-radius: 8px; /* Optionally adjust border radius for a smoother look */
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: auto; /* You can adjust this if you want them to be a fixed width */
   }
   
-  /* View Report Button */
   .view-report {
     background-color: transparent;
     border: 2px solid #00253d;
@@ -182,7 +148,6 @@ body {
     color: white;
   }
   
-  /* View Journal Button */
   .view-journal {
     background-color: #003355;
     color: white;
@@ -195,5 +160,28 @@ body {
   
   .view-report:focus, .view-journal:focus {
     outline: none;
+  }
+  
+  /* Styling for Journal and Report */
+  .journal, .report {
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #ddd;
+    margin-top: 20px;
+  }
+  
+  .journal h3, .report h3 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .journal p, .report p {
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+  
+  hr {
+    margin-top: 10px;
+    border: 1px solid #ccc;
   }
   

@@ -1,0 +1,19 @@
+.journal {
+    padding: 10px;
+  }
+  
+  .journal h3 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .journal p {
+    font-size: 13px;
+    color: #555;
+  }
+  
+  hr {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+  }
+  

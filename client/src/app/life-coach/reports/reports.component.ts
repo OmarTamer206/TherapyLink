@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-doctor-dashboard',
+  selector: 'app-reports',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './doctor-dashboard.component.html',
-  styleUrl: './doctor-dashboard.component.css'
+  templateUrl: './reports.component.html',
+  styleUrl: './reports.component.css'
 })
-export class DoctorDashboardComponent {
-  patients = [
+export class lifeReportsComponent {
+  reports = [
     { name: 'Jens Brincker', date: '27/12/2024', duration: '60 minutes' },
     { name: 'Mark Hay', date: '27/12/2024', duration: '60 minutes' },
     { name: 'Anthony Davie', date: '27/12/2024', duration: '60 minutes' },
@@ -22,11 +22,4 @@ export class DoctorDashboardComponent {
     { name: 'Mark Hay', date: '27/12/2024', duration: '60 minutes' },
     { name: 'Mark Hay', date: '27/12/2024', duration: '60 minutes' }
   ];
-  upcomingSessions = [
-    { name: 'Yara Maged', specialization: 'Trauma', date: '20 Nov', time: '11:00 AM' },
-    { name: 'Mona Eid', specialization: 'Trauma', date: '20 Nov', time: '1:00 PM' },
-    { name: 'Sameh Mohamad', specialization: 'Trauma', date: '20 Nov', time: '3:00 PM' },
-    { name: 'Yasser Elissa', specialization: 'Trauma', date: '20 Nov', time: '4:00 PM' },
-  ];
-  
 }

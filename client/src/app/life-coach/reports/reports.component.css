@@ -1,0 +1,67 @@
+.reports-container {
+    padding: 20px;
+    background-color: #f0f8fc;
+    border-radius: 10px;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .table-container {
+    max-height: 450px;
+    overflow-y: auto;
+    border-radius: 10px;
+    background: white;
+    padding: 10px;
+    position: relative;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead {
+    background-color: #e5f6fd;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  td {
+    font-size: 14px;
+  }
+  
+  button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .report-btn {
+    background-color: #48a9c5;
+    color: white;
+    margin-right: 5px;
+  }
+  
+  .journal-btn {
+    background-color: #0c717d;
+    color: white;
+  }
+  

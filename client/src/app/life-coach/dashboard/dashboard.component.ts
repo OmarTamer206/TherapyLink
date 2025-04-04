@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-doctor-dashboard',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './doctor-dashboard.component.html',
-  styleUrl: './doctor-dashboard.component.css'
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
-export class DoctorDashboardComponent {
+export class DashboardComponent {
   patients = [
     { name: 'Jens Brincker', date: '27/12/2024', duration: '60 minutes' },
     { name: 'Mark Hay', date: '27/12/2024', duration: '60 minutes' },

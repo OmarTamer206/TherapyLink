@@ -1,1 +1,26 @@
-<p>life-coach works!</p>
+<header>
+    <div class="left">
+      <img src="image.png" alt="" />
+      <p>Life Coach</p>
+    </div>
+    <button>Logout</button>
+  </header>
+  
+  <section>
+    <nav>
+      <ul>
+        <li><a routerLink="dashboard">Dashboard</a></li>
+        <li><a routerLink="schedule-management">Schedule Management</a></li>
+        <li><a routerLink="patient-analytics">Patient Analytics</a></li>
+        <li><a routerLink="session">Session</a></li>
+        <li><a routerLink="reports">Reports</a></li>
+        <li><a routerLink="profile">Profile</a></li>
+  
+      </ul>
+    </nav>
+  
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+  

@@ -22,4 +22,5 @@ export class ReportComponent {
     { name:"Dr.shalaby",
       concern: 'We’ve made good progress with boundary-setting. I’ll continue to help the patient recognize signs of stress and maintain their progress by reinforcing healthy relationships and self-care practices.' 
     }
-  ];}
+  ];
+}

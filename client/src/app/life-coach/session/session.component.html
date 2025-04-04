@@ -1,0 +1,43 @@
+<section class="session-layout">
+  <!-- Center Section -->
+  <div class="center-section">
+    <!-- Header -->
+    <h2 class="session-title">Life Coach’s Sessions</h2>
+
+    <!-- Session Date & Time -->
+    <div class="session-info-row">
+      <span class="session-date">Session Date: 2 / 4 / 2024</span>
+      <span class="session-time">Duration: 7:00 PM</span>
+    </div>
+
+    <!-- Video Call Section -->
+    <div class="video-call-box">
+      <p>Video Call</p>
+    </div>
+  </div>
+
+  <!-- Right Section -->
+  <div class="right-section">
+    <!-- Patients List -->
+    <div class="patients-list">
+      <h3>Patients</h3>
+      <div class="patient-item" *ngFor="let patient of patients">
+        <span>{{ patient }}</span>
+        <div class="buttons-inline">
+          <button class="view-report" (click)="toggleReport(patient)">View Report</button>
+          <button class="view-journal" (click)="toggleJournal(patient)">View Journal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Viewer (only if patient is selected) -->
+    <div class="entry-box" *ngIf="showReport && selectedPatient">
+      <app-reports [patientName]="selectedPatient"></app-reports>
+    </div>
+
+    <!-- Journal Viewer (only if patient is selected) -->
+    <div class="entry-box" *ngIf="showJournal && selectedPatient">
+      <app-journal [patientName]="selectedPatient"></app-journal>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,84 @@
+.analytics-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    min-height: 600px; /* Increased length */
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .tabs button {
+    background: transparent;
+    border: 2px solid #0099a8;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .tabs .active {
+    background: #0099a8;
+    color: white;
+  }
+  
+  .rating-section h1 {
+    font-size: 36px;
+    color: #0099a8;
+    margin: auto;
+  }
+  
+  .stars {
+    font-size: 70px; /* Increased star size */
+
+  }
+  
+  .stars span {
+    color: #ccc;
+  }
+  
+  .stars .filled {
+    color: #0099a8;
+  }
+  
+  .rating-bars {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px; /* Increased spacing */
+    width: 100%; /* Ensures bars are inside the new width */
+
+  }
+  
+  .bar-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .bar-label {
+    width: 80px; /* Ensures alignment */
+    text-align: right;
+    font-weight: bold;
+  }
+  
+  .bar {
+    flex: 1;
+    height: 20px; /* Increased bar size */
+    background: lightgray;
+    border-radius: 10px;
+    margin-left: 15px;
+  }
+  
+  .fill {
+    height: 20px;
+    border-radius: 10px;
+  }
+  
+  .chart-section {
+    height: 500px; /* Increased chart height */
+  }
+  

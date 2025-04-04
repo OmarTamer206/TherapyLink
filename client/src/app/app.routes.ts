@@ -28,6 +28,12 @@ import { PatientAnalyticsComponent } from './doctor/patient-analytics/patient-an
 import { ReportsComponent } from './doctor/reports/reports.component';
 import { ProfileComponent } from './doctor/profile/profile.component';
 import { SessionComponent } from './doctor/session/session.component';
+import { DashboardComponent } from './life-coach/dashboard/dashboard.component';
+import { lifeScheduleManagementComponent } from './life-coach/schedule-management/schedule-management.component';
+import { lifePatientAnalyticsComponent } from './life-coach/patient-analytics/patient-analytics.component';
+import { lifeReportsComponent } from './life-coach/reports/reports.component';
+import { lifeProfileComponent } from './life-coach/profile/profile.component';
+import { lifeSessionComponent } from './life-coach/session/session.component';
 
 export const routes: Routes = [
   {
@@ -82,8 +88,34 @@ export const routes: Routes = [
   },
   
   {
-    path: 'life_coach',
+    path: 'life-coach',
     component: LifeCoachComponent,
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
+      {
+        path: 'schedule-management',
+        component: lifeScheduleManagementComponent,
+      },
+      {
+        path: 'patient-analytics',
+        component: lifePatientAnalyticsComponent,
+      },
+      {
+        path: 'reports',
+        component: lifeReportsComponent,
+      },
+      {
+        path: 'profile',
+        component: lifeProfileComponent,
+      },
+      {
+        path: 'session',
+        component: lifeSessionComponent,
+      },
+    ],
   },
   {
     path: 'admin',

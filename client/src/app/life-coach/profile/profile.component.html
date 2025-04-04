@@ -1,0 +1,50 @@
+<p>profile works!</p>
+<div class="form-container">
+    <div class="profile">
+      <!-- Add profile-image class to ensure the image is circular -->
+      <img src="doctor.jpeg" alt="settings" class="profile-image" />
+      <h3 class="doctor-name">Yasser Maged</h3>
+    </div>
+  
+    <form class="doctor-form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          class="form-control"
+          [(ngModel)]="phoneNumber"
+          placeholder="+20 30100214231"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          [(ngModel)]="email"
+          placeholder="Example@Gmail.Com"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          [(ngModel)]="password"
+          placeholder="***************"
+          required
+        />
+      </div>
+    </form>
+  </div>
+  

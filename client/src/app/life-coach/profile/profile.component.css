@@ -1,0 +1,66 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f8ff;  /* Light background to match the design */
+  
+    .profile {
+      text-align: center;
+      margin-right: 40px;  /* Adjust space between the image and form */
+    }
+  
+    .profile-image {
+      width: 150px;  /* Set the width of the image */
+      height: 150px;  /* Set the height of the image */
+      border-radius: 50%;  /* Make the image circular */
+      object-fit: cover;  /* Ensures the image fits within the circle without distortion */
+      border: 3px solid #007bff;  /* Optional: Add a border around the image */
+    }
+  
+    .doctor-name {
+      font-size: 2.2rem;  /* Increase font size for the doctor's name */
+      font-weight: bold;
+      margin-top: 20px;  /* Adjust spacing between the name and image */
+      color: #333;
+    }
+  
+    .doctor-form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+  
+    .form-group {
+      margin-bottom: 25px;  /* Increase space between fields */
+    }
+  
+    label {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 8px;  /* Increase space below the label */
+      display: block;
+    }
+  
+    .form-control {
+      width: 100%;
+      padding: 14px;  /* Increased padding to make input fields larger */
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 8px;  /* Increase spacing between label and input */
+      box-sizing: border-box;  /* Ensures padding doesn't affect width */
+    }
+  
+    .submit-btn {
+      background-color: transparent;  /* Remove the background color */
+      color: transparent;  /* Make the text transparent */
+      border: none;  /* Remove the border */
+      padding: 0;  /* Remove padding */
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+  

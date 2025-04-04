@@ -1,0 +1,19 @@
+.report {
+    padding: 10px;
+  }
+  
+  .report h3 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .report p {
+    font-size: 13px;
+    color: #555;
+  }
+  
+  hr {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+  }
+  

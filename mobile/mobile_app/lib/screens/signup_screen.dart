@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'signin_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -31,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 120,
                   ),
                   const SizedBox(height: 40),
-                 const Text(
+                  const Text(
                     'TherapyLink',
                     style: TextStyle(
                       fontSize: 24,
@@ -40,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                 const Text(
+                  const Text(
                     '"Find the support you need, Connect with the right therapist, and start your journey toward healing because everyone deserves a safe space to talk."',
                     style: TextStyle(
                       fontSize: 16,
@@ -230,6 +231,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Processing Data')),
                       );
+                      _navigateToSignIn();
                     }
                   },
                   child: const Text(
@@ -240,22 +242,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 15),
               Center(
-                child: RichText(
-                  text: const TextSpan(
-                    text: 'Already have an account? ',
-                    style:  TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Log In',
-                        style: TextStyle(
-                          color:  Color(0xFF149FA8),
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: GestureDetector(
+                  onTap: _navigateToSignIn,
+                  child: RichText(
+                    text: const TextSpan(
+                      text: 'Already have an account? ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
                       ),
-                    ],
+                      children: [
+                        TextSpan(
+                          text: 'Log In',
+                          style: TextStyle(
+                            color: Color(0xFF149FA8),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -263,6 +268,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _navigateToSignIn() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignInScreen()),
     );
   }
 }

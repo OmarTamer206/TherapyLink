@@ -80,10 +80,10 @@ async function get_patients_data(doctor_id, type) {
   }
 }
 
-// Get detailed reports and journal entries for a specific patient (waiting for DB modification -.-)
+// Get detailed reports and journal entries for a specific patient (mehtag a3rf al name bta3 al doctor dah)(8aleban hanhtag join bs dynamic)
 async function get_patient_data(patient_id) {
   try {
-    const reportsQuery = `SELECT * FROM patient_reports WHERE patient_id = ?`;
+    const reportsQuery = `SELECT * FROM report WHERE patient_id = ?`;
     const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
 
     const reports = await executeQuery(reportsQuery, [patient_id]);
@@ -128,12 +128,12 @@ async function update_patient_report(doctor_id, session_data) {
   }
 }
 
-// View available time slots for a specific date(7otlha table gded -,-)
-async function view_available_time(date, doctor_id) {
+// View available time slots for a specific date
+async function view_available_time(date, doctor_id,doctor_type) {
   try {
     const query = `
-      SELECT * FROM doctor_availability
-      WHERE doctor_id = ? AND available_date = ?
+      SELECT * FROM ${doctor_type}_availability
+      WHERE ${doctor_type}_id = ? AND Available_date = ?
     `;
     const result = await executeQuery(query, [doctor_id, date]);
 

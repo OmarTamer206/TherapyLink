@@ -26,6 +26,7 @@ require("dotenv").config();
 /**
  * Middleware to restrict access to specific roles.
  */
+
 function authorizeRoles(...allowedRoles) {
   return (req, res, next) => {
     const token = req.header("Authorization");

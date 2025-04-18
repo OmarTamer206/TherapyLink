@@ -61,6 +61,7 @@ router.post("/login-staff", async (req, res) => {
 // Registration Route
 router.post("/register", async (req, res) => {
   const data = req.body;
+  
   if (
     !data.name ||
     !data.email ||

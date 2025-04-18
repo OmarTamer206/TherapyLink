@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, input, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables); // 📝 Register chart.js components!
@@ -9,16 +9,27 @@ Chart.register(...registerables); // 📝 Register chart.js components!
   templateUrl: './line-chart.component.html',
   styleUrl: './line-chart.component.css',
 })
-export class LineChartComponent implements AfterViewInit {
+export class LineChartComponent implements AfterViewInit,OnChanges {
   @ViewChild('lineCanvas') private lineCanvas!: ElementRef<HTMLCanvasElement>;
   private lineChart!: Chart;
 
+  @Input({ required: true }) data!: any;
+
+  // @input() data: number[] = []; // Input property for data
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data']) {
+      // Handle the new data here
+      console.log('Data received:', this.data);
+    }
+  }
   constructor() {
     // Register Chart.js components globally
     Chart.register(...registerables);
   }
 
+
   ngAfterViewInit() {
+    console.log("data",this.data);
     this.createLineChart();
   }
 
@@ -43,7 +54,7 @@ export class LineChartComponent implements AfterViewInit {
         datasets: [
           {
             label: 'Patient Visits',
-            data: [50, 180, 30, 20, 40, 100, 180, 30, 60, 130, 180, 40],
+            data: this.data,
             borderColor: '#00838f',
             backgroundColor: 'rgba(0, 131, 143, 0.1)',
             pointBackgroundColor: '#00838f',

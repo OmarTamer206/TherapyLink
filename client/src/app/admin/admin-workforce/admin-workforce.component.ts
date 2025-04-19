@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';  // Import FormsModule for ngModel
 import { CommonModule } from '@angular/common';  // Import CommonModule for ngIf
-
+import { AdminService } from '../../services/admin/admin.service';
+import { AuthService } from '../../services/auth/auth.service';
 @Component({
   selector: 'app-admin-workforce',
   standalone: true,
@@ -11,6 +12,13 @@ import { CommonModule } from '@angular/common';  // Import CommonModule for ngIf
   styleUrls: ['./admin-workforce.component.css']
 })
 export class AdminWorkforceComponent {
+
+
+  constructor(private adminService: AdminService, private authService: AuthService) {
+
+
+  }
+
   registerElementClass: string = '';
   editElementClass: string = 'hide';
   jobDescription: string = '';  // Store selected job description
@@ -43,7 +51,7 @@ export class AdminWorkforceComponent {
 
   // Filtered Admins based on search query
   get filteredAdmins() {
-    return this.admins.filter(admin => 
+    return this.admins.filter(admin =>
       admin.name.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
@@ -66,9 +74,72 @@ export class AdminWorkforceComponent {
   onJobDescriptionChange(event: Event) {
     this.jobDescription = (event.target as HTMLSelectElement).value;
   }
-
+  // data.name,
+  // data.email,
+  // hashedPassword,
+  // data.Date_Of_Birth,
+  // data.phone_number,
+  // data.Salary,
+  // data.Profile_pic_url || null,
   // Handle adding new user (Doctor/Life Coach Registration)
-  addUser() {
+  addEmergencyTeam() {
+
+    const data = {
+      name: this.firstName + ' ' + this.lastName,
+      email: this.email,
+      password: this.password,
+      Date_Of_Birth: `${this.birthYear}-${(this.months.indexOf(`${this.birthMonth}`)+ 1)}-${this.birthDay}`,
+      phone_number: this.phone,
+      Salary: this.salary,  // Use the salary field
+      Profile_pic_url: null
+    }
+
+    console.log(data.Date_Of_Birth);
+
+    this.authService.registerEmergencyTeamMember(data).subscribe((response) => {
+
+      console.log("Emergency team member registered successfully:", response);
+      // Handle success response here, e.g., show a success message or redirect
+    }
+    , (error) => {
+      console.error("Error registering emergency team member: ", error);
+    });
+
+
+    console.log('User Added:', {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      phone: this.phone,
+      birthMonth: this.birthMonth,
+      birthDay: this.birthDay,
+      birthYear: this.birthYear,
+      password: this.password,
+      confirmPassword: this.confirmPassword,
+      specialization: this.specialization,
+      description: this.description,
+      sessionPrice: this.sessionPrice,
+      gender: this.gender,
+      salary: this.salary  // Including salary in the logged output
+    });
+    // Reset form after adding user
+    this.firstName = '';
+    this.lastName = '';
+    this.email = '';
+    this.phone = '';
+    this.birthMonth = 1;
+    this.birthDay = 1;
+    this.birthYear = 2000;
+    this.password = '';
+    this.confirmPassword = '';
+    this.specialization = '';
+    this.description = '';
+    this.sessionPrice = '';
+    this.gender = '';
+    this.salary = 0;  // Reset salary field
+  }
+
+  addTherapist() {
     console.log('User Added:', {
       firstName: this.firstName,
       lastName: this.lastName,

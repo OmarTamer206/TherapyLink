@@ -34,6 +34,7 @@ import { lifePatientAnalyticsComponent } from './life-coach/patient-analytics/pa
 import { lifeReportsComponent } from './life-coach/reports/reports.component';
 import { lifeProfileComponent } from './life-coach/profile/profile.component';
 import { lifeSessionComponent } from './life-coach/session/session.component';
+import { AdminWorkforceEditingComponent } from './admin/admin-workforce-editing/admin-workforce-editing.component';
 
 export const routes: Routes = [
   {
@@ -86,7 +87,7 @@ export const routes: Routes = [
       },
     ],
   },
-  
+
   {
     path: 'life-coach',
     component: LifeCoachComponent,
@@ -135,7 +136,11 @@ export const routes: Routes = [
       },
       {
         path: 'admin-workforce',
-        component: AdminWorkforceComponent,
+        component: AdminWorkforceComponent
+      },
+      {
+        path: 'admin-workforce-edit',
+        component: AdminWorkforceEditingComponent
       },
       {
         path: 'admin-patient',
@@ -185,15 +190,12 @@ export const routes: Routes = [
         path: 'emergency-team-settings',
         component: EmergencyTeamSettingsComponent,
       },
-        {
-          path: 'not-found',
-          component: NotFoundComponent,
-      },
+
     ],
   },
-  // Uncomment and configure if you need a NotFound component for unknown routes
-  // {
-  //   path: '**',
-  //   component: NotFoundComponent,
-  // },
+
+ {
+     path: '**',
+     component: NotFoundComponent,
+},
 ];

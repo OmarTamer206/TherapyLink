@@ -74,13 +74,7 @@ export class AdminWorkforceComponent {
   onJobDescriptionChange(event: Event) {
     this.jobDescription = (event.target as HTMLSelectElement).value;
   }
-  // data.name,
-  // data.email,
-  // hashedPassword,
-  // data.Date_Of_Birth,
-  // data.phone_number,
-  // data.Salary,
-  // data.Profile_pic_url || null,
+
   // Handle adding new user (Doctor/Life Coach Registration)
   addEmergencyTeam() {
 

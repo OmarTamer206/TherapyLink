@@ -8,6 +8,7 @@ const {
   search_workforce,
   get_booked_session_data,
   get_available_sessions_data,
+  get_workforce_data,
 } = require("../controllers/adminController");
 
 const { authorizeRoles } = require("../middlewares/authMiddlewares");
@@ -72,6 +73,19 @@ router.get("/search-workforce", async (req, res) => {
 
   try {
     const result = await search_workforce(name, type);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/get-workforce-data", async (req, res) => {
+  const { id, type } = req.query;
+  if (!id || !type)
+    return res.status(400).json({ error: "id and type are required" });
+
+  try {
+    const result = await get_workforce_data(id, type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

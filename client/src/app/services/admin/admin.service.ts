@@ -41,6 +41,11 @@ export class AdminService {
     return this.http.get(`${this.apiUrl}/search-workforce`, { params });
   }
 
+  getWorkforce(id: number, type: string): Observable<any> {
+    const params = new HttpParams().set('id', id).set('type', type);
+    return this.http.get(`${this.apiUrl}/get-workforce-data`, { params });
+  }
+
   // Get booked session data
   getBookedSessionData(): Observable<any> {
     return this.http.get(`${this.apiUrl}/booked-session-data`);

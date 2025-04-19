@@ -64,4 +64,7 @@ export class AuthService {
   deleteUser(data: { id: number, role: string }): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete-user`, { body: data });
   }
+  checkEmail(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/check-email`, data);
+  }
 }

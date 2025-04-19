@@ -196,7 +196,7 @@ async function updatePatient(data) {
       fields.push("Email = ?");
       values.push(data.email);
     }
-    if (data.password) {
+    if (data.password!=="") {
       const hashedPassword = await bcrypt.hash(data.password, 10);
       fields.push("Password = ?");
       values.push(hashedPassword);
@@ -263,7 +263,7 @@ async function updateAdmin(data) {
       fields.push("Email = ?");
       values.push(data.email);
     }
-    if (data.password) {
+    if (data.password!=="") {
       const hashedPassword = await bcrypt.hash(data.password, 10);
       fields.push("Password = ?");
       values.push(hashedPassword);
@@ -322,7 +322,7 @@ async function updateTherapist(data) {
       fields.push("Email = ?");
       values.push(data.email);
     }
-    if (data.password) {
+    if (data.password!=="") {
       const hashedPassword = await bcrypt.hash(data.password, 10);
       fields.push("Password = ?");
       values.push(hashedPassword);
@@ -385,7 +385,7 @@ async function updateEmergencyTeamMember(data) {
       fields.push("Email = ?");
       values.push(data.email);
     }
-    if (data.password) {
+    if (data.password!=="") {
       const hashedPassword = await bcrypt.hash(data.password, 10);
       fields.push("Password = ?");
       values.push(hashedPassword);
@@ -441,6 +441,39 @@ async function deleteUser(data) {
   }
 }
 
+
+async function checkEmail(data) {
+  const staffRoles = [
+    "patient",
+    "doctor",
+    "life_coach",
+    "emergency_team",
+    "admin",
+    "manager",
+  ];
+  try {
+    let users;
+    
+    for (const role in staffRoles) {
+      users = await executeQuery(
+        "SELECT * FROM " + staffRoles[role] + " WHERE email = ?",
+        [data.email]
+      );
+
+      if (users.length !== 0) break;
+    }
+
+    if (users.length === 0) return "not_taken";
+    else{
+      return "taken";
+    }
+   
+  } catch (error) {
+    console.error("Checking Email Error:", error);
+    throw new Error("Checking Email failed");
+  }
+}
+
 module.exports = {
   loginPatient,
   loginStaff,
@@ -453,4 +486,5 @@ module.exports = {
   updateTherapist,
   updateEmergencyTeamMember,
   deleteUser,
+  checkEmail,
 };

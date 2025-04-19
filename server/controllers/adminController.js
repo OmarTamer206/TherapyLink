@@ -159,6 +159,34 @@ async function search_workforce(name, type) {
     };
   }
 }
+
+
+async function get_workforce_data(id, type) {
+  try {
+    const validRoles = ["doctor", "life_coach", "emergency_team"];
+
+    // Validate user type
+    if (!validRoles.includes(type)) {
+      return { success: false, message: "Invalid user type provided." };
+    }
+
+    const query = `
+      SELECT * FROM ${type}
+      WHERE id = ?
+    `;
+
+    const result = await executeQuery(query, [id]);
+
+    return { success: true, data: result };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error searching users.",
+      error: error.message,
+    };
+  }
+}
+
 async function get_booked_session_data() {
   try {
     const query = `
@@ -212,6 +240,7 @@ module.exports = {
   get_total_earnings_count,
   get_patient_visit_data_by_month,
   search_workforce,
+  get_workforce_data,
   get_booked_session_data,
   get_available_sessions_data,
   // process_refund,

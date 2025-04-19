@@ -11,6 +11,7 @@ const {
   updateEmergencyTeamMember,
   updateAdmin,
   updateTherapist,
+  checkEmail,
 } = require("../controllers/authController");
 const {
   authenticateUser,
@@ -177,7 +178,6 @@ router.put("/update-therapist", async (req, res) => {
     !data.id ||
     !data.name ||
     !data.email ||
-    !data.password ||
     !data.Date_Of_Birth ||
     !data.Gender ||
     !data.phone_number ||
@@ -202,7 +202,6 @@ router.put("/update-admin", async (req, res) => {
     !data.id ||
     !data.name ||
     !data.email ||
-    !data.password ||
     !data.Date_Of_Birth ||
     !data.Gender ||
     !data.phone_number ||
@@ -225,7 +224,6 @@ router.put("/update-emergency-member", async (req, res) => {
     !data.id ||
     !data.name ||
     !data.email ||
-    !data.password ||
     !data.Date_Of_Birth ||
     !data.phone_number ||
     !data.Salary
@@ -242,12 +240,34 @@ router.put("/update-emergency-member", async (req, res) => {
 
 router.delete("/delete-user", async (req, res) => {
   const data = req.body;
+
+  
   if (!data.id || !data.role)
     return res.status(400).json({ error: "Missing id or role" });
 
   try {
     const result = await deleteUser(data);
     res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/check-email", async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  
+  if (!data.email)
+    return res.status(400).json({ error: "Missing data" });
+
+  try {
+    const result = await checkEmail(data);
+    if (!result) return res.status(401).json({ error: "Error Occured" });
+
+    res.json({
+      message: "Success",
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

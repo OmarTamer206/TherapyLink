@@ -185,6 +185,10 @@ export const routes: Routes = [
         path: 'emergency-team-settings',
         component: EmergencyTeamSettingsComponent,
       },
+        {
+          path: 'not-found',
+          component: NotFoundComponent,
+      },
     ],
   },
   // Uncomment and configure if you need a NotFound component for unknown routes

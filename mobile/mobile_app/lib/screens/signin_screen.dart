@@ -3,7 +3,8 @@ import 'signup_screen.dart';
 import 'home_screen.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  final String? userFullName;
+  const SignInScreen({super.key, this.userFullName});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -26,7 +27,10 @@ class _SignInScreenState extends State<SignInScreen> {
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) =>const HomeScreen(),
+        pageBuilder: (context, animation1, animation2) => HomeScreen(
+          username:
+              widget.userFullName ?? _emailController.text.split('@').first,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
@@ -153,11 +157,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   onPressed: _isLoading ? null : _signIn,
                   child: _isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  :const Text(
-                    'Log In',
-                    style: TextStyle(fontSize: 16),
-                  ),
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Log In',
+                          style: TextStyle(fontSize: 16),
+                        ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -191,6 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
+
 
   @override
   void dispose() {

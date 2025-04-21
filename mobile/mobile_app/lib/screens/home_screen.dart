@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/chatbot_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -55,43 +56,43 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Color(0xFF06303E),
                     ),
                   ),
-                    const SizedBox(height: 15),
-                    const Row(
-                      children: [
-                        Icon(Icons.person, color: Color(0xFF149FA8)),
-                        SizedBox(width: 10),
-                        Text(
-                          'Session with : Dr . Magdy',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const Row(
-                      children: [
-                        Icon(Icons.access_time, color: Color(0xFF149FA8)),
-                        SizedBox(width: 10),
-                        Text(
-                          'Timing: 9/1/2025, 7:00 PM',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE1F1F6),
-                        borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: 15),
+                  const Row(
+                    children: [
+                      Icon(Icons.person, color: Color(0xFF149FA8)),
+                      SizedBox(width: 10),
+                      Text(
+                        'Session with : Dr . Magdy',
+                        style: TextStyle(fontSize: 16),
                       ),
-                      child: const Text(
-                        '20 minutes left',
-                        style: TextStyle(
-                          color: Color(0xFF149FA8),
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Row(
+                    children: [
+                      Icon(Icons.access_time, color: Color(0xFF149FA8)),
+                      SizedBox(width: 10),
+                      Text(
+                        'Timing: 9/1/2025, 7:00 PM',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE1F1F6),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      '20 minutes left',
+                      style: TextStyle(
+                        color: Color(0xFF149FA8),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
                 ],
               ),
             ),
@@ -114,7 +115,14 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               'Repeat Chatbot Test',
               Icons.chat_bubble,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ChatbotScreen()
+                  ),
+                );
+              },
             ),
           ],
         ),

@@ -5,23 +5,25 @@
     <h3 class="doctor-name">Yasser Maged</h3>
   </div>
 
-  <form class="doctor-form" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="phone">Phone Number</label>
-      <input
-        type="tel"
-        id="phone"
-        name="phone"
-        class="form-control"
-        [(ngModel)]="phoneNumber"
-        placeholder="+20 30100214231"
-        required
-      />
-    </div>
+  <form class="doctor-form">
+    <div class="left">
 
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+        type="tel"
+        id="name"
+        name="name"
+        class="form-control"
+        [(ngModel)]="name"
+        placeholder="Name"
+        required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
         type="email"
         id="email"
         name="email"
@@ -29,12 +31,12 @@
         [(ngModel)]="email"
         placeholder="Example@Gmail.Com"
         required
-      />
-    </div>
+        />
+      </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
         type="password"
         id="password"
         name="password"
@@ -42,7 +44,89 @@
         [(ngModel)]="password"
         placeholder="***************"
         required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmpassword">Confirm Password</label>
+        <input
+        type="password"
+        id="confirmpassword"
+        name="confirmpassword"
+        class="form-control"
+        [(ngModel)]="confirmPassword"
+        placeholder="***************"
+        required
+        />
+    </div>
+  </div>
+  <div class="right">
+
+    <div class="dateWrap">
+      <label for="date">Date Of Birth</label>
+    <div class="date-of-birth">
+
+      <select [(ngModel)]="birthMonth" id="date" class="input-field" required>
+        <option value="" disabled selected>MM</option>
+        <option *ngFor="let month of months" [value]="month">
+          {{ month }}
+        </option>
+      </select>
+      <select [(ngModel)]="birthDay" class="input-field" required>
+        <option value="" disabled selected>DD</option>
+        <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+      </select>
+      <select [(ngModel)]="birthYear" class="input-field" required>
+        <option value="" disabled selected>YYYY</option>
+        <option *ngFor="let year of years" [value]="year">
+          {{ year }}
+        </option>
+      </select>
+    </div>
+    </div>
+
+    <div class="genderWrap">
+
+      <label for="gender">Gender</label>
+
+      <select [(ngModel)]="gender" id="gender" class="input-field gender" required>
+        <option value="" disabled selected>Gender</option>
+        <option value="Male" selected>Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input
+      type="tel"
+      id="phone"
+      name="phone"
+      class="form-control"
+      [(ngModel)]="phone"
+      placeholder="+20 30100214231"
+      required
       />
     </div>
-  </form>
+
+    <div class="form-group">
+      <label for="pic">Profile Picture</label>
+      <input
+      type="file"
+      id="pic"
+      name="pic"
+      class="form-control"
+      [(ngModel)]="profile_pic"
+      required
+      />
+    </div>
+
+  </div>
+
+
+
+</form>
+<div class="form-button">
+  <button class="btn btn-primary">Save</button>
+</div>
 </div>

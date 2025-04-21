@@ -34,7 +34,18 @@ import { lifePatientAnalyticsComponent } from './life-coach/patient-analytics/pa
 import { lifeReportsComponent } from './life-coach/reports/reports.component';
 import { lifeProfileComponent } from './life-coach/profile/profile.component';
 import { lifeSessionComponent } from './life-coach/session/session.component';
-import { AdminWorkforceEditingComponent } from './admin/admin-workforce-editing/admin-workforce-editing.component';
+import { ChatbotComponent } from './patient/chatbot/chatbot.component';
+import { DoctorAppointmentComponent } from './patient/doctor-appointment/doctor-appointment.component';
+import { DoctorCheckoutComponent } from './patient/doctor-checkout/doctor-checkout.component';
+import { DoctorsPageComponent } from './patient/doctors-page/doctors-page.component';
+import { EditProfileComponent } from './patient/edit-profile/edit-profile.component';
+import { JournalComponent } from './patient/journal/journal.component';
+import { LifeCoachAppointmentComponent } from './patient/life-coach-appointment/life-coach-appointment.component';
+import { LifeCoachCheckoutComponent } from './patient/life-coach-checkout/life-coach-checkout.component';
+import { LifeCoachPageComponent } from './patient/life-coach-page/life-coach-page.component';
+import { OldSessionComponent } from './patient/old-session/old-session.component';
+import { SessionPageComponent } from './patient/session-page/session-page.component';
+import { SessionsLogComponent } from './patient/sessions-log/sessions-log.component';
 
 export const routes: Routes = [
   {
@@ -53,7 +64,70 @@ export const routes: Routes = [
   {
     path: 'patient',
     component: PatientComponent,
-    children: [{ path: 'patient/home', component: HomeComponent }],
+    children: [
+      { path: 'home',
+        component: HomeComponent
+
+      },
+      {
+        path: "chatbot",
+        component:ChatbotComponent
+      },
+      {
+        path:"doctor-appointment",
+        component:DoctorAppointmentComponent
+      },
+      {
+        path: "doctor-checkout",
+        component: DoctorCheckoutComponent
+      },
+      {
+        path: "doctors-page",
+        component: DoctorsPageComponent
+      },
+      {
+        path: "edit-profile",
+        component:EditProfileComponent
+      },
+      {
+        path:"journal",
+        component:JournalComponent
+      },
+      {
+        path:"life-coach-appointment",
+        component:LifeCoachAppointmentComponent
+      },
+      {
+        path:"life-coach-checkout",
+        component: LifeCoachCheckoutComponent
+      },
+      {
+        path:"life-coach-page",
+        component:LifeCoachPageComponent
+      },
+      {
+        path: "old-session",
+        component:OldSessionComponent
+      },
+      {
+        path:"profile",
+        component: ProfileComponent
+
+      },
+      {
+        path:"session-page",
+        component: SessionPageComponent
+      },
+      {
+        path:"session-log",
+        component: SessionsLogComponent
+      }
+
+
+
+
+
+    ],
   },
 
   {
@@ -138,10 +212,7 @@ export const routes: Routes = [
         path: 'admin-workforce',
         component: AdminWorkforceComponent
       },
-      {
-        path: 'admin-workforce-edit',
-        component: AdminWorkforceEditingComponent
-      },
+
       {
         path: 'admin-patient',
         component: AdminPatientComponent,

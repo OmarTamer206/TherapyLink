@@ -1,0 +1,70 @@
+/* app.component.css */
+.chatbot-container {
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
+.chatbot-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+}
+
+.left-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.chatbot-icon {
+  max-width: 100%;
+  height: auto;
+}
+
+.right-content {
+  flex: 1;
+  padding-left: 100px;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+h2 {
+  color: #06303e;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 25px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.start-chatting-btn {
+  background-color: #06303e;
+  color: white;
+  padding: 15px 25px;
+  font-size: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  width: 50%;
+}
+
+.start-chatting-btn:hover {
+  background-color: #009c9c;
+}

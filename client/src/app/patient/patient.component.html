@@ -1,1 +1,13 @@
-<p>patient works!</p>
+<!-- app.component.html -->
+<header class="header">
+  <div><img src="image.png" alt="TherapyLink Logo" class="logo" /></div>
+  <nav>
+    <a routerLink="home" class="nav-link">Home</a>
+    <a routerLink="sessions" class="nav-link">Sessions</a>
+    <a routerLink="group-sessions" class="nav-link">Group Sessions</a>
+    <a routerLink="account" class="nav-link">Account</a>
+  </nav>
+</header>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

@@ -1,17 +1,19 @@
 /* app.component.css */
+
 .home-container {
   display: flex;
   justify-content: space-between;
-  background-color: #f0f9ff;
-  padding: 20px;
+  background-color: #e1f1f6;
+  padding: 20px 50px;
   border-radius: 10px;
+  height: 100%;
 }
 
 .left-section {
   flex: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   padding-right: 20px;
 }
 
@@ -31,34 +33,45 @@ h3 {
   font-size: 14px;
   color: #333;
 }
+.session-details {
+  background-color: white;
+  height: 80%;
+  width: 80%;
+}
 
 .timer-container {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 #sessionTimer {
-  border: 10px solid #e0e0e0;
+  border: 30px solid #e0e0e0;
   border-radius: 50%;
   position: relative;
   z-index: 1;
+  width: 50%; /* Make the timer take full container width */
+  height: 50%; /* Make the timer take full container height */
 }
 
 .timer-text {
   position: absolute;
   z-index: 2;
-  font-size: 16px;
+  font-size: 20px;
   color: #333;
 }
 
 .action-buttons {
-  margin-top: 30px;
+  flex: 2;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: center;
+  justify-content: start;
+  gap: 25px;
+  width: 100%;
+  margin-top: 50px;
 }
 
 .action-button {
@@ -69,6 +82,7 @@ h3 {
   font-size: 14px;
   color: #333;
   cursor: pointer;
+  width: 300px;
 }
 
 .action-button:hover {
@@ -88,9 +102,10 @@ h3 {
 .right-section {
   flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding-left: 20px;
+  flex-direction: column;
 }
 
 .help-button {
@@ -100,6 +115,14 @@ h3 {
   font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
+  width: 140px;
+  height: 50px;
+}
+.emergency {
+  flex: 1;
+  display: flex;
+  justify-content: end;
+  width: 100%;
 }
 
 .help-button:hover {

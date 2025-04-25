@@ -55,4 +55,7 @@ export class AdminService {
   getAvailableSessionData(): Observable<any> {
     return this.http.get(`${this.apiUrl}/available-session-data`);
   }
+  getAdminData(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-admin-data`);
+  }
 }

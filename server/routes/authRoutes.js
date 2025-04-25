@@ -1,4 +1,7 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 const {
   loginStaff,
   loginPatient,
@@ -12,6 +15,7 @@ const {
   updateAdmin,
   updateTherapist,
   checkEmail,
+  findUserById,
 } = require("../controllers/authController");
 const {
   authenticateUser,
@@ -21,24 +25,24 @@ const {
 const router = express.Router();
 
 // Login Route
-router.post("/login", async (req, res) => {
-  const data = req.body;
-  if (!data.email || !data.password)
-    return res.status(400).json({ error: "Missing data" });
+// router.post("/login", async (req, res) => {
+//   const data = req.body;
+//   if (!data.email || !data.password)
+//     return res.status(400).json({ error: "Missing data" });
 
-  try {
-    const result = await loginPatient(data);
-    if (!result) return res.status(401).json({ error: "Invalid credentials" });
+//   try {
+//     const result = await loginPatient(data);
+//     if (!result) return res.status(401).json({ error: "Invalid credentials" });
 
-    res.json({
-      message: "Login successful",
-      token: result.token,
-      user: result.user,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+//     res.json({
+//       message: "Login successful",
+//       token: result.token,
+//       user: result.user,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 router.post("/login-staff", async (req, res) => {
   const data = req.body;
@@ -52,12 +56,44 @@ router.post("/login-staff", async (req, res) => {
     res.json({
       message: "Login successful",
       token: result.token,
-      user: result.user,
+      refreshToken: result.refreshToken,
+      role: result.roleOfUser
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.post('/refresh-token', async (req, res) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(400).json({ message: 'Refresh token is required' });
+  }
+
+  try {
+    // Validate refresh token
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET_KEY);
+
+    // Check if the refresh token is still valid (you may want to also store it in your database for validation)
+    const user = await findUserById(decoded.id,decoded.role); // Find user based on the ID from decoded token
+
+    // Generate a new access token
+    const newAccessToken = jwt.sign(
+      { ...user },
+      process.env.SECRET_KEY,
+      { expiresIn: '15m' } // New access token
+    );
+    console.log("token refreshed",token );
+    
+    res.json({ token: newAccessToken });
+
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    return res.status(403).json({ message: 'Invalid refresh token' });
+  }
+});
+
 
 // Registration Route
 router.post("/register", async (req, res) => {
@@ -197,6 +233,7 @@ router.put("/update-therapist", async (req, res) => {
 });
 
 router.put("/update-admin", async (req, res) => {
+  
   const data = req.body;
   if (
     !data.id ||
@@ -205,7 +242,6 @@ router.put("/update-admin", async (req, res) => {
     !data.Date_Of_Birth ||
     !data.Gender ||
     !data.phone_number ||
-    !data.Salary ||
     !data.role
   )
     return res.status(400).json({ error: "Missing data" });

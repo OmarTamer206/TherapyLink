@@ -187,6 +187,38 @@ async function get_workforce_data(id, type) {
   }
 }
 
+async function get_admin_data(id,type) {
+ 
+  try {
+
+   
+
+    const validRoles = ["admin", "manager"];
+
+    // Validate user type
+    if (!validRoles.includes(type)) {
+      return { success: false, message: "Invalid user type provided." };
+    }
+
+    const query = `
+      SELECT * FROM ${type}
+      WHERE id = ?
+    `;
+
+    const result = await executeQuery(query, [id]);
+
+    return { success: true, data: result };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error searching users.",
+      error: error.message,
+    };
+  }
+}
+
+
+
 async function get_booked_session_data() {
   try {
     const query = `
@@ -243,5 +275,6 @@ module.exports = {
   get_workforce_data,
   get_booked_session_data,
   get_available_sessions_data,
+  get_admin_data
   // process_refund,
 };

@@ -515,7 +515,7 @@ edit_old_email_verification:string = ""
       return false;
     }
 
-    if(!this.isEditing || this.password!==""){
+    if(!this.isEditing || this.password!=="" || this.confirmPassword!==""){
       if(this.password === '') {
         this.errorFlag = 'Password is required'
         return false;

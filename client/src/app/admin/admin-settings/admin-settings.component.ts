@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';  // Correct import
 import { NgModel } from '@angular/forms';      // Correct import for ngModel
 import { NgFor, NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
+import { AdminService } from '../../services/admin/admin.service';
 
 @Component({
   selector: 'app-admin-settings',
   standalone: true,
-  imports: [RouterModule, FormsModule,NgFor,NgIf],  // Add FormsModule here for ngModel to work
+  imports: [RouterModule, FormsModule,NgFor],  // Add FormsModule here for ngModel to work
   templateUrl: './admin-settings.component.html',
   styleUrls: ['./admin-settings.component.css']
 })
@@ -40,32 +41,80 @@ export class AdminSettingsComponent {
   email_State: string = 'not_taken'; // Default state
   edit_old_email_verification: string = ''; // Default state
   errorFlag: string = "";
+  successFlag: string = "";
 
-  constructor(private authService: AuthService) {}
+  user:any;
+
+  constructor(private authService: AuthService,private adminService: AdminService) {
+
+      this.adminService.getAdminData().subscribe((response)=>{
+      console.log("Admin data: ", response.data);
+
+      this.user = response.data[0];
+
+      const birthDate = new Date(this.user.Date_Of_Birth);
+
+    // Extract year, month, and day
+      this.birthYear = birthDate.getFullYear();
+      this.birthMonth = this.months[birthDate.getMonth()] // Get the short name of the month
+      this.birthDay = birthDate.getDate();
+        console.log(this.months[birthDate.getMonth()]);
 
 
 
-editProfile(){
+      this.name = this.user.Name;
 
-  this.formValidator()
+      this.phone = this.user.phone_number;
+      this.email = this.user.Email;
+      this.edit_old_email_verification= this.user.Email
+      this.gender = this.user.Gender
+
+
+
+      },(error)=>{
+        console.error("Error fetching admin data: ", error);
+      })
+
+  }
+
+
+
+
+
+
+async editProfile(){
+
+  if(await this.formValidator() === false){
+    console.error('Form validation failed');
+    return; // Exit if validation fails
+  }
 
   let data ={
+    id:this.user.id,
     name:this.name,
     email:this.email,
     password:this.password,
     Date_Of_Birth: `${this.birthYear}-${(this.months.indexOf(`${this.birthMonth}`)+ 1)}-${this.birthDay}`,
     Gender:this.gender,
     phone_number:this.phone,
-    profile_pic:this.profile_pic
+    profile_pic:this.profile_pic,
+    role:"admin"
   };
 
   this.authService.updateAdmin(data).subscribe((response)=>{
     console.log("Admin updated successfully:", response);
     // Handle success response here, e.g., show a success message or redirect
+    this.successFlag = `profile updated successfully!` // Set success message
+    this.edit_old_email_verification = this.email // Update the old email verification to the new one
+      setTimeout(()=>{
+        this.successFlag = ""; // Clear success message after 3 seconds
+      },3000)
   }
   , (error) => {
     console.error("Error updating Admin: ", error);
   });
+
+
 
 }
 
@@ -105,7 +154,7 @@ editProfile(){
       return false;
     }
 
-    if(this.password!==""){
+    if(this.password!=="" || this.confirmPassword!==""){
       if(this.password === '') {
         this.errorFlag = 'Password is required'
         return false;

@@ -3,6 +3,8 @@
     <!-- Add profile-image class to ensure the image is circular -->
     <img src="doctor.jpeg" alt="settings" class="profile-image" />
     <h3 class="doctor-name">Yasser Maged</h3>
+    <span>{{errorFlag}}</span>
+    <span>{{successFlag}}</span>
   </div>
 
   <form class="doctor-form">
@@ -66,17 +68,17 @@
       <label for="date">Date Of Birth</label>
     <div class="date-of-birth">
 
-      <select [(ngModel)]="birthMonth" id="date" class="input-field" required>
+      <select [(ngModel)]="birthMonth" name="birthMonth"  class="input-field" required>
         <option value="" disabled selected>MM</option>
         <option *ngFor="let month of months" [value]="month">
           {{ month }}
         </option>
       </select>
-      <select [(ngModel)]="birthDay" class="input-field" required>
+      <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
         <option value="" disabled selected>DD</option>
         <option *ngFor="let day of days" [value]="day">{{ day }}</option>
       </select>
-      <select [(ngModel)]="birthYear" class="input-field" required>
+      <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
         <option value="" disabled selected>YYYY</option>
         <option *ngFor="let year of years" [value]="year">
           {{ year }}
@@ -89,7 +91,7 @@
 
       <label for="gender">Gender</label>
 
-      <select [(ngModel)]="gender" id="gender" class="input-field gender" required>
+      <select [(ngModel)]="gender" id="gender" name="gender" class="input-field gender" required>
         <option value="" disabled selected>Gender</option>
         <option value="Male" selected>Male</option>
         <option value="Female">Female</option>
@@ -127,6 +129,6 @@
 
 </form>
 <div class="form-button">
-  <button class="btn btn-primary">Save</button>
+  <button class="btn btn-primary" (click)="editProfile()">Save</button>
 </div>
 </div>

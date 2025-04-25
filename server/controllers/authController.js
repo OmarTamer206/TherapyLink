@@ -4,35 +4,36 @@ const { executeQuery } = require("./databaseController");
 require("dotenv").config();
 
 // User Login
-async function loginPatient(data) {
-  try {
-    const users = await executeQuery("SELECT * FROM patient WHERE email = ?", [
-      data.email,
-    ]);
-    if (users.length === 0) return null;
+// async function loginPatient(data) {
+//   try {
+//     const users = await executeQuery("SELECT * FROM patient WHERE email = ?", [
+//       data.email,
+//     ]);
+//     if (users.length === 0) return null;
 
-    const user = users[0];
-    const passwordMatch = await bcrypt.compare(
-      data.password,
-      users[0].Password
-    );
-    if (!passwordMatch) return null;
+//     const user = users[0];
+//     const passwordMatch = await bcrypt.compare(
+//       data.password,
+//       users[0].Password
+//     );
+//     if (!passwordMatch) return null;
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+//     const token = jwt.sign(
+//       { id: user.id, email: user.email },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "1h" }
+//     );
 
-    return { token, user };
-  } catch (error) {
-    console.error("Login Error:", error);
-    throw new Error("Login failed");
-  }
-}
+//     return { token, user };
+//   } catch (error) {
+//     console.error("Login Error:", error);
+//     throw new Error("Login failed");
+//   }
+// }
 
 async function loginStaff(data) {
   const staffRoles = [
+    "patient",
     "doctor",
     "life_coach",
     "emergency_team",
@@ -41,14 +42,18 @@ async function loginStaff(data) {
   ];
   try {
     let users;
-
+    let roleOfUser;
     for (const role in staffRoles) {
       users = await executeQuery(
         "SELECT * FROM " + staffRoles[role] + " WHERE email = ?",
         [data.email]
       );
 
-      if (users.length !== 0) break;
+      if (users.length !== 0) 
+      {
+        roleOfUser = staffRoles[role]
+        break;
+      }
     }
 
     if (users.length === 0) return null;
@@ -60,13 +65,23 @@ async function loginStaff(data) {
     );
     if (!passwordMatch) return null;
 
+    const { password, ...userWithoutPassword } = user;
+
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { ...userWithoutPassword, role: roleOfUser },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    return { token, user };
+    const refreshToken = jwt.sign(
+      { ...userWithoutPassword , role: roleOfUser },
+      process.env.REFRESH_SECRET_KEY,
+      { expiresIn: '30d' } // Refresh token expires in 30 days
+    );
+
+    console.log(roleOfUser);
+    
+    return { token, refreshToken , roleOfUser };
   } catch (error) {
     console.error("Login Error:", error);
     throw new Error("Login failed");
@@ -474,8 +489,29 @@ async function checkEmail(data) {
   }
 }
 
+async function findUserById(id,role){
+  
+  try {
+    let users;
+    
+   
+      users = await executeQuery(
+        "SELECT * FROM " + role + " WHERE id = ?",
+        [id]
+      );
+
+
+
+    
+   
+  } catch (error) {
+    console.error("Error Getting User:", error);
+    throw new Error("Getting User failed");
+  }
+}
+
 module.exports = {
-  loginPatient,
+  
   loginStaff,
   registerPatient,
   registerAdmin,
@@ -487,4 +523,5 @@ module.exports = {
   updateEmergencyTeamMember,
   deleteUser,
   checkEmail,
+  findUserById,
 };

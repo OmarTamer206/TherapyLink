@@ -1,4 +1,7 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 const {
   get_total_doctors_count,
   get_total_appointment_count,
@@ -9,6 +12,7 @@ const {
   get_booked_session_data,
   get_available_sessions_data,
   get_workforce_data,
+  get_admin_data,
 } = require("../controllers/adminController");
 
 const { authorizeRoles } = require("../middlewares/authMiddlewares");
@@ -106,6 +110,23 @@ router.get("/booked-session-data", async (req, res) => {
 router.get("/available-session-data", async (req, res) => {
   try {
     const result = await get_available_sessions_data();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/get-admin-data", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+  
+  try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    
+    const result = await get_admin_data(decoded.id,decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

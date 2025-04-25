@@ -54,6 +54,36 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'patient',
+    redirectTo: 'patient/home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'doctor',
+    redirectTo: 'doctor/dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'life-coach',
+    redirectTo: 'life-coach/dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'emergency-team',
+    redirectTo: 'emergency-team/emergency-team-dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'admin',
+    redirectTo: 'admin/dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'manager',
+    redirectTo: 'manager/dashboard',
+    pathMatch: 'full'
+  },
+  {
     path: 'login',
     component: LoginComponent,
   },

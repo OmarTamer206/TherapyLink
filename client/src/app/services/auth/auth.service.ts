@@ -11,9 +11,9 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   // User Login
-  login(data: { email: string, password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, data);
-  }
+  // login(data: { email: string, password: string }): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/login`, data);
+  // }
 
   // Login for staff (doctors, managers, etc.)
   loginStaff(data: { email: string, password: string }): Observable<any> {
@@ -67,4 +67,14 @@ export class AuthService {
   checkEmail(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/check-email`, data);
   }
+
+  refreshToken(refreshToken:any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/refresh-token`, refreshToken);
+  }
+  logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    // Redirect the user to the login page or handle accordingly
+  }
+
 }

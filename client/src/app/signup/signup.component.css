@@ -117,3 +117,20 @@ label {
   display: flex;
   flex-direction: column;
 }
+.two-side label {
+  margin-bottom: 10px;
+}
+
+.date-of-birth  {
+  display: flex;
+  gap: 15px; /* Add space between the fields */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  width: 100%; /* Full width to make it responsive */
+  justify-content: space-between;
+  height: 50px;
+  color: black;
+}
+
+.date-of-birth select {
+  width: 33%;
+}

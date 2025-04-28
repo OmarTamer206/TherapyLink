@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-life-coach',
@@ -9,5 +10,14 @@ import { RouterModule } from '@angular/router';
   styleUrl: './life-coach.component.css'
 })
 export class LifeCoachComponent {
+  constructor(private router: Router,private authService : AuthService){
 
+  }
+
+logout(){
+
+  this.authService.logout()
+  this.router.navigate(['/login']);
+
+}
 }

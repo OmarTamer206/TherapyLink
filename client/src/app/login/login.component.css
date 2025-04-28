@@ -160,3 +160,12 @@ label {
   font-size: 14px; /* Smaller link font size */
   cursor: pointer;
 }
+
+.errorFlag{
+  color: red;
+  font-size: 1.2em;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: center;
+
+}

@@ -15,6 +15,7 @@ export class LoginComponent {
 
 email: string = '';
 password: string = '';
+errorFlag: string = '';
 
 
   constructor(private router: Router , private authService:AuthService) {}
@@ -36,6 +37,7 @@ password: string = '';
           this.storeTokens(response.token, response.refreshToken);
 
           if(response.role === "patient"){
+            this.router.navigate(['/patient/home']);
 
           }
           else if(response.role === "doctor"){
@@ -62,6 +64,7 @@ password: string = '';
         },
         (error) => {
           console.error('Login failed', error);
+          this.errorFlag = 'Invalid email or password'; // Set error message
           // Handle login error, e.g., show an error message
         }
       );

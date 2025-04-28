@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [RouterModule,CommonModule ,FormsModule , NgFor],
+  imports: [RouterModule ,FormsModule , NgFor],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
@@ -16,8 +16,7 @@ export class SignupComponent {
   // Define the form model
   fullName: string = '';
   gender: string = 'Male';
-  age: number = 0;
-  marital_status: string = 'single';
+  marital_status: string = 'Single';
   phoneNumber: string = '';
   email: string = '';
   password: string = '';
@@ -38,16 +37,13 @@ export class SignupComponent {
 
 
 
-  constructor(private router: Router , private authService: AuthService) {}
+  constructor(private router: Router , private authService: AuthService) {
 
-  ngOnInit() {
-    // Initialize values in ngOnInit to make sure they are set before the view is rendered.
-    this.birthMonth = 'Jan';
-    this.birthDay = 1;
-    this.birthYear = 2000;
-    this.gender = 'Male';
-    this.marital_status = '';
   }
+
+
+    // Initialize values in ngOnInit to make sure they are set before the view is rendered.
+
   goToLogin() {
     this.router.navigate(['/login']);
   }
@@ -72,18 +68,24 @@ export class SignupComponent {
       Marital_Status:this.marital_status
     };
 
+
+    this.authService.registerPatient(data).subscribe(
+       (response) => {
+        console.log("Registration response: ", response);
+
+          // Store tokens in localStorage or cookies
+          this.router.navigate(['/login']);
+
+      },
+      (error) => {
+        console.error("Error during registration: ", error);
+        this.errorFlag = 'Error during registration!';
+      }
+    );
+
+
   }
 
-  storeTokens(accessToken:any, refreshToken:any) {
-    // Store the access token in memory or localStorage (depending on security preference)
-    localStorage.setItem('accessToken', accessToken);
-console.log("Access Token: ", accessToken);
-console.log("Refresh Token: ", refreshToken);
-
-
-    // Store the refresh token in a HttpOnly cookie (ideal for security)
-    document.cookie = `refreshToken=${refreshToken}; HttpOnly;  SameSite=Strict;`;
-  }
 
 
 

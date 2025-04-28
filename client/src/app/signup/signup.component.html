@@ -16,6 +16,7 @@
 
   <div class="right-section">
     <h2>Welcome to TherapyLink!</h2>
+    <span class="errorFlag">{{errorFlag}}</span>
     <form (submit)="onSubmit()" class="signup-form">
       <label for="full-name">Full Name</label>
       <div class="form-group">
@@ -34,49 +35,39 @@
       <label for="full-name">Date Of Birth</label>
       <div class="date-of-birth">
 
-        <select [(ngModel)]="birthMonth" class="input-field" required>
-          <option value="" disabled>Select Month</option>
-          <option *ngFor="let month of months" [value]="month" [selected]="month === birthMonth">{{ month }}</option>
+        <select [(ngModel)]="birthMonth" name="birthMonth"  class="input-field" required>
+          <option value="" disabled selected>MM</option>
+          <option *ngFor="let month of months" [value]="month">
+            {{ month }}
+          </option>
         </select>
-
-        <select [(ngModel)]="birthDay" class="input-field" required>
-          <option value="" disabled>Select Day</option>
-          <option *ngFor="let day of days" [value]="day" [selected]="day === birthDay">{{ day }}</option>
+        <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
+          <option value="" disabled selected>DD</option>
+          <option *ngFor="let day of days" [value]="day">{{ day }}</option>
         </select>
-
-        <select [(ngModel)]="birthYear" class="input-field" required>
-          <option value="" disabled>Select Year</option>
-          <option *ngFor="let year of years" [value]="year" [selected]="year === birthYear">{{ year }}</option>
+        <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
+          <option value="" disabled selected>YYYY</option>
+          <option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </option>
         </select>
 
       </div>
 
       <label for="gender">Gender</label>
-      <div class="form-group">
-        <select id="gender" class="input-field" name="gender" [(ngModel)]="gender" required>
-          <option  value="Male" selected>Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
 
       <div class="form-group two-side">
-        <div>
-          <label for="age">Age</label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            [(ngModel)]="age"
-            class="input-field"
-            placeholder="Age"
-            required
-          />
+
+        <div class="form-group">
+          <select id="gender" class="input-field" name="gender" [(ngModel)]="gender" required>
+            <option  value="Male" >Male</option>
+            <option value="Female">Female</option>
+          </select>
         </div>
         <div>
           <label for="status">Martial Status</label>
           <select id="status" class="input-field" name="marital_status" [(ngModel)]="marital_status" required>
-            <option value="">Select Martial Status</option>
-            <option value="Single">Single</option>
+              <option value="Single">Single</option>
             <option value="Married">Married</option>
             <option value="Divorced">Divorced</option>
           </select>

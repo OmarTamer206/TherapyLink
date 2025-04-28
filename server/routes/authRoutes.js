@@ -151,7 +151,7 @@ router.post("/register-admin", async (req, res) => {
     !data.Date_Of_Birth ||
     !data.Gender ||
     !data.phone_number ||
-    !data.Salary ||
+    !data.salary ||
     !data.role
   )
     return res.status(400).json({ error: "Missing data" });

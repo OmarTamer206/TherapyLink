@@ -48,16 +48,28 @@ export class ManagerService {
 
   // Generate report based on factor and date range
   generateReport(
-    factor: string,
     report_type: string,
     date_from: string,
     date_to: string
   ): Observable<any> {
     const params = new HttpParams()
-      .set('factor', factor)
       .set('report_type', report_type)
       .set('date_from', date_from)
       .set('date_to', date_to);
     return this.http.get(`${this.apiUrl}/report`, { params });
+  }
+  getManagerData(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-manager-data`);
+  }
+
+  getAdmin(id: number): Observable<any> {
+    const params = new HttpParams().set('id', id);
+    return this.http.get(`${this.apiUrl}/get-admin-data`, { params });
+  }
+  getTotalCoachesCount(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/total-coaches-count`);
+  }
+  getTotalEmergencyTeamCount(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/total-emergency-team-count`);
   }
 }

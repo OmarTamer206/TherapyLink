@@ -46,6 +46,7 @@ import { LifeCoachPageComponent } from './patient/life-coach-page/life-coach-pag
 import { OldSessionComponent } from './patient/old-session/old-session.component';
 import { SessionPageComponent } from './patient/session-page/session-page.component';
 import { SessionsLogComponent } from './patient/sessions-log/sessions-log.component';
+import { ManagerSettingsComponent } from './manager/manager-settings/manager-settings.component';
 
 export const routes: Routes = [
   {
@@ -269,6 +270,10 @@ export const routes: Routes = [
         path: 'reports-generator',
         component: ManagerReportsGeneratorComponent,
       },
+      {
+        path: "edit-profile",
+        component:ManagerSettingsComponent
+      }
     ],
   },
   {

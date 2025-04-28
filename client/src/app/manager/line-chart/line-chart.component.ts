@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, Input, SimpleChanges } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 
 @Component({
@@ -11,6 +11,17 @@ import { Chart, registerables } from 'chart.js';
 export class LineChartComponent implements AfterViewInit {
   @ViewChild('lineCanvas') private lineCanvas!: ElementRef<HTMLCanvasElement>;
   private lineChart!: Chart;
+
+    @Input({ required: true }) revenue!: any;
+    @Input({ required: true }) expenses!: any;
+
+      ngOnChanges(changes: SimpleChanges): void {
+        if (changes['revenue'] || changes['expenses']) {
+          // Handle the new data here
+          console.log('Data received:', this.revenue);
+          console.log('Data received:', this.expenses);
+        }
+      }
 
   constructor() {
     // Register Chart.js components globally
@@ -44,14 +55,14 @@ export class LineChartComponent implements AfterViewInit {
             label: 'Revenue',
             borderColor: '#00B8B8',
             backgroundColor: 'rgba(0, 184, 184, 0.1)',
-            data: [100, 120, 130, 140, 150, 160, 140, 130, 110, 120, 140, 160],
+            data: this.revenue,
             fill: true,
           },
           {
             label: 'Expenses',
             borderColor: '#000000',
             backgroundColor: 'rgba(0, 0, 0, 0.1)',
-            data: [90, 100, 110, 120, 130, 140, 120, 110, 100, 110, 130, 140],
+            data: this.expenses,
             fill: true,
           },
         ],

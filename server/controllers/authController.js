@@ -119,6 +119,9 @@ async function registerAdmin(data) {
   if (!["admin", "manager"].includes(data.role))
     throw new Error("Invalid role. Please choose 'admin' or'manager'");
 
+
+  
+
   try {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     await executeQuery(
@@ -132,7 +135,7 @@ async function registerAdmin(data) {
         data.Date_Of_Birth,
         data.Gender,
         data.phone_number,
-        data.Salary,
+        data.salary,
         data.Profile_pic_url || null,
       ]
     );

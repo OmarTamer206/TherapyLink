@@ -136,7 +136,7 @@ async function get_patient_visit_data_by_month() {
 
 async function search_workforce(name, type) {
   try {
-    const validRoles = ["doctor", "life_coach", "emergency_team"];
+    const validRoles = ["doctor", "life_coach", "emergency_team" ];
 
     // Validate user type
     if (!validRoles.includes(type)) {
@@ -265,6 +265,7 @@ async function get_available_sessions_data() {
     };
   }
 }
+
 module.exports = {
   get_total_doctors_count,
   get_total_appointment_count,
@@ -275,6 +276,6 @@ module.exports = {
   get_workforce_data,
   get_booked_session_data,
   get_available_sessions_data,
-  get_admin_data
+  get_admin_data,
   // process_refund,
 };

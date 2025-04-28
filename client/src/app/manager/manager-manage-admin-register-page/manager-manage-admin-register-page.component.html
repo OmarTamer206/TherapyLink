@@ -1,133 +1,196 @@
-<!-- app.component.html -->
-<div class="form-section selector">
-  <label for="register-edit">Registering / Editing *</label>
-  <select id="register-edit" class="input-field" (change)="checkState($event)">
-    <option value="register">Register</option>
-    <option value="edit">Edit</option>
-  </select>
-</div>
-<div class="form-container" [ngClass]="registerElementClass">
-  <div class="form-section">
-    <label for="first-name">Name *</label>
-    <div class="namediv">
-      <input
-        type="text"
-        id="first-name"
+<div class="main-container">
+  <!-- Left Panel: Job Description and Registering/Editing -->
+  <div class="left-panel">
+
+
+    <div class="form-section selector">
+      <label for="register-edit">Registering / Editing *</label>
+      <select
+        id="register-edit"
         class="input-field"
-        placeholder="First Name"
-      />
-      <input
-        type="text"
-        id="last-name"
-        class="input-field"
-        placeholder="Last Name"
-      />
-    </div>
-  </div>
-
-  <div class="form-section">
-    <label for="email">Email *</label>
-    <input
-      type="email"
-      id="email"
-      class="input-field"
-      placeholder="Example@Gmail.Com"
-    />
-  </div>
-
-  <div class="form-section">
-    <label for="phone">Phone *</label>
-    <input
-      type="tel"
-      id="phone"
-      class="input-field"
-      placeholder="+20 30100214231"
-    />
-  </div>
-
-  <div class="form-section">
-    <label for="dob">Date Of Birth *</label>
-    <div class="dob-container">
-      <select id="dob-month" class="dob-input">
-        <option>MM</option>
-        <option>01</option>
-        <option>02</option>
-        <!-- Add months -->
-      </select>
-      <select id="dob-day" class="dob-input">
-        <option>DD</option>
-        <option>01</option>
-        <option>02</option>
-        <!-- Add days -->
-      </select>
-      <select id="dob-year" class="dob-input">
-        <option>YYYY</option>
-        <option>1990</option>
-        <option>1991</option>
-        <!-- Add years -->
+        [disabled]="editingProfileState"
+        (change)="checkState($event)"
+      >
+        <option value="register">Register</option>
+        <option value="edit">Edit</option>
       </select>
     </div>
   </div>
 
-  <div class="form-section">
-    <label for="password">Password *</label>
-    <input
-      type="password"
-      id="password"
-      class="input-field"
-      placeholder="************"
-    />
-  </div>
+  <!-- Right Panel: Search, Name, and Pictures -->
+  <div class="form-container">
+    <span  class="errorSpan" [hidden]="errorFlag=='' ">{{errorFlag}}</span>
+    <span class="successSpan" [hidden]="successFlag==''">{{successFlag}}</span>
+    <!-- Register Section -->
+    <div *ngIf="!isEditing">
+      <h3>Register New Admin</h3>
 
-  <div class="form-section">
-    <label for="confirm-password">Confirm Password *</label>
-    <input
-      type="password"
-      id="confirm-password"
-      class="input-field"
-      placeholder="************"
-    />
-  </div>
+      <!-- Doctor and Life Coach Registration Form -->
+      <div
+        *ngIf="!isEditing"
+      >
+        <div class="input-group">
+          <!-- Reordered fields as requested -->
+          <div class="name-section">
+            <input
+              type="text"
+              placeholder="Name"
+              [(ngModel)]="name"
+            />
+          </div>
 
-  <div class="form-section">
-    <label for="salary">Salary *</label>
-    <input
-      type="text"
-      id="salary"
-      class="input-field"
-      placeholder="Example@Gmail.Com"
-    />
-  </div>
+          <!-- Date of Birth Section -->
+          <div class="date-of-birth">
+            <select [(ngModel)]="birthMonth" class="input-field" required>
+              <option value="" disabled selected>MM</option>
+              <option *ngFor="let month of months" [value]="month">
+                {{ month }}
+              </option>
+            </select>
+            <select [(ngModel)]="birthDay" class="input-field" required>
+              <option value="" disabled selected>DD</option>
+              <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+            </select>
+            <select [(ngModel)]="birthYear" class="input-field" required>
+              <option value="" disabled selected>YYYY</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </div>
 
-  <button class="add-button">Add</button>
-</div>
+          <input type="tel" placeholder="Phone Number" [(ngModel)]="phone" />
+          <input type="email" placeholder="Email" [(ngModel)]="email" />
+          <input
+            type="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            [(ngModel)]="confirmPassword"
+          />
 
-<div class="edit-section" [ngClass]="editElementClass">
-  <!-- app.component.html -->
-  <div class="manage-admin-container">
-    <div class="filters-container">
+          <input
+            type="text"
+            placeholder="Salary"
+            [(ngModel)]="salary"
+          />
+          <select [(ngModel)]="gender" class="input-field" required>
+            <option value="" disabled >Gender</option>
+            <option value="Male" selected>Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <button (click)="addAdmin()">Add</button>
+        </div>
+      </div>
+
+      <!-- Emergency Team Registration Form -->
+
+    </div>
+
+    <!-- Edit Section -->
+    <div *ngIf="isEditing && !editingProfileState">
+      <h3>Edit Admin Information</h3>
+      <!-- Search Bar -->
       <div class="search-container">
-        <label for="search">Search</label>
         <input
           type="text"
           id="search"
+          (keyup)="searchAdmin()"
           class="input-field"
-          placeholder="Search"
+          placeholder="Search by name"
+          [(ngModel)]="searchQuery"
         />
+      </div>
+
+      <div class="admin-list">
+        <div *ngFor="let result of results" class="admin-item">
+          <div class="admin-info">
+            <img src="profile png.png" alt="Workforce Image" class="admin-avatar" />
+            <div class="admin-name">{{ result.Name }}</div>
+          </div>
+          <div class="admin-actions">
+            <button class="edit-button" (click)="onEdit(result.id)">🖊️</button>
+            <!-- Added Delete Button -->
+            <button class="delete-button" (click)="onDelete(result.id)">
+              ❌
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="admin-list">
-      <div *ngFor="let admin of admins" class="admin-item">
-        <div class="admin-info">
-          <img src="profile png.png" alt="Admin Image" class="admin-avatar" />
-          <div class="admin-name">{{ admin.name }}</div>
-        </div>
-        <div class="admin-actions">
-          <button class="edit-button">🖊️</button>
-          <button class="delete-button">🗑️</button>
+    <div *ngIf="isEditing && editingProfileState">
+
+      <div>
+        <div class="input-group">
+          <!-- Reordered fields as requested -->
+          <div class="name-section">
+            <input
+              type="text"
+              placeholder="Name"
+              [(ngModel)]="name"
+            />
+          </div>
+
+          <!-- Date of Birth Section -->
+          <div class="date-of-birth">
+            <select [(ngModel)]="birthMonth" class="input-field" required>
+              <option value="" disabled selected>MM</option>
+              <option *ngFor="let month of months" [value]="month">
+                {{ month }}
+              </option>
+            </select>
+            <select [(ngModel)]="birthDay" class="input-field" required>
+              <option value="" disabled selected>DD</option>
+              <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+            </select>
+            <select [(ngModel)]="birthYear" class="input-field" required>
+              <option value="" disabled selected>YYYY</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+
+          <input type="tel" placeholder="Phone Number" [(ngModel)]="phone" />
+          <input type="email" placeholder="Email" [(ngModel)]="email" />
+          <input
+            type="password"
+            placeholder="Password (if left blank then the password will not be changed)"
+            [(ngModel)]="password"
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password "
+            [(ngModel)]="confirmPassword"
+          />
+
+          <input
+            type="text"
+            placeholder="Salary"
+            [(ngModel)]="salary"
+          />
+          <select [(ngModel)]="gender" class="input-field" required>
+            <option value="" disabled selected>Gender</option>
+            <option value="Male" selected>Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <div class="buttonWrapper">
+						<button class="redButton" (click)="stopEditing()">Cancel</button>
+						<button (click)="submitEdit()">Submit Edit</button>
+					</div>
         </div>
       </div>
+
+
     </div>
+
+
+
+
+
   </div>
 </div>

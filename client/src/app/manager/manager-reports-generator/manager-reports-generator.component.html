@@ -1,29 +1,47 @@
 <!-- app.component.html -->
-<div class="report-container">
-  <div class="chart-container">
-    <canvas id="reportChart"></canvas>
+@if (!loading) {
+  <div  class="spinner-overlay">
+    <div class="spinner"></div>
   </div>
+}
+@else {
 
-  <div class="query-options">
-    <div class="query-side">
-      <label for="query-select">Query Options</label>
-      <select id="query-select" class="input-field">
-        <option>Emergency Requests</option>
-        <option>Appointments</option>
-        <option>Revenue</option>
-      </select>
+  <div class="report-container">
+    <div class="chart-container">
+      <canvas id="reportChart"></canvas>
     </div>
 
-    <div class="date-range">
-      <div>
-        <label for="start-date">From</label>
-        <input type="date" id="start-date" class="input-field" />
+    <div class="query-options">
+      <div class="query-side">
+        <label for="query-select">Query Options</label>
+        <select id="query-select" name="queryOption" (change)="generateReport()" [(ngModel)]="queryOption" class="input-field">
+          <option>Revenue</option>
+          <option>Salaries Expenses</option>
+          <option>Total Profit</option>
+          <option>Average Patients Daily Use Count</option>
+          <option>Number of doctors By Specialization</option>
+          <option>Number of life coach By Specialization</option>
+          <option>Number of emergency team we have</option>
+          <option>Emergency Requests </option>
+          <option>Therapy type (ex. Couple Therapy, Life Coaching)</option>
+          <option>Preferred communication methods (chat, video, call)</option>
+          <option>Number of Sessions of Doctors</option>
+          <option>Number of Sessions of Life Coaches</option>
+        </select>
       </div>
 
-      <div>
-        <label for="end-date">To</label>
-        <input type="date" id="end-date" class="input-field" />
+      <div class="date-range">
+        <div>
+          <label for="start-date">From</label>
+          <input type="date" id="start-date" name="dateFrom" (change)="generateReport()" [(ngModel)]="dateFrom" class="input-field" />
+        </div>
+
+        <div>
+          <label for="end-date">To</label>
+          <input type="date" id="end-date" name="dateTo" (change)="generateReport()" [(ngModel)]="dateTo" class="input-field" />
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+}

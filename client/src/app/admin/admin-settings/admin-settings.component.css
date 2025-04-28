@@ -1,111 +1,179 @@
+/* Main container */
 .form-container {
   display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
+  flex-direction: row;  /* Change to row for horizontal alignment */
+  justify-content: center;  /* Center all items horizontally */
+  align-items: center;  /* Align items vertically in the center */
   height: 100vh;
-  background-color: #f0f8ff;  /* Light background to match the design */
-  gap: 30px;
-  padding: 20px;  /* Add some padding around the container */
+  background-color: #e6f7ff;  /* Softer background for a more modern look */
+  gap: 40px;
+  padding: 30px;  /* Increased padding for better spacing */
   width: 100%;
-
-
 }
 
-.left , .right{
-  height: 450px;
+/* Left and Right sections */
+.left, .right {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;  /* Ensure elements are centered vertically */
   align-items: center;
-
+  height: auto;  /* Allow content to adjust based on screen size */
 }
 
-form{
+/* Form container */
+form {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 50px;  /* Increased gap between sections */
   width: 100%;
-
+  flex-wrap: nowrap;  /* Prevent items from wrapping */
 }
 
+/* Profile styling */
 .profile {
   text-align: center;
-  margin-right: 40px;  /* Adjust space between the image and form */
+  margin-right: 50px;  /* Increased margin to give more space around the profile */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  /* Ensure profile elements are centered */
 }
 
 .profile-image {
-  width: 150px;  /* Set the width of the image */
-  height: 150px;  /* Set the height of the image */
-  border-radius: 50%;  /* Make the image circular */
-  object-fit: cover;  /* Ensures the image fits within the circle without distortion */
-  border: 3px solid #007bff;  /* Optional: Add a border around the image */
+  width: 180px;  /* Slightly larger profile image */
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #00b3b3;  /* Fresh border color */
+  box-shadow: 0 0 10px rgba(0, 179, 179, 0.4);  /* Soft shadow for emphasis */
 }
 
 .doctor-name {
-  font-size: 2.2rem;  /* Increase font size for the doctor's name */
-  font-weight: bold;
-  margin-top: 20px;  /* Adjust spacing between the name and image */
+  font-size: 2.4rem;  /* Slightly larger text */
+  font-weight: 600;  /* Slightly lighter weight for the name */
+  margin-top: 20px;
+  color: #005f5f;  /* Rich, dark color for better contrast */
+}
+
+/* Form container */
+.doctor-form {
+  padding: 35px;
+  background-color: #ffffff;  /* White background for the form for a clean look */
+  border-radius: 10px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Soft shadow around the form */
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 30px;  /* Increased spacing for better separation */
+  display: flex;
+  flex-direction: column;  /* Stack label and input fields vertically */
+  align-items: flex-start;  /* Align items to the left */
+}
+
+/* Label styling */
+label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #444;  /* Darker color for labels */
+}
+
+/* Input fields */
+.form-control {
+  width: 100%;
+  padding: 16px;  /* Slightly increased padding */
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 10px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;  /* Smooth transition for focus effect */
+}
+
+/* Input focus effect */
+.form-control:focus {
+  border-color: #00b3b3;  /* Highlight the input fields with a teal color when focused */
+  outline: none;
+}
+
+/* Submit button */
+.submit-btn {
+  background-color: #00b3b3;  /* Teal background for button */
+  color: #ffffff;  /* White text for contrast */
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;  /* Smooth transition for hover effect */
+}
+
+.submit-btn:hover {
+  background-color: #009999;  /* Darken the button color on hover */
+}
+
+/* Date of Birth and Gender section styling */
+.date-of-birth, .gender {
+  display: flex;
+  gap: 20px;  /* Increased gap */
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: space-between;
+  height: 50px;  /* Increased height for better alignment */
   color: #333;
 }
 
-.doctor-form {
-  padding: 30px;
-  border-radius: 8px;
-  width: 100%;
-}
-
-.form-group {
-  margin-bottom: 25px;  /* Increase space between fields */
-}
-
-label {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 8px;  /* Increase space below the label */
-  display: block;
-}
-
-.form-control {
-  width: 100%;
-  padding: 14px;  /* Increased padding to make input fields larger */
-  font-size: 1rem;
-  border: 1px solid #ccc;
+.date-of-birth select, .gender select {
+  width: 48%;  /* Adjusted width to make the fields evenly spaced */
+  padding: 12px;
   border-radius: 4px;
-  margin-top: 8px;  /* Increase spacing between label and input */
-  box-sizing: border-box;  /* Ensures padding doesn't affect width */
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;  /* Light background for select fields */
+  transition: border-color 0.3s ease-in-out;
 }
 
-.submit-btn {
-  background-color: transparent;  /* Remove the background color */
-  color: transparent;  /* Make the text transparent */
-  border: none;  /* Remove the border */
-  padding: 0;  /* Remove padding */
-  width: 100%;
-  margin-top: 20px;
+.date-of-birth select:focus, .gender select:focus {
+  border-color: #00b3b3;  /* Highlight select fields on focus */
 }
 
-
-/* Date of Birth section styling (Make them appear in a single row) */
-.date-of-birth , .gender {
-  display: flex;
-  gap: 15px; /* Add space between the fields */
-  flex-wrap: nowrap; /* Prevent wrapping */
-  width: 100%; /* Full width to make it responsive */
-  justify-content: space-between;
-  height: 40px;
-  color: black;
-}
-
-.date-of-birth select {
-  width: 33%;
-}
-
-gender{
+/* Wrap styling */
+.dateWrap, .genderWrap {
   width: 100%;
 }
 
-.dateWrap , .genderWrap{
-  width: 100%;
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .form-container {
+    gap: 30px;
+    padding: 20px;
+    flex-direction: column;  /* Stack all items vertically for smaller screens */
+  }
+
+  .left, .right {
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;  /* Reduced margin for smaller screens */
+  }
+
+  .profile {
+    margin-right: 0;
+    margin-bottom: 20px;  /* Allow profile image to stack above the form */
+    justify-content: flex-start;  /* Align profile to the top of the container */
+  }
+
+  .date-of-birth, .gender {
+    flex-direction: column;  /* Stack fields vertically on small screens */
+    align-items: flex-start;
+  }
+
+  .date-of-birth select, .gender select {
+    width: 100%;  /* Full-width select fields for mobile */
+  }
 }

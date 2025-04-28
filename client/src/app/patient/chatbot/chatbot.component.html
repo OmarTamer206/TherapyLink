@@ -1,4 +1,5 @@
 <!-- app.component.html -->
+@if(!chatButtonState){
 <div class="chatbot-container">
   <div class="chatbot-content">
     <div class="left-image">
@@ -11,7 +12,33 @@
         "Your personal assistant for mental well-being is ready to listen,
         guide, and connect you to the support your need."
       </p>
-      <button class="start-chatting-btn">Start Chatting</button>
+      <button class="start-chatting-btn" (click)="changeChatState()">
+        Start Chatting
+      </button>
     </div>
   </div>
 </div>
+} @else {
+<!-- app.component.html -->
+<div class="chatbot-container">
+  <div class="chatbot-content">
+    <div class="messages-container">
+      <div class="message received">
+        Iste culpa voluptatem sed earum itaque. Velit cum id consequatur...
+      </div>
+      <div class="message sent">Magni suscipit eos et praesentium odio at.</div>
+      <div class="message received">
+        Iste culpa voluptatem sed earum itaque. Velit cum id consequatur...
+      </div>
+      <div class="message sent">Magni suscipit eos et praesentium odio at.</div>
+    </div>
+  </div>
+  <div class="input-container">
+    <input type="text" class="input-field" placeholder="Type Something..." />
+    <button class="send-btn">
+      <img src="send button.png" alt="Send Icon" />
+    </button>
+  </div>
+</div>
+
+}

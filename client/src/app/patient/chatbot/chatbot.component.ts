@@ -5,8 +5,12 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './chatbot.component.html',
-  styleUrl: './chatbot.component.css'
+  styleUrl: './chatbot.component.css',
 })
 export class ChatbotComponent {
+  chatButtonState = false;
 
+  changeChatState() {
+    this.chatButtonState = true;
+  }
 }

@@ -1,0 +1,86 @@
+/* app.component.css */
+.sessions-container {
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  max-width: 120px;
+  margin-right: 20px;
+}
+
+nav {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-link {
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #f0f9ff;
+}
+
+.sessions-content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.sessions-column {
+  flex: 1;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.sessions-column:last-child {
+  margin-right: 0;
+}
+
+h3 {
+  color: #00b8b8;
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.session-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #333;
+}
+
+.session-item:last-child {
+  border-bottom: none;
+}
+
+.session-item span {
+  flex: 1;
+  text-align: center;
+}
+
+.session-item:nth-child(even) {
+  background-color: #f9f9f9; /* Alternate row background */
+}
+
+.session-item:hover {
+  background-color: #e0f7fa; /* Hover effect */
+  cursor: pointer;
+}

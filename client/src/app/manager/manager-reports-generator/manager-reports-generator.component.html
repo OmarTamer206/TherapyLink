@@ -8,7 +8,12 @@
 
   <div class="report-container">
     <div class="chart-container">
-      <canvas id="reportChart"></canvas>
+      @if(chartType == 'line') {
+        <app-line-chart [data]="lineChartData"></app-line-chart>
+      }
+      @else if(chartType == 'pie') {
+        <app-pie-chart [chartData]="pieChartData" [chartLabels]="pieChartLabels"></app-pie-chart>
+      }
     </div>
 
     <div class="query-options">
@@ -18,27 +23,23 @@
           <option>Revenue</option>
           <option>Salaries Expenses</option>
           <option>Total Profit</option>
-          <option>Average Patients Daily Use Count</option>
-          <option>Number of doctors By Specialization</option>
-          <option>Number of life coach By Specialization</option>
-          <option>Number of emergency team we have</option>
-          <option>Emergency Requests </option>
-          <option>Therapy type (ex. Couple Therapy, Life Coaching)</option>
-          <option>Preferred communication methods (chat, video, call)</option>
-          <option>Number of Sessions of Doctors</option>
-          <option>Number of Sessions of Life Coaches</option>
+          <option>Emergency Requests</option>
+          <option>Average Patients Monthly Use Count</option>
+          <option>Number of Doctors By Specialization</option>
+          <option>Number of Life Coaches By Specialization</option>
+          <option>Number of Sessions By Therapist type </option>
         </select>
       </div>
 
       <div class="date-range">
         <div>
           <label for="start-date">From</label>
-          <input type="date" id="start-date" name="dateFrom" (change)="generateReport()" [(ngModel)]="dateFrom" class="input-field" />
+          <input type="month" id="start-date" name="dateFrom" (change)="generateReport()" [(ngModel)]="dateFrom" class="input-field" />
         </div>
 
         <div>
           <label for="end-date">To</label>
-          <input type="date" id="end-date" name="dateTo" (change)="generateReport()" [(ngModel)]="dateTo" class="input-field" />
+          <input type="month" id="end-date" name="dateTo" (change)="generateReport()" [(ngModel)]="dateTo" class="input-field" />
         </div>
       </div>
     </div>

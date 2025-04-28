@@ -110,25 +110,93 @@ async function get_total_revenue_count() {
 async function report_generator(queryOption, dateFrom, dateTo ) {
   try {
     let query;
+    console.log(queryOption, dateFrom, dateTo);
     
 
     switch (queryOption) {
       case 'Revenue':
         query = `
           SELECT 
-    MONTHNAME(scheduled_time) AS month, 
-    SUM(revenue) AS revenue
+              MONTHNAME(scheduled_time) AS month, 
+              SUM(revenue) AS count
+          FROM (
+           
+              SELECT cost * 0.30 AS revenue, scheduled_time 
+              FROM doctor_session
+              WHERE scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1' 
+
+              UNION ALL
+
+             
+              SELECT 
+                  lcs.cost * 0.30 * COUNT(pls.patient_ID) AS revenue, 
+                  lcs.scheduled_time
+              FROM 
+                  life_coach_session lcs
+              JOIN 
+                  patient_lifecoach_session pls 
+              ON 
+                  lcs.session_ID = pls.session_ID
+              WHERE lcs.scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1' 
+              GROUP BY 
+                  lcs.session_ID, lcs.scheduled_time
+          ) AS all_sessions
+          GROUP BY 
+              MONTH(scheduled_time), MONTHNAME(scheduled_time)
+          ORDER BY 
+              MONTH(scheduled_time);
+
+        `;
+        break;
+
+      case 'Salaries Expenses':
+        query = `
+          SELECT 
+              MONTHNAME(Created_at) AS month, 
+              SUM(salary) AS count
+          FROM (
+              -- Admin salaries: Calculate all salaries until the to-date
+              SELECT salary, Created_at 
+              FROM admin
+              WHERE Created_at <= '${dateTo}-1'  
+              UNION ALL
+              -- Manager salaries: Calculate all salaries until the to-date
+              SELECT salary, Created_at 
+              FROM manager
+              WHERE Created_at <= '${dateTo}-1'  
+              UNION ALL
+              -- Emergency team salaries: Calculate all salaries until the to-date
+              SELECT salary, Created_at 
+              FROM emergency_team
+              WHERE Created_at <= '${dateTo}-1'  
+          ) AS workforce_salaries
+          GROUP BY 
+              MONTH(Created_at), MONTHNAME(Created_at)
+          ORDER BY 
+              MONTH(Created_at);
+
+        `;
+        break;
+
+      case 'Total Profit':
+        query = `
+        SELECT 
+    MONTHNAME(scheduled_time) AS month,
+    SUM(revenue) AS revenue,
+    SUM(expenses) AS expenses,
+    SUM(revenue) - SUM(expenses) AS count
 FROM (
     -- Doctor sessions: Price is taken directly
-    SELECT cost * 0.30 AS revenue, scheduled_time 
+    SELECT cost * 0.30 AS revenue, 0 AS expenses, scheduled_time
     FROM doctor_session
-    WHERE scheduled_time BETWEEN '${dateFrom}' AND '${dateTo}'  -- Replace with from and to dates
+    WHERE scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
 
     UNION ALL
 
-    -- Life coach sessions: Price is multiplied by number of patients and then by 0.10
+    -- Life coach sessions: Price is multiplied by number of patients and then by 0.30
     SELECT 
         lcs.cost * 0.30 * COUNT(pls.patient_ID) AS revenue, 
+        0 AS expenses, 
         lcs.scheduled_time
     FROM 
         life_coach_session lcs
@@ -136,9 +204,34 @@ FROM (
         patient_lifecoach_session pls 
     ON 
         lcs.session_ID = pls.session_ID
-    WHERE lcs.scheduled_time BETWEEN '${dateFrom}' AND '${dateTo}' 
+    WHERE 
+        lcs.scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
     GROUP BY 
         lcs.session_ID, lcs.scheduled_time
+
+    UNION ALL
+
+    -- Admin salaries: Expenses
+    SELECT 
+        0 AS revenue, salary AS expenses, Created_at AS scheduled_time
+    FROM admin
+    WHERE Created_at <= '${dateTo}-1'  
+
+    UNION ALL
+
+    -- Manager salaries: Expenses
+    SELECT 
+        0 AS revenue, salary AS expenses, Created_at AS scheduled_time
+    FROM manager
+    WHERE Created_at <= '${dateTo}-1'  
+
+    UNION ALL
+
+    -- Emergency team salaries: Expenses
+    SELECT 
+        0 AS revenue, salary AS expenses, Created_at AS scheduled_time
+    FROM emergency_team
+    WHERE Created_at <= '${dateTo}-1'  
 ) AS all_sessions
 GROUP BY 
     MONTH(scheduled_time), MONTHNAME(scheduled_time)
@@ -148,107 +241,44 @@ ORDER BY
         `;
         break;
 
-      case 'Salaries Expenses':
-        query = `
-          SELECT 
-    MONTHNAME(Created_at) AS month, 
-    SUM(salary) AS expenses
-FROM (
-    -- Admin salaries: Calculate all salaries until the to-date
-    SELECT salary, Created_at 
-    FROM admin
-    WHERE Created_at <= ${dateTo}  -- Up to the to-date
-    UNION ALL
-    -- Manager salaries: Calculate all salaries until the to-date
-    SELECT salary, Created_at 
-    FROM manager
-    WHERE Created_at <= ${dateTo}  -- Up to the to-date
-    UNION ALL
-    -- Emergency team salaries: Calculate all salaries until the to-date
-    SELECT salary, Created_at 
-    FROM emergency_team
-    WHERE Created_at <= ${dateTo}  -- Up to the to-date
-) AS workforce_salaries
-GROUP BY 
-    MONTH(Created_at), MONTHNAME(Created_at)
-ORDER BY 
-    MONTH(Created_at);
-
-        `;
-        break;
-
-      case 'Total Profit':
-        query = `
-          SELECT 
-    -- Doctor session revenue calculation (cost * 0.30)
-    (SELECT COALESCE(SUM(cost) * 0.30, 0) 
-     FROM doctor_session 
-     WHERE scheduled_time BETWEEN '${dateFrom}' AND '${dateTo}') + 
-
-    -- Life coach session revenue calculation (cost * 0.30 * number of patients)
-    (SELECT COALESCE(SUM(lcs.cost) * 0.30 * COUNT(pls.patient_ID), 0) 
-     FROM life_coach_session lcs
-     JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
-     WHERE lcs.scheduled_time BETWEEN '${dateFrom}' AND '${dateTo}') - 
-
-    -- Admin salaries for the given period
-    (SELECT COALESCE(SUM(salary), 0) 
-     FROM admin 
-     WHERE Created_at BETWEEN '${dateFrom}' AND '${dateTo}') -
-
-    -- Manager salaries for the given period
-    (SELECT COALESCE(SUM(salary), 0) 
-     FROM manager 
-     WHERE Created_at BETWEEN '${dateFrom}' AND '${dateTo}') -
-
-    -- Emergency team salaries for the given period
-    (SELECT COALESCE(SUM(salary), 0) 
-     FROM emergency_team 
-     WHERE Created_at BETWEEN '${dateFrom}' AND '${dateTo}') 
-
-AS count;
-
-        `;
-        break;
-
       case 'Emergency Requests':
         query = `
           SELECT 
-    MONTHNAME(scheduled_time) AS month, 
-    COUNT(id) AS session_count
-FROM 
-    emergency_team_session
-WHERE 
-    scheduled_time BETWEEN '${dateFrom}' AND '${dateTo}'
-GROUP BY 
-    YEAR(scheduled_time), MONTH(scheduled_time)
-ORDER BY 
-    YEAR(scheduled_time), MONTH(scheduled_time);
+              MONTHNAME(time) AS month, 
+              COUNT(session_ID) AS count
+          FROM 
+              emergency_team_session
+          WHERE 
+              time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
+          GROUP BY 
+              YEAR(time), MONTH(time)
+          ORDER BY 
+              YEAR(time), MONTH(time);
 
         `;
         break;
 
-      case 'Average Patients monthly Use Count':
+      case 'Average Patients Monthly Use Count':
         query = `
          SELECT 
-   MONTHNAME(cs.scheduled_time) AS month, 
-   COUNT(cs.patient_ID) AS count
-FROM (
-    -- Doctor sessions: Select patient_ID and scheduled_time from doctor_session
-    SELECT patient_ID, scheduled_time 
-    FROM doctor_session 
-    WHERE scheduled_time BETWEEN '${dateFrom}' AND '${dateTo}'
+          MONTHNAME(cs.scheduled_time) AS month, 
+          COUNT(cs.patient_ID) AS count
+        FROM (
+            -- Doctor sessions: Select patient_ID and scheduled_time from doctor_session
+            SELECT patient_ID, scheduled_time 
+            FROM doctor_session 
+            WHERE scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
 
-    UNION ALL
+            UNION ALL
 
-    -- Life Coach sessions: Select patient_ID and scheduled_time from life_coach_session
-    SELECT plcs.patient_ID, lcs.scheduled_time
-    FROM life_coach_session lcs
-    JOIN patient_lifecoach_session plcs ON lcs.session_ID = plcs.session_ID
-    WHERE lcs.scheduled_time BETWEEN '${dateFrom}' AND '${dateTo}'
-) AS cs
-GROUP BY month
-ORDER BY MONTH(cs.scheduled_time);
+            -- Life Coach sessions: Select patient_ID and scheduled_time from life_coach_session
+            SELECT plcs.patient_ID, lcs.scheduled_time
+            FROM life_coach_session lcs
+            JOIN patient_lifecoach_session plcs ON lcs.session_ID = plcs.session_ID
+            WHERE lcs.scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
+        ) AS cs
+        GROUP BY month
+        ORDER BY MONTH(cs.scheduled_time);
 
         `;
         break;
@@ -280,19 +310,19 @@ ORDER BY MONTH(cs.scheduled_time);
         query = `
           SELECT 'doctor' AS type, COUNT(*) AS count
           FROM doctor_session
-          WHERE scheduled_time BETWEEN '2023-01-01' AND '2023-12-31'
+          WHERE scheduled_time BETWEEN  '${dateFrom}-1' AND '${dateTo}-1'
 
           UNION ALL
 
           SELECT 'life_coach' AS type, COUNT(*) AS count
           FROM life_coach_session
-          WHERE scheduled_time BETWEEN '2023-01-01' AND '2023-12-31'
+          WHERE scheduled_time BETWEEN  '${dateFrom}-1' AND '${dateTo}-1'
 
           UNION ALL
 
           SELECT 'emergency_team' AS type, COUNT(*) AS count
-          FROM emergency_team_sessions
-          WHERE scheduled_time BETWEEN '2023-01-01' AND '2023-12-31';
+          FROM emergency_team_session
+          WHERE time BETWEEN  '${dateFrom}-1' AND '${dateTo}-1';
 
         `;
         break;
@@ -302,9 +332,10 @@ ORDER BY MONTH(cs.scheduled_time);
       default:
         return res.status(400).json({ error: 'Invalid query option' });
     }
-
+    
     // Execute query and return the result
     const result = await executeQuery(query);
+    console.log(result);
     return { success: true, data: result };
 
   } catch (error) {

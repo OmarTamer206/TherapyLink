@@ -1,113 +1,112 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, input, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 
-Chart.register(...registerables); // 📝 Register chart.js components!
+Chart.register(...registerables);
+
 @Component({
   selector: 'app-line-chart',
   standalone: true,
   imports: [],
   templateUrl: './line-chart.component.html',
-  styleUrl: './line-chart.component.css',
+  styleUrls: ['./line-chart.component.css'],
 })
-export class LineChartComponent implements AfterViewInit,OnChanges {
+export class LineChartComponent implements AfterViewInit, OnChanges {
   @ViewChild('lineCanvas') private lineCanvas!: ElementRef<HTMLCanvasElement>;
   private lineChart!: Chart;
 
-  @Input({ required: true }) data!: any;
+  @Input() data!: any;
 
-  // @input() data: number[] = []; // Input property for data
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data']) {
-      // Handle the new data here
-      console.log('Data received:', this.data);
-    }
-  }
-  constructor() {
+  constructor(private cdRef: ChangeDetectorRef) {
     // Register Chart.js components globally
     Chart.register(...registerables);
   }
 
+  // This lifecycle hook gets called when any input properties change
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data']) {
+      // If the input data changes, destroy the existing chart and recreate it
+      this.destroyChart();  // Destroy the previous chart
+      this.createLineChart();  // Create a new chart with the updated data
+    }
+  }
 
   ngAfterViewInit() {
-    console.log("data",this.data);
     this.createLineChart();
   }
 
   private createLineChart(): void {
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: 'line',
-      data: {
-        labels: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ],
-        datasets: [
-          {
-            label: 'Patient Visits',
-            data: this.data,
-            borderColor: '#00838f',
-            backgroundColor: 'rgba(0, 131, 143, 0.1)',
-            pointBackgroundColor: '#00838f',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#00838f',
-            fill: true,
-            tension: 0.5, // smooth lines
+    if (this.lineCanvas) {
+      this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+        type: 'line',
+        data: {
+          labels: [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+          ],
+          datasets: [
+            {
+              label: 'Patient Visits',
+              data: this.data,
+              borderColor: '#00838f',
+              backgroundColor: 'rgba(0, 131, 143, 0.1)',
+              pointBackgroundColor: '#00838f',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: '#00838f',
+              fill: true,
+              tension: 0.5, // smooth lines
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: '#333',
+                font: {
+                  size: 14,
+                },
+              },
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+            },
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: true,
-            labels: {
-              color: '#333',
-              font: {
-                size: 14,
+          interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false,
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: '#666',
+              },
+              grid: {
+                display: false,
+              },
+            },
+            y: {
+              ticks: {
+                color: '#666',
+              },
+              grid: {
+                color: '#eee',
               },
             },
           },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-          },
         },
-        interaction: {
-          mode: 'nearest',
-          axis: 'x',
-          intersect: false,
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: '#666',
-            },
-            grid: {
-              display: false,
-            },
-          },
-          y: {
-            ticks: {
-              color: '#666',
-            },
-            grid: {
-              color: '#eee',
-            },
-          },
-        },
-      },
-    });
+      });
+    }
+  }
+
+  // This function will destroy the existing chart if it's already created
+   public destroyChart(): void {
+    if (this.lineChart) {
+      this.lineChart.destroy();
+    }
   }
 }

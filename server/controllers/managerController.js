@@ -123,7 +123,7 @@ async function report_generator(queryOption, dateFrom, dateTo ) {
            
               SELECT cost * 0.30 AS revenue, scheduled_time 
               FROM doctor_session
-              WHERE scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1' 
+              WHERE scheduled_time BETWEEN '${dateFrom}-01' AND '${dateTo}-01' 
 
               UNION ALL
 
@@ -137,7 +137,7 @@ async function report_generator(queryOption, dateFrom, dateTo ) {
                   patient_lifecoach_session pls 
               ON 
                   lcs.session_ID = pls.session_ID
-              WHERE lcs.scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1' 
+              WHERE lcs.scheduled_time BETWEEN '${dateFrom}-01' AND '${dateTo}-01' 
               GROUP BY 
                   lcs.session_ID, lcs.scheduled_time
           ) AS all_sessions
@@ -158,17 +158,17 @@ async function report_generator(queryOption, dateFrom, dateTo ) {
               -- Admin salaries: Calculate all salaries until the to-date
               SELECT salary, Created_at 
               FROM admin
-              WHERE Created_at <= '${dateTo}-1'  
+              WHERE Created_at <= '${dateTo}-01'  
               UNION ALL
               -- Manager salaries: Calculate all salaries until the to-date
               SELECT salary, Created_at 
               FROM manager
-              WHERE Created_at <= '${dateTo}-1'  
+              WHERE Created_at <= '${dateTo}-01'  
               UNION ALL
               -- Emergency team salaries: Calculate all salaries until the to-date
               SELECT salary, Created_at 
               FROM emergency_team
-              WHERE Created_at <= '${dateTo}-1'  
+              WHERE Created_at <= '${dateTo}-01'  
           ) AS workforce_salaries
           GROUP BY 
               MONTH(Created_at), MONTHNAME(Created_at)
@@ -189,7 +189,7 @@ FROM (
     -- Doctor sessions: Price is taken directly
     SELECT cost * 0.30 AS revenue, 0 AS expenses, scheduled_time
     FROM doctor_session
-    WHERE scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
+    WHERE scheduled_time BETWEEN '${dateFrom}-01' AND '${dateTo}-01'
 
     UNION ALL
 
@@ -205,7 +205,7 @@ FROM (
     ON 
         lcs.session_ID = pls.session_ID
     WHERE 
-        lcs.scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
+        lcs.scheduled_time BETWEEN '${dateFrom}-01' AND '${dateTo}-01'
     GROUP BY 
         lcs.session_ID, lcs.scheduled_time
 
@@ -215,7 +215,7 @@ FROM (
     SELECT 
         0 AS revenue, salary AS expenses, Created_at AS scheduled_time
     FROM admin
-    WHERE Created_at <= '${dateTo}-1'  
+    WHERE Created_at <= '${dateTo}-01'  
 
     UNION ALL
 
@@ -223,7 +223,7 @@ FROM (
     SELECT 
         0 AS revenue, salary AS expenses, Created_at AS scheduled_time
     FROM manager
-    WHERE Created_at <= '${dateTo}-1'  
+    WHERE Created_at <= '${dateTo}-01'  
 
     UNION ALL
 
@@ -231,7 +231,7 @@ FROM (
     SELECT 
         0 AS revenue, salary AS expenses, Created_at AS scheduled_time
     FROM emergency_team
-    WHERE Created_at <= '${dateTo}-1'  
+    WHERE Created_at <= '${dateTo}-01'  
 ) AS all_sessions
 GROUP BY 
     MONTH(scheduled_time), MONTHNAME(scheduled_time)
@@ -249,7 +249,7 @@ ORDER BY
           FROM 
               emergency_team_session
           WHERE 
-              time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
+              time BETWEEN '${dateFrom}-01' AND '${dateTo}-01'
           GROUP BY 
               YEAR(time), MONTH(time)
           ORDER BY 
@@ -267,7 +267,7 @@ ORDER BY
             -- Doctor sessions: Select patient_ID and scheduled_time from doctor_session
             SELECT patient_ID, scheduled_time 
             FROM doctor_session 
-            WHERE scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
+            WHERE scheduled_time BETWEEN '${dateFrom}-01' AND '${dateTo}-01'
 
             UNION ALL
 
@@ -275,7 +275,7 @@ ORDER BY
             SELECT plcs.patient_ID, lcs.scheduled_time
             FROM life_coach_session lcs
             JOIN patient_lifecoach_session plcs ON lcs.session_ID = plcs.session_ID
-            WHERE lcs.scheduled_time BETWEEN '${dateFrom}-1' AND '${dateTo}-1'
+            WHERE lcs.scheduled_time BETWEEN '${dateFrom}-01' AND '${dateTo}-01'
         ) AS cs
         GROUP BY month
         ORDER BY MONTH(cs.scheduled_time);
@@ -287,7 +287,7 @@ ORDER BY
         query = `
           SELECT specialization, COUNT(*) AS count
           FROM doctor
-          WHERE specialization IS NOT NULL
+          WHERE specialization IS NOT NULL AND Created_at <= '${dateTo}-01'  
           GROUP BY specialization
           ORDER BY count DESC;
 
@@ -299,7 +299,7 @@ ORDER BY
         query = `
           SELECT specialization, COUNT(*) AS count
           FROM life_coach
-          WHERE specialization IS NOT NULL
+          WHERE specialization IS NOT NULL AND Created_at <= '${dateTo}-01'  
           GROUP BY specialization
           ORDER BY count DESC;
 
@@ -310,19 +310,19 @@ ORDER BY
         query = `
           SELECT 'doctor' AS type, COUNT(*) AS count
           FROM doctor_session
-          WHERE scheduled_time BETWEEN  '${dateFrom}-1' AND '${dateTo}-1'
+          WHERE scheduled_time BETWEEN  '${dateFrom}-01' AND '${dateTo}-01'
 
           UNION ALL
 
           SELECT 'life_coach' AS type, COUNT(*) AS count
           FROM life_coach_session
-          WHERE scheduled_time BETWEEN  '${dateFrom}-1' AND '${dateTo}-1'
+          WHERE scheduled_time BETWEEN  '${dateFrom}-01' AND '${dateTo}-01'
 
           UNION ALL
 
           SELECT 'emergency_team' AS type, COUNT(*) AS count
           FROM emergency_team_session
-          WHERE time BETWEEN  '${dateFrom}-1' AND '${dateTo}-1';
+          WHERE time BETWEEN  '${dateFrom}-01' AND '${dateTo}-01';
 
         `;
         break;

@@ -8,127 +8,128 @@
   </div>
 
   <form class="doctor-form">
-    <div class="left">
+    <div class="form-box">
+      <!-- Left Panel: Full Name, Email, Password, Confirm Password -->
+      <div class="left">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            [(ngModel)]="name"
+            placeholder="Your Full Name"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input
-        type="tel"
-        id="name"
-        name="name"
-        class="form-control"
-        [(ngModel)]="name"
-        placeholder="Name"
-        required
-        />
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            [(ngModel)]="email"
+            placeholder="Example@Gmail.Com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            [(ngModel)]="password"
+            placeholder="***************"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmpassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmpassword"
+            name="confirmpassword"
+            class="form-control"
+            [(ngModel)]="confirmPassword"
+            placeholder="***************"
+            required
+          />
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-        type="email"
-        id="email"
-        name="email"
-        class="form-control"
-        [(ngModel)]="email"
-        placeholder="Example@Gmail.Com"
-        required
-        />
-      </div>
+      <!-- Right Panel: Date of Birth, Gender, Phone Number, Profile Picture -->
+      <div class="right">
+        <div class="form-group date-of-birth">
+          <label for="date">Date Of Birth</label>
+          <div class="date-of-birth-fields">
+            <select [(ngModel)]="birthMonth" name="birthMonth" class="input-field" required>
+              <option value="" disabled selected>MM</option>
+              <option *ngFor="let month of months" [value]="month">
+                {{ month }}
+              </option>
+            </select>
+            <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
+              <option value="" disabled selected>DD</option>
+              <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+            </select>
+            <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
+              <option value="" disabled selected>YYYY</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-        type="password"
-        id="password"
-        name="password"
-        class="form-control"
-        [(ngModel)]="password"
-        placeholder="***************"
-        required
-        />
-      </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            class="form-control"
+            [(ngModel)]="phone"
+            placeholder="+20 30100214231"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="confirmpassword">Confirm Password</label>
-        <input
-        type="password"
-        id="confirmpassword"
-        name="confirmpassword"
-        class="form-control"
-        [(ngModel)]="confirmPassword"
-        placeholder="***************"
-        required
-        />
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select
+            [(ngModel)]="gender"
+            name="gender"
+            class="input-field"
+            required
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="pic">Profile Picture</label>
+          <input
+            type="file"
+            id="pic"
+            name="pic"
+            class="form-control"
+            [(ngModel)]="profile_pic"
+            required
+          />
+        </div>
+      </div>
     </div>
+  </form>
+
+  <div class="form-button">
+    <button class="creative-btn" (click)="editProfile()">Save</button>
   </div>
-  <div class="right">
-
-    <div class="dateWrap">
-      <label for="date">Date Of Birth</label>
-    <div class="date-of-birth">
-
-      <select [(ngModel)]="birthMonth" name="birthMonth"  class="input-field" required>
-        <option value="" disabled selected>MM</option>
-        <option *ngFor="let month of months" [value]="month">
-          {{ month }}
-        </option>
-      </select>
-      <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
-        <option value="" disabled selected>DD</option>
-        <option *ngFor="let day of days" [value]="day">{{ day }}</option>
-      </select>
-      <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
-        <option value="" disabled selected>YYYY</option>
-        <option *ngFor="let year of years" [value]="year">
-          {{ year }}
-        </option>
-      </select>
-    </div>
-    </div>
-
-    <div class="genderWrap">
-
-      <label for="gender">Gender</label>
-
-      <select [(ngModel)]="gender" id="gender" name="gender" class="input-field gender" required>
-        <option value="" disabled selected>Gender</option>
-        <option value="Male" selected>Male</option>
-        <option value="Female">Female</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="phone">Phone Number</label>
-      <input
-      type="tel"
-      id="phone"
-      name="phone"
-      class="form-control"
-      [(ngModel)]="phone"
-      placeholder="+20 30100214231"
-      required
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="pic">Profile Picture</label>
-      <input
-      type="file"
-      id="pic"
-      name="pic"
-      class="form-control"
-      [(ngModel)]="profile_pic"
-      required
-      />
-    </div>
-
-  </div>
-
-
-
-</form>
-<div class="form-button">
-  <button class="btn btn-primary" (click)="editProfile()">Save</button>
-</div>
 </div>

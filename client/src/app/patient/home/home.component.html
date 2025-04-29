@@ -18,8 +18,10 @@
     <div class="emergency"><button class="help-button">Need Help?</button></div>
     <div class="action-buttons">
       <button class="action-button">Change Therapist Preference</button>
-      <button class="action-button">Choose Doctor</button>
-      <button routerLink="chatbot" class="action-button primary">
+      <button (click)="goToDoctorsPage()" class="action-button">
+        Choose Doctor
+      </button>
+      <button (click)="goToChatbot()" class="action-button primary">
         Repeat Chatbot Test
       </button>
     </div>

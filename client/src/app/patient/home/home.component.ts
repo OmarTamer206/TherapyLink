@@ -1,12 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {}
+export class HomeComponent {
+  constructor(private router: Router) {}
+  goToChatbot() {
+    this.router.navigate(['patient/chatbot']);
+  }
+  goToDoctorsPage() {
+    this.router.navigate(['patient/doctors-page']);
+  }
+}

@@ -50,22 +50,13 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Soft shadow for depth */
 }
 
-/* Left section: Profile Picture and Name */
-.left {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;  /* Align items at the top */
-  align-items: center;
-  width: 25%;  /* Allocate smaller space for the profile */
-}
-
-/* Right section: Form inputs */
-.right {
+/* Left and Right sections */
+.left, .right {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;  /* Align items at the top */
   align-items: flex-start;
-  width: 70%;  /* Allocate more space for the form */
+  width: 48%;  /* Equal width for both left and right panels */
 }
 
 /* Form groups styling */
@@ -96,21 +87,6 @@ label {
 
 .form-control:focus, .input-field:focus {
   border-color: #00b3b3;  /* Focus effect with teal border */
-  outline: none;
-}
-
-/* Styling for Name Input to match Phone Input */
-.phone-style {
-  padding-left: 16px;
-  padding-right: 16px;
-  font-size: 1.1rem;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-}
-
-.phone-style:focus {
-  border-color: #00b3b3;
   outline: none;
 }
 

@@ -1,32 +1,41 @@
 <div class="main-content">
-    <!-- Refund Form Section (Left Panel) -->
-    <div class="refund-form">
-        <h3>Fill in this form to refund</h3>
-        <form (ngSubmit)="submitRefund()">
-            <label for="sessionId">Session ID</label>
-            <input type="text" id="sessionId" [(ngModel)]="sessionId" name="sessionId" placeholder="123@22" required>
+  <!-- Left Panel: Report List -->
+  <div class="report-list">
+    <h3>Reports</h3>
+    <ul>
+      <li
+        *ngFor="let report of reports; let i = index"
+        [class.selected]="i === selectedReportIndex"
+        (click)="selectReport(i)"
+      >
+        {{ i + 1 }} Report
+      </li>
+    </ul>
+  </div>
 
-            <label for="refundReason">Refund Reason</label>
-            <input type="text" id="refundReason" [(ngModel)]="refundReason" name="refundReason" placeholder="Sick" required>
-
-            <button type="submit">Submit</button>
-        </form>
+  <!-- Right Panel: Report Details -->
+  <div class="report-details-box" *ngIf="selectedReportIndex !== -1">
+    <h3>Refund</h3>
+    <div class="doctor-info">
+      <p><strong>Doctor</strong></p>
+      <p>{{ doctor.name }}<br />{{ doctor.email }}<br />
+        <a [href]="'tel:' + doctor.phone" class="phone-link">{{ doctor.phone }}</a>
+      </p>
     </div>
 
-    <!-- Refund History Section (Right Panel) -->
-    <div class="right-panel">
-        <div class="refund-history">
-          <h3>Refund History</h3>
-          <div class="refund-items">
-            <div class="refund-item" *ngFor="let refund of refundHistory">
-              <div class="refund-details">
-                <span class="refund-name">{{ refund.name }}</span>
-                <span class="refund-date">{{ refund.date }}</span>
-                <span class="refund-reason">{{ refund.reason }}</span>
-                <button class="refunded">Refunded</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="reason-info">
+      <p><strong>Reason</strong></p>
+      <p>{{ reports[selectedReportIndex].reason }}</p>
+    </div>
+
+    <div class="response-info">
+      <p><strong>Response</strong></p>
+      <textarea [(ngModel)]="responseText" placeholder="Write a response..."></textarea>
+    </div>
+
+    <div class="action-buttons">
+      <button class="refund-btn">Refund session</button>
+      <button class="send-btn">Send response</button>
+    </div>
   </div>
+</div>

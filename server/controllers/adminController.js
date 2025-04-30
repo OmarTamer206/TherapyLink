@@ -223,15 +223,15 @@ async function get_booked_session_data() {
   try {
     const query = `
       SELECT 
-        MONTHNAME(timestamp) AS month, 
+        MONTHNAME(scheduled_time) AS month, 
         COUNT(*) AS count
       FROM (
-        SELECT timestamp FROM doctor_session
+        SELECT scheduled_time FROM doctor_session
         UNION ALL
-        SELECT timestamp FROM life_coach_session
+        SELECT scheduled_time FROM life_coach_session
       ) AS combined_sessions
       GROUP BY month
-      ORDER BY MONTH(timestamp);
+      ORDER BY MONTH(scheduled_time);
     `;
     const result = await executeQuery(query);
 
@@ -250,8 +250,8 @@ async function get_available_sessions_data() {
   try {
     const query = `
       SELECT 
-        (SELECT COUNT(*) FROM doctor_availability WHERE IsReserved != 'true') +
-        (SELECT COUNT(*) FROM life_coach_availability WHERE IsReserved != 'true') 
+        (SELECT COUNT(*) FROM doctor_availability WHERE IsReserved != '1') +
+        (SELECT COUNT(*) FROM lifecoach_availability WHERE IsReserved != '1') 
       AS count;
     `;
     const result = await executeQuery(query);
@@ -261,6 +261,40 @@ async function get_available_sessions_data() {
     return {
       success: false,
       message: "Error retrieving available sessions data.",
+      error: error.message,
+    };
+  }
+}
+async function get_cancelled_session_data() {
+  try {
+    const query = `
+    SELECT 
+        MONTHNAME(scheduled_time) AS month, 
+        COUNT(*) AS count
+    FROM (
+        -- Doctor session refunded sessions
+        SELECT session_id, scheduled_time
+        FROM doctor_session
+        WHERE refunded = TRUE
+
+        UNION ALL
+
+        -- Life Coach session refunded sessions
+        SELECT session_id, scheduled_time
+        FROM life_coach_session
+        WHERE refunded = TRUE
+    ) AS refunded_sessions
+    GROUP BY MONTH(scheduled_time), MONTHNAME(scheduled_time)
+    ORDER BY MONTH(scheduled_time);
+
+    `;
+    const result = await executeQuery(query);
+
+    return { success: true, data: result };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error retrieving booked session data.",
       error: error.message,
     };
   }
@@ -277,5 +311,6 @@ module.exports = {
   get_booked_session_data,
   get_available_sessions_data,
   get_admin_data,
+  get_cancelled_session_data
   // process_refund,
 };

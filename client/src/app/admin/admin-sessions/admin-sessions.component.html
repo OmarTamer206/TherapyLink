@@ -1,4 +1,11 @@
-<div class="dashboard-container">
+@if (!loading ) {
+
+  <div  class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+
+}
+  <div class="dashboard-container">
     <!-- Left Side (Session Metrics and Graph) -->
     <div class="left-panel">
       <!-- Session Metrics -->
@@ -16,68 +23,34 @@
           <p>{{ cancelledSessions }}</p>
         </div>
       </div>
-      
+
       <!-- Graph -->
       <div class="session-analytics">
         <canvas id="sessionChart"></canvas>
       </div>
     </div>
-  
+
     <!-- Right Side (Monthly Reports Cards) -->
     <div class="right-panel">
       <div class="monthly-reports">
         <h3>Monthly Reports</h3>
         <div class="report-cards">
-          <div class="report-card">
-            <h4>January</h4>
+
+
+          <div *ngFor="let month of fullMonths; let i = index" class="report-card">
+            <h4>{{ month }}</h4>
             <ul>
-              <li><strong>Cancelled Sessions:</strong> 5</li>
-              <li><strong>Booked Sessions:</strong> 50</li>
-              <li><strong>Available Sessions:</strong> 20</li> <!-- Added 3rd item -->
+              <li><strong>Booked Sessions:</strong> {{ bookedSessionsByMonth[i] }}</li>
+              <li><strong>Cancelled Sessions:</strong> {{ cancelledSessionsByMonth[i] }}</li>
             </ul>
           </div>
-          <div class="report-card">
-            <h4>February</h4>
-            <ul>
-              <li><strong>Cancelled Sessions:</strong> 3</li>
-              <li><strong>Booked Sessions:</strong> 45</li>
-              <li><strong>Available Sessions:</strong> 25</li> <!-- Added 3rd item -->
-            </ul>
-          </div>
-          <div class="report-card">
-            <h4>March</h4>
-            <ul>
-              <li><strong>Cancelled Sessions:</strong> 2</li>
-              <li><strong>Booked Sessions:</strong> 55</li>
-              <li><strong>Available Sessions:</strong> 30</li> <!-- Added 3rd item -->
-            </ul>
-          </div>
-          <div class="report-card">
-            <h4>April</h4>
-            <ul>
-              <li><strong>Cancelled Sessions:</strong> 4</li>
-              <li><strong>Booked Sessions:</strong> 60</li>
-              <li><strong>Available Sessions:</strong> 35</li> <!-- Added 3rd item -->
-            </ul>
-          </div>
-          <div class="report-card">
-            <h4>May</h4>
-            <ul>
-              <li><strong>Cancelled Sessions:</strong> 3</li>
-              <li><strong>Booked Sessions:</strong> 50</li>
-              <li><strong>Available Sessions:</strong> 20</li> <!-- Added 3rd item -->
-            </ul>
-          </div>
-          <div class="report-card">
-            <h4>June</h4>
-            <ul>
-              <li><strong>Cancelled Sessions:</strong> 5</li>
-              <li><strong>Booked Sessions:</strong> 70</li>
-              <li><strong>Available Sessions:</strong> 40</li> <!-- Added 3rd item -->
-            </ul>
-          </div>
+
+
+
+
         </div>
       </div>
     </div>
   </div>
-  
+
+

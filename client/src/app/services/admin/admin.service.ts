@@ -50,6 +50,9 @@ export class AdminService {
   getBookedSessionData(): Observable<any> {
     return this.http.get(`${this.apiUrl}/booked-session-data`);
   }
+  getCancelledSessionData(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/cancelled-session-data`);
+  }
 
   // Get available session data
   getAvailableSessionData(): Observable<any> {

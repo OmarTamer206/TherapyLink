@@ -13,6 +13,7 @@ const {
   get_available_sessions_data,
   get_workforce_data,
   get_admin_data,
+  get_cancelled_session_data,
 } = require("../controllers/adminController");
 
 const { authorizeRoles } = require("../middlewares/authMiddlewares");
@@ -110,6 +111,15 @@ router.get("/booked-session-data", async (req, res) => {
 router.get("/available-session-data", async (req, res) => {
   try {
     const result = await get_available_sessions_data();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/cancelled-session-data", async (req, res) => {
+  try {
+    const result = await get_cancelled_session_data();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

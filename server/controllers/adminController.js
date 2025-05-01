@@ -299,6 +299,160 @@ async function get_cancelled_session_data() {
     };
   }
 }
+async function getAllFeedbacks() {
+  try {
+    // Fetch all feedback records where replied = 0
+    const query = `SELECT * FROM feedback WHERE replied = 0 ;`;
+    const result = await executeQuery(query);
+
+    // Iterate over the feedback records and add doctor or life coach info
+    for (let feedback of result) {
+      if (feedback.doctor_type === 'doctor') {
+        // If doctor_type is 'doctor', get doctor info
+        const doctorQuery = `SELECT Name,Email,phone_number,profile_pic_url FROM doctor WHERE id = ?`;
+        const doctorData = await executeQuery(doctorQuery, [feedback.doctor_id]);
+
+        if (doctorData.length > 0) {
+          feedback.doctor_info = doctorData[0]; // Add doctor info to feedback
+        } else {
+          feedback.doctor_info = null; // If no doctor data found
+        }
+      } else if (feedback.doctor_type === 'life_coach') {
+        // If doctor_type is 'life_coach', get life coach info
+        const lifeCoachQuery = `SELECT Name,Email,phone_number,profile_pic_url FROM life_coach WHERE id = ?`;
+        const lifeCoachData = await executeQuery(lifeCoachQuery, [feedback.doctor_id]);
+
+        if (lifeCoachData.length > 0) {
+          feedback.doctor_info = lifeCoachData[0]; // Add life coach info to feedback
+        } else {
+          feedback.doctor_info = null; // If no life coach data found
+        }
+      }
+
+      const isRefunded = await checkRefunded(feedback.session_id,feedback.doctor_type)
+
+      if(isRefunded){
+        feedback.isRefunded = isRefunded.data;
+      }
+
+    }
+
+    return { success: true, data: result };
+
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error retrieving feedback data.",
+      error: error.message,
+    };
+  }
+}
+
+async function replyFeedback(feedback_ID, Session_ID, patient_ID, doctor_type, response, IsRefunded) {
+  try {
+    // If refunding is true, process the refund logic
+    if (IsRefunded) {
+      let refundAmount = 0;
+
+      // Process refund for doctor session
+      if (doctor_type === 'doctor') {
+        // Get the session cost from doctor_session table
+        const sessionData = await executeQuery(
+          `SELECT cost FROM doctor_session WHERE session_ID = ?`, [Session_ID]
+        );
+
+        if (sessionData.length > 0) {
+          console.log("sessionData", sessionData);
+          
+          refundAmount = sessionData[0].cost;
+          // Mark the session as refunded
+          await executeQuery(
+            `UPDATE doctor_session SET refunded = TRUE WHERE session_ID = ?`, [Session_ID]
+          );
+
+          // Add the refund amount to the patient's wallet
+          await executeQuery(
+            `UPDATE patient SET wallet = wallet + ? WHERE id = ?`, [refundAmount, patient_ID]
+          );
+        } else {
+          return { success: false, message: 'Doctor session not found' };
+        }
+      }
+
+      // Process refund for life coach session
+      if (doctor_type === 'life_coach') {
+        // Get the session cost from life_coach_session table
+        const sessionData = await executeQuery(
+          `SELECT cost FROM life_coach_session WHERE session_ID = ?`, [Session_ID]
+        );
+
+        if (sessionData.length > 0) {
+          refundAmount = sessionData[0].cost;
+          // Mark the life coach session as refunded
+          await executeQuery(
+            `UPDATE life_coach_session SET refunded = TRUE WHERE session_ID = ?`, [Session_ID]
+          );
+
+          // Get all patients who have this session
+          const patientData = await executeQuery(
+            `SELECT patient_ID FROM patient_lifecoach_session WHERE session_ID = ?`, [Session_ID]
+          );
+          console.log("patientData", patientData);
+          
+          // Add the refund amount to the wallet of each patient
+          for (const patient of patientData) {
+            await executeQuery(
+              `UPDATE patient SET wallet = wallet + ? WHERE id = ?`, [refundAmount, patient.patient_ID]
+            );
+          }
+        } else {
+          return { success: false, message: 'Life Coach session not found' };
+        }
+      }
+    }
+
+    // Add the response to the feedback and set replied to TRUE
+    await executeQuery(
+      `UPDATE feedback SET response = ?, replied = TRUE WHERE feedback_id = ?`, [response, feedback_ID]
+    );
+
+    return { success: true, message: 'Feedback replied successfully' };
+  } catch (error) {
+    console.error('Error replying to feedback:', error);
+    return {
+      success: false,
+      message: 'Error replying to feedback',
+      error: error.message,
+    };
+  }
+}
+async function checkRefunded(session_ID,doctor_type) {
+  try {
+    let query="";
+    if(doctor_type === 'doctor'){
+       query = `SELECT refunded FROM doctor_session WHERE session_ID = ?`;
+    }
+    else{
+       query = `SELECT refunded FROM life_coach_session WHERE session_ID = ?`;
+    }
+    const result = await executeQuery(query, [session_ID]);
+    
+    if (result.length > 0) {
+      return { success: true, data: result[0].refunded };
+    } else {
+      return { success: false, message: "Session not found." };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error checking refund status.",
+      error: error.message,
+    };
+  }
+}
+
+
+
 
 module.exports = {
   get_total_doctors_count,
@@ -311,6 +465,8 @@ module.exports = {
   get_booked_session_data,
   get_available_sessions_data,
   get_admin_data,
-  get_cancelled_session_data
-  // process_refund,
+  get_cancelled_session_data,
+  getAllFeedbacks,
+  replyFeedback,
+  checkRefunded,
 };

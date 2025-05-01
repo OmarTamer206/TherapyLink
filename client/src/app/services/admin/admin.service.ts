@@ -61,4 +61,14 @@ export class AdminService {
   getAdminData(): Observable<any> {
     return this.http.get(`${this.apiUrl}/get-admin-data`);
   }
+  checkRefunded(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/check-refunded`, data);
+  }
+  getAllFeedbacks(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-all-feedbacks`);
+  }
+  replyFeedback(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reply-feedback`, data);
+  }
+
 }

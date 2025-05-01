@@ -14,6 +14,9 @@ const {
   get_workforce_data,
   get_admin_data,
   get_cancelled_session_data,
+  checkRefunded,
+  getAllFeedbacks,
+  replyFeedback,
 } = require("../controllers/adminController");
 
 const { authorizeRoles } = require("../middlewares/authMiddlewares");
@@ -137,6 +140,53 @@ router.get("/get-admin-data", async (req, res) => {
     
     
     const result = await get_admin_data(decoded.id,decoded.role);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/check-refunded", async (req, res) => {
+  const data = req.body;
+  if (
+    !data.doctor_type ||
+    !data.session_ID
+  )
+    return res.status(400).json({ error: "Missing data" });
+  try {
+    const result = await checkRefunded(session_id, doctor_type);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/get-all-feedbacks", async (req, res) => {
+  try {
+    const result = await getAllFeedbacks();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/reply-feedback", async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  
+ 
+
+  if (
+    !data.feedback_ID  ||
+    !data.session_ID  ||
+    !data.patient_ID  ||
+    !data.doctor_type  ||
+    !data.response  ||
+    data.IsRefunded == null
+  )
+    return res.status(400).json({ error: "Missing data" });
+  try {
+    const result = await replyFeedback(data.feedback_ID, data.session_ID, data.patient_ID, data.doctor_type, data.response, data.IsRefunded);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

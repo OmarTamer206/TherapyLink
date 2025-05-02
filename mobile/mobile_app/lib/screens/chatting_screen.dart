@@ -1,72 +1,115 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mobile_app/core/utils/image_constant.dart';
+import 'package:mobile_app/theme/theme_helper.dart';
+import 'package:mobile_app/widgets/custom_icon_button.dart';
+import 'package:mobile_app/widgets/custom_image_view.dart';
 
-class ChatbotInterfaceScreen extends StatefulWidget {
-  const ChatbotInterfaceScreen({super.key});
+class ChattingScreen extends StatefulWidget {
+  const ChattingScreen({super.key});
 
   @override
-  State<ChatbotInterfaceScreen> createState() => _ChatbotInterfaceScreenState();
+  State<ChattingScreen> createState() => _ChattingScreenState();
 }
 
-class _ChatbotInterfaceScreenState extends State<ChatbotInterfaceScreen> {
+class _ChattingScreenState extends State<ChattingScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<ChatMessage> _messages = [
     ChatMessage(
-      text: "Magni suscipit eos et praesentium odio et.",
+      text:
+          "Possimus ut explicabo non. Suscipit explicabo maiores qui nulla quibusdam distinctio ut. Placeat deserunt iure delectus accusantium architecto nesciunt officiis. Soluta quia quod veritatis ullam sunt earum tenetur et quia. Sed et vitae. Nulla enim inventore rem velit rerum molestiae beatae. Magni suscipit eos et praesentium odio at.",
+      isUser: true,
+    ),
+    ChatMessage(
+      text: "Magni suscipit eos et praesentium odio at.",
       isUser: false,
     ),
     ChatMessage(
       text:
-          "Iste culpa voluptatum sed earum fiaque. Veift cum id consequatur.\n"
-          "Blanditis suscipit facere eveniet sed.\n"
-          "Incidunt quod modi ibn nesciunt hic posimus. Optio sunt minus consequatur qui ut ut eum suscipit ratione. Cumque aspernatur fugit dolor.",
-      isUser: false,
+          "Iste culpa voluptatum sed earum itaque. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Optio sunt minus consequatur qui ut ut eum suscipit ratione. Cumque aspernatur fugit dolor.",
+      isUser: true,
     ),
     ChatMessage(
-      text: "Magni suscipit eos et praesentium odio et.",
-      isUser: false,
-    ),
-    ChatMessage(
-      text:
-          "Iste culpa voluptatum sed earum fiaque. Veift cum id consequatur.\n"
-          "Blanditis suscipit facere eveniet sed.\n"
-          "Incidunt quod modi ibn nesciunt hic posimus. Optio sunt minus consequatur qui ut ut eum suscipit ratione. Cumque aspernatur fugit dolor.",
-      isUser: false,
-    ),
-    ChatMessage(
-      text: "Magni suscipit eos et praesentium odio et.",
+      text: "Magni suscipit eos et praesentium odio at.",
       isUser: false,
     ),
     ChatMessage(
       text:
-          "Possimus ut explicabo non. Suscipit explicabo maiores qui nulla quibusdam distinctio ut. "
-          "Placent deserunt lure delectua accusantium architecto nesciunt officilis. Soluta quia quod veritatis ullam sunt earum tenetur et quia. "
-          "Sed et vitae. Nulla enim indientore rem velit renum molestiae beatae.\n"
-          "Magni suscipit eos et praresntium odio et.",
+          "Iste culpa voluptatum sed earum itaque. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Optio sunt minus consequatur qui ut ut eum suscipit ratione. Cumque aspernatur fugit dolor.",
+      isUser: true,
+    ),
+    ChatMessage(
+      text: "Magni suscipit eos et praesentium odio at.",
       isUser: false,
     ),
   ];
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE1F1F6),
-      appBar: AppBar(
-        title: const Text('ChatBot'),
-        backgroundColor: const Color(0xFF149FA8),
+      backgroundColor: theme.colorScheme.onErrorContainer, 
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildAppBar(context),
+            Expanded(
+              child: Container(
+              color: appTheme.teal50,
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                reverse: false,
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  return _buildMessage(_messages[index]);
+                },
+              ),
+            ),
+            ),
+            _buildMessageInput(),
+          ],
+        ),
       ),
-      body: Column(
+    );
+  }
+
+  Widget _buildAppBar(BuildContext context) {
+    return Container(
+      height: 74,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary,
+        borderRadius:const BorderRadius.vertical(
+          top: Radius.circular(0),
+        ),
+      ),
+      child: Row(
         children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16.0),
-              reverse: false,
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                return _buildMessage(_messages[index]);
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
               },
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 25,
+              ),
             ),
           ),
-          _buildMessageInput(),
+          const Expanded(
+            child: Center(
+              child: Text(
+                'ChatBot',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 41),
         ],
       ),
     );
@@ -75,60 +118,76 @@ class _ChatbotInterfaceScreenState extends State<ChatbotInterfaceScreen> {
   Widget _buildMessage(ChatMessage message) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment:
-            message.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-        children: [
-          if (!message.isUser)
-            const CircleAvatar(
-              backgroundColor: Color(0xFF149FA8),
-              child: Text(
-                'B',
-                style: TextStyle(color: Colors.white),
-              ),
+      child: Align(
+        alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: message.isUser
+                  ? const Color(0xFF149FA8)
+                  :  theme.colorScheme.onErrorContainer,
+              borderRadius: BorderRadius.circular(15),
             ),
-          const SizedBox(width: 8),
-          Flexible(
-            child: Container(
-              padding: const EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                color: message.isUser ? const Color(0xFF149FA8) : Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
+            child: Text(
+              message.text,
+              style: TextStyle(
+                color: message.isUser ? appTheme.black900 : Colors.black,
               ),
-              child: Text(
-                message.text,
-                style: TextStyle(
-                  color: message.isUser ? Colors.white : Colors.black,
-                ),
-              ),
+              maxLines: 10,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildMessageInput() {
     return Container(
-      padding: const EdgeInsets.all(8.0),
-      color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration:const BoxDecoration(
+        color: Color(0xFF06303E),
+        borderRadius:  BorderRadius.vertical(top: Radius.circular(14)),
+      ),
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: const InputDecoration(
-                hintText: 'Type Something .......',
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: appTheme.gray100,
+                borderRadius: BorderRadius.circular(28),
               ),
-              onSubmitted: _handleSubmitted,
+              child: TextField(
+                controller: _messageController,
+                decoration: InputDecoration(
+                  hintText: 'Type Something ...',
+                  hintStyle: TextStyle(
+                    color: appTheme.black900.withOpacity(0.5),
+                  ),
+                  border: InputBorder.none,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                ),
+                onSubmitted: _handleSubmitted,
+              ),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.send, color: Color(0xFF149FA8)),
-            onPressed: () => _handleSubmitted(_messageController.text),
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: CustomIconButton(
+              height: 40,
+              width: 40,
+              padding: const EdgeInsets.all(8),
+              decoration: IconButtonStyleHelper.fillGray,
+              onTap: () => _handleSubmitted(_messageController.text),
+              child: CustomImageView(
+                imagePath: ImageConstant.imgFrame,
+              ),
+            ),
           ),
         ],
       ),
@@ -151,6 +210,7 @@ class _ChatbotInterfaceScreenState extends State<ChatbotInterfaceScreen> {
   @override
   void dispose() {
     _messageController.dispose();
+
     super.dispose();
   }
 }
@@ -161,3 +221,4 @@ class ChatMessage {
 
   ChatMessage({required this.text, required this.isUser});
 }
+

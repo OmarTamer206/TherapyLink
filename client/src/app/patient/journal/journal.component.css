@@ -1,0 +1,93 @@
+/* app.component.css */
+.journal-container {
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.journal-content {
+  margin-top: 20px;
+}
+
+.journal-content h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.journal-entries {
+  margin-top: 20px;
+}
+
+.journal-entry {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.entry-date {
+  font-size: 14px;
+  color: #666;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.journal-entry p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.journal-input {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.journal-textarea {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.send-btn {
+  background-color: #00b8b8;
+  color: white;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.send-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.send-btn:hover {
+  background-color: #009c9c;
+}

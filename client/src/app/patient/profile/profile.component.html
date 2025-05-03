@@ -10,8 +10,12 @@
         <h2>Emily Mark</h2>
         <p>Joined 2/1/2023</p>
         <div class="buttons">
-          <button id="stroke" class="profile-btn">Edit Profile</button>
-          <button class="profile-btn">My Journal</button>
+          <button (click)="goToEditProfilePage()" class="profile-btn">
+            Edit Profile
+          </button>
+          <button (click)="goToJournalPage()" class="profile-btn">
+            My Journal
+          </button>
         </div>
       </div>
     </div>

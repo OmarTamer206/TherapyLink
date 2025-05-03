@@ -1,1 +1,81 @@
-<p>doctor-checkout works!</p>
+<!-- app.component.html -->
+<div class="checkout-container">
+  <div class="checkout-content">
+    <!-- Left Section: Doctor Info and Appointment Details -->
+    <div class="doctor-info">
+      <div class="doctor-upper">
+        <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
+        <div class="doctor-text">
+          <h3>Dr. Mark</h3>
+          <p>★★★★★</p>
+          <p>Clinical Psychologist</p>
+        </div>
+      </div>
+
+      <div class="appointment-details">
+        <label for="appointment-type">Choose Type of Appointment</label>
+        <select id="appointment-type" class="appointment-select">
+          <option value="video-call">Voice / Video Call</option>
+          <option value="Chatting">Chatting</option>
+        </select>
+
+        <div class="appointment-duration">
+          <button class="duration-btn">30 min</button>
+          <button class="duration-btn selected">1 hour</button>
+          <button class="duration-btn">2 hours</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: Payment Info -->
+    <div class="payment-info">
+      <h3>Payment Information</h3>
+      <div class="payment-method">
+        <input type="radio" id="credit-card" name="payment-method" checked />
+        <label for="credit-card">Credit Card / Debit Card</label>
+      </div>
+
+      <div class="payment-details">
+        <label for="card-holder">Card Holder</label>
+        <input
+          type="text"
+          id="card-holder"
+          class="input-field"
+          placeholder="Enter card holder name"
+        />
+
+        <label for="card-number">Card Number</label>
+        <input
+          type="text"
+          id="card-number"
+          class="input-field"
+          placeholder="Enter card number"
+        />
+
+        <div class="card-expiry-cvv">
+          <div class="expiry-cvv">
+            <label for="expiry-date">MM/YY</label>
+            <input
+              type="text"
+              id="expiry-date"
+              class="input-field"
+              placeholder="MM/YY"
+            />
+          </div>
+          <div class="expiry-cvv">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" class="input-field" placeholder="CVV" />
+          </div>
+        </div>
+      </div>
+
+      <div class="total-amount">
+        <p>Total Amount: LE 500.00</p>
+      </div>
+
+      <div class="button-wrapper">
+        <button class="checkout-btn">Check Out</button>
+      </div>
+    </div>
+  </div>
+</div>

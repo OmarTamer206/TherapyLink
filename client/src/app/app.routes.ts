@@ -47,6 +47,7 @@ import { OldSessionComponent } from './patient/old-session/old-session.component
 import { SessionPageComponent } from './patient/session-page/session-page.component';
 import { SessionsLogComponent } from './patient/sessions-log/sessions-log.component';
 import { ManagerSettingsComponent } from './manager/manager-settings/manager-settings.component';
+import { PatientProfileComponent } from './patient/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -57,32 +58,32 @@ export const routes: Routes = [
   {
     path: 'patient',
     redirectTo: 'patient/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'doctor',
     redirectTo: 'doctor/dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'life-coach',
     redirectTo: 'life-coach/dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'emergency-team',
     redirectTo: 'emergency-team/emergency-team-dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'admin',
     redirectTo: 'admin/dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'manager',
     redirectTo: 'manager/dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -96,68 +97,59 @@ export const routes: Routes = [
     path: 'patient',
     component: PatientComponent,
     children: [
-      { path: 'home',
-        component: HomeComponent
-
+      { path: 'home', component: HomeComponent },
+      {
+        path: 'chatbot',
+        component: ChatbotComponent,
       },
       {
-        path: "chatbot",
-        component:ChatbotComponent
+        path: 'doctor-appointment',
+        component: DoctorAppointmentComponent,
       },
       {
-        path:"doctor-appointment",
-        component:DoctorAppointmentComponent
+        path: 'doctor-checkout',
+        component: DoctorCheckoutComponent,
       },
       {
-        path: "doctor-checkout",
-        component: DoctorCheckoutComponent
+        path: 'doctors-page',
+        component: DoctorsPageComponent,
       },
       {
-        path: "doctors-page",
-        component: DoctorsPageComponent
+        path: 'edit-profile',
+        component: EditProfileComponent,
       },
       {
-        path: "edit-profile",
-        component:EditProfileComponent
+        path: 'journal',
+        component: JournalComponent,
       },
       {
-        path:"journal",
-        component:JournalComponent
+        path: 'life-coach-appointment',
+        component: LifeCoachAppointmentComponent,
       },
       {
-        path:"life-coach-appointment",
-        component:LifeCoachAppointmentComponent
+        path: 'life-coach-checkout',
+        component: LifeCoachCheckoutComponent,
       },
       {
-        path:"life-coach-checkout",
-        component: LifeCoachCheckoutComponent
+        path: 'life-coach-page',
+        component: LifeCoachPageComponent,
       },
       {
-        path:"life-coach-page",
-        component:LifeCoachPageComponent
+        path: 'old-session',
+        component: OldSessionComponent,
       },
       {
-        path: "old-session",
-        component:OldSessionComponent
+        path: 'profile',
+        component: PatientProfileComponent,
       },
       {
-        path:"profile",
-        component: ProfileComponent
-
+        path: 'session-page',
+        component: SessionPageComponent,
       },
       {
-        path:"session-page",
-        component: SessionPageComponent
+        path: 'session-log',
+        component: SessionsLogComponent,
       },
-      {
-        path:"session-log",
-        component: SessionsLogComponent
-      }
-
-
-
-
-
     ],
   },
 
@@ -168,7 +160,6 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DoctorDashboardComponent,
-
       },
       {
         path: 'schedule-management',
@@ -241,7 +232,7 @@ export const routes: Routes = [
       },
       {
         path: 'admin-workforce',
-        component: AdminWorkforceComponent
+        component: AdminWorkforceComponent,
       },
 
       {
@@ -271,9 +262,9 @@ export const routes: Routes = [
         component: ManagerReportsGeneratorComponent,
       },
       {
-        path: "edit-profile",
-        component:ManagerSettingsComponent
-      }
+        path: 'edit-profile',
+        component: ManagerSettingsComponent,
+      },
     ],
   },
   {
@@ -296,12 +287,11 @@ export const routes: Routes = [
         path: 'emergency-team-settings',
         component: EmergencyTeamSettingsComponent,
       },
-
     ],
   },
 
- {
-     path: '**',
-     component: NotFoundComponent,
-},
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];

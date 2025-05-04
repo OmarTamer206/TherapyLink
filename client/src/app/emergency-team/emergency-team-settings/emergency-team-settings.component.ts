@@ -1,26 +1,40 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';  // Import FormsModule for ngModel
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-emergency-team-settings',
   standalone: true,
-  imports: [RouterModule, FormsModule], // Include FormsModule in the imports array
+  imports: [RouterModule, FormsModule, NgFor],
   templateUrl: './emergency-team-settings.component.html',
   styleUrls: ['./emergency-team-settings.component.css']
 })
 export class EmergencyTeamSettingsComponent {
-  // Define the form model
-  phoneNumber: string = '';
+  name: string = '';
+  birthMonth: string = 'Jan';
+  birthDay: number = 1;
+  birthYear: number = 2000;
+  phone: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
+  gender: string = '';
+  profile_pic: null | string = null;
 
-  // Define the onSubmit method to handle form submission
-  onSubmit() {
-    // Output the form data to the console for now
-    console.log('Form submitted');
-    console.log('Phone:', this.phoneNumber);
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
+  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  days = Array.from({ length: 31 }, (_, i) => i + 1);
+  years = Array.from({ length: 101 }, (_, i) => 1920 + i);
+
+  errorFlag: string = "";
+  successFlag: string = "";
+
+  async editProfile() {
+    if (!this.name || !this.email || !this.phone) {
+      this.errorFlag = 'All required fields must be filled';
+      return;
+    }
+    this.successFlag = 'Emergency profile updated successfully!';
+    setTimeout(() => this.successFlag = '', 3000);
   }
 }

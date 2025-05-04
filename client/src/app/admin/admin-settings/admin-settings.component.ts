@@ -14,13 +14,6 @@ import { AdminService } from '../../services/admin/admin.service';
   styleUrls: ['./admin-settings.component.css']
 })
 export class AdminSettingsComponent {
-
-
-
-
-
-
-
   // Define the form model
   name: string = '';
   birthMonth: string ="Jan";

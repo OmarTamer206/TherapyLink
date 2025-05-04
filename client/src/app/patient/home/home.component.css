@@ -37,6 +37,7 @@ h3 {
   background-color: white;
   height: 80%;
   width: 80%;
+  cursor: pointer;
 }
 
 .timer-container {

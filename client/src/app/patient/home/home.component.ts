@@ -17,4 +17,7 @@ export class HomeComponent {
   goToDoctorsPage() {
     this.router.navigate(['patient/doctors-page']);
   }
+  goToUpcomingSessionPage() {
+    this.router.navigate(['patient/session-page']);
+  }
 }

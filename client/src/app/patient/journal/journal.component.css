@@ -22,7 +22,7 @@
 
 .journal-entry {
   background-color: #ffffff;
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -74,20 +74,16 @@
 }
 
 .send-btn {
-  background-color: #00b8b8;
-  color: white;
-  padding: 12px 20px;
+  background-color: white;
+
+  padding: 10px 20px;
   font-size: 14px;
   border-radius: 8px;
   cursor: pointer;
-  border: none;
+  border: 1px solid #ccc;
 }
 
 .send-btn img {
-  width: 16px;
-  height: 16px;
-}
-
-.send-btn:hover {
-  background-color: #009c9c;
+  width: 30px;
+  height: 30px;
 }

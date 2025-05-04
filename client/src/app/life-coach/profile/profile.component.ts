@@ -54,13 +54,13 @@ export class lifeProfileComponent {
       role: "life-coach"
     };
 
-    this.authService.updateLifeCoach(data).subscribe((response) => {
-      this.successFlag = `Profile updated successfully!`;
-      this.edit_old_email_verification = this.email;
-      setTimeout(() => { this.successFlag = ""; }, 3000);
-    }, (error) => {
-      console.error("Error updating profile: ", error);
-    });
+    // this.authService.updateLifeCoach(data).subscribe((response) => {
+    //   this.successFlag = `Profile updated successfully!`;
+    //   this.edit_old_email_verification = this.email;
+    //   setTimeout(() => { this.successFlag = ""; }, 3000);
+    // }, (error) => {
+    //   console.error("Error updating profile: ", error);
+    // });
   }
 
   async formValidator() {

@@ -14,6 +14,7 @@ import 'package:mobile_app/screens/journal_screen/journal_screen.dart';
 import 'package:mobile_app/screens/life_coach_s_screen.dart';
 import 'package:mobile_app/screens/life_coaches_screen/life_coaches_screen.dart';
 import 'package:mobile_app/screens/old_sessions_rate_screen.dart';
+import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
 import 'package:mobile_app/screens/sign_in_log_in.dart';
 import 'package:mobile_app/screens/sign_up_screen.dart';
 
@@ -80,11 +81,11 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> routes = {
     signUpScreen: (context) => SignUpScreen(),
-    //sessionsScreen: (context) => SessionsScreen(),
+    sessionsScreen: (context) => SessionsScreen(),
     doctorsScreen: (context) => const DoctorsScreen(),
     doctorSOneScreen: (context) => const DoctorSOneScreen(),
-    appointmentScreen: (context) => const AppointmentScreen(),
-    checkOutScreen: (context) => const CheckOutScreen(),
+    //appointmentScreen: (context) => AppointmentScreen(),
+    checkOutScreen: (context) =>  CheckOutScreen(),
     //paymentScreen: (context) => PaymentScreen(),
     journalScreen: (context) => const JournalScreen(),
     //profileScreen: (context) => ProfileScreen(),
@@ -92,7 +93,7 @@ class AppRoutes {
     signInLogInScreen: (context) => SignInLogInScreen(),
     homeScreen: (context) => HomeScreen(),
     chatbotScreen: (context) => const ChatbotScreen(),
-    chattingScreen: (context) => ChattingScreen(),
+    chattingScreen: (context) => const ChattingScreen(),
     //upcomingSessionsScreen: (context) => UpcomingSessionsScreen(),
     //upcomingSessionsVideoScreen: (context) => UpcomingSessionsVideoScreen(),
     //upcomingSessionsChatScreen: (context) => UpcomingSessionsChatScreen(),

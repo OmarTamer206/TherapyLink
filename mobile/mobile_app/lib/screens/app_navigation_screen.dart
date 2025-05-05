@@ -1,10 +1,151 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/check_out_screen/check_out_screen.dart';
+import 'package:mobile_app/screens/doctor_s_one_screen.dart';
+import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
+import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
+import 'package:mobile_app/screens/sign_up_screen.dart';
+
 
 class AppNavigationScreen extends StatelessWidget {
   const AppNavigationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: const Color(0xffffffff),
+      body: SafeArea(
+        child: SizedBox(
+          width: 375,
+          child: Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(color: Color(0xffffffff)),
+                child: const Column(
+                  children: [
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        "App Navigation",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 20,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        "Check the app's UI",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff888888),
+                          fontSize: 16,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Divider(height: 1, thickness: 1, color: Color(0xff000000)),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    decoration: const BoxDecoration(color: Color(0xffffffff)),
+                    child: Column(
+                      children: [
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Sessions",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SessionsScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Doctors",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const DoctorsScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Doctor's One",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const DoctorSOneScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Check out",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  CheckOutScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Sign up",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  SignUpScreen()),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScreenTitle(
+    BuildContext context, {
+    required String screenTitle,
+    Function? onTapScreenTitle,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        onTapScreenTitle?.call();
+      },
+      child: Container(
+        decoration: const BoxDecoration(color: Color(0XFFFFFFFF)),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                screenTitle,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Color(0xff000000),
+                  fontSize: 20,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const SizedBox(height: 5),
+            const Divider(height: 1, thickness: 1, color: Color(0xff888888)),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -24,18 +24,18 @@ class SessionsScreen extends StatelessWidget {
                   onGenerateRoute: (routeSetting) => PageRouteBuilder(
                     pageBuilder: (ctx, ani, ani1) =>
                         getCurrentPage(routeSetting.name!),
-                    transitionDuration:const Duration(seconds: 0),
+                    transitionDuration: const Duration(seconds: 0),
                   ),
                 ),
               ),
-             const SizedBox(height: 24),
+              const SizedBox(height: 24),
             ],
           ),
         ),
       ),
       bottomNavigationBar: Container(
         width: double.maxFinite,
-        margin:const EdgeInsets.only(left: 26, right: 26, bottom: 24),
+        margin: const EdgeInsets.only(left: 26, right: 26, bottom: 24),
         child: _buildBottomNavigationBar(context),
       ),
     );
@@ -59,9 +59,9 @@ class SessionsScreen extends StatelessWidget {
   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.home:
-        return AppRoutes.sessionsInitialPage;
+        return AppRoutes.homeScreen;
       case BottomBarEnum.sessions:
-        return "/";
+        return AppRoutes.sessionsInitialPage;
       case BottomBarEnum.groupsessions:
         return "/";
       case BottomBarEnum.account:

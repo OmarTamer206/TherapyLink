@@ -1,5 +1,4 @@
-/* app.component.css */
-
+/* HOME PAGE CONTAINER */
 .home-container {
   display: flex;
   justify-content: space-between;
@@ -38,6 +37,9 @@ h3 {
   height: 80%;
   width: 80%;
   cursor: pointer;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
 .timer-container {
@@ -53,8 +55,8 @@ h3 {
   border-radius: 50%;
   position: relative;
   z-index: 1;
-  width: 50%; /* Make the timer take full container width */
-  height: 50%; /* Make the timer take full container height */
+  width: 50%;
+  height: 50%;
 }
 
 .timer-text {
@@ -62,6 +64,38 @@ h3 {
   z-index: 2;
   font-size: 20px;
   color: #333;
+}
+
+/* RIGHT SIDE */
+.right-section {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  flex-direction: column;
+}
+
+.emergency {
+  flex: 1;
+  display: flex;
+  justify-content: end;
+  width: 100%;
+}
+
+.help-button {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 140px;
+  height: 50px;
+}
+
+.help-button:hover {
+  background-color: #d32f2f;
 }
 
 .action-buttons {
@@ -100,32 +134,78 @@ h3 {
   background-color: #009c9c;
 }
 
-.right-section {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 20px;
-  flex-direction: column;
-}
-
-.help-button {
-  background-color: #f44336;
-  color: white;
-  padding: 10px 15px;
-  font-size: 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  width: 140px;
-  height: 50px;
-}
-.emergency {
-  flex: 1;
-  display: flex;
-  justify-content: end;
+/* THERAPIST PREFERENCE SECTION */
+.therapist-selection {
+  min-height: 100vh;
   width: 100%;
+  background-color: #e1f1f6;
+  padding: 60px 20px 80px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.help-button:hover {
-  background-color: #d32f2f;
+.therapist-selection h2 {
+  font-size: 28px;
+  color: #003c4d;
+  margin-bottom: 10px;
+}
+
+.therapist-selection h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.therapist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 40px;
+}
+
+.therapist-card {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px 25px;
+  font-size: 18px;
+  font-weight: 500;
+  gap: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  justify-content: flex-start;
+  height: 80px;
+}
+
+.therapist-card:hover {
+  background-color: #f0f9ff;
+}
+
+.therapist-card img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Confirm Button */
+.confirm-button {
+  padding: 16px 40px;
+  font-size: 18px;
+  background-color: #003c4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 320px;
+}
+
+.confirm-button:hover {
+  background-color: #002c39;
 }

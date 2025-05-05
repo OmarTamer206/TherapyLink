@@ -27,12 +27,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       type: BottomBarEnum.home,
     ),
     BottomMenuModel(
-      icon: ImageConstant.imgTelevision,
-      activeIcon: ImageConstant.imgTelevision,
-      title: "Sessions",
-      type: BottomBarEnum.sessions,
-    ),
-    BottomMenuModel(
       icon: ImageConstant.imgNavSessions,
       activeIcon: ImageConstant.imgNavSessions,
       title: "Sessions",
@@ -56,9 +50,9 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(
-        left: 26,
-        right: 26,
-        bottom: 24,
+        left: 0,
+        right:0,
+        bottom: 0,
       ),
       decoration: BoxDecoration(
         color: theme.colorScheme.primary,
@@ -68,9 +62,10 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       ),
       child: BottomNavigationBar(
         backgroundColor: Colors.transparent,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedFontSize: 0,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
         elevation: 0,
         currentIndex: selectedIndex,
         type: BottomNavigationBarType.fixed,
@@ -81,11 +76,32 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               children: [
                 CustomImageView(
                   imagePath: bottomMenuList[index].icon,
-                  height: 10,
-                  width: 60,
+                  height: 24,
+                  width: 24,
                   color: theme.colorScheme.primaryContainer,
                 ),
-               const SizedBox(height: 46.710022),
+               const SizedBox(height: 4),
+                Text(
+                  bottomMenuList[index].title ?? "",
+                  style: TextStyle(
+                    color: theme.colorScheme.onErrorContainer,
+                    fontSize: 10,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+        activeIcon: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomImageView(
+                  imagePath: bottomMenuList[index].activeIcon,
+                  height: 24,
+                  width: 24,
+                  color: theme.colorScheme.onErrorContainer,
+                ),
+                const SizedBox(height: 4),
                 Text(
                   bottomMenuList[index].title ?? "",
                   style: TextStyle(
@@ -96,28 +112,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   ),
                 ),
               ],
-            ),
-            activeIcon: SizedBox(
-              width: 30,
-              child: Column(
-                
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CustomImageView(
-                    imagePath: bottomMenuList[index].activeIcon,
-                    height: 26,
-                    width: double.maxFinite,
-                    color: theme.colorScheme.onErrorContainer,
-                  ),
-                  Text(
-                    bottomMenuList[index].title ?? "",
-                    style: theme.textTheme.labelMedium!.copyWith(
-                      color: theme.colorScheme.onErrorContainer,
-                    ),
-                  ),
-                ],
-              ),
             ),
             label: '',
           );

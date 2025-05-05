@@ -6,30 +6,30 @@
   height: 100%;
 }
 
-.session-content {
-  margin-top: 20px;
-}
-
 .session-content h2 {
   font-size: 24px;
   font-weight: bold;
   color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .session-details {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+
   padding: 20px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 620px;
 }
 
 .session-info {
-  text-align: center;
-  margin-bottom: 15px;
+  text-align: left;
+  padding: 10px;
 }
 
 .session-title {
@@ -41,8 +41,15 @@
 .session-time {
   font-size: 14px;
   color: #666;
+  display: flex;
+  align-items: end;
 }
-
+.session-duration {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  justify-content: end;
+}
 .doctor-info {
   display: flex;
   flex-direction: column;
@@ -69,34 +76,14 @@
   color: #666;
 }
 
-.session-actions {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.audio-btn,
-.end-btn,
-.mic-btn {
-  background-color: #ffffff;
-  border: 1px solid #00b8b8;
-  border-radius: 50%;
-  padding: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.audio-btn:hover,
-.end-btn:hover,
-.mic-btn:hover {
-  background-color: #00b8b8;
-  color: white;
-}
-
 .session-timer {
-  font-size: 18px;
-  color: #333;
+  font-size: 20px;
+  color: white;
   font-weight: bold;
   text-align: center;
+  padding: 15px;
   margin-top: 15px;
+  border-radius: 10px;
+  background-color: #06303e;
+  height: 50px;
 }

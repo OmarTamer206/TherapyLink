@@ -1,1 +1,41 @@
-<p>edit-profile works!</p>
+<div class="profile-container">
+  <div class="profile-image">
+    <h2>Edit Profile</h2>
+    <img src="profile pic.png" alt="Profile Picture" />
+  </div>
+  <div class="profile-details">
+    <div class="profile-content">
+      <form>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" value="Emily Mark" disabled />
+        </div>
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="text" id="dob" value="9/1/2005" />
+        </div>
+        <div class="form-group">
+          <label for="marital-status">Marital Status</label>
+          <select id="marital-status">
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="married">Divorced</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" value="010-5670-3248" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" value="Emilymark@gmail.com" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Change Password" />
+        </div>
+        <button type="submit" class="confirm-button">Confirm</button>
+      </form>
+    </div>
+  </div>
+</div>

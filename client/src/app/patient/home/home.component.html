@@ -36,25 +36,14 @@
     <h2>Choose Your Therapist!</h2>
     <h3>Type of Therapists</h3>
     <div class="therapist-grid">
-      <div class="therapist-card">
-        <img src="Clinical Psychologist.png" alt="Clinical Psychologist">
-        <span>Clinical Psychologist</span>
-      </div>
-      <div class="therapist-card">
-        <img src="Child and Adolescent Therapist.png" alt="Child and Adolescent Therapist">
-        <span>Child and Adolescent Therapist</span>
-      </div>
-      <div class="therapist-card">
-        <img src="Counseling Psychologist.png" alt="Counseling Psychologist">
-        <span>Counseling Psychologist</span>
-      </div>
-      <div class="therapist-card">
-        <img src="Couple Therapy.png" alt="Couple Therapy">
-        <span>Couple Therapy</span>
-      </div>
-      <div class="therapist-card">
-        <img src="Trauma Therapist.png" alt="Trauma Therapist">
-        <span>Trauma Therapist</span>
+      <div
+        class="therapist-card"
+        *ngFor="let therapist of therapists; let i = index"
+        [class.selected]="selectedIndex === i"
+        (click)="selectTherapist(i)"
+      >
+        <img [src]="therapist.image" [alt]="therapist.name">
+        <span>{{ therapist.name }}</span>
       </div>
     </div>
     <button class="confirm-button" (click)="toggleTherapistPreference()">Confirm</button>

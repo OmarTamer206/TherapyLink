@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/appointment_screen/appointment_screen.dart';
 import 'package:mobile_app/screens/chatbot_screen.dart';
 import 'package:mobile_app/screens/chatting_screen.dart';
 import 'package:mobile_app/screens/check_out_screen/check_out_screen.dart';
@@ -16,14 +17,14 @@ class AppNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
+      backgroundColor: const Color(0xffE1F1F6),
       body: SafeArea(
         child: SizedBox(
           width: 375,
           child: Column(
             children: [
               Container(
-                decoration: const BoxDecoration(color: Color(0xffffffff)),
+                decoration: const BoxDecoration(color: Color(0xffE1F1F6)),
                 child: const Column(
                   children: [
                     SizedBox(height: 10),
@@ -62,7 +63,7 @@ class AppNavigationScreen extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
-                    decoration: const BoxDecoration(color: Color(0xffffffff)),
+                    decoration: const BoxDecoration(color: Color(0xffE1F1F6)),
                     child: Column(
                       children: [
                         _buildScreenTitle(
@@ -127,6 +128,14 @@ class AppNavigationScreen extends StatelessWidget {
                           onTapScreenTitle: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const DoctorSOneScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Appointment",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const AppointmentScreen()),
                           ),
                         ),
                         _buildScreenTitle(

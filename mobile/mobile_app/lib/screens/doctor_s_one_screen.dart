@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/core/utils/image_constant.dart';
+import 'package:mobile_app/screens/appointment_screen/appointment_screen.dart';
 import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
 import 'package:mobile_app/theme/app_decoration.dart';
 import 'package:mobile_app/theme/custom_text_style.dart';
@@ -193,10 +194,10 @@ class DoctorSOneScreen extends StatelessWidget {
         fontWeight: FontWeight.bold,
       ),
       onPressed: () {
-        //Navigator.push(
-          //context,
-          //MaterialPageRoute(builder: (context) =>const ChatbotScreen()),
-        //);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>const AppointmentScreen()),
+        );
       },
                         ),
                         const SizedBox(height: 30),

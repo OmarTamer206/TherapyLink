@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/home_screen.dart';
 import 'package:mobile_app/screens/sessions_screen/sessions_initial_page.dart';
 import 'package:mobile_app/widgets/custom_button_bar.dart';
 
@@ -74,7 +75,7 @@ class SessionsScreen extends StatelessWidget {
       case 'sessionsInitialPage':
         return const SessionsInitialPage();
       case 'homeScreen':
-        return const DefaultWidget(); // Replace with actual HomeScreen widget
+        return  HomeScreen(); // Replace with actual HomeScreen widget
       case 'groupSessionsScreen':
         return const DefaultWidget(); // Replace with actual GroupSessionsScreen widget
       case 'accountScreen':

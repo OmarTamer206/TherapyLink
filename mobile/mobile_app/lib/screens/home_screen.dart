@@ -118,6 +118,7 @@ class HomeScreen extends StatelessWidget {
                                                   appTheme.blueGray100,
                                               color: theme
                                                   .colorScheme.primaryContainer,
+                                                  strokeWidth: 15,
                                             ),
                                           ),
                                           Text(
@@ -138,6 +139,7 @@ class HomeScreen extends StatelessWidget {
                                 child: Divider(
                                   indent: 20,
                                   endIndent: 20,
+                                   color: Color(0xFF149FA8),
                                 ),
                               ),
                               const SizedBox(height: 38),

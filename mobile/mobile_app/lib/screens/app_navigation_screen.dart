@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/chatbot_screen.dart';
+import 'package:mobile_app/screens/chatting_screen.dart';
 import 'package:mobile_app/screens/check_out_screen/check_out_screen.dart';
 import 'package:mobile_app/screens/doctor_s_one_screen.dart';
 import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
+import 'package:mobile_app/screens/home_screen.dart';
 import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
+import 'package:mobile_app/screens/sign_in_log_in.dart';
 import 'package:mobile_app/screens/sign_up_screen.dart';
 
 
@@ -63,6 +67,46 @@ class AppNavigationScreen extends StatelessWidget {
                       children: [
                         _buildScreenTitle(
                           context,
+                          screenTitle: "Sign up",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  SignUpScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Sign in",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  SignInLogInScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Home",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  HomeScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Chat Bot",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ChatbotScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Chatting",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ChattingScreen()),
+                          ),
+                        ),
+                         _buildScreenTitle(
+                          context,
                           screenTitle: "Sessions",
                           onTapScreenTitle: () => Navigator.push(
                             context,
@@ -91,14 +135,6 @@ class AppNavigationScreen extends StatelessWidget {
                           onTapScreenTitle: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) =>  CheckOutScreen()),
-                          ),
-                        ),
-                        _buildScreenTitle(
-                          context,
-                          screenTitle: "Sign up",
-                          onTapScreenTitle: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) =>  SignUpScreen()),
                           ),
                         ),
                       ],

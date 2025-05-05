@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/core/utils/image_constant.dart';
+import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
 import 'package:mobile_app/theme/app_decoration.dart';
 import 'package:mobile_app/theme/custom_text_style.dart';
 import 'package:mobile_app/theme/theme_helper.dart';
@@ -22,12 +23,12 @@ class DoctorSOneScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Container(
               width: double.maxFinite,
-              padding:const EdgeInsets.symmetric(horizontal: 26),
+              padding: EdgeInsets.zero,
               child: Column(
                 children: [
                   Container(
                     width: double.maxFinite,
-                    padding:const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(top: 20),
                     decoration: AppDecoration.background,
                     child: Column(
                       children: [
@@ -35,12 +36,12 @@ class DoctorSOneScreen extends StatelessWidget {
                           width: double.maxFinite,
                           child: _buildAppBar(context),
                         ),
-                       const SizedBox(height: 44),
+                        const SizedBox(height: 44),
                         Container(
-                          margin:const EdgeInsets.symmetric(horizontal: 36),
-                          padding:const EdgeInsets.symmetric(
-                            horizontal: 22,
-                            vertical: 10,
+                          margin: const EdgeInsets.symmetric(horizontal: 36),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 16,
                           ),
                           decoration: AppDecoration.widgetorinput.copyWith(
                             borderRadius: BorderRadiusStyle.roundedBorder6,
@@ -56,7 +57,7 @@ class DoctorSOneScreen extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Padding(
-                                  padding:const EdgeInsets.only(top: 2),
+                                  padding: const EdgeInsets.only(top: 2),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -69,7 +70,7 @@ class DoctorSOneScreen extends StatelessWidget {
                                               "Dr. Mark",
                                               style: theme.textTheme.titleSmall,
                                             ),
-                                           const CustomRatingBar(
+                                            const CustomRatingBar(
                                               alignment: Alignment.bottomCenter,
                                               initialRating: 5,
                                             ),
@@ -95,22 +96,22 @@ class DoctorSOneScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                       const SizedBox(height: 26),
+                        const SizedBox(height: 26),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding:const EdgeInsets.only(left: 36),
+                            padding: const EdgeInsets.only(left: 36),
                             child: Text(
                               "Reviews",
                               style: CustomTextStyles.titleLargeBlack900,
                             ),
                           ),
                         ),
-                       const SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Container(
                           width: double.maxFinite,
-                          margin:const EdgeInsets.symmetric(horizontal: 36),
-                          padding:const EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(horizontal: 36),
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 18,
                             vertical: 16,
                           ),
@@ -126,7 +127,7 @@ class DoctorSOneScreen extends StatelessWidget {
                                 "Dr. Mark",
                                 style: CustomTextStyles.titleMediumSemiBold_1,
                               ),
-                             const SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 "Dr. Mark has been an incredible support throughout my therapy journey. He listens attentively and offers thoughtful advice that’s really helped me manage my anxiety. I always feel heard and understood after each session!",
                                 maxLines: 5,
@@ -134,7 +135,7 @@ class DoctorSOneScreen extends StatelessWidget {
                                 style:
                                     CustomTextStyles.titleSmallBlack900Medium,
                               ),
-                             const SizedBox(height: 18),
+                              const SizedBox(height: 18),
                               const SizedBox(
                                 width: double.maxFinite,
                                 child: Divider(),
@@ -162,7 +163,7 @@ class DoctorSOneScreen extends StatelessWidget {
                                 "Dr, Mark",
                                 style: CustomTextStyles.titleMediumSemiBold_1,
                               ),
-                             const SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 "Dr. Mark is very knowledgeable and compassionate. He helped me through a really tough time in my life, and I’ve made so much progress thanks to him. The online sessions are convenient and still feel very personal.",
                                 maxLines: 5,
@@ -174,15 +175,34 @@ class DoctorSOneScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 50),
-                        const CustomElevatedButton(
-                          text: "Make Appointment",
-                          margin: EdgeInsets.symmetric(horizontal: 36),
+                        CustomElevatedButton(
+      height: 54,
+      text: "Make Appointment",
+      margin:
+          const EdgeInsets.symmetric(horizontal: 20),
+          buttonStyle: ElevatedButton.styleFrom(
+            backgroundColor: theme.colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6)
+            ),
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          ),
+      buttonTextStyle: CustomTextStyles.titleMediumOnErrorContainer.copyWith(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+      onPressed: () {
+        //Navigator.push(
+          //context,
+          //MaterialPageRoute(builder: (context) =>const ChatbotScreen()),
+        //);
+      },
                         ),
                         const SizedBox(height: 30),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
                 ],
               ),
             ),
@@ -195,13 +215,24 @@ class DoctorSOneScreen extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
       leadingWidth: 60,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgArrowdown,
-        margin:const EdgeInsets.only(left: 36),
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DoctorsScreen()),
+          );
+        },
+        child: AppbarLeadingImage(
+          imagePath: ImageConstant.imgArrowDownBlack900,
+          margin: const EdgeInsets.only(left: 36),
+        ),
       ),
-      title: const AppbarSubtitle(
-        text: "Dr. Mark's Page",
-        margin: EdgeInsets.only(right: 113),
+      title: const Expanded(
+        child: Center(
+          child: AppbarSubtitle(
+            text: "Dr. Mark's Page",
+          ),
+        ),
       ),
     );
   }

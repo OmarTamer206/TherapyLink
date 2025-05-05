@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { Chart } from 'chart.js';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
+  showTherapistPreference: boolean = false;
+
   constructor(private router: Router) {}
-  goToChatbot() {
+
+  goToChatbot(): void {
     this.router.navigate(['patient/chatbot']);
   }
-  goToDoctorsPage() {
+
+  goToDoctorsPage(): void {
     this.router.navigate(['patient/doctors-page']);
   }
-  goToUpcomingSessionPage() {
+
+  goToUpcomingSessionPage(): void {
     this.router.navigate(['patient/session-page']);
+  }
+
+  toggleTherapistPreference(): void {
+    this.showTherapistPreference = !this.showTherapistPreference;
   }
 }

@@ -17,15 +17,18 @@ class SessionsInitialPage extends StatefulWidget {
 class _SessionsInitialPageState extends State<SessionsInitialPage> {
   @override
   Widget build(BuildContext context) {
+    // Get the screen width to calculate a smaller container width
+    final screenWidth = MediaQuery.of(context).size.width;
+    final containerWidth = screenWidth * 0.9; // 90% of screen width
+
     return SingleChildScrollView(
       child: Container(
         width: double.maxFinite,
-        padding: const EdgeInsets.symmetric(horizontal: 26),
         child: Column(
           children: [
             Container(
               width: double.maxFinite,
-              padding:const EdgeInsets.only(top: 18),
+              padding: const EdgeInsets.only(top: 18),
               decoration: AppDecoration.background,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,51 +37,83 @@ class _SessionsInitialPageState extends State<SessionsInitialPage> {
                     width: double.maxFinite,
                     child: _buildAppBar(context),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                   Padding(
-                    padding:const EdgeInsets.only(left: 34),
+                    padding: const EdgeInsets.symmetric(horizontal: 26),
                     child: Text(
                       "Upcoming Sessions",
-                      style: CustomTextStyles.titleLargeBlack900,
+                      style: CustomTextStyles.titleLargeBlack900.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Container(
-                    width: 360,
-                    margin: const EdgeInsets.only(left: 34),
-                    padding:const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                    decoration: AppDecoration.widgetorinput.copyWith(
-                      borderRadius: BorderRadiusStyle.roundedBorder6,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [_buildUpcomingSessionsList(context)],
+                  const SizedBox(height: 12),
+                  Center(
+                    child: SizedBox(
+                      width: containerWidth,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Reduced padding
+                        decoration: AppDecoration.widgetorinput.copyWith(
+                          borderRadius: BorderRadiusStyle.roundedBorder6,
+                          border: const Border(
+                            left: BorderSide(
+                              color: Color(0xffffffff),
+                              width: 1,
+                            ),
+                            right: BorderSide(
+                              color: Color(0xffffffff),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [_buildUpcomingSessionsList(context)],
+                        ),
+                      ),
                     ),
                   ),
-                 const SizedBox(height: 26),
+                  const SizedBox(height: 26),
                   Padding(
-                    padding:const EdgeInsets.only(left: 34),
+                    padding: const EdgeInsets.symmetric(horizontal: 26),
                     child: Text(
                       "Previous Sessions",
-                      style: CustomTextStyles.titleLargeBlack900,
+                      style: CustomTextStyles.titleLargeBlack900.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                 const SizedBox(height: 8),
-                  Container(
-                    width: 360,
-                    margin:const EdgeInsets.only(left: 34),
-                    padding:const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                    decoration: AppDecoration.widgetorinput.copyWith(
-                      borderRadius: BorderRadiusStyle.roundedBorder6,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [_buildPreviousSessionsList(context)],
+                  const SizedBox(height: 12),
+                  Center(
+                    child: SizedBox(
+                      width: containerWidth,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Reduced padding
+                        decoration: AppDecoration.widgetorinput.copyWith(
+                          borderRadius: BorderRadiusStyle.roundedBorder6,
+                          border:const Border(
+                            left: BorderSide(
+                              color: Color(0xffffffff),
+                              width: 1,
+                            ),
+                            right: BorderSide(
+                              color: Color(0xffffffff),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [_buildPreviousSessionsList(context)],
+                        ),
+                      ),
                     ),
                   ),
-                 const SizedBox(height: 40),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
@@ -99,11 +134,11 @@ class _SessionsInitialPageState extends State<SessionsInitialPage> {
   Widget _buildUpcomingSessionsList(BuildContext context) {
     return ListView.separated(
       padding: EdgeInsets.zero,
-      physics:const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       separatorBuilder: (context, index) {
         return Padding(
-          padding:const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Divider(
             height: 1,
             thickness: 1,
@@ -125,7 +160,7 @@ class _SessionsInitialPageState extends State<SessionsInitialPage> {
       shrinkWrap: true,
       separatorBuilder: (context, index) {
         return Padding(
-          padding:const EdgeInsets.symmetric(vertical: 9.0),
+          padding: const EdgeInsets.symmetric(vertical: 9.0),
           child: Divider(
             height: 1,
             thickness: 1,

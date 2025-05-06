@@ -65,6 +65,7 @@ input:focus,
 select:focus {
   outline: none;
   background-color: #f1f1f1;
+
   border-color: #4caf50;
 }
 
@@ -72,7 +73,11 @@ select:focus {
 button {
   padding: 12px;
   font-size: 16px;
+
   background-color: #4caf50;
+
+  background-color: #149fa8;
+
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -82,7 +87,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #149fa8;
 }
 
 /* Selector styling for Job Description and Registering/Editing */
@@ -166,20 +171,26 @@ button:hover {
 
 .edit-button {
   background-color: #4caf50;
+
+  background-color: #149fa8;
+
   color: white;
 }
 
 .delete-button {
   background-color: #ff5733;
+
+  background-color: #b90606;
+
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #45a049;
+  background-color: #149fa8;
 }
 
 .delete-button:hover {
-  background-color: #e04e2c;
+  background-color: #b90606;
 }
 
 .redButton {
@@ -188,6 +199,13 @@ button:hover {
 }
 .redButton:hover {
   background-color: #e04e2c;
+}
+.redButton {
+  background-color: #b90606;
+  color: white;
+}
+.redButton:hover {
+  background-color: #b90606;
 }
 .buttonWrapper {
   display: flex;
@@ -202,7 +220,7 @@ button:hover {
   text-align: center;
   width: 100%;
   padding: 15px;
-  background-color: #ff4546;
+  background-color: #b90606;
   border-radius: 10px;
   margin-bottom: 10px;
 }
@@ -214,7 +232,11 @@ button:hover {
   text-align: center;
   width: 100%;
   padding: 15px;
+
   background-color: #72c342;
+
+  background-color: #149fa8;
+
   border-radius: 10px;
   margin-bottom: 10px;
 }

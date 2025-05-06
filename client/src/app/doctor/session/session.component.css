@@ -88,7 +88,7 @@ section {
 
 .session-timer-btn,
 .start-session {
-  background-color: #003355; /* Same color as View Journal button */
+  background-color: #06303E; /* Same color as View Journal button */
   color: white;
   border: none;
   padding: 10px 30px; /* Ensure both buttons are the same size */
@@ -100,7 +100,7 @@ section {
 
 .session-timer-btn:hover,
 .start-session:hover {
-  background-color: #002a39;
+  background-color: #06303E;
 }
 
 .session-timer-btn:focus,
@@ -171,23 +171,23 @@ section {
 
 .view-report {
   background-color: transparent;
-  border: 2px solid #00253d;
+  border: 2px solid #06303E;
   color: #002843;
 }
 
 .view-report:hover {
-  background-color: #012b46;
+  background-color: #06303E;
   color: white;
 }
 
 .view-journal {
-  background-color: #003355;
+  background-color: #06303E;
   color: white;
   border: none;
 }
 
 .view-journal:hover {
-  background-color: #002a39;
+  background-color: #06303E;
 }
 
 .view-report:focus,

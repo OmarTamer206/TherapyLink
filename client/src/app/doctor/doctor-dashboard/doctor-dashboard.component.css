@@ -44,11 +44,11 @@
 }
 
 .badge.positive {
-  background-color: #4caf50;
+  background-color: #149FA8;
 }
 
 .badge.negative {
-  background-color: #f44336;
+  background-color: #880808;
 }
 
 /* Patients Table */
@@ -106,7 +106,7 @@
 }
 
 .journal {
-  background-color: #263238;
+  background-color: #06303E;
   color: white;
 }
 

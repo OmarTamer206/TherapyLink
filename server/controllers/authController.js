@@ -70,7 +70,7 @@ async function loginStaff(data) {
     const token = jwt.sign(
       { ...userWithoutPassword, role: roleOfUser },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "10h" }
     );
 
     const refreshToken = jwt.sign(

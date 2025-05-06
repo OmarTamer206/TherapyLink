@@ -80,3 +80,6 @@
   background-color: #06303e;
   height: 50px;
 }
+.session-content {
+  max-height: 100%;
+}

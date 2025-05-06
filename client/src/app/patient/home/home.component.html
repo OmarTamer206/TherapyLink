@@ -1,29 +1,51 @@
-<!-- app.component.html -->
+@if (!showTherapistPreference) {
+  <div class="home-container">
+    <div class="left-section">
+      <h2>Welcome Emily!</h2>
+      <h3>Upcoming Session</h3>
+      <div (click)="goToUpcomingSessionPage()" class="session-details">
+        <p>Session With: Dr. Magdy</p>
+        <p>Timing: 9/1/2025, 7:00 PM</p>
+        <div class="timer-container">
+          <canvas id="sessionTimer" width="250" height="250"></canvas>
+          <div class="timer-text">20 minutes left</div>
+        </div>
+      </div>
+    </div>
 
-<div class="home-container">
-  <div class="left-section">
-    <h2>Welcome Emily!</h2>
-    <h3>Upcoming Session</h3>
-    <div (click)="goToUpcomingSessionPage()" class="session-details">
-      <p>Session With: Dr. Magdy</p>
-      <p>Timing: 9/1/2025, 7:00 PM</p>
-      <div class="timer-container">
-        <canvas id="sessionTimer" width="250" height="250"></canvas>
-        <div class="timer-text">20 minutes left</div>
+    <div class="right-section">
+      <div class="emergency">
+        <button class="help-button">Need Help?</button>
+      </div>
+      <div class="action-buttons">
+        <button class="action-button" (click)="toggleTherapistPreference()">
+          Change Therapist Preference
+        </button>
+        <button (click)="goToDoctorsPage()" class="action-button">
+          Choose Doctor
+        </button>
+        <button (click)="goToChatbot()" class="action-button primary">
+          Repeat Chatbot Test
+        </button>
       </div>
     </div>
   </div>
-
-  <div class="right-section">
-    <div class="emergency"><button class="help-button">Need Help?</button></div>
-    <div class="action-buttons">
-      <button class="action-button">Change Therapist Preference</button>
-      <button (click)="goToDoctorsPage()" class="action-button">
-        Choose Doctor
-      </button>
-      <button (click)="goToChatbot()" class="action-button primary">
-        Repeat Chatbot Test
-      </button>
+}
+@else {
+  <div class="therapist-selection">
+    <h2>Choose Your Therapist!</h2>
+    <h3>Type of Therapists</h3>
+    <div class="therapist-grid">
+      <div
+        class="therapist-card"
+        *ngFor="let therapist of therapists; let i = index"
+        [class.selected]="selectedIndex === i"
+        (click)="selectTherapist(i)"
+      >
+        <img [src]="therapist.image" [alt]="therapist.name">
+        <span>{{ therapist.name }}</span>
+      </div>
     </div>
+    <button class="confirm-button" (click)="toggleTherapistPreference()">Confirm</button>
   </div>
-</div>
+}

@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:mobile_app/routes/app_routes.dart';
+import 'package:mobile_app/screens/home_screen.dart';
 import 'package:mobile_app/screens/sessions_screen/sessions_initial_page.dart';
 import 'package:mobile_app/widgets/custom_button_bar.dart';
 
@@ -20,24 +20,19 @@ class SessionsScreen extends StatelessWidget {
               Expanded(
                 child: Navigator(
                   key: navigatorKey,
-                  initialRoute: AppRoutes.sessionsInitialPage,
                   onGenerateRoute: (routeSetting) => PageRouteBuilder(
                     pageBuilder: (ctx, ani, ani1) =>
                         getCurrentPage(routeSetting.name!),
-                    transitionDuration:const Duration(seconds: 0),
+                    transitionDuration: const Duration(seconds: 0),
                   ),
+                  initialRoute: 'sessionsInitialPage',
                 ),
               ),
-             const SizedBox(height: 24),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        width: double.maxFinite,
-        margin:const EdgeInsets.only(left: 26, right: 26, bottom: 24),
-        child: _buildBottomNavigationBar(context),
-      ),
+     bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
@@ -46,9 +41,12 @@ class SessionsScreen extends StatelessWidget {
       width: double.maxFinite,
       child: CustomBottomBar(
         onChanged: (BottomBarEnum type) {
-          Navigator.pushNamed(
+          Navigator.pushReplacement(
             navigatorKey.currentContext!,
-            getCurrentRoute(type),
+            PageRouteBuilder(
+              pageBuilder: (ctx, ani, ani1) => getCurrentPage(getCurrentRoute(type)),
+              transitionDuration: const Duration(seconds: 0),
+            ),
           );
         },
       ),
@@ -56,26 +54,32 @@ class SessionsScreen extends StatelessWidget {
   }
 
   //Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
+   String getCurrentRoute(BottomBarEnum type) {
     switch (type) {
       case BottomBarEnum.home:
-        return AppRoutes.sessionsInitialPage;
+        return 'homeScreen';
       case BottomBarEnum.sessions:
-        return "/";
+        return 'sessionsInitialPage';
       case BottomBarEnum.groupsessions:
-        return "/";
+        return 'groupSessionsScreen';
       case BottomBarEnum.account:
-        return "/";
+        return 'accountScreen';
       default:
-        return "/";
+        return 'sessionsInitialPage';
     }
   }
 
   //Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
+ Widget getCurrentPage(String currentRoute) {
     switch (currentRoute) {
-      case AppRoutes.sessionsInitialPage:
+      case 'sessionsInitialPage':
         return const SessionsInitialPage();
+      case 'homeScreen':
+        return  HomeScreen(); // Replace with actual HomeScreen widget
+      case 'groupSessionsScreen':
+        return const DefaultWidget(); // Replace with actual GroupSessionsScreen widget
+      case 'accountScreen':
+        return const DefaultWidget(); // Replace with actual AccountScreen widget
       default:
         return const DefaultWidget();
     }

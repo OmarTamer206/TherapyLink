@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'screens/sign_up_screen.dart';
+import 'package:mobile_app/screens/app_navigation_screen.dart';
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Color(0xFFE1F1F6), // Your primary color
-    statusBarIconBrightness: Brightness.light, // White icons
+    statusBarIconBrightness: Brightness.dark, // White icons
   ));
   
   runApp(const MyApp());
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  SignUpScreen(),
+      home:  const AppNavigationScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

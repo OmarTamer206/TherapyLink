@@ -59,10 +59,18 @@ class SignInLogInScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             decoration: AppDecoration.outlineBlack,
                             child: Text(
-                              "Welcome back! Your path to clarity and support is just a conversation away.",
+                              "\"Welcome back! Your path to clarity and support is just a conversation away.\"",
                               textAlign: TextAlign.center,
                               style: CustomTextStyles
-                                  .titleLargeScriptMTBoldPrimaryContainer,
+                                  .titleLargeScriptMTBoldPrimaryContainer.copyWith(
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    offset: const Offset(0, 2),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                          const SizedBox(height: 80),
@@ -100,8 +108,16 @@ class SignInLogInScreen extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(horizontal: 16),
                             buttonStyle: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0XFF06303E),
+                              shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6)
+            ),
+             elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             ),
-                            buttonTextStyle: CustomTextStyles.titleLargeOnErrorContainer,
+                            buttonTextStyle: CustomTextStyles.titleLargeOnErrorContainer.copyWith(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
                             onPressed: () {
                               if(_formKey.currentState!.validate()){
                               // Navigate to home page
@@ -132,9 +148,7 @@ class SignInLogInScreen extends StatelessWidget {
                               Text(
                                 "Sign Up",
                                 style: CustomTextStyles
-                                    .titleMediumPrimaryContainerBold.copyWith(
-                                      decoration: TextDecoration.underline,
-                                    ),
+                                    .titleMediumPrimaryContainerBold,
                               ),
                             ],
                           ),

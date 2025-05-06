@@ -1,1 +1,85 @@
-<p>life-coach-appointment works!</p>
+<!-- app.component.html -->
+<div class="appointment-container">
+  <div class="appointment-content">
+    <!-- Left Section: Doctor Info and Calendar -->
+    <div class="doctor-info">
+      <div class="doctor-details">
+        <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
+        <div class="doctor-text">
+          <h3>Coach Mark</h3>
+          <p>Clinical Psychologist</p>
+          <p>★★★★★</p>
+        </div>
+      </div>
+
+      <div class="calendar-container">
+        <h3>Coach Mark's Schedule</h3>
+        <div class="calendar">
+          <div class="calendar-header">
+            <span>&lt; December &gt;</span>
+          </div>
+          <div class="calendar-grid">
+            <div class="calendar-cell">1</div>
+            <div class="calendar-cell">2</div>
+            <div class="calendar-cell">3</div>
+            <div class="calendar-cell">4</div>
+            <div class="calendar-cell">5</div>
+            <div class="calendar-cell">6</div>
+            <div class="calendar-cell">7</div>
+            <div class="calendar-cell">8</div>
+            <div class="calendar-cell">9</div>
+            <div class="calendar-cell">10</div>
+            <div class="calendar-cell">11</div>
+            <div class="calendar-cell">12</div>
+            <div class="calendar-cell">13</div>
+
+            <div class="calendar-cell selected">14</div>
+            <div class="calendar-cell">15</div>
+            <div class="calendar-cell">16</div>
+            <div class="calendar-cell">17</div>
+            <div class="calendar-cell">18</div>
+            <div class="calendar-cell">19</div>
+            <div class="calendar-cell">20</div>
+            <div class="calendar-cell">21</div>
+            <div class="calendar-cell">22</div>
+            <div class="calendar-cell">23</div>
+            <div class="calendar-cell">24</div>
+            <div class="calendar-cell">25</div>
+            <div class="calendar-cell">26</div>
+            <div class="calendar-cell">27</div>
+            <div class="calendar-cell">28</div>
+            <div class="calendar-cell">29</div>
+            <div class="calendar-cell">30</div>
+            <div class="calendar-cell">31</div>
+
+            <!-- Selected Date -->
+            <!-- More dates here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: Available Times -->
+    <div class="time-available">
+      <h3>Time Available</h3>
+      <div class="time-slots">
+        <button class="time-btn available">2:00 PM</button>
+        <button class="time-btn available">2:30 PM</button>
+        <button class="time-btn available">3:00 PM</button>
+        <button class="time-btn available">3:30 PM</button>
+        <button class="time-btn selected">4:00 PM</button>
+        <button class="time-btn available">4:30 PM</button>
+        <button class="time-btn available">5:00 PM</button>
+        <button class="time-btn available">5:30 PM</button>
+        <button class="time-btn available">6:00 PM</button>
+        <button class="time-btn available">6:30 PM</button>
+        <button class="time-btn available">7:00 PM</button>
+        <button class="time-btn available">8:30 PM</button>
+      </div>
+
+      <button (click)="goToCheckoutCoachPage()" class="proceed-btn">
+        Proceed
+      </button>
+    </div>
+  </div>
+</div>

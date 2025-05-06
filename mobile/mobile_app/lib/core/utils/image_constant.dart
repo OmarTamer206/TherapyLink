@@ -25,6 +25,8 @@ class ImageConstant {
 
   static String imgEllipse1 = '$imagePath/img_ellipse_1.png';
 
+  static String imgEllipse2 = '$imagePath/img_ellipse_2.png';
+
   static String imgMaskGroupPrimary = '$imagePath/img_mask_group_primary.png';
 
   static String imgArrowDownBlack900 = '$imagePath/img_arrow_down_black_900.svg';
@@ -32,6 +34,20 @@ class ImageConstant {
   static String imgFrame = '$imagePath/img_frame.svg';
 
   static String imgArrowDownOnErrorContainer = '$imagePath/img_arrow_down_on_error_container.svg';
+
+  static String imgSignal = '$imagePath/img_signal.svg';
+
+  static String imgEllipse254x54 = '$imagePath/img_ellipse_2_54x54.png';
+
+  static String imgUser = '$imagePath/img_user.svg';
+
+  static String imgCard = '$imagePath/img_card.svg';
+
+  static String imgVector = '$imagePath/img_vector.svg';
+
+  static String imgDelete = '$imagePath/img_delete.svg';
+
+  static String imgMessage = '$imagePath/img_message.svg';
 
 
 }

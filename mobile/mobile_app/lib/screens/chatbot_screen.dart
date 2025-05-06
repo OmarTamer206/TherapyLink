@@ -52,7 +52,7 @@ class ChatbotScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: Text(
-                              "Your personal assistant for mental well-being is ready to listen, guide, and connect you to the support you need.",
+                              "\"Your personal assistant for mental well-being is ready to listen, guide, and connect you to the support you need.\"",
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,

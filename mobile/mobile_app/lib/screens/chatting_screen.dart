@@ -47,6 +47,15 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Override default status bar color
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF06303E), // Special color
+          statusBarIconBrightness: Brightness.dark,
+        ),
+      );
+    });
     return Scaffold(
       backgroundColor: theme.colorScheme.onErrorContainer, 
       body: SafeArea(
@@ -210,6 +219,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
   @override
   void dispose() {
     _messageController.dispose();
+    SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Color(0xFFE1F1F6),
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
 
     super.dispose();
   }

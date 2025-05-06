@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/core/utils/image_constant.dart';
 import 'package:mobile_app/screens/chatbot_screen.dart';
 import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
+import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
 import 'package:mobile_app/screens/type_of_therapist_screen/type_of_therapist_screen.dart';
 import 'package:mobile_app/theme/app_decoration.dart';
 import 'package:mobile_app/theme/custom_button_style.dart';
@@ -117,6 +118,7 @@ class HomeScreen extends StatelessWidget {
                                                   appTheme.blueGray100,
                                               color: theme
                                                   .colorScheme.primaryContainer,
+                                                  strokeWidth: 15,
                                             ),
                                           ),
                                           Text(
@@ -137,6 +139,7 @@ class HomeScreen extends StatelessWidget {
                                 child: Divider(
                                   indent: 20,
                                   endIndent: 20,
+                                   color: Color(0xFF149FA8),
                                 ),
                               ),
                               const SizedBox(height: 38),
@@ -297,11 +300,11 @@ class HomeScreen extends StatelessWidget {
               icon: ImageConstant.imgNavSessions,
               label: "Sessions",
               onTap: () {
-                //Navigator.push(
-                // context,
-                //MaterialPageRoute(
-                //  builder: (context) =>
-                //    ));
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                 builder: (context) => SessionsScreen()
+                ));
               }),
           _buildBottomBarItem(
               icon: ImageConstant.imgNavGroupSessions,

@@ -68,10 +68,18 @@ class SignUpScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             decoration: AppDecoration.outlineBlack,
                             child: Text(
-                              "Find the support you need, connect with the right therapist, and start your journey toward healing because everyone deserves a safe space to talk.",
+                              "\"Find the support you need, connect with the right therapist, and start your journey toward healing because everyone deserves a safe space to talk.\"",
                               textAlign: TextAlign.center,
                               style: CustomTextStyles
-                                  .titleLargeScriptMTBoldPrimaryContainer,
+                                  .titleLargeScriptMTBoldPrimaryContainer.copyWith(
+                                    shadows: [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    offset: const Offset(0, 2),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 40),
@@ -155,10 +163,7 @@ class SignUpScreen extends StatelessWidget {
                                 Text(
                                   "Log In",
                                   style: CustomTextStyles
-                                      .titleMediumPrimaryContainerBold
-                                      .copyWith(
-                                    decoration: TextDecoration.underline,
-                                  ),
+                                      .titleMediumPrimaryContainerBold,
                                 ),
                               ],
                             ),
@@ -275,8 +280,16 @@ class SignUpScreen extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16),
         buttonStyle: ElevatedButton.styleFrom(
           backgroundColor: const Color(0XFF06303E),
+           shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6)
+            ),
+             elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
-        buttonTextStyle: CustomTextStyles.titleLargeOnErrorContainer,
+        buttonTextStyle: CustomTextStyles.titleLargeOnErrorContainer.copyWith(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             Navigator.push(

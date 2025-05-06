@@ -1,62 +1,62 @@
 /* emergency-team-dashboard.component.css */
 .container {
-    background-color: #e0f7fa;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  h1 {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .request-list {
-    margin-top: 20px;
-  }
-  
-  .request-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .profile-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-  
-  .request-name {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .accept-button {
-    background-color: #26a69a;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .accept-button:hover {
-    background-color: #00796b;
-  }
-  
+  background-color: #f0f7f9;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+}
+
+h1 {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.request-list {
+  margin-top: 20px;
+}
+
+.request-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.request-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.accept-button {
+  background-color: #26a69a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.accept-button:hover {
+  background-color: #00796b;
+}

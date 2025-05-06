@@ -1,3 +1,11 @@
+/* Prevent page scroll */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
 /* Upper container centered */
 .upper {
   display: flex;
@@ -7,6 +15,7 @@
   padding: 40px;
   width: 100%;
   box-sizing: border-box;
+  height: 100vh; /* fill entire screen height */
 }
 
 /* Dashboard cards container */

@@ -40,7 +40,7 @@
 
 .metric-card p {
   font-size: 20px;
-  color: #149FA8; /* Updated color */
+  color: #000000; /* Updated color */
 }
 
 .session-analytics {
@@ -102,11 +102,11 @@ canvas {
 
 .report-card li {
   font-size: 18px;
-  color: #149FA8; /* Updated session value color */
+  color: #000000; /* Updated session value color */
 }
 
 .report-card strong {
-  color: #149FA8; /* Label color */
+  color: #000000; /* Label color */
 }
 
 /* Spinner overlay */

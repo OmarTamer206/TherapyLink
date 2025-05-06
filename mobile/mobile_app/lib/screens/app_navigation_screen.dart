@@ -6,6 +6,7 @@ import 'package:mobile_app/screens/check_out_screen.dart';
 import 'package:mobile_app/screens/doctor_s_one_screen.dart';
 import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
 import 'package:mobile_app/screens/home_screen.dart';
+import 'package:mobile_app/screens/journal_screen/journal_screen.dart';
 import 'package:mobile_app/screens/payment_screen.dart';
 import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
 import 'package:mobile_app/screens/sign_in_log_in.dart';
@@ -153,6 +154,14 @@ class AppNavigationScreen extends StatelessWidget {
                           onTapScreenTitle: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const PaymentScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Journal",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  JournalScreen()),
                           ),
                         ),
                       ],

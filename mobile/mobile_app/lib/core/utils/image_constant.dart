@@ -45,5 +45,9 @@ class ImageConstant {
 
   static String imgVector = '$imagePath/img_vector.svg';
 
+  static String imgDelete = '$imagePath/img_delete.svg';
+
+  static String imgMessage = '$imagePath/img_message.svg';
+
 
 }

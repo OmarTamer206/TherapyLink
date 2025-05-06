@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/app_navigation_screen.dart';
 import 'package:mobile_app/screens/appointment_of_life_coach_screen/appointment_of_life_coach_screen.dart';
 import 'package:mobile_app/screens/appointment_screen/appointment_screen.dart';
@@ -108,4 +108,4 @@ class AppRoutes {
     appNavigationScreen: (context) => const AppNavigationScreen(),
     initialRoute: (context) => SignUpScreen(),
   };
-}
+}*/

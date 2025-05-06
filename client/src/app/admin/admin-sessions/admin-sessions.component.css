@@ -2,52 +2,52 @@
 .dashboard-container {
   display: flex;
   justify-content: space-between;
-  padding: 40px; /* Adjusted padding for better spacing */
+  padding: 40px;
   margin-top: 20px;
   height: 100%;
 }
 
 .left-panel {
-  width: 60%; /* Adjusted width of the left panel to provide more space */
+  width: 60%;
   display: flex;
   flex-direction: column;
-  padding-right: 30px; /* Added more space between left and right panel */
+  padding-right: 30px;
 }
 
 .session-metrics {
   display: flex;
   justify-content: space-between;
-  gap: 30px; /* Added extra gap between metric cards */
-  margin-bottom: 30px; /* Increased bottom margin for better separation */
+  gap: 30px;
+  margin-bottom: 30px;
 }
 
 .metric-card {
   background-color: #fff;
-  padding: 25px; /* Increased padding for a more spacious feel */
-  border-radius: 12px; /* Rounded corners for a smoother look */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Increased shadow for depth */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 30%; /* Adjusted width to keep cards side by side */
+  width: 30%;
 }
 
 .metric-card h3 {
   font-size: 24px;
-  color: #1e88e5;
+  color: #149FA8; /* Updated color */
 }
 
 .metric-card p {
   font-size: 20px;
-  color: #757575;
+  color: #149FA8; /* Updated color */
 }
 
 .session-analytics {
   background-color: #f0f8ff;
   padding: 30px;
   border-radius: 12px;
-  margin-top: 30px; /* Increased space between metrics and chart */
+  margin-top: 30px;
 }
 
 canvas {
@@ -56,44 +56,43 @@ canvas {
 }
 
 .right-panel {
-  width: 35%; /* Adjusted width of the right panel for balance */
+  width: 35%;
   display: flex;
   flex-direction: column;
 }
 
 .monthly-reports {
   background-color: #eaf5f8;
-  padding: 30px; /* Added more padding for better spacing */
+  padding: 30px;
   border-radius: 12px;
   height: 80%;
-  /* border: 1px solid black; */
   overflow-y: scroll;
 }
 
 .monthly-reports h3 {
   font-size: 24px;
-  color: #1e88e5;
-  margin-bottom: 30px; /* Increased margin for spacing between heading and reports */
+  color: #149FA8; /* Updated color */
+  margin-bottom: 30px;
 }
 
 .report-cards {
-  display: block; /* Ensures reports are displayed vertically under each other */
-  gap: 30px; /* Adjusted the gap for better spacing */
+  display: block;
+  gap: 30px;
 }
 
 .report-card {
   background-color: #fff;
-  padding: 25px; /* Increased padding for a more spacious feel */
+  padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Increased shadow for depth */
-  width: 100%; /* Cards take full width */
-  margin-bottom: 30px; /* More space between each report card */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 .report-card h4 {
   font-size: 22px;
-  color: #1e88e5;
-  margin-bottom: 15px; /* Adjusted margin for better spacing */
+  color: #149FA8; /* Month name color */
+  margin-bottom: 15px;
 }
 
 .report-card ul {
@@ -103,9 +102,41 @@ canvas {
 
 .report-card li {
   font-size: 18px;
-  color: #757575;
+  color: #149FA8; /* Updated session value color */
 }
 
 .report-card strong {
-  color: #1e88e5;
+  color: #149FA8; /* Label color */
+}
+
+/* Spinner overlay */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #149FA8;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

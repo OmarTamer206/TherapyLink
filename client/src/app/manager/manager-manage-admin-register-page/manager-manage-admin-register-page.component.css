@@ -11,7 +11,7 @@
 /* Left Panel: Job Description and Registering/Editing */
 .left-panel {
   width: 30%; /* Set left panel to 30% width */
-  background-color: #f1f8f6;
+  background-color: #f0f9ff;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -27,6 +27,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 /* Form section styling */
@@ -65,14 +67,19 @@ input:focus,
 select:focus {
   outline: none;
   background-color: #f1f1f1;
-  border-color: #4CAF50;
+
+  border-color: #4caf50;
 }
 
 /* Button styling */
 button {
   padding: 12px;
   font-size: 16px;
-  background-color: #4CAF50;
+
+  background-color: #4caf50;
+
+  background-color: #149fa8;
+
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -82,7 +89,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #149fa8;
 }
 
 /* Selector styling for Job Description and Registering/Editing */
@@ -162,61 +169,73 @@ button:hover {
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+  background-color: unset;
 }
 
 .edit-button {
-  background-color: #4CAF50;
+  border: 3px solid #149fa8;
+
   color: white;
 }
 
 .delete-button {
-  background-color: #FF5733;
+  border: 3px solid #b90606;
+
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #45a049;
+  background-color: #149fa8;
 }
 
 .delete-button:hover {
-  background-color: #e04e2c;
+  background-color: #b90606;
 }
 
-.redButton{
-  background-color: #FF5733;
+.redButton {
+  background-color: #ff5733;
   color: white;
 }
-.redButton:hover{
+.redButton:hover {
   background-color: #e04e2c;
 }
-.buttonWrapper{
+.redButton {
+  background-color: #b90606;
+  color: white;
+}
+.redButton:hover {
+  background-color: #b90606;
+}
+.buttonWrapper {
   display: flex;
   justify-content: space-between;
   gap: 100px;
 }
 
-.errorSpan{
+.errorSpan {
   color: rgb(255, 255, 255);
   font-size: 1.3em;
   margin-top: 5px;
   text-align: center;
   width: 100%;
   padding: 15px;
-  background-color: #ff4546;
+  background-color: #b90606;
   border-radius: 10px;
   margin-bottom: 10px;
 }
 
-
-.successSpan{
-  color:#ffffff;
+.successSpan {
+  color: #ffffff;
   font-size: 1.3em;
   margin-top: 5px;
   text-align: center;
   width: 100%;
   padding: 15px;
-  background-color:#72c342;
+
+  background-color: #72c342;
+
+  background-color: #149fa8;
+
   border-radius: 10px;
   margin-bottom: 10px;
-
 }

@@ -106,23 +106,30 @@
 .send-btn {
   padding: 8px 14px;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 20px;
   border: none;
   cursor: pointer;
+  width: 200px;
+  height: 50px;
 }
 
 .refund-btn {
-  background-color: #aab0b4;
-  color: white;
-}
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #009c9c;
 
+  color: #333;
+}
+.refund-btn :hover {
+  background-color: #f0f9ff;
+}
 .send-btn {
-  background-color: #007bff;
+  background-color: #009c9c;
   color: white;
 }
 
 .send-btn:hover {
-  background-color: #0056b3;
+  background-color: #036868;
 }
 
 .refund-btn:hover {

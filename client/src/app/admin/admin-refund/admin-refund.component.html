@@ -4,6 +4,7 @@
     <h3>Reports</h3>
     <ul>
       <li
+        [ngClass]="{ disabled: cancelRefundButtonState }"
         *ngFor="let report of reports; let i = index"
         [class.selected]="i === selectedReportIndex"
         (click)="selectReport(i)"
@@ -18,8 +19,17 @@
     <h3>Refund</h3>
     <div class="doctor-info">
       <p><strong>Doctor</strong></p>
-      <p>{{ doctor.name }}<br />{{ doctor.email }}<br />
-        <a [href]="'tel:' + doctor.phone" class="phone-link">{{ doctor.phone }}</a>
+      <p>
+        {{ reports[selectedReportIndex].doctor_info.Name }}<br />{{
+          reports[selectedReportIndex].doctor_info.Email
+        }}<br />
+        <a
+          [href]="
+            'tel:' + reports[selectedReportIndex].doctor_info.phone_number
+          "
+          class="phone-link"
+          >{{ reports[selectedReportIndex].doctor_info.phone_number }}</a
+        >
       </p>
     </div>
 
@@ -30,12 +40,30 @@
 
     <div class="response-info">
       <p><strong>Response</strong></p>
-      <textarea [(ngModel)]="responseText" placeholder="Write a response..."></textarea>
+      <textarea
+        [(ngModel)]="responseText"
+        placeholder="Write a response..."
+      ></textarea>
     </div>
 
     <div class="action-buttons">
-      <button class="refund-btn">Refund session</button>
-      <button class="send-btn">Send response</button>
+      @if (cancelRefundButtonState) {
+      <button class="refund-btn" (click)="cancelRefundOrder()">
+        Cancel Refund
+      </button>
+
+      }
+
+      <button
+        class="refund-btn"
+        (click)="setRefundOrder()"
+        [disabled]="reports[selectedReportIndex].isRefunded === 1"
+      >
+        {{ refundButtonText[reports[selectedReportIndex].isRefunded] }}
+      </button>
+      <button class="send-btn" (click)="replyFeedback(selectedReportIndex)">
+        Send Response
+      </button>
     </div>
   </div>
 </div>

@@ -26,7 +26,7 @@ router.get("/today-sessions", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await get_today_sessions(decoded.doctor_id, decoded.type);
+    const result = await get_today_sessions(decoded.id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -43,7 +43,7 @@ router.get("/new-patients-this-month", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await get_new_patients_this_month(decoded.doctor_id, decoded.type);
+    const result = await get_new_patients_this_month(decoded.id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -60,7 +60,7 @@ router.get("/total-patients", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await get_total_patients(decoded.doctor_id, decoded.type);
+    const result = await get_total_patients(decoded.id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -77,7 +77,7 @@ router.get("/patients-data", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await get_patients_data(decoded.doctor_id, decoded.type);
+    const result = await get_patients_data(decoded.id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -109,7 +109,7 @@ router.put("/update-patient-report", async (req, res) => {
   console.log("1",process.env.JWT_SECRET);
   
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await update_patient_report(decoded.doctor_id, session_data);
+    const result = await update_patient_report(decoded.id, session_data);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -127,7 +127,7 @@ router.get("/available-time/:date", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await view_available_time(date, decoded.doctor_id, decoded.doctor_type);
+    const result = await view_available_time(date, decoded.id, decoded.doctor_type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -149,7 +149,7 @@ router.put("/update-available-time", async (req, res) => {
   console.log("1",process.env.JWT_SECRET);
   
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await update_available_time(timestamp, decoded.doctor_id);
+    const result = await update_available_time(timestamp, decoded.id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -166,7 +166,7 @@ router.get("/patient-analytics", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await get_patient_analytics(decoded.doctor_id, decoded.type);
+    const result = await get_patient_analytics(decoded.id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

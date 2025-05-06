@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TherapistService } from '../../services/therapist/therapist.service';
+import { isEmpty } from 'rxjs';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -23,12 +24,14 @@ export class DoctorDashboardComponent {
     { name: 'Mark Hay', date: '27/12/2024', duration: '60 minutes' },
     { name: 'Mark Hay', date: '27/12/2024', duration: '60 minutes' }
   ];
-  upcomingSessions = [
-    { name: 'Yara Maged', specialization: 'Trauma', date: '20 Nov', time: '11:00 AM' },
-    { name: 'Mona Eid', specialization: 'Trauma', date: '20 Nov', time: '1:00 PM' },
-    { name: 'Sameh Mohamad', specialization: 'Trauma', date: '20 Nov', time: '3:00 PM' },
-    { name: 'Yasser Elissa', specialization: 'Trauma', date: '20 Nov', time: '4:00 PM' },
-  ];
+
+
+  todaySession : any;
+  newPatients:any;
+  totalPatiets:any;
+  upcomingSessions:any[]=[];
+  upcomingSessionID:any;
+  upcomingSessionDate:any;
 
 
   constructor(private therapistService:TherapistService){
@@ -39,11 +42,32 @@ export class DoctorDashboardComponent {
 
     this.therapistService.getTodaySessions().subscribe((response)=>{
       console.log(response);
+      if(response.data.length === 0){
+        this.todaySession = "No Sessions Today"
+      }
+      else{
+        this.todaySession = response.data.length
+        this.upcomingSessions = response.data
+        this.upcomingSessions.map((session)=>{
+          const date = new Date(session.scheduled_time)
+          session.date = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+          const hours24 = date.getHours();
+          const minutes = date.getMinutes();
 
+          const hours12 = hours24 % 12 || 12; // Converts 0 to 12 for midnight
+          const ampm = hours24 >= 12 ? 'PM' : 'AM';
+          const paddedMinutes = minutes.toString().padStart(2, '0');
+
+          session.time = `${hours12}:${paddedMinutes} ${ampm}`;
+        })
+      }
     },(error)=>{
       console.log("error",error);
 
     })
+  }
+
+  getNewPatients(){
 
   }
 

@@ -3,10 +3,24 @@ const { executeQuery } = require("./databaseController"); // Adjust path if need
 // Get today's sessions for a specific doctor or life coach
 async function get_today_sessions(doctor_id, type) {
   try {
-    const query = `
-      SELECT * FROM ${type}_session
-      WHERE ${type}_ID = ? AND DATE(schedule_time) = CURDATE()
-    `;
+    let query = "";
+
+    if (type === "doctor") {
+      query = `
+        SELECT s.*, p.name AS patient_name
+        FROM ${type}_session s
+        JOIN patient p ON s.patient_id = p.id
+        WHERE s.${type}_ID = ? AND DATE(s.scheduled_time) = CURDATE()
+        ORDER BY s.scheduled_time ASC
+      `;
+    } else {
+      query = `
+        SELECT * FROM ${type}_session
+        WHERE ${type}_ID = ? AND DATE(scheduled_time) = CURDATE()
+        ORDER BY scheduled_time ASC
+      `;
+    }
+
     const result = await executeQuery(query, [doctor_id]);
 
     return { success: true, data: result };
@@ -18,6 +32,7 @@ async function get_today_sessions(doctor_id, type) {
     };
   }
 }
+
 
 // Get new patients registered this month for a specific doctor or life coach
 async function get_new_patients_this_month(doctor_id, type) {

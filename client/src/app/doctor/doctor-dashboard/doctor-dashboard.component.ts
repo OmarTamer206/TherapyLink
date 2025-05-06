@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TherapistService } from '../../services/therapist/therapist.service';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -28,5 +29,23 @@ export class DoctorDashboardComponent {
     { name: 'Sameh Mohamad', specialization: 'Trauma', date: '20 Nov', time: '3:00 PM' },
     { name: 'Yasser Elissa', specialization: 'Trauma', date: '20 Nov', time: '4:00 PM' },
   ];
-  
+
+
+  constructor(private therapistService:TherapistService){
+    this.getTodaySessions()
+  }
+
+  getTodaySessions(){
+
+    this.therapistService.getTodaySessions().subscribe((response)=>{
+      console.log(response);
+
+    },(error)=>{
+      console.log("error",error);
+
+    })
+
+  }
+
+
 }

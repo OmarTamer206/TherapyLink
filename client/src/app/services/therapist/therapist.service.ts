@@ -11,23 +11,23 @@ export class TherapistService {
   constructor(private http: HttpClient) {}
 
   // Get today's sessions for a specific doctor or life coach
-  getTodaySessions(doctorId: string, type: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/today-sessions/${doctorId}/${type}`);
+  getTodaySessions(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/today-sessions`);
   }
 
   // Get new patients registered this month for a specific doctor or life coach
-  getNewPatientsThisMonth(doctorId: string, type: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/new-patients-this-month/${doctorId}/${type}`);
+  getNewPatientsThisMonth(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/new-patients-this-month`);
   }
 
   // Get total patients for a specific doctor or life coach
-  getTotalPatients(doctorId: string, type: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/total-patients/${doctorId}/${type}`);
+  getTotalPatients(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/total-patients`);
   }
 
   // Get patient list for a doctor or life coach
-  getPatientsData(doctorId: string, type: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/patients-data/${doctorId}/${type}`);
+  getPatientsData(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/patients-data`);
   }
 
   // Get detailed reports and journal entries for a specific patient
@@ -36,23 +36,23 @@ export class TherapistService {
   }
 
   // Update patient report after a session
-  updatePatientReport(doctorId: string, sessionData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update-patient-report`, { doctor_id: doctorId, session_data: sessionData });
+  updatePatientReport( sessionData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update-patient-report`, {  session_data: sessionData });
   }
 
   // View available time slots for a specific date
-  viewAvailableTime(date: string, doctorId: string, doctorType: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/available-time/${date}/${doctorId}/${doctorType}`);
+  viewAvailableTime(date: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/available-time/${date}`);
   }
 
   // Update available time for a doctor or life coach
-  updateAvailableTime(timestamp: string, doctorId: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update-available-time`, { timestamp, doctor_id: doctorId });
+  updateAvailableTime(timestamp: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update-available-time`, { timestamp });
   }
 
   // Get patient analytics (e.g., total patients, overall rating, returning patients)
-  getPatientAnalytics(doctorId: string, type: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/patient-analytics/${doctorId}/${type}`);
+  getPatientAnalytics(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/patient-analytics`);
   }
 
   // View all doctors of a specific type (e.g., therapists, life coaches)

@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken")
 const {
   get_today_sessions,
   get_new_patients_this_month,
@@ -15,10 +16,17 @@ const {
 const router = express.Router();
 
 // Get today's sessions for a specific doctor or life coach
-router.get("/today-sessions/:doctor_id/:type", async (req, res) => {
-  const { doctor_id, type } = req.params;
-  try {
-    const result = await get_today_sessions(doctor_id, type);
+router.get("/today-sessions", async (req, res) => {
+
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_today_sessions(decoded.doctor_id, decoded.type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -26,10 +34,16 @@ router.get("/today-sessions/:doctor_id/:type", async (req, res) => {
 });
 
 // Get new patients registered this month for a specific doctor or life coach
-router.get("/new-patients-this-month/:doctor_id/:type", async (req, res) => {
-  const { doctor_id, type } = req.params;
-  try {
-    const result = await get_new_patients_this_month(doctor_id, type);
+router.get("/new-patients-this-month", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_new_patients_this_month(decoded.doctor_id, decoded.type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -37,10 +51,16 @@ router.get("/new-patients-this-month/:doctor_id/:type", async (req, res) => {
 });
 
 // Get total patients for a specific doctor or life coach
-router.get("/total-patients/:doctor_id/:type", async (req, res) => {
-  const { doctor_id, type } = req.params;
-  try {
-    const result = await get_total_patients(doctor_id, type);
+router.get("/total-patients", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_total_patients(decoded.doctor_id, decoded.type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -48,10 +68,16 @@ router.get("/total-patients/:doctor_id/:type", async (req, res) => {
 });
 
 // Get patient list for a doctor or life coach
-router.get("/patients-data/:doctor_id/:type", async (req, res) => {
-  const { doctor_id, type } = req.params;
-  try {
-    const result = await get_patients_data(doctor_id, type);
+router.get("/patients-data", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_patients_data(decoded.doctor_id, decoded.type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -69,14 +95,21 @@ router.get("/patient-data/:patient_id", async (req, res) => {
   }
 });
 
-// Update patient report after a session
+// Update patient report after a session [msh 3arf ha3ml eh fl ]
 router.put("/update-patient-report", async (req, res) => {
-  const { doctor_id, session_data } = req.body;
-  if (!doctor_id || !session_data)
+  const { session_data } = req.body;
+  if ( !session_data)
     return res.status(400).json({ error: "Missing doctor_id or session_data" });
-
+  
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+  
+  
   try {
-    const result = await update_patient_report(doctor_id, session_data);
+  console.log("1",process.env.JWT_SECRET);
+  
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await update_patient_report(decoded.doctor_id, session_data);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -84,10 +117,17 @@ router.put("/update-patient-report", async (req, res) => {
 });
 
 // View available time slots for a specific date
-router.get("/available-time/:date/:doctor_id/:doctor_type", async (req, res) => {
-  const { date, doctor_id, doctor_type } = req.params;
-  try {
-    const result = await view_available_time(date, doctor_id, doctor_type);
+router.get("/available-time/:date", async (req, res) => {
+  const { date } = req.params;
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await view_available_time(date, decoded.doctor_id, decoded.doctor_type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -96,12 +136,20 @@ router.get("/available-time/:date/:doctor_id/:doctor_type", async (req, res) => 
 
 // Update available time for a doctor or life coach
 router.put("/update-available-time", async (req, res) => {
-  const { timestamp, doctor_id } = req.body;
-  if (!timestamp || !doctor_id)
+  const { timestamp } = req.body;
+  if (!timestamp )
     return res.status(400).json({ error: "Missing timestamp or doctor_id" });
-
+  
+  
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+  
+  
   try {
-    const result = await update_available_time(timestamp, doctor_id);
+  console.log("1",process.env.JWT_SECRET);
+  
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await update_available_time(timestamp, decoded.doctor_id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -109,10 +157,16 @@ router.put("/update-available-time", async (req, res) => {
 });
 
 // Get patient analytics (e.g., total patients, overall rating, returning patients)
-router.get("/patient-analytics/:doctor_id/:type", async (req, res) => {
-  const { doctor_id, type } = req.params;
-  try {
-    const result = await get_patient_analytics(doctor_id, type);
+router.get("/patient-analytics", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_patient_analytics(decoded.doctor_id, decoded.type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

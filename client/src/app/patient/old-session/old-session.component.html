@@ -1,47 +1,54 @@
-@if (!showFeedback) {
-    <div class="session-container">
-      <div class="session-content">
-        <h2>Old Sessions</h2>
-  
-        <div class="session-info">
-          <span class="session-title">Session With: Dr. Magdy</span>
-          <span class="session-time">Timing: 9/1/2025 , 7:00 PM</span>
-          <span class="session-duration">30 minutes</span>
-        </div>
-  
-        <div class="session-details chat-box">
-          <div class="chat left">Iste culpa voluptatum sed earum itaque...</div>
-          <div class="chat right">Magni suscipit eos et praesentium odio at CFGDVFD B DSJHVC HJBJCNDFKJF.</div>
-          <div class="chat left">Iste culpa voluptatum sed earum itaque...</div>
-          <div class="chat right">Magni suscipit eos et praesentium odio at CFGDVFD B DSJHVC HJBJCNDFKJF.</div>
-          <div class="chat left">Iste culpa voluptatum sed earum itaque...</div>
-          <div class="chat right">Magni suscipit eos et praesentium odio at CFGDVFD B DSJHVC HJBJCNDFKJF.</div>
-        </div>
-  
-        <div class="rate-and-feedback" (click)="toggleFeedback()">
-          Rate & Feedback
-        </div>
+@if (!showFeedback && !showSuccess) {
+  <div class="session-container">
+    <div class="session-content">
+      <h2>Old Sessions</h2>
+
+      <div class="session-info">
+        <span class="session-title">Session With: Dr. Magdy</span>
+        <span class="session-time">Timing: 9/1/2025 , 7:00 PM</span>
+        <span class="session-duration">30 minutes</span>
+      </div>
+
+      <div class="session-details chat-box">
+        <div class="chat left">Iste culpa voluptatum sed earum itaque...</div>
+        <div class="chat right">Magni suscipit eos et praesentium odio...</div>
+        <div class="chat left">Iste culpa voluptatum sed earum itaque...</div>
+        <div class="chat right">Magni suscipit eos et praesentium odio...</div>
+      </div>
+
+      <div class="rate-and-feedback" (click)="toggleFeedback()">
+        Rate & Feedback
       </div>
     </div>
-  }
-  @else {
-    <div class="feedback-modal">
-      <button class="close-btn" (click)="toggleFeedback()">✕</button>
-  
-      <div class="stars">
-        <span *ngFor="let star of stars; let i = index"
-              [ngClass]="{'filled': i < rating}"
-              (click)="setRating(i + 1)">
-          ★
-        </span>
-      </div>
-  
-      <h3>We need your feedback!</h3>
-      <p>How would you rate your experience with the app today?</p>
-  
-      <textarea placeholder="Write your feedback" [(ngModel)]="feedbackText"></textarea>
-  
-      <button class="submit-btn" (click)="submitFeedback()">Submit</button>
+  </div>
+}
+@else if (showFeedback) {
+  <div class="feedback-modal">
+    <button class="close-btn" (click)="toggleFeedback()">✕</button>
+
+    <div class="stars">
+      <span *ngFor="let star of stars; let i = index"
+            [ngClass]="{'filled': i < rating}"
+            (click)="setRating(i + 1)">
+        ★
+      </span>
     </div>
-  }
-  
+
+    <h3>We need your feedback!</h3>
+    <p>How would you rate your experience with the app today?</p>
+
+    <textarea placeholder="Write your feedback" [(ngModel)]="feedbackText"></textarea>
+
+    <button class="submit-btn" (click)="submitFeedback()">Submit</button>
+  </div>
+}
+@else if (showSuccess) {
+  <div class="payment-success">
+    <h2>Payment</h2>
+    <div class="checkmark-circle">✔</div>
+    <h3>Session Payment Successful!</h3>
+    <p class="transaction">Transaction Number: 123456789</p>
+    <hr />
+    <p class="amount">Amount Paid: <span>LE 500.00</span></p>
+  </div>
+}

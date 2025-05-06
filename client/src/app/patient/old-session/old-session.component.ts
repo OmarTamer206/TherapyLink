@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class OldSessionComponent {
   showFeedback = false;
+  showSuccess = false; // ✅ Added success flag
   rating = 0;
   stars = Array(5).fill(0);
   feedbackText = '';
@@ -26,6 +27,8 @@ export class OldSessionComponent {
   submitFeedback(): void {
     console.log('Rating:', this.rating);
     console.log('Feedback:', this.feedbackText);
-    this.toggleFeedback();
+    
+    this.showFeedback = false;
+    this.showSuccess = true; // ✅ Trigger payment success screen
   }
 }

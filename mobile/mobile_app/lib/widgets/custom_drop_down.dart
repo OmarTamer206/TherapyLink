@@ -24,6 +24,7 @@ class CustomDropDown extends StatelessWidget {
       this.hintText,
       this.hintStyle,
       this.items,
+      this.value,
       this.prefix,
       this.prefixConstraints,
       this.contentPadding,
@@ -58,6 +59,8 @@ class CustomDropDown extends StatelessWidget {
 
   final List<String>? items;
 
+  final String? value; 
+
   final Widget? prefix;
 
   final BoxConstraints? prefixConstraints;
@@ -90,6 +93,7 @@ class CustomDropDown extends StatelessWidget {
           iconSize: iconSize ?? 24,
           autofocus: autofocus!,
           isExpanded: true,
+          value: value,
           style: textStyle ?? theme.textTheme.titleLarge,
           hint: Text(
             hintText ?? "",

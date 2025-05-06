@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,22 +16,26 @@ export class HomeComponent {
 
   therapists = [
     { name: 'Clinical Psychologist', image: 'Clinical Psychologist.png' },
-    { name: 'Child and Adolescent Therapist', image: 'Child and Adolescent Therapist.png' },
+    {
+      name: 'Child and Adolescent Therapist',
+      image: 'Child and Adolescent Therapist.png',
+    },
     { name: 'Counseling Psychologist', image: 'Counseling Psychologist.png' },
     { name: 'Couple Therapy', image: 'Couple Therapy.png' },
     { name: 'Trauma Therapist', image: 'Trauma Therapist.png' },
   ];
 
+  constructor(private router: Router) {}
   goToChatbot(): void {
-    console.log('Go to Chatbot');
+    this.router.navigate(['patient/chatbot']);
   }
 
   goToDoctorsPage(): void {
-    console.log('Go to Doctors Page');
+    this.router.navigate(['patient/doctors-page']);
   }
 
   goToUpcomingSessionPage(): void {
-    console.log('Go to Session Page');
+    this.router.navigate(['patient/session-page']);
   }
 
   toggleTherapistPreference(): void {

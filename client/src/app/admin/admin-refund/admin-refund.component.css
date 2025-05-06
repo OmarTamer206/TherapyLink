@@ -3,7 +3,7 @@
   display: flex;
   padding: 20px;
   gap: 20px;
-  height: 100vh; /* Full height of the screen */
+  height: 100%; /* Full height of the screen */
 }
 
 /* Left Panel: Report List */
@@ -104,31 +104,36 @@
 
 .refund-btn,
 .send-btn {
-  padding: 8px 14px;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 0.9em;
   border: none;
   cursor: pointer;
+  width: 150px;
+  height: 40px;
 }
 
 .refund-btn {
-  background-color: #aab0b4;
+  background-color: #06303e;
+
   color: white;
+}
+.refund-btn:hover {
+  background-color: #0a4d63;
+}
+.refund-btn:disabled {
+  background-color: gray;
 }
 
 .send-btn {
-  background-color: #007bff;
+  background-color: #009c9c;
   color: white;
 }
 
 .send-btn:hover {
-  background-color: #0056b3;
+  background-color: #036868;
 }
 
-.refund-btn:hover {
-  background-color: #889097;
-}
 .disabled {
-  pointer-events: none;  /* Disable clicking */
-  opacity: 0.5;          /* Change opacity to show it's disabled */
+  pointer-events: none; /* Disable clicking */
+  opacity: 0.5; /* Change opacity to show it's disabled */
 }

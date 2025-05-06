@@ -1,17 +1,44 @@
+/* Ensure full height layout and centering */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: #eaf4f7; /* Optional background for contrast */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  padding: 0 10px; /* Optional padding for smaller screens */
+}
+
+/* Centering container */
 .reports-container {
   padding: 20px;
   background-color: #f0f8fc;
   border-radius: 10px;
+  width: 100%;
+  max-width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 100%;
+  height: 100%;
 }
 
+/* Title */
 h2 {
   text-align: center;
   font-size: 22px;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 
+/* Scrollable table container */
 .table-container {
-  max-height: 450px;
+  max-height: 90%;
   overflow-y: auto;
   border-radius: 10px;
   background: white;
@@ -19,6 +46,7 @@ h2 {
   position: relative;
 }
 
+/* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -31,7 +59,8 @@ thead {
   z-index: 100;
 }
 
-th, td {
+th,
+td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -46,6 +75,7 @@ td {
   font-size: 14px;
 }
 
+/* Buttons */
 button {
   padding: 8px 12px;
   border: none;

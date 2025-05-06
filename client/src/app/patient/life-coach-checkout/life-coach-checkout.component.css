@@ -48,17 +48,41 @@
   color: #666;
 }
 
-.lower {
-  border-radius: 10px;
-  background-color: #009c9c;
-  color: white;
-  width: 600px;
-  height: 60px;
+.appointment-details label {
+  display: block;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.appointment-select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.appointment-duration {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.duration-btn {
+  background-color: #00b8b8;
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  height: 50px;
+  width: 150px;
+}
+
+.duration-btn.selected {
+  background-color: #004d4d;
 }
 
 .payment-info {
@@ -172,4 +196,63 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.payment-success {
+  background-color: #e9f6fb;
+  text-align: center;
+  padding: 80px 20px;
+  border-radius: 12px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-success h2 {
+  font-size: 28px;
+  color: #06303e;
+  margin-bottom: 30px;
+}
+
+.checkmark-circle {
+  font-size: 120px;
+  color: #06303e;
+  border: 8px solid #06303e;
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.payment-success h3 {
+  font-size: 22px;
+  color: #06303e;
+  margin-bottom: 10px;
+}
+
+.payment-success .transaction {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.payment-success hr {
+  width: 200px;
+  border: none;
+  border-top: 1px solid #00b8b8;
+}
+
+.payment-success .amount {
+  font-size: 16px;
+  color: #333;
+}
+
+.payment-success .amount span {
+  color: #00b8b8;
+  font-weight: bold;
 }

@@ -3,7 +3,7 @@
   background-color: #f0f9ff;
   padding: 20px;
   border-radius: 10px;
-  height: 100%;
+  max-height: 100%;
 }
 
 .session-content h2 {
@@ -24,7 +24,8 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 620px;
+  height: 600px;
+  gap: 10px;
 }
 
 .session-info {
@@ -57,14 +58,6 @@
   margin-bottom: 15px;
 }
 
-.doctor-photo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-
 .doctor-name {
   font-size: 16px;
   font-weight: bold;
@@ -82,8 +75,11 @@
   font-weight: bold;
   text-align: center;
   padding: 15px;
-  margin-top: 15px;
+  margin-top: 10px;
   border-radius: 10px;
   background-color: #06303e;
   height: 50px;
+}
+.session-content {
+  max-height: 100%;
 }

@@ -1,11 +1,11 @@
 /* Main container */
 .form-container {
   display: flex;
-  flex-direction: column;  /* Stack the profile and form vertically */
-  justify-content: center;  /* Center items horizontally */
-  align-items: center;  /* Vertically center items */
-  height: 100vh;
-  background-color: #f7f8fa;  /* Light background for a professional feel */
+  flex-direction: column; /* Stack the profile and form vertically */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Vertically center items */
+  height: 100%;
+  background-color: #f7f8fa; /* Light background for a professional feel */
   padding: 20px;
   width: 100%;
 }
@@ -17,7 +17,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;  /* Space between profile and form */
+  margin-bottom: 30px; /* Space between profile and form */
 }
 
 .profile-image {
@@ -25,45 +25,46 @@
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #00b3b3;  /* Subtle border to highlight */
-  box-shadow: 0 4px 12px rgba(0, 179, 179, 0.3);  /* Soft shadow for profile */
+  border: 4px solid #00b3b3; /* Subtle border to highlight */
+  box-shadow: 0 4px 12px rgba(0, 179, 179, 0.3); /* Soft shadow for profile */
 }
 
 .doctor-name {
   font-size: 2rem;
   font-weight: 600;
   margin-top: 15px;
-  color: #333;  /* Dark grey for better contrast */
+  color: #333; /* Dark grey for better contrast */
 }
 
 /* Wrapper for both Left and Right Panels inside the form */
 .form-box {
   display: flex;
-  flex-direction: row;  /* Align left and right panels horizontally */
+  flex-direction: row; /* Align left and right panels horizontally */
   justify-content: space-between;
-  gap: 30px;  /* Space between the left and right panels */
-  width: 90%;  /* Adjust form width to fit the screen */
-  max-width: 1200px;  /* Max width to avoid too wide */
+  gap: 30px; /* Space between the left and right panels */
+  width: 90%; /* Adjust form width to fit the screen */
+  max-width: 1200px; /* Max width to avoid too wide */
   background-color: #ffffff;
   padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Soft shadow for depth */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
 /* Left and Right sections */
-.left, .right {
+.left,
+.right {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;  /* Align items at the top */
+  justify-content: flex-start; /* Align items at the top */
   align-items: flex-start;
-  width: 48%;  /* Equal width for both left and right panels */
+  width: 48%; /* Equal width for both left and right panels */
 }
 
 /* Form groups styling */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;  /* Adjust space between label and input to be equal */
+  gap: 12px; /* Adjust space between label and input to be equal */
   width: 100%;
 }
 
@@ -75,7 +76,8 @@ label {
 }
 
 /* Input fields styling */
-.form-control, .input-field {
+.form-control,
+.input-field {
   width: 100%;
   padding: 14px;
   font-size: 1rem;
@@ -85,8 +87,9 @@ label {
   transition: border-color 0.3s ease;
 }
 
-.form-control:focus, .input-field:focus {
-  border-color: #00b3b3;  /* Focus effect with teal border */
+.form-control:focus,
+.input-field:focus {
+  border-color: #00b3b3; /* Focus effect with teal border */
   outline: none;
 }
 
@@ -99,38 +102,38 @@ label {
 }
 
 .date-of-birth select {
-  width: 30%;  /* Adjust width of each select to be aligned side by side */
+  width: 30%; /* Adjust width of each select to be aligned side by side */
 }
 
 /* Creative Button Styling */
 .creative-btn {
-  background-color: #00b3b3;  /* Teal background */
+  background-color: #00b3b3; /* Teal background */
   color: white;
   border: none;
   padding: 14px 28px;
   font-size: 1.1rem;
   font-weight: bold;
-  border-radius: 50px;  /* Rounded corners */
+  border-radius: 50px; /* Rounded corners */
   cursor: pointer;
-  box-shadow: 0 6px 12px rgba(0, 179, 179, 0.3);  /* Soft shadow */
+  box-shadow: 0 6px 12px rgba(0, 179, 179, 0.3); /* Soft shadow */
   transition: all 0.3s ease;
-  width: 200px;  /* Fixed width */
+  width: 200px; /* Fixed width */
   text-align: center;
-  margin-top: 30px;  /* Add margin top to create space between form box and button */
+  margin-top: 30px; /* Add margin top to create space between form box and button */
 }
 
 .creative-btn:hover {
-  background-color: #009999;  /* Darken on hover */
-  transform: translateY(-2px);  /* Slight lift effect */
-  box-shadow: 0 8px 16px rgba(0, 179, 179, 0.4);  /* Stronger shadow on hover */
+  background-color: #009999; /* Darken on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 8px 16px rgba(0, 179, 179, 0.4); /* Stronger shadow on hover */
 }
 
 .creative-btn:focus {
-  outline: none;  /* Remove focus outline */
+  outline: none; /* Remove focus outline */
 }
 
 .creative-btn:active {
-  transform: translateY(2px);  /* Pressed effect */
+  transform: translateY(2px); /* Pressed effect */
 }
 
 /* Mobile Responsive Design */
@@ -142,13 +145,14 @@ label {
   }
 
   .form-box {
-    flex-direction: column;  /* Stack the panels vertically on smaller screens */
+    flex-direction: column; /* Stack the panels vertically on smaller screens */
     width: 100%;
     align-items: center;
   }
 
-  .left, .right {
-    width: 100%;  /* Full width for both panels on mobile */
+  .left,
+  .right {
+    width: 100%; /* Full width for both panels on mobile */
     margin-bottom: 20px;
   }
 
@@ -161,16 +165,17 @@ label {
     margin-bottom: 15px;
   }
 
-  .form-control, .input-field {
+  .form-control,
+  .input-field {
     width: 100%;
   }
 
   /* Ensure Date of Birth fields stack vertically on mobile */
   .date-of-birth-fields {
-    flex-direction: column;  /* Stack the selects vertically on small screens */
+    flex-direction: column; /* Stack the selects vertically on small screens */
   }
 
   .date-of-birth select {
-    width: 100%;  /* Make the selects full-width on mobile */
+    width: 100%; /* Make the selects full-width on mobile */
   }
 }

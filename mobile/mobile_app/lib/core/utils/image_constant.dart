@@ -43,5 +43,7 @@ class ImageConstant {
 
   static String imgCard = '$imagePath/img_card.svg';
 
+  static String imgVector = '$imagePath/img_vector.svg';
+
 
 }

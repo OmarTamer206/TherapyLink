@@ -2,7 +2,7 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/core/utils/image_constant.dart';
 import 'package:mobile_app/screens/appointment_screen/widgets/timeslots_item_widget.dart';
-import 'package:mobile_app/screens/check_out_screen/check_out_screen.dart';
+import 'package:mobile_app/screens/check_out_screen.dart';
 import 'package:mobile_app/screens/doctor_s_one_screen.dart';
 import 'package:mobile_app/theme/app_decoration.dart';
 import 'package:mobile_app/theme/custom_text_style.dart';
@@ -108,7 +108,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                            onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  CheckOutScreen()),
+                              MaterialPageRoute(builder: (context) => const CheckOutScreen()),
                             );
                           },
                         ),

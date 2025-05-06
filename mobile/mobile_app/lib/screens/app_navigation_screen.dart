@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/appointment_screen/appointment_screen.dart';
 import 'package:mobile_app/screens/chatbot_screen.dart';
 import 'package:mobile_app/screens/chatting_screen.dart';
-import 'package:mobile_app/screens/check_out_screen/check_out_screen.dart';
+import 'package:mobile_app/screens/check_out_screen.dart';
 import 'package:mobile_app/screens/doctor_s_one_screen.dart';
 import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
 import 'package:mobile_app/screens/home_screen.dart';
+import 'package:mobile_app/screens/payment_screen.dart';
 import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
 import 'package:mobile_app/screens/sign_in_log_in.dart';
 import 'package:mobile_app/screens/sign_up_screen.dart';
@@ -143,7 +144,15 @@ class AppNavigationScreen extends StatelessWidget {
                           screenTitle: "Check out",
                           onTapScreenTitle: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>  CheckOutScreen()),
+                            MaterialPageRoute(builder: (context) => const CheckOutScreen()),
+                          ),
+                        ),
+                         _buildScreenTitle(
+                          context,
+                          screenTitle: "Payment",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PaymentScreen()),
                           ),
                         ),
                       ],

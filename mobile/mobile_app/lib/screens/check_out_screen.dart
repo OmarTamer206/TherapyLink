@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/core/utils/image_constant.dart';
 import 'package:mobile_app/screens/appointment_screen/appointment_screen.dart';
-import 'package:mobile_app/screens/check_out_screen/widgets/appointmentdurationlist_item_widget.dart';
 import 'package:mobile_app/theme/app_decoration.dart';
 import 'package:mobile_app/theme/custom_text_style.dart';
 import 'package:mobile_app/theme/theme_helper.dart';
@@ -43,7 +42,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           width: double.maxFinite,
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding:const EdgeInsets.symmetric(horizontal: 20),
               decoration: AppDecoration.background,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,8 +51,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   const SizedBox(height: 20),
                   // Doctor Info
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    padding: EdgeInsets.all(12),
+                    margin:const EdgeInsets.symmetric(horizontal: 16),
+                    padding:const EdgeInsets.all(12),
                     decoration: AppDecoration.widgetorinput.copyWith(
                       borderRadius: BorderRadiusStyle.roundedBorder6,
                     ),
@@ -87,8 +86,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   const SizedBox(height: 20),
                   // Appointment Type Section
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    padding: EdgeInsets.all(16),
+                    margin:const EdgeInsets.symmetric(horizontal: 16),
+                    padding:const EdgeInsets.all(16),
                     decoration: AppDecoration.widgetorinput.copyWith(
                       borderRadius: BorderRadiusStyle.roundedBorder6,
                     ),
@@ -106,7 +105,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           hintStyle: CustomTextStyles.titleMediumBlack900_1,
                           items: appointmentTypeList,
                           contentPadding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                             const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                           borderDecoration:
                               DropDownStyleHelper.underLinePrimaryContainer,
                           filled: false,
@@ -159,8 +158,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   const SizedBox(height: 20),
                   // Payment Section
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    padding: EdgeInsets.all(16),
+                    margin:const EdgeInsets.symmetric(horizontal: 16),
+                    padding:const EdgeInsets.all(16),
                     decoration: AppDecoration.widgetorinput.copyWith(
                       borderRadius: BorderRadiusStyle.roundedBorder6,
                     ),
@@ -191,7 +190,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           controller: cardHolderController,
                           hintText: "Card Holder",
                           contentPadding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                             const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                           borderDecoration: InputBorder.none, // Remove border
                           filled: false,
                           prefix: Padding(
@@ -210,7 +209,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           controller: cardNumberController,
                           hintText: "Card Number",
                           contentPadding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                             const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                           borderDecoration: InputBorder.none, // Remove border
                           filled: false,
                           prefix: Padding(
@@ -232,7 +231,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               controller: expiryDateController,
                               hintText: "MM/YY",
                               width: 120,
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding:const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 12),
                               borderDecoration: TextFormFiledStyleHelper
                                   .outlinePrimaryContainer,
@@ -242,7 +241,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               controller: cvvController,
                               hintText: "CVV",
                               width: 120,
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding:const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 12),
                               borderDecoration: TextFormFiledStyleHelper
                                   .outlinePrimaryContainer,
@@ -263,7 +262,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   // Checkout Button
                   CustomElevatedButton(
                     text: "Check Out",
-                    margin: EdgeInsets.symmetric(horizontal: 36),
+                    margin:const EdgeInsets.symmetric(horizontal: 36),
                     height: 50,
                     buttonStyle: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
@@ -297,7 +296,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       leadingWidth: 60,
       leading: AppbarLeadingImage(
         imagePath: ImageConstant.imgArrowDownBlack900,
-        margin: EdgeInsets.only(left: 36),
+        margin:const EdgeInsets.only(left: 36),
         onTap: () {
           Navigator.push(
             context,
@@ -306,7 +305,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         },
       ),
       centerTitle: true,
-      title: AppbarSubtitle(text: "Check Out"),
+      title: const AppbarSubtitle(text: "Check Out"),
     );
   }
 }

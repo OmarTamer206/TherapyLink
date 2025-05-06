@@ -22,7 +22,7 @@ header img {
 }
 
 header button {
-  background-color: #007bff;
+  background-color: #b90606;
   color: #fff;
   border: none;
   width: 130px;
@@ -35,7 +35,7 @@ header button {
 }
 
 header button:hover {
-  background-color: #0069d9;
+  background-color: #b90606;
 }
 
 section {

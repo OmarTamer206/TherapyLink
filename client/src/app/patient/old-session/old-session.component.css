@@ -1,10 +1,9 @@
-/* === SESSION CONTAINER VIEW === */
+/* === SESSION CONTAINER === */
 .session-container {
   background-color: #e1f1f6;
   padding: 20px;
   border-radius: 10px;
-  height: 100%;
-  max-height: 100%;
+  min-height: 100vh;
 }
 
 .session-content h2 {
@@ -25,18 +24,11 @@
   font-weight: bold;
 }
 
-.session-time {
+.session-time, .session-duration {
   font-size: 14px;
   color: #666;
   display: flex;
-  align-items: end;
-}
-
-.session-duration {
-  font-size: 14px;
-  color: #666;
-  display: flex;
-  justify-content: end;
+  justify-content: space-between;
 }
 
 /* === CHAT BOX === */
@@ -73,7 +65,7 @@
   color: #fff;
 }
 
-/* === RATE & FEEDBACK BUTTON === */
+/* === RATE BUTTON === */
 .rate-and-feedback {
   font-size: 20px;
   color: white;
@@ -91,7 +83,7 @@
 
 /* === FEEDBACK MODAL === */
 .feedback-modal {
-  background-color: #e9f6fb ; /* Updated background color */
+  background-color: #e9f6fb;
   padding: 40px;
   width: 90%;
   max-width: 500px;
@@ -155,4 +147,65 @@ textarea {
 .submit-btn:hover {
   transform: scale(1.03);
   background-color: #002c39;
+}
+
+/* === PAYMENT SUCCESS === */
+.payment-success {
+  background-color: #e9f6fb;
+  text-align: center;
+  padding: 80px 20px;
+  border-radius: 12px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-success h2 {
+  font-size: 28px;
+  color: #06303e;
+  margin-bottom: 30px;
+}
+
+.checkmark-circle {
+  font-size: 120px;
+  color: #06303e;
+  border: 8px solid #06303e;
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.payment-success h3 {
+  font-size: 22px;
+  color: #06303e;
+  margin-bottom: 10px;
+}
+
+.payment-success .transaction {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.payment-success hr {
+  width: 200px;
+  border: none;
+  border-top: 1px solid #00b8b8;
+  margin-bottom: 10px;
+}
+
+.payment-success .amount {
+  font-size: 16px;
+  color: #333;
+}
+
+.payment-success .amount span {
+  color: #00b8b8;
+  font-weight: bold;
 }

@@ -49,5 +49,21 @@ class ImageConstant {
 
   static String imgMessage = '$imagePath/img_message.svg';
 
+  static String imgCalender = '$imagePath/img_calender.svg';
+
+  static String imgEllipse2150x150 = '$imagePath/img_ellipse_2_150x150.png';
+
+   static String imgSettings = '$imagePath/img_settings.svg';
+
+   static String imgMartialStatus = '$imagePath/img_martialStatus.svg';
+
+   static String imgLock = '$imagePath/img_lock.svg';
+
+   static String imgCalenderEditProfile = '$imagePath/img_calenderEditProfile.svg';
+
+   static String imgCall = '$imagePath/img_call.svg';
+
+   static String imgMessageEditProfile = '$imagePath/img_messageEditProfile.svg';
+
 
 }

@@ -1,84 +1,83 @@
 header {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 40px;
-    align-items: center;
-    height: 10%;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  header .left {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-  }
-  
-  header p {
-    font-size: 2em;
-  }
-  
-  header img {
-    width: 200px;
-  }
-  
-  header button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    width: 130px;
-    height: 50px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
-  }
-  
-  header button:hover {
-    background-color: #0069d9;
-  }
-  
-  section {
-    width: 100%;
-    height: 100%;
-    display: flex;
-  }
-  
-  section nav {
-    width: 19%;
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-right: 1px solid #ccc;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 60%;
-  }
-  
-  nav ul li {
-    font-size: 1.5em;
-    font-weight: bold;
-    cursor: pointer;
-    white-space: nowrap;
-    padding: 10px 0;
-  }
-  
-  nav ul li a {
-    text-decoration: none;
-    color: #333;
-  }
-  
-  nav ul li a:hover {
-    color: #007bff;
-  }
-  
-  section .content {
-    width: 85%;
-    padding: 20px;
-    background-color: #e8f4f8;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 40px;
+  align-items: center;
+  height: 10%;
+  border-bottom: 1px solid #ccc;
+}
+
+header .left {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+header p {
+  font-size: 2em;
+}
+
+header img {
+  width: 200px;
+}
+
+header button {
+  background-color: #b90606;
+  color: #fff;
+  border: none;
+  width: 130px;
+  height: 50px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease;
+}
+
+header button:hover {
+  background-color: #880808;
+}
+
+section {
+  width: 100%;
+  height: 90%;
+  display: flex;
+}
+
+section nav {
+  width: 19%;
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-right: 1px solid #ccc;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 60%;
+}
+
+nav ul li {
+  font-size: 1.5em;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+nav ul li a:hover {
+  color: #007bff;
+}
+
+section .content {
+  width: 85%;
+  padding: 20px;
+  background-color: #e8f4f8;
+}

@@ -1,5 +1,14 @@
-<!-- app.component.html -->
-<div class="checkout-container">
+<!-- doctor-checkout.component.html -->
+<div *ngIf="showSuccess" class="payment-success">
+  <h2>Payment</h2>
+  <div class="checkmark-circle">✔</div>
+  <h3>Session Payment Successful!</h3>
+  <p class="transaction">Transaction Number: 123456789</p>
+  <hr />
+  <p class="amount">Amount Paid: <span>LE 500.00</span></p>
+</div>
+
+<div *ngIf="!showSuccess" class="checkout-container">
   <div class="checkout-content">
     <!-- Left Section: Doctor Info and Appointment Details -->
     <div class="doctor-info">
@@ -16,7 +25,7 @@
         <label for="appointment-type">Choose Type of Appointment</label>
         <select id="appointment-type" class="appointment-select">
           <option value="video-call">Voice / Video Call</option>
-          <option value="Chatting">Chatting</option>
+          <option value="chatting">Chatting</option>
         </select>
 
         <div class="appointment-duration">
@@ -37,30 +46,15 @@
 
       <div class="payment-details">
         <label for="card-holder">Card Holder</label>
-        <input
-          type="text"
-          id="card-holder"
-          class="input-field"
-          placeholder="Enter card holder name"
-        />
+        <input type="text" id="card-holder" class="input-field" placeholder="Enter card holder name" />
 
         <label for="card-number">Card Number</label>
-        <input
-          type="text"
-          id="card-number"
-          class="input-field"
-          placeholder="Enter card number"
-        />
+        <input type="text" id="card-number" class="input-field" placeholder="Enter card number" />
 
         <div class="card-expiry-cvv">
           <div class="expiry-cvv">
             <label for="expiry-date">MM/YY</label>
-            <input
-              type="text"
-              id="expiry-date"
-              class="input-field"
-              placeholder="MM/YY"
-            />
+            <input type="text" id="expiry-date" class="input-field" placeholder="MM/YY" />
           </div>
           <div class="expiry-cvv">
             <label for="cvv">CVV</label>
@@ -74,7 +68,7 @@
       </div>
 
       <div class="button-wrapper">
-        <button class="checkout-btn">Check Out</button>
+        <button class="checkout-btn" (click)="handleCheckout()">Check Out</button>
       </div>
     </div>
   </div>

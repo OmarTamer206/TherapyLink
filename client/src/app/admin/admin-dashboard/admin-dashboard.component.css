@@ -1,5 +1,6 @@
 /* Prevent page scroll */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -15,7 +16,7 @@ html, body {
   padding: 40px;
   width: 100%;
   box-sizing: border-box;
-  height: 100vh; /* fill entire screen height */
+  height: 100%; /* fill entire screen height */
 }
 
 /* Dashboard cards container */
@@ -95,8 +96,12 @@ html, body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Status boxes (if used) */

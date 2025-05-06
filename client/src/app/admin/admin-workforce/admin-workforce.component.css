@@ -11,7 +11,7 @@
 /* Left Panel: Job Description and Registering/Editing */
 .left-panel {
   width: 30%; /* Set left panel to 30% width */
-  background-color: #f1f8f6;
+  background-color: #f0f9ff;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -65,14 +65,14 @@ input:focus,
 select:focus {
   outline: none;
   background-color: #f1f1f1;
-  border-color: #4CAF50;
+  border-color: #4caf50;
 }
 
 /* Button styling */
 button {
   padding: 12px;
   font-size: 16px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -165,12 +165,12 @@ button:hover {
 }
 
 .edit-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
 .delete-button {
-  background-color: #FF5733;
+  background-color: #ff5733;
   color: white;
 }
 
@@ -182,20 +182,20 @@ button:hover {
   background-color: #e04e2c;
 }
 
-.redButton{
-  background-color: #FF5733;
+.redButton {
+  background-color: #ff5733;
   color: white;
 }
-.redButton:hover{
+.redButton:hover {
   background-color: #e04e2c;
 }
-.buttonWrapper{
+.buttonWrapper {
   display: flex;
   justify-content: space-between;
   gap: 100px;
 }
 
-.errorSpan{
+.errorSpan {
   color: rgb(255, 255, 255);
   font-size: 1.3em;
   margin-top: 5px;
@@ -207,16 +207,14 @@ button:hover {
   margin-bottom: 10px;
 }
 
-
-.successSpan{
-  color:#ffffff;
+.successSpan {
+  color: #ffffff;
   font-size: 1.3em;
   margin-top: 5px;
   text-align: center;
   width: 100%;
   padding: 15px;
-  background-color:#72c342;
+  background-color: #72c342;
   border-radius: 10px;
   margin-bottom: 10px;
-
 }

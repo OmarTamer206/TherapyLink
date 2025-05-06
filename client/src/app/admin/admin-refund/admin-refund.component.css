@@ -3,7 +3,7 @@
   display: flex;
   padding: 20px;
   gap: 20px;
-  height: 100vh; /* Full height of the screen */
+  height: 100%; /* Full height of the screen */
 }
 
 /* Left Panel: Report List */
@@ -129,6 +129,6 @@
   background-color: #889097;
 }
 .disabled {
-  pointer-events: none;  /* Disable clicking */
-  opacity: 0.5;          /* Change opacity to show it's disabled */
+  pointer-events: none; /* Disable clicking */
+  opacity: 0.5; /* Change opacity to show it's disabled */
 }

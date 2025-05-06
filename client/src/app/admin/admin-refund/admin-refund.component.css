@@ -104,25 +104,26 @@
 
 .refund-btn,
 .send-btn {
-  padding: 8px 14px;
   border-radius: 6px;
-  font-size: 20px;
+  font-size: 0.9em;
   border: none;
   cursor: pointer;
-  width: 200px;
-  height: 50px;
+  width: 150px;
+  height: 40px;
 }
 
 .refund-btn {
-  background-color: #fff;
-  border-radius: 6px;
-  border: 1px solid #009c9c;
+  background-color: #06303e;
 
-  color: #333;
+  color: white;
 }
-.refund-btn :hover {
-  background-color: #f0f9ff;
+.refund-btn:hover {
+  background-color: #0a4d63;
 }
+.refund-btn:disabled {
+  background-color: gray;
+}
+
 .send-btn {
   background-color: #009c9c;
   color: white;
@@ -130,10 +131,6 @@
 
 .send-btn:hover {
   background-color: #036868;
-}
-
-.refund-btn:hover {
-  background-color: #889097;
 }
 
 .disabled {

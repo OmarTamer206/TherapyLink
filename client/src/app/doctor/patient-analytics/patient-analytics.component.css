@@ -3,7 +3,11 @@
   padding: 20px;
   border-radius: 10px;
   text-align: center;
-  min-height: 600px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .tabs {

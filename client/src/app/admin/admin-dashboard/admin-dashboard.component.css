@@ -29,7 +29,6 @@ body > div {
   padding: 40px;
   width: 100%;
   box-sizing: border-box;
-  max-width: 1200px;
   height: auto;
 }
 
@@ -109,8 +108,12 @@ body > div {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Status boxes */

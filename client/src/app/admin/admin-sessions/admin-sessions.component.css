@@ -35,7 +35,7 @@
 
 .metric-card h3 {
   font-size: 24px;
-  color: #149FA8; /* Updated color */
+  color: #149fa8; /* Updated color */
 }
 
 .metric-card p {
@@ -71,7 +71,7 @@ canvas {
 
 .monthly-reports h3 {
   font-size: 24px;
-  color: #149FA8; /* Updated color */
+  color: #149fa8; /* Updated color */
   margin-bottom: 30px;
 }
 
@@ -91,7 +91,7 @@ canvas {
 
 .report-card h4 {
   font-size: 22px;
-  color: #149FA8; /* Month name color */
+  color: #149fa8; /* Month name color */
   margin-bottom: 15px;
 }
 
@@ -125,7 +125,7 @@ canvas {
 
 .spinner {
   border: 8px solid #f3f3f3;
-  border-top: 8px solid #149FA8;
+  border-top: 8px solid #149fa8;
   border-radius: 50%;
   width: 60px;
   height: 60px;

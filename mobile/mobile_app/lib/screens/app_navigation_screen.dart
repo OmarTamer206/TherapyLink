@@ -5,6 +5,7 @@ import 'package:mobile_app/screens/chatting_screen.dart';
 import 'package:mobile_app/screens/check_out_screen.dart';
 import 'package:mobile_app/screens/doctor_s_one_screen.dart';
 import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
+import 'package:mobile_app/screens/edit_profile_screen.dart';
 import 'package:mobile_app/screens/home_screen.dart';
 import 'package:mobile_app/screens/journal_screen/journal_screen.dart';
 import 'package:mobile_app/screens/payment_screen.dart';
@@ -165,12 +166,20 @@ class AppNavigationScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) =>  JournalScreen()),
                           ),
                         ),
-                                                _buildScreenTitle(
+                       _buildScreenTitle(
                           context,
                           screenTitle: "Profile",
                           onTapScreenTitle: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) =>  ProfileScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Edit Profile",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  EditProfileScreen()),
                           ),
                         ),
                       ],

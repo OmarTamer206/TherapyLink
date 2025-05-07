@@ -34,7 +34,7 @@ class JournalEntriesItemWidget extends StatelessWidget {
             style: CustomTextStyles.titleSmallBlack900Medium,
           ),
           SizedBox(height: 16),
-          SizedBox(width: double.maxFinite, child: Divider()),
+          // Removed Divider to eliminate grey lines
         ],
       ),
     );

@@ -126,3 +126,36 @@
 .table-body-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.upcomingSessionButton button{
+  width: 100%;
+  padding: 10px;
+  font-size: 0.8em;
+}
+
+.table-wrapper {
+  width: 100%;
+}
+
+.sync-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.sync-table th,
+.sync-table td {
+  text-align: center;
+  padding: 8px;
+}
+
+.table-body-scroll {
+  max-height: 300px; /* adjust as needed */
+  overflow-y: auto;
+  width: 100%;
+}
+
+.table-body-scroll table {
+  width: 100%;
+  table-layout: fixed;
+}

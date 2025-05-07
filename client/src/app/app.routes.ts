@@ -178,7 +178,7 @@ export const routes: Routes = [
         component: ProfileComponent,
       },
       {
-        path: 'session',
+        path: 'session/:id',
         component: SessionComponent,
       },
     ],

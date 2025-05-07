@@ -1,8 +1,7 @@
 <div class="journal">
     <div *ngFor="let entry of journalEntries">
-      <h3>{{ entry.date }}</h3>
-      <p>{{ entry.content }}</p>
+      <h3>{{ entry.date }} {{entry.time}}</h3>
+      <p>{{ entry.journal_content }}</p>
       <hr>
     </div>
   </div>
-  

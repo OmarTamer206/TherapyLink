@@ -33,6 +33,40 @@ async function get_today_sessions(doctor_id, type) {
   }
 }
 
+async function get_upcoming_sessions(doctor_id, type) {
+  try {
+    let query = "";
+
+    if (type === "doctor") {
+      query = `
+        SELECT s.*, p.name AS patient_name
+        FROM doctor_session s
+        JOIN patient p ON s.patient_id = p.id
+        WHERE s.doctor_id = ? AND s.scheduled_time > NOW()
+        ORDER BY s.scheduled_time ASC
+      `;
+    } else {
+      query = `
+        SELECT *
+        FROM ${type}_session
+        WHERE ${type}_ID = ? AND scheduled_time > NOW()
+        ORDER BY scheduled_time ASC
+      `;
+    }
+
+    const result = await executeQuery(query, [doctor_id]);
+
+    return { success: true, data: result };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error retrieving upcoming sessions.",
+      error: error.message,
+    };
+  }
+}
+
+
 
 // Get new patients registered this month for a specific doctor or life coach
 async function get_new_patients_this_month(doctor_id, type) {
@@ -40,7 +74,7 @@ async function get_new_patients_this_month(doctor_id, type) {
     const query = `
       SELECT COUNT(DISTINCT patient_ID) AS new_patients
       FROM ${type}_session
-      WHERE ${type}_ID = ? AND MONTH(schedule_time) = MONTH(CURDATE()) AND YEAR(schedule_time) = YEAR(CURDATE())
+      WHERE ${type}_ID = ? AND MONTH(scheduled_time) = MONTH(CURDATE()) AND YEAR(scheduled_time) = YEAR(CURDATE())
     `;
     const result = await executeQuery(query, [doctor_id]);
 
@@ -77,13 +111,35 @@ async function get_total_patients(doctor_id, type) {
 // Get patient list for a doctor or life coach
 async function get_patients_data(doctor_id, type) {
   try {
-    const query = `
-      SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, p.Martial_Status, p.Diagnosis, p.phone_number
-      FROM patient p
-      JOIN ${type}_session s ON p.ID = s.patient_ID
-      WHERE s.doctor_id = ? AND s.session_type = ?
-    `;
-    const result = await executeQuery(query, [doctor_id, type]);
+    let query = "";
+
+    if (type === "doctor") {
+      query = `
+        SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, 
+                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time , s.duration
+        FROM patient p
+        JOIN doctor_session s ON p.ID = s.patient_ID
+        WHERE s.doctor_id = ?
+        ORDER BY s.scheduled_time ASC
+      `;
+    } else if (type === "life_coach") {
+      query = `
+        SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, 
+                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time, s.duration
+        FROM patient p
+        JOIN patient_lifecoach_session pls ON p.ID = pls.patient_id
+        JOIN life_coach_session s ON pls.session_id = s.session_id
+        WHERE s.dr_id = ?
+        ORDER BY s.scheduled_time ASC
+      `;
+    } else {
+      return {
+        success: false,
+        message: "Invalid type. Expected 'doctor' or 'life_coach'.",
+      };
+    }
+
+    const result = await executeQuery(query, [doctor_id]);
 
     return { success: true, data: result };
   } catch (error) {
@@ -95,16 +151,33 @@ async function get_patients_data(doctor_id, type) {
   }
 }
 
+
 // Get detailed reports and journal entries for a specific patient (mehtag a3rf al name bta3 al doctor dah)(8aleban hanhtag join bs dynamic)
 async function get_patient_data(patient_id) {
   try {
     const reportsQuery = `SELECT * FROM report WHERE patient_id = ?`;
-    const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
-
+    
     const reports = await executeQuery(reportsQuery, [patient_id]);
+    
+    // Step 2: For each report, fetch the reporter name from the corresponding table
+    for (let report of reports) {
+      const reporterTable = report.reporter_type; // e.g., 'doctor'
+      const reporterId = report.reporter_id;
+      
+      // Get the name from the respective table
+      const nameQuery = `SELECT name FROM ${reporterTable} WHERE id = ? LIMIT 1`;
+      const nameResult = await executeQuery(nameQuery, [reporterId]);
+      
+      report.reporter_name = nameResult.length > 0 ? nameResult[0].name : 'Unknown';
+      
+    }
+      const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
+      const patientQuery = `SELECT Name,Therapist_Preference FROM patient WHERE id = ?`;
     const journals = await executeQuery(journalQuery, [patient_id]);
-
-    return { success: true, data: { reports, journals } };
+    const patient = await executeQuery(patientQuery, [patient_id]);
+    console.log("patient : ", patient_id);
+    
+    return { success: true, data: { reports, journals,patient } };
   } catch (error) {
     return {
       success: false,
@@ -243,6 +316,7 @@ async function View_all_doctors(doctor_type) {
 
 module.exports = {
   get_today_sessions,
+  get_upcoming_sessions,
   get_new_patients_this_month,
   get_total_patients,
   get_patients_data,

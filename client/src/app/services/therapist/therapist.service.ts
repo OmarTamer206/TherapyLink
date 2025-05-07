@@ -14,6 +14,9 @@ export class TherapistService {
   getTodaySessions(): Observable<any> {
     return this.http.get(`${this.apiUrl}/today-sessions`);
   }
+  getUpcomingSessions(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/upcoming-sessions`);
+  }
 
   // Get new patients registered this month for a specific doctor or life coach
   getNewPatientsThisMonth(): Observable<any> {

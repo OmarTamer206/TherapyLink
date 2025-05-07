@@ -11,6 +11,7 @@ const {
   update_available_time,
   get_patient_analytics,
   View_all_doctors,
+  get_upcoming_sessions,
 } = require("../controllers/TherapistController");
 
 const router = express.Router();
@@ -27,6 +28,23 @@ router.get("/today-sessions", async (req, res) => {
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const result = await get_today_sessions(decoded.id, decoded.role);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/upcoming-sessions", async (req, res) => {
+
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_upcoming_sessions(decoded.id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

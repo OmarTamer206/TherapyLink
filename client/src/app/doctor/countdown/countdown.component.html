@@ -1,0 +1,8 @@
+<div class="countdown-container" (click)="navigateToSession()">
+  <p *ngIf="state === 'No Upcoming Sessions'">No Upcoming Sessions</p>
+  <div class="countdown" *ngIf="state !== 'No Upcoming Sessions' && !isExpired">
+    <p>Time Till Next Session</p>
+    <p>{{ timeLeft }}</p>
+  </div>
+  <p *ngIf="state !== 'No Upcoming Sessions' && isExpired">Session Time is Now</p>
+</div>

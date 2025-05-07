@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const {
   view_upcoming_Sessions_patient,
   view_upcoming_Sessions_doctor,
@@ -6,6 +7,7 @@ const {
   view_old_session_details,
   initialize_communication,
   initalize_emergency_session,
+  view_session_details,
 } = require("../controllers/SessionController");
 
 const router = express.Router();
@@ -44,10 +46,18 @@ router.get("/view-old-sessions/:patient_id", async (req, res) => {
 });
 
 // View session details for a specific past session
-router.get("/view-old-session-details/:session_id/:session_type", async (req, res) => {
-  const { session_id, session_type } = req.params;
-  try {
-    const result = await view_old_session_details(session_id, session_type);
+router.get("/view-session-details/:session_id/", async (req, res) => {
+  const { session_id } = req.params;
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+      
+      
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await view_session_details(session_id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

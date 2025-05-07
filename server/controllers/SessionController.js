@@ -49,15 +49,14 @@ async function view_old_Sessions(patient_id) {
 }
 
 // View session details for a specific past session
-async function view_old_session_details(session_id, session_type) {
+async function view_session_details(session_id, session_type) {
   try {
     const query = `
-      SELECT s.*, f.rating, f.feedback 
-      FROM ${type}_session s
-      LEFT JOIN feedback f ON s.id = f.${type}_session_ID
-      WHERE s.ID = ? AND s.${type}_session = ?
+      SELECT * 
+      FROM ${session_type}_session 
+      WHERE session_ID = ?
     `;
-    const result = await executeQuery(query, [session_id, session_type]);
+    const result = await executeQuery(query, [session_id]);
 
     if (result.length > 0) {
       return { success: true, data: result[0] };
@@ -117,7 +116,7 @@ module.exports = {
   view_upcoming_Sessions_patient,
   view_upcoming_Sessions_doctor,
   view_old_Sessions,
-  view_old_session_details,
+  view_session_details,
   initialize_communication,
   initalize_emergency_session
 };

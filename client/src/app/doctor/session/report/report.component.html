@@ -1,8 +1,7 @@
 <div class="report">
     <div *ngFor="let entry of doctorReport">
-      <h3>{{ entry.name }}</h3>
-      <p>{{ entry.concern }}</p>
+      <h3>Dr. {{ entry.reporter_name }}</h3>
+      <p>{{ entry.report_content }}</p>
       <hr>
     </div>
   </div>
-  

@@ -15,7 +15,7 @@ export class SessionService {
     return this.http.get(`${this.apiUrl}/view-upcoming-sessions-patient/${patientId}`);
   }
 
-  // View upcoming sessions for a doctor
+  // View upcoming sessions for a doctor !!!!! al8y
   viewUpcomingSessionsDoctor(doctorId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/view-upcoming-sessions-doctor/${doctorId}`);
   }
@@ -26,8 +26,8 @@ export class SessionService {
   }
 
   // View session details for a specific past session
-  viewOldSessionDetails(sessionId: string, sessionType: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/view-old-session-details/${sessionId}/${sessionType}`);
+  viewSessionDetails(sessionId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/view-session-details/${sessionId}`);
   }
 
   // Initialize communication for a session (chat or video link)

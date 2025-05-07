@@ -1,22 +1,31 @@
+
+@if (!loading) {
+  <div  class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+}
+@else {
+
 <section>
   <div class="left">
     <div class="container first">
       <div class="session-info">
         <div class="image-placeholder"></div>
         <div class="info">
-          <p class="name">Yara Maged</p>
-          <p class="specialization">Trauma</p>
+          <p class="name">{{patientData.patient[0].Name}}</p>
+          <p class="specialization">{{patientData.patient[0].Therapist_Preference}}</p>
         </div>
       </div>
       <div class="start-session-container">
-        <button class="session-timer-btn">Session Starts in 5:43:20</button>
-        <button class="start-session">Start Session</button>
+        <button class="session-timer-btn">Session Starts in <br>{{timeLeft}}</button>
+        <button class="start-session" [disabled]="!startButtonState">Start Session</button>
+
       </div>
     </div>
 
     <div class="container second">
-      <span class="session-date">Session Date: 2 / 4 / 2024</span>
-      <span class="session-duration">Duration: 7:00 PM</span>
+      <span class="session-date">Session Date: {{sessionData.date}}</span>
+      <span class="session-duration">Duration: {{sessionData.time}}</span>
     </div>
 
     <div class="container third">
@@ -37,11 +46,13 @@
     </div>
     <div class="bottom">
       <div *ngIf="showReport" class="right-content">
-        <app-reports></app-reports>
+        <app-reports [doctorReport] = "patientData.reports"></app-reports>
       </div>
       <div *ngIf="showJournal" class="right-content">
-        <app-journal></app-journal>
+        <app-journal [journalEntries] = "patientData.journals"></app-journal>
       </div>
     </div>
   </div>
 </section>
+
+}

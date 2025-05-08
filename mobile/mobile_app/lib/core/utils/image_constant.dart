@@ -69,5 +69,19 @@ class ImageConstant {
 
    static String imgError = '$imagePath/img_error.svg';
 
+   static String imgImage = '$imagePath/img_image.png';
+
+   static String imgVolumn = '$imagePath/img_volumn.svg';
+
+   static String imgClose = '$imagePath/img_close.svg';
+
+   static String imgVoice = '$imagePath/img_voice.svg';
+
+   static String imgImage654x358 = '$imagePath/img_image_654x358.png';
+
+   static String imgImage174x112 = '$imagePath/img_image_174x112.png';
+
+   static String imgVideo = '$imagePath/img_video.svg';
+
 
 }

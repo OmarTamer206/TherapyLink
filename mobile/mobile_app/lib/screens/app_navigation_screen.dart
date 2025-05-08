@@ -13,6 +13,8 @@ import 'package:mobile_app/screens/profile_screen/profile_screen.dart';
 import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
 import 'package:mobile_app/screens/sign_in_log_in.dart';
 import 'package:mobile_app/screens/sign_up_screen.dart';
+import 'package:mobile_app/screens/upcoming_sessions_call_screen.dart';
+import 'package:mobile_app/screens/upcoming_sessions_video_screen.dart';
 
 
 class AppNavigationScreen extends StatelessWidget {
@@ -180,6 +182,22 @@ class AppNavigationScreen extends StatelessWidget {
                           onTapScreenTitle: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) =>  EditProfileScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Upcoming Sessions Call",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const UpcomingSessionsCallScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Upcoming Sessions Video",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const UpcomingSessionsVideoScreen()),
                           ),
                         ),
                       ],

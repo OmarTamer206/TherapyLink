@@ -26,15 +26,16 @@
         <button class="add-btn" (click)="addAvailableTime()">Add</button>
       </div>
 
-      <div class="report-card" *ngFor="let time of timeTable">
+      <div class="report-card" *ngFor="let slot of timeTable">
         <div class="date-box">
           <div class="day">{{ getSelectedDayInfo().dayName }}</div>
           <div class="number">{{ getSelectedDayInfo().dayNumber }}</div>
         </div>
         <div class="report-details">
           <div class="top-row">
-            <div class="time">🕒 {{ time }}</div>
-            <button class="delete-btn"  (click)="deleteAvailableTime(time)">🗑️</button>
+            <div class="time">🕒 {{ slot.time }}</div>
+            <span *ngIf="slot.isReserved" class="reserved-badge">Reserved</span>
+            <button class="delete-btn" *ngIf="!slot.isReserved" (click)="deleteAvailableTime(slot.time)">🗑️</button>
           </div>
 
         </div>

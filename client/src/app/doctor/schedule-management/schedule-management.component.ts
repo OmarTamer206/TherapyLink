@@ -30,7 +30,7 @@ availableTimes: string[] = [
   '1 AM', '3 AM'  // Note: changed "PM" to "AM" based on your list
 ];
 
-timeTable: string[] =[];
+timeTable: any[]=[];
 
   constructor(private therapistService:TherapistService) {
     this.generateDays();
@@ -57,7 +57,13 @@ timeTable: string[] =[];
           const hours = d.getHours() % 12 || 12;
           const minutes = d.getMinutes().toString().padStart(2, '0');
           const ampm = d.getHours() >= 12 ? 'PM' : 'AM';
-          return `${hours}:${minutes} ${ampm}`;
+          const time = `${hours}:${minutes} ${ampm}`;
+
+          return {
+            time,
+            isReserved: item.IsReserved, // from backend
+            fullTimestamp: item.available_date // useful if needed later
+          };
         });
         console.log(this.timeTable);
       } else {

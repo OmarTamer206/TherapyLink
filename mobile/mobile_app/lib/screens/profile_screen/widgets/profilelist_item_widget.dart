@@ -50,3 +50,97 @@ class ProfileListItemWidget extends StatelessWidget {
     );
   }
 }
+
+class ProfileListItemWidget1 extends StatelessWidget {
+  const ProfileListItemWidget1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 76,
+      child: Column(
+        children: [
+          Container(
+            height: 76,
+            width: double.maxFinite,
+            decoration: AppDecoration.buttonsCTA.copyWith(
+              borderRadius: BorderRadiusStyle.circleBorder40,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomImageView(
+                  imagePath: ImageConstant.imgGroup,
+                  height: 30,
+                  width: 28,
+                ),
+              ],
+            ),
+          ),
+         const SizedBox(height: 6),
+          Text("3", style: CustomTextStyles.headlineSmallBlack900SemiBold),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: Text(
+                "Group Sessions",
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: CustomTextStyles.titleMediumBlack900_1,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileListItemWidget2 extends StatelessWidget {
+  const ProfileListItemWidget2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 76,
+      child: Column(
+        children: [
+          Container(
+            height: 76,
+            width: double.maxFinite,
+            decoration: AppDecoration.buttonsCTA.copyWith(
+              borderRadius: BorderRadiusStyle.circleBorder40,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomImageView(
+                  imagePath: ImageConstant.imgError,
+                  height: 30,
+                  width: 28,
+                ),
+              ],
+            ),
+          ),
+         const SizedBox(height: 6),
+          Text("1", style: CustomTextStyles.headlineSmallBlack900SemiBold),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: Text(
+                "Emergency Team",
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: CustomTextStyles.titleMediumBlack900_1,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

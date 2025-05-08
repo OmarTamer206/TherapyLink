@@ -57,14 +57,19 @@ class CustomElevatedButton extends BaseButton {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           leftIcon ?? const SizedBox.shrink(),
-          Text(
-            text,
-            style: buttonTextStyle ??
-                CustomTextStyles.headlineSmallOnErrorContainer,
+           Expanded(
+                child: Center(
+                  child: Text(
+                    text,
+                    style: buttonTextStyle ??
+                        CustomTextStyles.headlineSmallOnErrorContainer,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              rightIcon ?? const SizedBox.shrink(),
+            ],
           ),
-          rightIcon ?? const SizedBox.shrink()
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }

@@ -65,5 +65,9 @@ class ImageConstant {
 
    static String imgMessageEditProfile = '$imagePath/img_messageEditProfile.svg';
 
+   static String imgGroup = '$imagePath/img_group.svg';
+
+   static String imgError = '$imagePath/img_error.svg';
+
 
 }

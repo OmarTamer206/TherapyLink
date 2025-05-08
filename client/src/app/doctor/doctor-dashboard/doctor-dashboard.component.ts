@@ -84,9 +84,9 @@ export class DoctorDashboardComponent {
           session.time = `${hours12}:${paddedMinutes} ${ampm}`;
         })
 
-        this.check2=true;
-        this.checkLoading();
       }
+      this.check2=true;
+      this.checkLoading();
     },(error)=>{
       console.log("error",error);
 
@@ -146,9 +146,9 @@ export class DoctorDashboardComponent {
 
         patient.time = `${hours12}:${paddedMinutes} ${ampm}`;
 
-        this.check5=true;
-        this.checkLoading();
       })
+      this.check5=true;
+      this.checkLoading();
 
     },(error)=>{
       console.log("error",error);
@@ -158,6 +158,8 @@ export class DoctorDashboardComponent {
   }
 
   checkLoading(){
+    console.log(this.check1 , this.check2 , this.check3 , this.check4 , this.check5);
+    
     if(this.check1 && this.check2 && this.check3 && this.check4 && this.check5){
       this.loading = true;
     }

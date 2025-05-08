@@ -217,16 +217,31 @@ async function update_patient_report(doctor_id, session_data) {
 }
 
 // View available time slots for a specific date
-async function view_available_time(date, doctor_id,doctor_type) {
+async function view_available_time(date, doctor_id, doctor_type) {
   try {
-    const query = `
-      SELECT * FROM ${doctor_type}_availability
-      WHERE ${doctor_type}_id = ? AND Available_date = ?
+    let query =""
+    if (doctor_type === "doctor") {
+      query = `
+      SELECT * FROM doctor_availability
+      WHERE doctor_id = ?
+        AND DATE(available_date) = ?
+      ORDER BY available_date ASC
     `;
+    }
+    else{
+      query = `
+      SELECT * FROM lifecoach_availability
+      WHERE life_coach_id = ?
+        AND DATE(available_date) = ?
+      ORDER BY available_date ASC
+    `;
+    }
+    
     const result = await executeQuery(query, [doctor_id, date]);
 
     return { success: true, data: result };
-  } catch (error) {
+    }
+   catch (error) {
     return {
       success: false,
       message: "Error retrieving available times.",
@@ -235,20 +250,42 @@ async function view_available_time(date, doctor_id,doctor_type) {
   }
 }
 
+
 // Update available time for a doctor or life coach (update again 0-0)
-async function update_available_time(timestamp, doctor_id) {
+async function update_available_time(timestamps, doctor_id, type) {
   try {
+    if (!Array.isArray(timestamps) || timestamps.length === 0) {
+      return { success: false, message: "No timestamps provided." };
+    }
+
+    let table = "";
+    idIdentifier = ""
+    if (type === "doctor") {
+      table = "doctor_availability";
+      idIdentifier = "doctor_ID";
+    } else {
+      table = "lifecoach_availability";
+      idIdentifier = "life_coach_ID";
+
+    }
+
+    // Create placeholders (?, ?) for each row
+    const placeholders = timestamps.map(() => "(?, ?)").join(", ");
+    
+    // Flatten parameters: [doctor_id, timestamp1, doctor_id, timestamp2, ...]
+    const params = timestamps.flatMap(ts => [doctor_id, ts]);
+
     const query = `
-      INSERT INTO doctor_availability (doctor_id, available_timestamp)
-      VALUES (?, ?)
-      ON DUPLICATE KEY UPDATE available_timestamp = VALUES(available_timestamp)
+      INSERT IGNORE INTO ${table} (${idIdentifier}, available_date)
+      VALUES ${placeholders}
     `;
-    const result = await executeQuery(query, [doctor_id, timestamp]);
+
+    const result = await executeQuery(query, params);
 
     if (result.affectedRows > 0) {
       return { success: true, message: "Availability updated successfully." };
     } else {
-      return { success: false, message: "Failed to update availability." };
+      return { success: true, message: "All timestamps were already inserted (duplicates ignored)." };
     }
   } catch (error) {
     return {
@@ -258,6 +295,40 @@ async function update_available_time(timestamp, doctor_id) {
     };
   }
 }
+
+async function delete_available_time(doctor_id, timestamp, type) {
+  try {
+    let query = "";
+
+    if (type === "doctor") {
+      query = `
+        DELETE FROM doctor_availability
+        WHERE doctor_id = ? AND available_date = ?
+      `;
+    } else {
+      query = `
+        DELETE FROM ${type}_availability
+        WHERE ${type}_id = ? AND available_date = ?
+      `;
+    }
+
+    const result = await executeQuery(query, [doctor_id, timestamp]);
+
+    if (result.affectedRows > 0) {
+      return { success: true, message: "Available time deleted successfully." };
+    } else {
+      return { success: false, message: "No matching availability found." };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error deleting available time.",
+      error: error.message,
+    };
+  }
+}
+
+
 //U DO IT :-
 async function get_patient_analytics(doctor_id, type) {
   try {
@@ -324,6 +395,7 @@ module.exports = {
   update_patient_report,
   view_available_time,
   update_available_time,
+  delete_available_time,
   get_patient_analytics,
   View_all_doctors,
 };

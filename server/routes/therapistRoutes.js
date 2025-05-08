@@ -12,6 +12,7 @@ const {
   get_patient_analytics,
   View_all_doctors,
   get_upcoming_sessions,
+  delete_available_time,
 } = require("../controllers/TherapistController");
 
 const router = express.Router();
@@ -145,7 +146,7 @@ router.get("/available-time/:date", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await view_available_time(date, decoded.id, decoded.doctor_type);
+    const result = await view_available_time(date, decoded.id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -167,7 +168,28 @@ router.put("/update-available-time", async (req, res) => {
   console.log("1",process.env.JWT_SECRET);
   
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await update_available_time(timestamp, decoded.id);
+    const result = await update_available_time(timestamp, decoded.id,decoded.role);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.delete("/delete-available-time", async (req, res) => {
+  const { timestamp } = req.body;
+  if (!timestamp )
+    return res.status(400).json({ error: "Missing timestamp or doctor_id" });
+  
+  
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+  
+  
+  try {
+  console.log("1",process.env.JWT_SECRET);
+  
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await delete_available_time(decoded.id,timestamp,decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

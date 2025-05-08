@@ -49,8 +49,11 @@ export class TherapistService {
   }
 
   // Update available time for a doctor or life coach
-  updateAvailableTime(timestamp: string): Observable<any> {
+  updateAvailableTime(timestamp: string[]): Observable<any> {
     return this.http.put(`${this.apiUrl}/update-available-time`, { timestamp });
+  }
+  deleteAvailableTime(timestamp: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/delete-available-time`, { body: { timestamp } });
   }
 
   // Get patient analytics (e.g., total patients, overall rating, returning patients)

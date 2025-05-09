@@ -46,7 +46,7 @@ export class PieChartComponent implements OnChanges {
       if (this.pieChart) {
         this.pieChart.destroy();  // Destroy any previous chart
       }
-
+      const total = this.chartData.reduce((sum, value) => sum + value, 0);
       // Create a new Pie chart
       this.pieChart = new Chart(this.pieCanvas.nativeElement, {
         type: 'pie',
@@ -72,7 +72,9 @@ export class PieChartComponent implements OnChanges {
             tooltip: {
               callbacks: {
                 label: function (tooltipItem) {
-                  return tooltipItem.label + ': ' + tooltipItem.raw + '%'; // Add percentage formatting
+                  const value:any = tooltipItem.raw;
+                  const percentage = ((value / total) * 100).toFixed(2); // Calculate percentage
+                  return `${tooltipItem.label}: ${percentage}%`; // Show percentage
                 },
               },
             },

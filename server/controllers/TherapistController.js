@@ -332,38 +332,121 @@ async function delete_available_time(doctor_id, timestamp, type) {
 //U DO IT :-
 async function get_patient_analytics(doctor_id, type) {
   try {
-    const query = `
-      SELECT 
-        COUNT(DISTINCT s.patient_id) AS total_patients,
-        (SELECT AVG(f.rating) FROM session_feedback f 
-         JOIN sessions s2 ON f.session_id = s2.id 
-         WHERE s2.doctor_id = ? AND s2.session_type = ?) AS overall_rating,
-        COUNT(*) AS total_sessions,
-        COUNT(DISTINCT CASE WHEN patient_visits > 1 THEN patient_id END) AS returning_patients
-      FROM (
-        SELECT patient_id, COUNT(*) AS patient_visits, MONTH(session_date) AS session_month
-        FROM sessions
-        WHERE doctor_id = ? AND session_type = ?
-        GROUP BY patient_id, session_month
-      ) AS patient_data;
-    `;
+    let ratingQuery = "";
+    let returningPatientsQuery = "";
+    let totalPatientsQuery = "";
 
-    const result = await executeQuery(query, [
-      doctor_id,
-      type,
-      doctor_id,
-      type,
-    ]);
+    if (type === "doctor") {
+      // Get rating count for doctor
+      ratingQuery = `
+        SELECT 
+            ds.rating, 
+            COUNT(*) AS rating_count
+        FROM doctor_session ds
+        WHERE ds.doctor_ID = ?
+        GROUP BY ds.rating;
+      `;
 
-    return { success: true, data: result[0] };
+      // Get returning patients by month for doctor
+      returningPatientsQuery = `
+        SELECT 
+            COUNT(DISTINCT patient_ID) AS total_patients, 
+            COUNT(DISTINCT CASE WHEN session_count > 1 THEN patient_ID END) AS returning_patients
+        FROM (
+            SELECT patient_ID, COUNT(*) AS session_count
+            FROM doctor_session
+            WHERE doctor_ID = 28
+            GROUP BY patient_ID
+        ) AS patient_sessions;
+
+
+      `;
+
+      // Get total patients by month for doctor
+      totalPatientsQuery = `
+        SELECT 
+            MONTH(ds.scheduled_time) AS session_month,
+            COUNT(DISTINCT ds.patient_ID) AS total_patients
+        FROM doctor_session ds
+        WHERE ds.doctor_ID = ?
+        GROUP BY session_month;
+      `;
+    } else if (type === "life_coach") {
+      // Get rating count for life coach
+      ratingQuery = `
+        SELECT 
+            pls.rating, 
+            COUNT(*) AS rating_count
+        FROM patient_lifecoach_session pls
+        JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
+        WHERE lcs.coach_ID = ?
+        GROUP BY pls.rating;
+      `;
+
+      // Get returning patients by month for life coach
+      returningPatientsQuery = `
+        SELECT 
+            COUNT(DISTINCT pls.patient_ID) AS total_patients, 
+            COUNT(DISTINCT CASE WHEN session_count > 1 THEN pls.patient_ID END) AS returning_patients
+        FROM (
+            SELECT pls.patient_ID, COUNT(*) AS session_count
+            FROM patient_lifecoach_session pls
+            JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
+            WHERE lcs.coach_ID = ?
+            GROUP BY pls.patient_ID
+        ) AS patient_sessions;
+
+      `;
+
+      // Get total patients by month for life coach
+      totalPatientsQuery = `
+        SELECT 
+            MONTH(lcs.session_date) AS session_month,
+            COUNT(DISTINCT pls.patient_ID) AS total_patients
+        FROM patient_lifecoach_session pls
+        JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
+        WHERE lcs.coach_ID = ?
+        GROUP BY session_month;
+      `;
+    }
+
+    // Execute all queries in parallel
+    const ratingResult = await executeQuery(ratingQuery, [doctor_id]);
+    const returningPatientsResult = await executeQuery(returningPatientsQuery, [doctor_id, doctor_id]);
+    const totalPatientsResult = await executeQuery(totalPatientsQuery, [doctor_id]);
+
+    const ratingCounts = ratingResult.reduce((acc, { rating, rating_count }) => {
+      acc[rating] = rating_count;  // Set rating as key and rating_count as value
+      return acc;
+    }, {});
+
+    const TotalPatientsByMonth = totalPatientsResult.reduce((acc, { session_month, total_patients }) => {
+      acc[session_month] = total_patients;  // Set session_month as key and returning_patients as value
+      return acc;
+    }, {});
+
+    // Return the results
+    return {
+      success: true,
+      ratingCounts , returningPatientsResult , TotalPatientsByMonth 
+      
+    };
   } catch (error) {
     return {
       success: false,
-      message: "Error retrieving patient analytics.",
+      message: "Error retrieving data.",
       error: error.message,
     };
   }
 }
+
+
+
+
+
+
+
+
 
 // View all doctors of a specific type (e.g., therapists, life coaches)
 async function View_all_doctors(doctor_type) {

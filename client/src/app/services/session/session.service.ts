@@ -39,4 +39,7 @@ export class SessionService {
   initializeEmergencySession(patientId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/initialize-emergency-session/${patientId}`, {});
   }
+  cancelSession(session_ID: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cancel-session`, { session_ID });
+  }
 }

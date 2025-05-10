@@ -89,9 +89,9 @@ export class SessionComponent implements OnInit ,OnDestroy {
             const paddedMinutes = minutes.toString().padStart(2, '0');
 
             journal.time = `${hours12}:${paddedMinutes} ${ampm}`;
-            this.check1=true;
-            this.checkLoading()
           })
+          this.check1=true;
+          this.checkLoading()
         });
 
 
@@ -167,6 +167,8 @@ export class SessionComponent implements OnInit ,OnDestroy {
 
 
   checkLoading(){
+
+
     if(this.check1 && this.check2){
       this.loading = true;
     }

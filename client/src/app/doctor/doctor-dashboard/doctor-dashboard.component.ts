@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TherapistService } from '../../services/therapist/therapist.service';
 import { isEmpty } from 'rxjs';
 import { CountdownComponent } from '../countdown/countdown.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -15,7 +16,8 @@ export class DoctorDashboardComponent {
   patients:any[] = [];
 
 
-  todaySession : any;
+  todaySessionCount : any;
+  todaySessions : any;
   newPatients:any;
   totalPatiets:any;
   upcomingSessions:any[]=[];
@@ -31,7 +33,7 @@ export class DoctorDashboardComponent {
   check5=false;
 
 
-  constructor(private therapistService:TherapistService){
+  constructor(private therapistService:TherapistService,private router:Router){
     this.getTodaySessions()
     this.getNewPatients()
     this.getTotalPatients()
@@ -42,13 +44,26 @@ export class DoctorDashboardComponent {
   getTodaySessions(){
 
     this.therapistService.getTodaySessions().subscribe((response)=>{
-      console.log(response);
+      console.log("Today",response);
       if(response.data.length === 0){
-        this.todaySession = "No Sessions Today"
+        this.todaySessionCount = "No Sessions Today"
       }
       else{
-        this.todaySession = response.data.length
+        this.todaySessionCount = response.data.length
+        this.todaySessions = response.data
 
+        this.todaySessions.map((session:any)=>{
+          const date = new Date(session.scheduled_time)
+          session.date = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+          const hours24 = date.getHours();
+          const minutes = date.getMinutes();
+
+          const hours12 = hours24 % 12 || 12; // Converts 0 to 12 for midnight
+          const ampm = hours24 >= 12 ? 'PM' : 'AM';
+          const paddedMinutes = minutes.toString().padStart(2, '0');
+
+          session.time = `${hours12}:${paddedMinutes} ${ampm}`;
+        })
       }
 
       this.check1=true;
@@ -130,9 +145,11 @@ export class DoctorDashboardComponent {
 
 
   getPatientsData(){
-    this.therapistService.getPatientsData().subscribe((response)=>{
+    this.therapistService.getUpcomingSessions().subscribe((response)=>{
       console.log(response);
       this.patients = response.data;
+
+      this.patients = this.patients.slice(0, 5);
 
       this.patients.map((patient)=>{
         const date = new Date(patient.scheduled_time)
@@ -157,9 +174,15 @@ export class DoctorDashboardComponent {
     })
   }
 
+  goToSession(session_ID:any){
+    console.log(session_ID);
+    this.router.navigate([`/doctor/session/${session_ID}`])
+
+  }
+
   checkLoading(){
     console.log(this.check1 , this.check2 , this.check3 , this.check4 , this.check5);
-    
+
     if(this.check1 && this.check2 && this.check3 && this.check4 && this.check5){
       this.loading = true;
     }

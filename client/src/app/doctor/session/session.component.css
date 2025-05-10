@@ -213,7 +213,7 @@ section {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
   height: 540px;
   max-height: 540px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* Styling for Journal and Report */
@@ -239,4 +239,8 @@ section {
 hr {
   margin-top: 10px;
   border: 1px solid #ccc;
+}
+
+.bottom{
+  width: 90%;
 }

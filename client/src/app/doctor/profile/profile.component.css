@@ -10,6 +10,10 @@
   width: 100%;
 }
 
+.form-container form{
+  width:100%
+}
+
 /* Profile styling (for the profile section) */
 .profile {
   text-align: center;
@@ -42,8 +46,8 @@
   flex-direction: row; /* Align left and right panels horizontally */
   justify-content: space-between;
   gap: 30px; /* Space between the left and right panels */
-  width: 90%; /* Adjust form width to fit the screen */
-  max-width: 1200px; /* Max width to avoid too wide */
+  width: 100%; /* Adjust form width to fit the screen */
+  max-width: 1600px; /* Max width to avoid too wide */
   background-color: #ffffff;
   padding: 40px;
   border-radius: 10px;
@@ -51,7 +55,7 @@
 }
 
 /* Left and Right sections */
-.left,
+.left,.middle,
 .right {
   display: flex;
   flex-direction: column;
@@ -136,6 +140,10 @@ label {
   transform: translateY(2px); /* Pressed effect */
 }
 
+.right{
+  justify-content: space-between;
+}
+
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
   .form-container {
@@ -150,7 +158,7 @@ label {
     align-items: center;
   }
 
-  .left,
+  .left,.middle,
   .right {
     width: 100%; /* Full width for both panels on mobile */
     margin-bottom: 20px;
@@ -178,4 +186,13 @@ label {
   .date-of-birth select {
     width: 100%; /* Make the selects full-width on mobile */
   }
+}
+.successFlag{
+  color: green;
+  font-size: 20px
+}
+.errorFlag{
+  color: red;
+  font-size: 20px
+
 }

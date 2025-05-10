@@ -60,7 +60,9 @@ export class TherapistService {
   getPatientAnalytics(): Observable<any> {
     return this.http.get(`${this.apiUrl}/patient-analytics`);
   }
-
+  getTherapistData(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-therapist-data`);
+  }
   // View all doctors of a specific type (e.g., therapists, life coaches)
   viewAllDoctors(doctorType: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/all-doctors/${doctorType}`);

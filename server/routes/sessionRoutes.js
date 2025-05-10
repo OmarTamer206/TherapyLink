@@ -8,6 +8,7 @@ const {
   initialize_communication,
   initalize_emergency_session,
   view_session_details,
+  cancellSession,
 } = require("../controllers/SessionController");
 
 const router = express.Router();
@@ -88,5 +89,29 @@ router.post("/initialize-emergency-session/:patient_id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.post("/cancel-session", async (req, res) => {
+  const { session_ID } = req.body;
+  console.log(req.body);
+  
+  if (!session_ID )
+    return res.status(400).json({ error: "Missing session_ID" });
+  
+  
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+  
+  
+  try {
+  console.log("1",process.env.JWT_SECRET);
+  
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await cancellSession(session_ID,decoded.role);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 module.exports = router;

@@ -42,7 +42,7 @@ async function get_upcoming_sessions(doctor_id, type) {
         SELECT s.*, p.name AS patient_name
         FROM doctor_session s
         JOIN patient p ON s.patient_id = p.id
-        WHERE s.doctor_id = ? AND s.scheduled_time > NOW()
+        WHERE s.doctor_id = ? AND s.scheduled_time > NOW() AND s.isCancelled = 0
         ORDER BY s.scheduled_time ASC
       `;
     } else {
@@ -116,7 +116,7 @@ async function get_patients_data(doctor_id, type) {
     if (type === "doctor") {
       query = `
         SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, 
-                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time , s.duration
+                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time , s.duration , s.session_ID
         FROM patient p
         JOIN doctor_session s ON p.ID = s.patient_ID
         WHERE s.doctor_id = ?
@@ -125,7 +125,7 @@ async function get_patients_data(doctor_id, type) {
     } else if (type === "life_coach") {
       query = `
         SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, 
-                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time, s.duration
+                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time, s.duration, s.session_ID
         FROM patient p
         JOIN patient_lifecoach_session pls ON p.ID = pls.patient_id
         JOIN life_coach_session s ON pls.session_id = s.session_id
@@ -441,7 +441,35 @@ async function get_patient_analytics(doctor_id, type) {
 }
 
 
+async function get_therapist_data(id,type) {
+ 
+  try {
 
+   
+
+    const validRoles = ["doctor", "life_coach"];
+
+    // Validate user type
+    if (!validRoles.includes(type)) {
+      return { success: false, message: "Invalid user type provided." };
+    }
+
+    const query = `
+      SELECT * FROM ${type}
+      WHERE id = ?
+    `;
+
+    const result = await executeQuery(query, [id]);
+
+    return { success: true, data: result };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error searching users.",
+      error: error.message,
+    };
+  }
+}
 
 
 
@@ -468,6 +496,7 @@ async function View_all_doctors(doctor_type) {
   }
 }
 
+
 module.exports = {
   get_today_sessions,
   get_upcoming_sessions,
@@ -480,5 +509,6 @@ module.exports = {
   update_available_time,
   delete_available_time,
   get_patient_analytics,
+  get_therapist_data,
   View_all_doctors,
 };

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-reports',
+  selector: 'app-report',
   standalone: true,
   imports: [CommonModule,NgFor],
   templateUrl: './report.component.html',

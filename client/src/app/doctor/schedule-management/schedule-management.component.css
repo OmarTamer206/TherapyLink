@@ -64,6 +64,10 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
   text-align: center;
+
+  justify-items: center;
+  align-items: center;
+
 }
 
 .days span {
@@ -71,6 +75,13 @@
   padding: 10px;
   border-radius: 50%;
   transition: 0.3s;
+
+  width: 60px;
+  height: 60px;
+
+  display: flex;  /* Make the span a flex container */
+  align-items: center;  /* Vertically center the content */
+  justify-content: center;  /* Horizontally center the content */
 }
 
 .days span:hover {

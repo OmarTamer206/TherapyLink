@@ -46,7 +46,7 @@
     </div>
     <div class="bottom">
       <div *ngIf="showReport" class="right-content">
-        <app-reports [doctorReport] = "patientData.reports"></app-reports>
+        <app-report [doctorReport] = "patientData.reports"></app-report>
       </div>
       <div *ngIf="showJournal" class="right-content">
         <app-journal [journalEntries] = "patientData.journals"></app-journal>

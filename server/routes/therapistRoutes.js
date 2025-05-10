@@ -13,6 +13,7 @@ const {
   View_all_doctors,
   get_upcoming_sessions,
   delete_available_time,
+  get_therapist_data,
 } = require("../controllers/TherapistController");
 
 const router = express.Router();
@@ -213,6 +214,22 @@ router.get("/patient-analytics", async (req, res) => {
   }
 });
 
+router.get("/get-therapist-data", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+  
+  
+  try {
+  console.log("1",process.env.JWT_SECRET);
+  
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_therapist_data(decoded.id, decoded.role);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // View all doctors of a specific type (e.g., therapists, life coaches)
 router.get("/all-doctors/:doctor_type", async (req, res) => {
   const { doctor_type } = req.params;
@@ -223,5 +240,6 @@ router.get("/all-doctors/:doctor_type", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 module.exports = router;

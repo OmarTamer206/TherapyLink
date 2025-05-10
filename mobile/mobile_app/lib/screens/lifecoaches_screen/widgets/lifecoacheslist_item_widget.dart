@@ -3,14 +3,14 @@ import 'package:mobile_app/core/utils/image_constant.dart';
 import 'package:mobile_app/theme/theme_helper.dart';
 import 'package:mobile_app/widgets/custom_image_view.dart';
 
-class DoctorsListItemWidget extends StatelessWidget {
-final VoidCallback? onViewDoctorTap; // Callback for navigation
-  final TextStyle? viewDoctorStyle; // Optional style override for "View Doctor"
+class LifeCoachesListItemWidget extends StatelessWidget {
+final VoidCallback? onViewCoachTap; // Callback for navigation
+  final TextStyle? viewCoachStyle; // Optional style override for "View Doctor"
   
- const DoctorsListItemWidget({
+ const LifeCoachesListItemWidget({
     super.key,
-    this.onViewDoctorTap,
-    this.viewDoctorStyle,
+    this.onViewCoachTap,
+    this.viewCoachStyle,
   });
 
   @override
@@ -72,10 +72,10 @@ final VoidCallback? onViewDoctorTap; // Callback for navigation
             ],
           ),
            GestureDetector(
-            onTap: onViewDoctorTap,
+            onTap: onViewCoachTap,
             child: Text(
-              "View Doctor",
-              style: viewDoctorStyle ??
+              "View Coaches",
+              style: viewCoachStyle ??
                   theme.textTheme.labelLarge!.copyWith(
                     color: theme.colorScheme.primary,
                     fontSize: 14,

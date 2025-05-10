@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/appointment_of_life_coach_screen/appointment_of_life_coach_screen.dart';
 import 'package:mobile_app/screens/appointment_screen/appointment_screen.dart';
 import 'package:mobile_app/screens/chatbot_screen.dart';
 import 'package:mobile_app/screens/chatting_screen.dart';
+import 'package:mobile_app/screens/check_out_of_life_coach_screen.dart';
 import 'package:mobile_app/screens/check_out_screen.dart';
 import 'package:mobile_app/screens/doctor_s_one_screen.dart';
 import 'package:mobile_app/screens/doctors_screen/doctors_screen.dart';
 import 'package:mobile_app/screens/edit_profile_screen.dart';
 import 'package:mobile_app/screens/home_screen.dart';
 import 'package:mobile_app/screens/journal_screen/journal_screen.dart';
+import 'package:mobile_app/screens/lifecoach_s_one_screen.dart';
+import 'package:mobile_app/screens/lifecoaches_screen/lifecoaches_screen.dart';
 import 'package:mobile_app/screens/payment_screen.dart';
 import 'package:mobile_app/screens/profile_screen/profile_screen.dart';
 import 'package:mobile_app/screens/sessions_screen/sessions_screen.dart';
@@ -198,6 +202,39 @@ class AppNavigationScreen extends StatelessWidget {
                           onTapScreenTitle: () => Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const UpcomingSessionsVideoScreen()),
+                          ),
+                        ),
+                         _buildScreenTitle(
+                          context,
+                          screenTitle: "LifeCoaches",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LifeCoachesScreen()),
+                          ),
+                        ),
+
+                         _buildScreenTitle(
+                          context,
+                          screenTitle: "Life Coache's Page",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LifeCoachSOneScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Appointment of life coach",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const AppointmentOfLifeCoachScreen()),
+                          ),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Check Out of life coach",
+                          onTapScreenTitle: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CheckOutOfLifeCoachScreen()),
                           ),
                         ),
                       ],

@@ -165,13 +165,13 @@ async function cancellSession(session_ID, type) {
         return { success: false, message: "Session not found." };
       }
 
-      patientID = result[0].patient_ID;
-      sessionPrice = result[0].price;
+      console.log(result);
+      
 
       // Add session price to the patient's wallet
-      for (const patient of patientData) {
+      for (const patient of result) {
         await executeQuery(
-          `UPDATE patient SET wallet = wallet + ? WHERE id = ?`, [refundAmount, patient.patient_ID]
+          `UPDATE patient SET wallet = wallet + ? WHERE id = ?`, [patient.cost, patient.patient_ID]
         );
       }
 

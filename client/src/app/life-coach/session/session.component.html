@@ -2,12 +2,12 @@
   <!-- Center Section -->
   <div class="center-section">
     <!-- Header -->
-    <h2 class="session-title">Life Coach’s Sessions</h2>
+    <h2 class="session-title">{{sessionData.topic}} Session</h2>
 
     <!-- Session Date & Time -->
     <div class="session-info-row">
-      <span class="session-date">Session Date: 2 / 4 / 2024</span>
-      <span class="session-time">Duration: 7:00 PM</span>
+      <span class="session-date">Session Date: {{sessionData.date}}</span>
+      <span class="session-time">Duration: {{sessionData.time}}</span>
     </div>
 
     <!-- Video Call Section -->
@@ -22,7 +22,7 @@
     <div class="patients-list">
       <h3>Patients</h3>
       <div class="patient-item" *ngFor="let patient of patients">
-        <span>{{ patient }}</span>
+        <span>{{ patient.Name }}</span>
         <div class="buttons-inline">
           <button class="view-report" (click)="toggleReport(patient)">View Report</button>
           <button class="view-journal" (click)="toggleJournal(patient)">View Journal</button>
@@ -32,12 +32,15 @@
 
     <!-- Report Viewer (only if patient is selected) -->
     <div class="entry-box" *ngIf="showReport && selectedPatient">
-      <app-reports [patientName]="selectedPatient"></app-reports>
+      <h3>{{selectedPatient.Name}} Report : </h3>
+      <app-report [doctorReport]="selectedPatient.reports"></app-report>
     </div>
 
     <!-- Journal Viewer (only if patient is selected) -->
     <div class="entry-box" *ngIf="showJournal && selectedPatient">
-      <app-journal [patientName]="selectedPatient"></app-journal>
+      <h3>{{selectedPatient.Name}} Journals : </h3>
+
+      <app-journal [journalEntries]="selectedPatient.journals"></app-journal>
     </div>
   </div>
 </section>

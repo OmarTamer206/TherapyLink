@@ -209,7 +209,7 @@ export const routes: Routes = [
         component: lifeProfileComponent,
       },
       {
-        path: 'session',
+        path: 'session/:id',
         component: lifeSessionComponent,
       },
     ],

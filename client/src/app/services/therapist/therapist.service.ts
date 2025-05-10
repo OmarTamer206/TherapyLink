@@ -29,8 +29,8 @@ export class TherapistService {
   }
 
   // Get patient list for a doctor or life coach
-  getPatientsData(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/patients-data`);
+  getPatientsData(session_ID:any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/patients-data/${session_ID}` );
   }
 
   // Get detailed reports and journal entries for a specific patient

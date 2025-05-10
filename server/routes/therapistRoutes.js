@@ -88,7 +88,9 @@ router.get("/total-patients", async (req, res) => {
 });
 
 // Get patient list for a doctor or life coach
-router.get("/patients-data", async (req, res) => {
+router.get("/patients-data/:session_ID", async (req, res) => {
+  const { session_ID } = req.params;
+
   const token = req.headers['authorization']?.split(' ')[1];
     if (!token) return res.status(401).json({ message: 'Access denied' });
     
@@ -97,7 +99,7 @@ router.get("/patients-data", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await get_patients_data(decoded.id, decoded.role);
+    const result = await get_patients_data(decoded.id, session_ID);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,9 +1,9 @@
 <div class="form-container">
   <div class="profile">
     <img src="doctor.jpeg" alt="settings" class="profile-image" />
-    <h3 class="doctor-name">Life Coach Name</h3>
-    <span>{{errorFlag}}</span>
-    <span>{{successFlag}}</span>
+    <h3 class="doctor-name">Yasser Maged</h3>
+    <span class="errorFlag">{{errorFlag}}</span>
+    <span class="successFlag">{{successFlag}}</span>
   </div>
 
   <form class="doctor-form">
@@ -62,13 +62,15 @@
         </div>
       </div>
 
-      <div class="right">
+      <div class="middle">
         <div class="form-group date-of-birth">
           <label for="date">Date Of Birth</label>
           <div class="date-of-birth-fields">
             <select [(ngModel)]="birthMonth" name="birthMonth" class="input-field" required>
               <option value="" disabled selected>MM</option>
-              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+              <option *ngFor="let month of months" [value]="month">
+                {{ month }}
+              </option>
             </select>
             <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
               <option value="" disabled selected>DD</option>
@@ -76,7 +78,9 @@
             </select>
             <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
               <option value="" disabled selected>YYYY</option>
-              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
             </select>
           </div>
         </div>
@@ -114,6 +118,45 @@
           />
         </div>
       </div>
+
+      <div class="right">
+        <div class="form-group date-of-birth">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            [(ngModel)]="description"
+            placeholder="Your Description"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="specialization">Specialization</label>
+          <select [(ngModel)]="specialization" name="specialization" class="input-field" required>
+            <option value="General Psychological Support" selected>General Psychological Support</option>
+            <option value="Mood and Anxiety Disorder Specialist">Mood and Anxiety Disorder Specialist</option>
+            <option value="Clinical Depression Specialist">Clinical Depression Specialist</option>
+            <option value="Suicide Prevention and Crisis Specialist">Suicide Prevention and Crisis Specialist</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label for="price">Session Price</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            class="form-control"
+            min="100"
+            [(ngModel)]="sessionPrice"
+            required
+          />
+        </div>
+      </div>
+
     </div>
   </form>
 

@@ -10,13 +10,13 @@ async function get_today_sessions(doctor_id, type) {
         SELECT s.*, p.name AS patient_name
         FROM ${type}_session s
         JOIN patient p ON s.patient_id = p.id
-        WHERE s.${type}_ID = ? AND DATE(s.scheduled_time) = CURDATE()
+        WHERE s.${type}_ID = ? AND DATE(s.scheduled_time) = CURDATE() AND s.isCancelled = 0
         ORDER BY s.scheduled_time ASC
       `;
     } else {
       query = `
         SELECT * FROM ${type}_session
-        WHERE ${type}_ID = ? AND DATE(scheduled_time) = CURDATE()
+        WHERE coach_ID = ? AND DATE(scheduled_time) = CURDATE() AND isCancelled = 0
         ORDER BY scheduled_time ASC
       `;
     }
@@ -47,10 +47,22 @@ async function get_upcoming_sessions(doctor_id, type) {
       `;
     } else {
       query = `
-        SELECT *
-        FROM ${type}_session
-        WHERE ${type}_ID = ? AND scheduled_time > NOW()
-        ORDER BY scheduled_time ASC
+        SELECT 
+            lcs.*, 
+            COUNT(DISTINCT pls.patient_ID) AS patient_count
+        FROM 
+            ${type}_session lcs
+        JOIN 
+            patient_lifecoach_session pls ON pls.session_ID = lcs.session_ID
+        WHERE 
+            lcs.coach_ID = ? 
+            AND lcs.scheduled_time > NOW()
+            AND lcs.isCancelled = 0
+        GROUP BY 
+            lcs.session_ID
+        ORDER BY 
+            lcs.scheduled_time ASC;
+
       `;
     }
 
@@ -71,11 +83,29 @@ async function get_upcoming_sessions(doctor_id, type) {
 // Get new patients registered this month for a specific doctor or life coach
 async function get_new_patients_this_month(doctor_id, type) {
   try {
-    const query = `
-      SELECT COUNT(DISTINCT patient_ID) AS new_patients
-      FROM ${type}_session
-      WHERE ${type}_ID = ? AND MONTH(scheduled_time) = MONTH(CURDATE()) AND YEAR(scheduled_time) = YEAR(CURDATE())
-    `;
+    let query = "";
+    
+    if (type === "doctor") {
+      // Query for doctor sessions
+      query = `
+        SELECT COUNT(DISTINCT patient_ID) AS new_patients
+        FROM doctor_session
+        WHERE doctor_ID = ? AND MONTH(scheduled_time) = MONTH(CURDATE()) 
+        AND YEAR(scheduled_time) = YEAR(CURDATE())
+      `;
+    } else if (type === "life_coach") {
+      // Query for life coach sessions (patient_lifecoach_session)
+      query = `
+        SELECT COUNT(DISTINCT pls.patient_ID) AS new_patients
+        FROM patient_lifecoach_session pls
+        JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
+        WHERE lcs.coach_ID = ? 
+        AND MONTH(lcs.scheduled_time) = MONTH(CURDATE()) 
+        AND YEAR(lcs.scheduled_time) = YEAR(CURDATE())
+      `;
+    }
+
+    // Execute the query with the appropriate ID
     const result = await executeQuery(query, [doctor_id]);
 
     return { success: true, data: result[0] };
@@ -88,14 +118,30 @@ async function get_new_patients_this_month(doctor_id, type) {
   }
 }
 
+
 // Get total patients for a specific doctor or life coach
 async function get_total_patients(doctor_id, type) {
   try {
-    const query = `
-      SELECT COUNT(DISTINCT patient_ID) AS total_patients
-      FROM ${type}_session
-      WHERE ${type}_ID = ?
-    `;
+    let query = "";
+    
+    if (type === "doctor") {
+      // Query for doctor sessions
+      query = `
+        SELECT COUNT(DISTINCT patient_ID) AS total_patients
+        FROM doctor_session
+        WHERE doctor_ID = ?
+      `;
+    } else if (type === "life_coach") {
+      // Query for life coach sessions (patient_lifecoach_session)
+      query = `
+        SELECT COUNT(DISTINCT pls.patient_ID) AS total_patients
+        FROM patient_lifecoach_session pls
+        JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
+        WHERE lcs.coach_ID = ?
+      `;
+    }
+
+    // Execute the query with the appropriate ID
     const result = await executeQuery(query, [doctor_id]);
 
     return { success: true, data: result[0] };
@@ -108,38 +154,57 @@ async function get_total_patients(doctor_id, type) {
   }
 }
 
+
 // Get patient list for a doctor or life coach
-async function get_patients_data(doctor_id, type) {
+async function get_patients_data(doctor_id, session_ID) {
   try {
     let query = "";
-
-    if (type === "doctor") {
-      query = `
-        SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, 
-                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time , s.duration , s.session_ID
-        FROM patient p
-        JOIN doctor_session s ON p.ID = s.patient_ID
-        WHERE s.doctor_id = ?
-        ORDER BY s.scheduled_time ASC
-      `;
-    } else if (type === "life_coach") {
-      query = `
-        SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, 
-                        p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time, s.duration, s.session_ID
-        FROM patient p
-        JOIN patient_lifecoach_session pls ON p.ID = pls.patient_id
-        JOIN life_coach_session s ON pls.session_id = s.session_id
-        WHERE s.dr_id = ?
-        ORDER BY s.scheduled_time ASC
-      `;
-    } else {
-      return {
-        success: false,
-        message: "Invalid type. Expected 'doctor' or 'life_coach'.",
-      };
+    
+    // Query to get the patients associated with the specified session_ID
+    query = `
+      SELECT DISTINCT p.id, p.Name, p.Email, p.Gender, p.Date_Of_Birth, 
+                      p.Marital_Status, p.Diagnosis, p.phone_number, s.scheduled_time, s.duration, s.session_ID
+      FROM patient p
+      JOIN patient_lifecoach_session pls ON p.ID = pls.patient_id
+      JOIN life_coach_session s ON pls.session_id = s.session_id
+      WHERE s.coach_ID = ? AND s.session_ID = ?
+      ORDER BY s.scheduled_time ASC
+    `;
+    
+    // Get patients data
+    const result = await executeQuery(query, [doctor_id, session_ID]);
+    
+    // Fetch the reports, journals, and patient info for each patient
+    for (let patient of result) {
+      // Fetch reports for the patient
+      const reportsQuery = `SELECT * FROM report WHERE patient_id = ?`;
+      const reports = await executeQuery(reportsQuery, [patient.id]);
+      
+      // For each report, fetch the reporter's name based on reporter_type and reporter_id
+      for (let report of reports) {
+        const reporterTable = report.reporter_type;  // e.g., 'doctor', 'life_coach'
+        const reporterId = report.reporter_id;
+        
+        // Get the name from the corresponding table (doctor or life_coach)
+        const nameQuery = `SELECT name FROM ${reporterTable} WHERE id = ? LIMIT 1`;
+        const nameResult = await executeQuery(nameQuery, [reporterId]);
+        
+        report.reporter_name = nameResult.length > 0 ? nameResult[0].name : 'Unknown';
+      }
+      
+      // Fetch journals for the patient
+      const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
+      const journals = await executeQuery(journalQuery, [patient.id]);
+      
+      // Fetch additional patient information like Therapist_Preference
+      const patientQuery = `SELECT Name, Therapist_Preference FROM patient WHERE id = ?`;
+      const patientInfo = await executeQuery(patientQuery, [patient.id]);
+      
+      // Assign the reports, journals, and patient info to the patient
+      patient.reports = reports;
+      patient.journals = journals;
+      patient.patientInfo = patientInfo.length > 0 ? patientInfo[0] : null;
     }
-
-    const result = await executeQuery(query, [doctor_id]);
 
     return { success: true, data: result };
   } catch (error) {
@@ -150,6 +215,7 @@ async function get_patients_data(doctor_id, type) {
     };
   }
 }
+
 
 
 // Get detailed reports and journal entries for a specific patient (mehtag a3rf al name bta3 al doctor dah)(8aleban hanhtag join bs dynamic)
@@ -307,7 +373,7 @@ async function delete_available_time(doctor_id, timestamp, type) {
       `;
     } else {
       query = `
-        DELETE FROM ${type}_availability
+        DELETE FROM lifecoach_availability
         WHERE ${type}_id = ? AND available_date = ?
       `;
     }
@@ -386,22 +452,27 @@ async function get_patient_analytics(doctor_id, type) {
       // Get returning patients by month for life coach
       returningPatientsQuery = `
         SELECT 
-            COUNT(DISTINCT pls.patient_ID) AS total_patients, 
-            COUNT(DISTINCT CASE WHEN session_count > 1 THEN pls.patient_ID END) AS returning_patients
-        FROM (
-            SELECT pls.patient_ID, COUNT(*) AS session_count
-            FROM patient_lifecoach_session pls
-            JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
-            WHERE lcs.coach_ID = ?
-            GROUP BY pls.patient_ID
-        ) AS patient_sessions;
+            COUNT(DISTINCT pls.patient_ID) AS total_patients,
+            COUNT(DISTINCT CASE WHEN patient_sessions.session_count > 1 THEN pls.patient_ID END) AS returning_patients
+        FROM patient_lifecoach_session pls
+        JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
+        JOIN (
+            SELECT patient_ID, COUNT(*) AS session_count
+            FROM patient_lifecoach_session
+            WHERE session_ID IN (SELECT session_ID FROM life_coach_session WHERE coach_ID = ?)
+            GROUP BY patient_ID
+        ) AS patient_sessions ON pls.patient_ID = patient_sessions.patient_ID
+        WHERE lcs.coach_ID = ? 
+        AND lcs.scheduled_time >= CURDATE()
+
+
 
       `;
 
       // Get total patients by month for life coach
       totalPatientsQuery = `
         SELECT 
-            MONTH(lcs.session_date) AS session_month,
+            MONTH(lcs.scheduled_time) AS session_month,
             COUNT(DISTINCT pls.patient_ID) AS total_patients
         FROM patient_lifecoach_session pls
         JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID

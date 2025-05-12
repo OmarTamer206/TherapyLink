@@ -32,6 +32,7 @@
           <div class="number">{{ getSelectedDayInfo().dayNumber }}</div>
         </div>
         <div class="report-details">
+          <div>Session Topic : {{slot.itemTopic}}</div>
           <div class="top-row">
             <div class="time">🕒 {{ slot.time }}</div>
             <span *ngIf="slot.isReserved" class="reserved-badge">Reserved</span>
@@ -46,8 +47,10 @@
   <!-- Modal Backdrop -->
 <div class="modal-backdrop" *ngIf="showModal">
   <div class="modal-content">
-    <h3>Choose Time Options</h3>
+    <h3>What is the Session Topic</h3>
+    <input type="text" [(ngModel)]="topic" name="topic" id="topic" />
 
+    <h3>Choose Time Options</h3>
     <div class="time-options">
       <label *ngFor="let time of availableTimes">
         <input type="checkbox" [value]="time" (change)="toggleTimeSelection(time, $event)" />

@@ -1,11 +1,12 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { TherapistService } from '../../services/therapist/therapist.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-schedule-management',
   standalone: true,
-  imports: [CommonModule,NgIf],
+  imports: [CommonModule,NgIf , FormsModule],
   templateUrl: './schedule-management.component.html',
   styleUrl: './schedule-management.component.css'
 })
@@ -31,6 +32,9 @@ export class lifeScheduleManagementComponent {
   ];
 
   timeTable: any[]=[];
+  topic :any;
+
+
 
     constructor(private therapistService:TherapistService) {
       this.generateDays();
@@ -51,6 +55,7 @@ export class lifeScheduleManagementComponent {
 
       this.therapistService.viewAvailableTime(date).subscribe((response) => {
         console.log(response);
+
         if (response.success) {
           this.timeTable = response.data.map((item: any) => {
             const d = new Date(item.available_date);
@@ -58,9 +63,10 @@ export class lifeScheduleManagementComponent {
             const minutes = d.getMinutes().toString().padStart(2, '0');
             const ampm = d.getHours() >= 12 ? 'PM' : 'AM';
             const time = `${hours}:${minutes} ${ampm}`;
-
+            const itemTopic =item.topic
             return {
               time,
+              itemTopic,
               isReserved: item.IsReserved, // from backend
               fullTimestamp: item.available_date // useful if needed later
             };
@@ -104,7 +110,7 @@ export class lifeScheduleManagementComponent {
     console.log(timestampsToSend);
 
 
-    this.therapistService.updateAvailableTime(timestampsToSend).subscribe((response)=>{
+    this.therapistService.updateAvailableTime(timestampsToSend , this.topic).subscribe((response)=>{
       console.log(response);
       if(response.success === true){
         console.log("Available time updated successfully")
@@ -113,6 +119,7 @@ export class lifeScheduleManagementComponent {
         alert("Failed to update available time")
       }
       this.selectedTimes = []; // Reset selected times after submission
+      this.topic=""
       this.getAvailableTimes();
     },(error)=>{
       console.log("error",error);

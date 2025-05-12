@@ -158,7 +158,7 @@ router.get("/available-time/:date", async (req, res) => {
 
 // Update available time for a doctor or life coach
 router.put("/update-available-time", async (req, res) => {
-  const { timestamp } = req.body;
+  const { timestamp , topic } = req.body;
   if (!timestamp )
     return res.status(400).json({ error: "Missing timestamp or doctor_id" });
   
@@ -171,7 +171,7 @@ router.put("/update-available-time", async (req, res) => {
   console.log("1",process.env.JWT_SECRET);
   
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await update_available_time(timestamp, decoded.id,decoded.role);
+    const result = await update_available_time(timestamp, decoded.id,decoded.role,topic);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

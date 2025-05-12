@@ -27,11 +27,11 @@
             <td>{{ patient.date }}</td>
             <td>{{ patient.Duration }} mins</td>
             <td>
-              <button class="report-btn" (click)="openModal(patient, 'report',patient.id)">Report</button>
-              <button class="journal-btn" (click)="openModal(patient, 'journal',patient.id)">Journal</button>
+              <button class="report-btn" (click)="openModal(patient, 'report',patient.patient_ID)">Report</button>
+              <button class="journal-btn" (click)="openModal(patient, 'journal',patient.patient_ID)">Journal</button>
             </td>
             <td><button class="view-btn" (click)="goToSession(patient.session_ID)">View Session</button></td>
-            <td><button class="delete-btn" (click)="openModal(patient, 'delete',patient.id , patient.session_ID)">Cancel Session</button></td>
+            <td><button class="delete-btn" (click)="openModal(patient, 'delete',patient.patient_ID , patient.session_ID)">Cancel Session</button></td>
           </tr>
         </tbody>
       </table>

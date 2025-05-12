@@ -69,7 +69,10 @@ export class ReportsComponent {
   }
 
 
-  async openModal(patient: any, type: 'report' | 'journal' | "delete" , patient_ID:any,session_ID:any=null) {
+  async openModal(patient: any, type: 'report' | 'journal' | "delete" , patient_ID:any, session_ID:any=null) {
+
+
+
     if(type == "delete"){
       this.deleteSessionID = session_ID;
     }

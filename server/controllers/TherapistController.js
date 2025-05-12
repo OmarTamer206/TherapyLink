@@ -318,34 +318,38 @@ async function view_available_time(date, doctor_id, doctor_type) {
 
 
 // Update available time for a doctor or life coach (update again 0-0)
-async function update_available_time(timestamps, doctor_id, type) {
+async function update_available_time(timestamps, doctor_id, type, topic = null) {
   try {
     if (!Array.isArray(timestamps) || timestamps.length === 0) {
       return { success: false, message: "No timestamps provided." };
     }
 
-    let table = "";
-    idIdentifier = ""
+    let query = "";
+    let params = [];
+    
+    // Separate logic for doctor and life coach
     if (type === "doctor") {
-      table = "doctor_availability";
-      idIdentifier = "doctor_ID";
-    } else {
-      table = "lifecoach_availability";
-      idIdentifier = "life_coach_ID";
+      // Query for Doctor: Only doctor_ID and available_date
+      query = `
+        INSERT IGNORE INTO doctor_availability (doctor_ID, available_date)
+        VALUES ${timestamps.map(() => "(?, ?)").join(", ")}
+      `;
+      
+      // Flatten the parameters: [doctor_id, timestamp1, doctor_id, timestamp2, ...]
+      params = timestamps.flatMap(ts => [doctor_id, ts]);
 
+    } else if (type === "life_coach") {
+      // Query for Life Coach: life_coach_ID, available_date, and topic
+      query = `
+        INSERT IGNORE INTO lifecoach_availability (life_coach_ID, available_date, topic)
+        VALUES ${timestamps.map(() => "(?, ?, ?)").join(", ")}
+      `;
+
+      // Flatten the parameters: [life_coach_id, timestamp1, topic, life_coach_id, timestamp2, topic, ...]
+      params = timestamps.flatMap(ts => [doctor_id, ts, topic]);
     }
 
-    // Create placeholders (?, ?) for each row
-    const placeholders = timestamps.map(() => "(?, ?)").join(", ");
-    
-    // Flatten parameters: [doctor_id, timestamp1, doctor_id, timestamp2, ...]
-    const params = timestamps.flatMap(ts => [doctor_id, ts]);
-
-    const query = `
-      INSERT IGNORE INTO ${table} (${idIdentifier}, available_date)
-      VALUES ${placeholders}
-    `;
-
+    // Execute the query
     const result = await executeQuery(query, params);
 
     if (result.affectedRows > 0) {
@@ -361,6 +365,10 @@ async function update_available_time(timestamps, doctor_id, type) {
     };
   }
 }
+
+
+
+
 
 async function delete_available_time(doctor_id, timestamp, type) {
   try {

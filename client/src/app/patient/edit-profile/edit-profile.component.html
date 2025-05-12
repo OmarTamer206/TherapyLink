@@ -1,40 +1,83 @@
 <div class="profile-container">
   <div class="profile-image">
     <h2>Edit Profile</h2>
-    <img src="profile pic.png" alt="Profile Picture" />
+     <div class="image-upload-container">
+      <label for="profilePic" class="upload-label">
+        <img [src]="profilePic" alt="Profile Picture" class="profile-pic-preview" />
+      </label>
+      <input type="file" id="profilePic" (change)="onImageChange($event)" accept="image/*" hidden />
+    </div>
+    <p>Press on Image to change it</p>
+
   </div>
   <div class="profile-details">
     <div class="profile-content">
       <form>
+        <p>{{successFlag}}</p>
+        <p>{{errorFlag}}</p>
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" id="name" value="Emily Mark" disabled />
+          <input type="text" id="name" [(ngModel)]="name" name="name" value="Emily Mark"  />
         </div>
         <div class="form-group">
           <label for="dob">Date of Birth</label>
-          <input type="text" id="dob" value="9/1/2005" />
+
+          <div class="date-of-birth">
+
+        <select [(ngModel)]="birthMonth" name="birthMonth"  class="input-field" required>
+          <option value="" disabled selected>MM</option>
+          <option *ngFor="let month of months" [value]="month">
+            {{ month }}
+          </option>
+        </select>
+        <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
+          <option value="" disabled selected>DD</option>
+          <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+        </select>
+        <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
+          <option value="" disabled selected>YYYY</option>
+          <option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </option>
+        </select>
+
+      </div>
+
         </div>
+
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" [(ngModel)]="gender" >
+            <option value="Male" selected>Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
         <div class="form-group">
           <label for="marital-status">Marital Status</label>
-          <select id="marital-status">
-            <option value="single">Single</option>
-            <option value="married">Married</option>
-            <option value="married">Divorced</option>
+          <select id="marital-status" name="marital-status" [(ngModel)]="maritalStatus" >
+            <option value="Single" selected>Single</option>
+            <option value="Married">Married</option>
+            <option value="Divorced">Divorced</option>
           </select>
         </div>
         <div class="form-group">
           <label for="phone">Phone</label>
-          <input type="tel" id="phone" value="010-5670-3248" />
+          <input type="tel" id="phone" name="phone" [(ngModel)]="phone" value="010-5670-3248" />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" value="Emilymark@gmail.com" />
+          <input type="email" id="email" name="email" [(ngModel)]="email" value="Emilymark@gmail.com" />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Change Password" />
+          <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Leave it blank to use same password" />
         </div>
-        <button type="submit" class="confirm-button">Confirm</button>
+        <div class="form-group">
+          <label for="confirmPassword">Confrim Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Repeat Password" />
+        </div>
+        <button type="submit" class="confirm-button" (click)="editProfile()">Confirm</button>
       </form>
     </div>
   </div>

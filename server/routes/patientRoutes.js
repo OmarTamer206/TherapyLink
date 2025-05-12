@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const {
   Change_Therapist_Preference,
   Make_Feedback,
@@ -8,6 +9,7 @@ const {
   get_emergency_team_sessions_taken,
   Write_in_journal,
   delete_from_journal,
+  getProfileData,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -108,6 +110,22 @@ router.delete("/delete-journal-entry/:journal_id", async (req, res) => {
 
   try {
     const result = await delete_from_journal(journal_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/get-profile-data", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await getProfileData(decoded.id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

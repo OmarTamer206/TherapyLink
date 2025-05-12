@@ -192,7 +192,6 @@ router.put("/update", authorizeRoles("patient"), async (req, res) => {
     !data.id ||
     !data.name ||
     !data.email ||
-    !data.password ||
     !data.Date_Of_Birth ||
     !data.phone_number ||
     !data.Marital_Status ||

@@ -193,6 +193,42 @@ async function delete_from_journal(journal_id) {
   }
 }
 
+async function getProfileData(patient_ID){
+
+ try {
+    const reportsQuery = `SELECT * FROM report WHERE patient_id = ?`;
+    
+    const reports = await executeQuery(reportsQuery, [patient_ID]);
+    
+    // Step 2: For each report, fetch the reporter name from the corresponding table
+    for (let report of reports) {
+      const reporterTable = report.reporter_type; // e.g., 'doctor'
+      const reporterId = report.reporter_id;
+      
+      // Get the name from the respective table
+      const nameQuery = `SELECT name FROM ${reporterTable} WHERE id = ? LIMIT 1`;
+      const nameResult = await executeQuery(nameQuery, [reporterId]);
+      
+      report.reporter_name = nameResult.length > 0 ? nameResult[0].name : 'Unknown';
+      
+    }
+      const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
+      const patientQuery = `SELECT * FROM patient WHERE id = ?`;
+    const journals = await executeQuery(journalQuery, [patient_ID]);
+    const patient = await executeQuery(patientQuery, [patient_ID]);
+    console.log("patient : ", patient_ID);
+    
+    return { success: true, data: { reports, journals,patient } };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error retrieving patient data.",
+      error: error.message,
+    };
+  }
+
+}
+
 module.exports = {
   Change_Therapist_Preference,
   Make_Feedback,
@@ -202,4 +238,5 @@ module.exports = {
   get_emergency_team_sessions_taken,
   Write_in_journal,
   delete_from_journal,
+  getProfileData
 };

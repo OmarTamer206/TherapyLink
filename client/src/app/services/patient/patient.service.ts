@@ -49,4 +49,7 @@ export class PatientService {
   deleteJournalEntry(journalId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete-journal-entry/${journalId}`);
   }
+  getProfileData(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-profile-data`);
+  }
 }

@@ -77,4 +77,12 @@ export class AuthService {
     // Redirect the user to the login page or handle accordingly
   }
 
+   uploadProfilePic(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name); // Append the file to FormData
+
+    // Assuming your backend URL for file upload is '/api/auth/upload-profile-pic'
+    return this.http.post(`${this.apiUrl}/upload-profile-pic`, formData);
+  }
+
 }

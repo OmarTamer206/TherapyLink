@@ -44,8 +44,9 @@ form {
 
 .profile-image img {
   width: 500px;
-  height: auto;
+  height: 500px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .profile-details {

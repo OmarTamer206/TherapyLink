@@ -108,9 +108,9 @@ async function get_group_Sessions_taken(patient_id) {
   try {
     const query = `
       SELECT *
-      FROM 	patient_lifecoach_session
-      JOIN 	life_coach_session ON patient_ID = session_ID
-      WHERE patient_ID = ?
+      FROM patient_lifecoach_session pls
+      JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
+      WHERE pls.patient_ID = ?
     `;
     const result = await executeQuery(query, [patient_id]);
 
@@ -123,6 +123,7 @@ async function get_group_Sessions_taken(patient_id) {
     };
   }
 }
+
 
 // Get all emergency team sessions a patient has attended
 async function get_emergency_team_sessions_taken(patient_id) {

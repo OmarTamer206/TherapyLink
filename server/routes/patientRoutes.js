@@ -57,10 +57,16 @@ router.post("/make-appointment", async (req, res) => {
 });
 
 // Get all doctor sessions a patient has taken
-router.get("/doctor-sessions/:patient_id", async (req, res) => {
-  const { patient_id } = req.params;
-  try {
-    const result = await get_doctor_sessions_taken(patient_id);
+router.get("/doctor-sessions", async (req, res) => {
+     const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_doctor_sessions_taken(decoded.id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -68,10 +74,16 @@ router.get("/doctor-sessions/:patient_id", async (req, res) => {
 });
 
 // Get all group sessions a patient has participated in
-router.get("/group-sessions/:patient_id", async (req, res) => {
-  const { patient_id } = req.params;
-  try {
-    const result = await get_group_Sessions_taken(patient_id);
+router.get("/group-sessions", async (req, res) => {
+     const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_group_Sessions_taken(decoded.id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -79,10 +91,16 @@ router.get("/group-sessions/:patient_id", async (req, res) => {
 });
 
 // Get all emergency team sessions a patient has attended
-router.get("/emergency-team-sessions/:patient_id", async (req, res) => {
-  const { patient_id } = req.params;
-  try {
-    const result = await get_emergency_team_sessions_taken(patient_id);
+router.get("/emergency-team-sessions", async (req, res) => {
+     const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await get_emergency_team_sessions_taken(decoded.id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -47,10 +47,11 @@
   </div>
   <div class="profile-content">
     <div class="profile-info">
-      <img src="profile pic.png" alt="Emily Mark" class="profile-photo" />
+      <img [src]="profilePic" alt="Emily Mark" class="profile-photo" />
       <div class="profile-details">
-        <h2>Emily Mark</h2>
-        <p>Joined 2/1/2023</p>
+        <h2>{{name}}</h2>
+        <p>Joined {{joinedAt}}</p>
+        <p>Wallet :  {{wallet}}</p>
         <div class="buttons">
           <button (click)="goToEditProfilePage()" class="profile-btn">
             Edit Profile
@@ -66,19 +67,19 @@
       <!-- Therapy Sessions -->
       <div class="stat-item">
         <img src="img1.png" alt="Therapy Sessions" class="stat-img" />
-        <div class="stat-number">6</div>
+        <div class="stat-number">{{therapySessions}}</div>
         <div class="stat-label">Therapy Sessions</div>
       </div>
       <!-- Group Sessions -->
       <div class="stat-item">
         <img src="img2.png" alt="Group Sessions" class="stat-img" />
-        <div class="stat-number">3</div>
+        <div class="stat-number">{{groupSessions}}</div>
         <div class="stat-label">Group Sessions</div>
       </div>
       <!-- Emergency Team -->
       <div class="stat-item">
         <img src="img3.png" alt="Emergency Team" class="stat-img" />
-        <div class="stat-number">1</div>
+        <div class="stat-number">{{emergencySessions}}</div>
         <div class="stat-label">Emergency Team</div>
       </div>
     </div>

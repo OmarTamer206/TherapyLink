@@ -26,18 +26,18 @@ export class PatientService {
   }
 
   // Get all doctor sessions a patient has taken
-  getDoctorSessions(patientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/doctor-sessions/${patientId}`);
+  getDoctorSessions(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/doctor-sessions`);
   }
 
   // Get all group sessions a patient has participated in
-  getGroupSessions(patientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/group-sessions/${patientId}`);
+  getGroupSessions(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/group-sessions`);
   }
 
   // Get all emergency team sessions a patient has attended
-  getEmergencyTeamSessions(patientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/emergency-team-sessions/${patientId}`);
+  getEmergencyTeamSessions(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/emergency-team-sessions`);
   }
 
   // Add a journal entry for a patient

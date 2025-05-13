@@ -1,5 +1,8 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const multer = require('multer');
+const path = require('path');
+
 require("dotenv").config();
 
 const {
@@ -24,25 +27,33 @@ const {
 
 const router = express.Router();
 
-// Login Route
-// router.post("/login", async (req, res) => {
-//   const data = req.body;
-//   if (!data.email || !data.password)
-//     return res.status(400).json({ error: "Missing data" });
 
-//   try {
-//     const result = await loginPatient(data);
-//     if (!result) return res.status(401).json({ error: "Invalid credentials" });
 
-//     res.json({
-//       message: "Login successful",
-//       token: result.token,
-//       user: result.user,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
+
+// Configure multer to save the uploaded file in 'public/uploads'
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/'); // Folder where the uploaded file will be saved
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename based on current timestamp
+  }
+});
+const upload = multer({ storage: storage });
+
+// Route to handle profile picture upload
+router.post('/upload-profile-pic', upload.single('file'), (req, res) => {
+  if (req.file) {
+    const fileName = req.file.filename; // Get the uploaded file's name
+    res.json({ success: true, fileName: fileName }); // Return the file name to the frontend
+  } else {
+    res.status(400).json({ error: 'No file uploaded' });
+  }
+});
+
+
+
+
 
 router.post("/login-staff", async (req, res) => {
   const data = req.body;

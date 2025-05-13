@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
+const path = require("path");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const managerRoutes = require("./routes/managerRoutes");
@@ -26,5 +27,8 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 initializeChat(server);
+
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads'))); // Serve the uploads folder
+
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -172,7 +172,7 @@ async function delete_from_journal(journal_id) {
   try {
     const query = `
       DELETE FROM journal
-      WHERE id = ?
+      WHERE journal_ID = ?
     `;
     const result = await executeQuery(query, [journal_id]);
 

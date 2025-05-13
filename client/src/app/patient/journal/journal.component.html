@@ -3,97 +3,27 @@
   <div class="journal-content">
     <h2>My Journal</h2>
     <div class="journal-entries">
-      <div class="journal-entry">
+      @if(emptyState){
+        <div id="noJournals">
+          <span >There is no Journals Yet</span>
+        </div>
+      }
+      @else {
+        @for ( journal of journals; track $index) {
+          <div class="journal-entry">
         <div class="entry-header">
-          <span class="entry-date">2/4/2024</span>
+          <span class="entry-date">{{journal.date}} {{journal.time}}</span>
           <button class="delete-btn">
-            <img src="delete.png" alt="Delete" />
+            <img src="delete.png" alt="Delete" (click)="deleteJournal(journal.journal_ID)" />
           </button>
         </div>
         <p>
-          Today, I realized how much progress I’ve made in managing my anxiety.
-          The breathing exercises my therapist recommended are starting to feel
-          natural, and I’m proud of myself for sticking with them.
+          {{journal.journal_content}}
         </p>
       </div>
-      <div class="journal-entry">
-        <div class="entry-header">
-          <span class="entry-date">2/4/2024</span>
-          <button class="delete-btn">
-            <img src="delete.png" alt="Delete" />
-          </button>
-        </div>
-        <p>
-          Today, I realized how much progress I’ve made in managing my anxiety.
-          The breathing exercises my therapist recommended are starting to feel
-          natural, and I’m proud of myself for sticking with them.
-        </p>
-      </div>
-      <div class="journal-entry">
-        <div class="entry-header">
-          <span class="entry-date">2/4/2024</span>
-          <button class="delete-btn">
-            <img src="delete.png" alt="Delete" />
-          </button>
-        </div>
-        <p>
-          Today, I realized how much progress I’ve made in managing my anxiety.
-          The breathing exercises my therapist recommended are starting to feel
-          natural, and I’m proud of myself for sticking with them.
-        </p>
-      </div>
-      <div class="journal-entry">
-        <div class="entry-header">
-          <span class="entry-date">2/4/2024</span>
-          <button class="delete-btn">
-            <img src="delete.png" alt="Delete" />
-          </button>
-        </div>
-        <p>
-          Today, I realized how much progress I’ve made in managing my anxiety.
-          The breathing exercises my therapist recommended are starting to feel
-          natural, and I’m proud of myself for sticking with them.
-        </p>
-      </div>
-      <div class="journal-entry">
-        <div class="entry-header">
-          <span class="entry-date">2/4/2024</span>
-          <button class="delete-btn">
-            <img src="delete.png" alt="Delete" />
-          </button>
-        </div>
-        <p>
-          Today, I realized how much progress I’ve made in managing my anxiety.
-          The breathing exercises my therapist recommended are starting to feel
-          natural, and I’m proud of myself for sticking with them.
-        </p>
-      </div>
-      <div class="journal-entry">
-        <div class="entry-header">
-          <span class="entry-date">2/4/2024</span>
-          <button class="delete-btn">
-            <img src="delete.png" alt="Delete" />
-          </button>
-        </div>
-        <p>
-          Today, I realized how much progress I’ve made in managing my anxiety.
-          The breathing exercises my therapist recommended are starting to feel
-          natural, and I’m proud of myself for sticking with them.
-        </p>
-      </div>
-      <div class="journal-entry">
-        <div class="entry-header">
-          <span class="entry-date">2/4/2024</span>
-          <button class="delete-btn">
-            <img src="delete.png" alt="Delete" />
-          </button>
-        </div>
-        <p>
-          Today, I realized how much progress I’ve made in managing my anxiety.
-          The breathing exercises my therapist recommended are starting to feel
-          natural, and I’m proud of myself for sticking with them.
-        </p>
-      </div>
+        }
+      }
+
 
       <!-- Repeat the above div for each journal entry -->
     </div>
@@ -101,9 +31,11 @@
       <textarea
         placeholder="Type Something..."
         rows="2.5"
+        [(ngModel)]="entryContent"
+        name="entryContent"
         class="journal-textarea"
       ></textarea>
-      <button class="send-btn">
+      <button class="send-btn" (click)="writeJournal()">
         <img src="send button.png" alt="Send" />
       </button>
     </div>

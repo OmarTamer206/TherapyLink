@@ -91,12 +91,19 @@ router.get("/emergency-team-sessions/:patient_id", async (req, res) => {
 
 // Add a journal entry for a patient
 router.post("/write-journal", async (req, res) => {
-  const { patient_id, entry_content } = req.body;
-  if (!patient_id || !entry_content)
-    return res.status(400).json({ error: "Patient ID and entry content required" });
+  const { entry_content } = req.body;
+  if (!entry_content)
+    return res.status(400).json({ error: "entry content required" });
 
-  try {
-    const result = await Write_in_journal(patient_id, entry_content);
+   const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await Write_in_journal(decoded.id, entry_content);
     res.status(201).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

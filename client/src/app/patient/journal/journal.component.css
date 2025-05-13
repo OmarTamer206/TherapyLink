@@ -9,6 +9,8 @@
 
 .journal-content {
   margin-top: 20px;
+  width: 100%;
+  height: 100%;
 }
 
 .journal-content h2 {
@@ -19,6 +21,9 @@
 
 .journal-entries {
   margin-top: 20px;
+  max-height: 80%;
+  height: 80%;
+  overflow-y: auto;
 }
 
 .journal-entry {
@@ -87,4 +92,13 @@
 .send-btn img {
   width: 30px;
   height: 30px;
+}
+#noJournals{
+  font-size: 30px;
+  color: #666;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
 }

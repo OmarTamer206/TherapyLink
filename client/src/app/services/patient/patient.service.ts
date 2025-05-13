@@ -41,8 +41,8 @@ export class PatientService {
   }
 
   // Add a journal entry for a patient
-  writeJournal(patientId: string, entryContent: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/write-journal`, { patient_id: patientId, entry_content: entryContent });
+  writeJournal(entryContent: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/write-journal`, {entry_content: entryContent });
   }
 
   // Delete a journal entry for a patient

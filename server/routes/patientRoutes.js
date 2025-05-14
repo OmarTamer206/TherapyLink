@@ -16,12 +16,18 @@ const router = express.Router();
 
 // Change therapist preference for a patient
 router.put("/change-therapist-preference", async (req, res) => {
-  const { user, choice } = req.body;
-  if (!user || !choice)
-    return res.status(400).json({ error: "User and choice are required" });
-
-  try {
-    const result = await Change_Therapist_Preference(user, choice);
+  const { choice } = req.body;
+  if (!choice)
+    return res.status(400).json({ error: "choice is required" });
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await Change_Therapist_Preference(decoded.id, choice);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -34,8 +40,15 @@ router.post("/submit-feedback", async (req, res) => {
   if (!session || !rating || !feedback)
     return res.status(400).json({ error: "Missing session, rating or feedback" });
 
-  try {
-    const result = await Make_Feedback(session, rating, feedback);
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await Make_Feedback(decoded.id,session , rating, feedback);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -44,12 +57,19 @@ router.post("/submit-feedback", async (req, res) => {
 
 // Create a new appointment for a patient
 router.post("/make-appointment", async (req, res) => {
-  const { patientData, sessionData } = req.body;
-  if (!patientData || !sessionData)
+  const { sessionData } = req.body;
+  if (!sessionData)
     return res.status(400).json({ error: "Missing patient or session data" });
-
-  try {
-    const result = await Make_an_appointment(patientData, sessionData);
+  
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await Make_an_appointment(decoded.id, sessionData);
     res.status(201).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -302,7 +302,7 @@ async function get_cancelled_session_data() {
 async function getAllFeedbacks() {
   try {
     // Fetch all feedback records where replied = 0
-    const query = `SELECT * FROM feedback WHERE replied = 0 ;`;
+    const query = `SELECT * FROM feedback WHERE replied = 0 AND rating = 1 ;`;
     const result = await executeQuery(query);
 
     // Iterate over the feedback records and add doctor or life coach info

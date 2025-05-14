@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { PatientService } from '../../services/patient/patient.service';
 
 @Component({
   selector: 'app-home',
@@ -12,20 +13,38 @@ import { Router } from '@angular/router';
 export class HomeComponent {
   showTherapistPreference = false;
   selectedIndex: number | null = null;
-  selectedTherapist: string | null = null; // <-- NEW VARIABLE
+  selectedTherapist: any // <-- NEW VARIABLE
 
   therapists = [
-    { name: 'Clinical Psychologist', image: 'Clinical Psychologist.png' },
+    { name: 'General Psychological Support', image: 'Clinical Psychologist.png' },
     {
-      name: 'Child and Adolescent Therapist',
+      name: 'Mood and Anxiety Disorder Specialist',
       image: 'Child and Adolescent Therapist.png',
     },
-    { name: 'Counseling Psychologist', image: 'Counseling Psychologist.png' },
-    { name: 'Couple Therapy', image: 'Couple Therapy.png' },
-    { name: 'Trauma Therapist', image: 'Trauma Therapist.png' },
+    { name: 'Clinical Depression Specialist', image: 'Counseling Psychologist.png' },
+    { name: 'Suicide Prevention and Crisis Specialist', image: 'Trauma Therapist.png' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private patientService:PatientService) {
+    this.getProfileData()
+  }
+
+  getProfileData(){
+    this.patientService.getProfileData().subscribe((response)=>{
+      console.log(response);
+
+      this.selectedTherapist = response.data.patient[0].Therapist_Preference
+
+      console.log(this.selectedTherapist);
+
+       this.selectedIndex = this.therapists.findIndex(
+        (therapist) => therapist.name === this.selectedTherapist
+      );
+
+    })
+
+  }
+
   goToChatbot(): void {
     this.router.navigate(['patient/chatbot']);
   }
@@ -47,4 +66,17 @@ export class HomeComponent {
     this.selectedTherapist = this.therapists[index].name; // <-- Save selected name
     console.log('Selected therapist:', this.selectedTherapist);
   }
+
+  saveTherapistPreference(){
+    this.patientService.changeTherapistPreference(this.selectedTherapist).subscribe((response)=>{
+      console.log(response);
+
+    },(error)=>{
+      console.log(error);
+
+    })
+    this.showTherapistPreference = !this.showTherapistPreference;
+
+  }
+
 }

@@ -1,3 +1,9 @@
+@if (!loading) {
+  <div  class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+}
+@else {
 <div class="main-content">
   <!-- Left Panel: Report List -->
   <div class="report-list">
@@ -38,6 +44,11 @@
       <p>{{ reports[selectedReportIndex].reason }}</p>
     </div>
 
+    <div class="reason-info">
+      <p><strong>Date of Report </strong></p>
+      <p>{{ reports[selectedReportIndex].date }} {{ reports[selectedReportIndex].time }} </p>
+    </div>
+
     <div class="response-info">
       <p><strong>Response</strong></p>
       <textarea
@@ -67,3 +78,4 @@
     </div>
   </div>
 </div>
+}

@@ -21,6 +21,8 @@ export class AdminRefundComponent {
   reports: any[] = [];
   doctor: any;
 
+  loading= false
+
   constructor(private adminService: AdminService) {
     this.getAllFeedbacks();
   }
@@ -30,6 +32,22 @@ export class AdminRefundComponent {
       (response) => {
         console.log('Feedbacks: ', response);
         this.reports = response.data;
+
+
+         this.reports.map((report:any)=>{
+            const date = new Date(report.time)
+            report.date = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+            const hours24 = date.getHours();
+            const minutes = date.getMinutes();
+
+            const hours12 = hours24 % 12 || 12; // Converts 0 to 12 for midnight
+            const ampm = hours24 >= 12 ? 'PM' : 'AM';
+            const paddedMinutes = minutes.toString().padStart(2, '0');
+
+            report.time = `${hours12}:${paddedMinutes} ${ampm}`;
+          })
+
+          this.loading=true;
       },
       (error) => {
         console.error('Error fetching feedbacks: ', error);

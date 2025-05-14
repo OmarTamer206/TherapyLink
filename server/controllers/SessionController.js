@@ -112,6 +112,21 @@ async function initalize_emergency_session(patient_id) {
   }
 }
 
+async function view_upcoming_Sessions_patient(patient_id) {
+  try {
+    const query = `
+      SELECT * FROM ${type}_session
+      WHERE patient_ID = ? AND schedule_time >= NOW()
+      ORDER BY schedule_time ASC
+    `;
+    const result = await executeQuery(query, [patient_id]);
+
+    return { success: true, data: result };
+  } catch (error) {
+    return { success: false, message: "Error retrieving upcoming sessions for patient.", error: error.message };
+  }
+}
+
 async function cancellSession(session_ID, type) {
   try {
     let query;

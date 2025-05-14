@@ -14,10 +14,16 @@ const {
 const router = express.Router();
 
 // View upcoming sessions for a patient
-router.get("/view-upcoming-sessions-patient/:patient_id", async (req, res) => {
-  const { patient_id } = req.params;
-  try {
-    const result = await view_upcoming_Sessions_patient(patient_id);
+router.get("/view-upcoming-sessions-patient", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await view_upcoming_Sessions_patient(decoded.id);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

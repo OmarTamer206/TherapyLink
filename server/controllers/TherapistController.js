@@ -316,6 +316,38 @@ async function view_available_time(date, doctor_id, doctor_type) {
   }
 }
 
+async function view_available_time_all(doctor_id, doctor_type) {
+  try {
+    let query =""
+    if (doctor_type === "doctor") {
+      query = `
+      SELECT * FROM doctor_availability
+      WHERE doctor_id = ?
+        AND DATE(available_date) > CURDATE() AND isReserved = 0
+      ORDER BY available_date ASC
+    `;
+    }
+    else{
+      query = `
+      SELECT * FROM lifecoach_availability
+      WHERE life_coach_id = ?
+        AND DATE(available_date) > CURDATE() AND isReserved = 0
+      ORDER BY available_date ASC
+    `;
+    }
+    
+    const result = await executeQuery(query, [doctor_id]);
+
+    return { success: true, data: result };
+    }
+   catch (error) {
+    return {
+      success: false,
+      message: "Error retrieving available times.",
+      error: error.message,
+    };
+  }
+}
 
 // Update available time for a doctor or life coach (update again 0-0)
 async function update_available_time(timestamps, doctor_id, type, topic = null) {
@@ -414,11 +446,11 @@ async function get_patient_analytics(doctor_id, type) {
       // Get rating count for doctor
       ratingQuery = `
         SELECT 
-            ds.rating, 
+            rating, 
             COUNT(*) AS rating_count
-        FROM doctor_session ds
-        WHERE ds.doctor_ID = ?
-        GROUP BY ds.rating;
+        FROM feedback
+        WHERE doctor_ID = ? AND doctor_type = 'doctor'
+        GROUP BY rating;
       `;
 
       // Get returning patients by month for doctor
@@ -449,12 +481,11 @@ async function get_patient_analytics(doctor_id, type) {
       // Get rating count for life coach
       ratingQuery = `
         SELECT 
-            pls.rating, 
+            rating, 
             COUNT(*) AS rating_count
-        FROM patient_lifecoach_session pls
-        JOIN life_coach_session lcs ON pls.session_ID = lcs.session_ID
-        WHERE lcs.coach_ID = ?
-        GROUP BY pls.rating;
+        FROM feedback
+        WHERE doctor_id = ? AND doctor_type = 'life_coach'
+        GROUP BY rating;
       `;
 
       // Get returning patients by month for life coach
@@ -556,24 +587,80 @@ async function get_therapist_data(id,type) {
 
 
 // View all doctors of a specific type (e.g., therapists, life coaches)
-async function View_all_doctors(doctor_type) {
+async function View_all_doctors(doctor_type, doctor_specialization) {
   try {
-    const query = `
-      SELECT id, name, specialization, experience_years, contact_info
-      FROM ${type}_session
-      WHERE ${type} = ?
-    `;
-    const result = await executeQuery(query, [doctor_type]);
+    let doctorQuery;
+    let feedbackQuery;
 
-    return { success: true, data: result };
+    // Step 1: Check doctor_type and create dynamic queries
+    if (doctor_type === 'doctor') {
+      doctorQuery = `
+        SELECT id , Name, Specialization, Description, id , Session_price
+        FROM doctor
+        WHERE Specialization = ?;
+      `;
+      feedbackQuery = `
+        SELECT reason, rating, doctor_id
+        FROM feedback
+        WHERE doctor_id = ? AND doctor_type = "doctor";
+      `;
+    } else if (doctor_type === 'life_coach') {
+      doctorQuery = `
+        SELECT id ,Name, Specialization, Description, id , Session_price
+        FROM life_coach
+        WHERE Specialization = ?;
+      `;
+      feedbackQuery = `
+        SELECT reason , rating, doctor_id
+        FROM feedback
+        WHERE doctor_id = ? AND doctor_type = 'life_coach';
+      `;
+    } else {
+      throw new Error("Invalid doctor type");
+    }
+
+    // Step 2: Query the doctor information
+    const doctorResult = await executeQuery(doctorQuery, [doctor_specialization]);
+    const doctorData = [];
+
+    for (const doctor of doctorResult) {
+      // Get the feedback for each doctor
+      const feedbackResult = await executeQuery(feedbackQuery, [doctor.id]);
+
+      // Format the doctor object with reviews and calculate average rating
+      const reviews = feedbackResult.map((feedback) => ({
+        content: feedback.reason,
+        rating: feedback.rating
+      }));
+
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+      const avgRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(2) : 0;
+
+      doctorData.push({
+        doctor_data: {
+          id: doctor.id,
+          Name: doctor.Name,
+          Specialization: doctor.Specialization,
+          Description: doctor.Description,
+          Session_price : doctor.Session_price
+        },
+        reviews: reviews,
+        avgRating: avgRating
+      });
+    }
+
+    return { success: true, data: doctorData };
   } catch (error) {
     return {
       success: false,
-      message: "Error retrieving doctor list.",
+      message: "Error retrieving doctor list with reviews.",
       error: error.message,
     };
   }
 }
+
+
+
 
 
 module.exports = {
@@ -585,6 +672,7 @@ module.exports = {
   get_patient_data,
   update_patient_report,
   view_available_time,
+  view_available_time_all,
   update_available_time,
   delete_available_time,
   get_patient_analytics,

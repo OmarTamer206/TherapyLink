@@ -1,60 +1,39 @@
-<!-- app.component.html -->
-<div class="appointment-container">
-  <div class="appointment-content">
-    <!-- Left Section: Doctor Info and Calendar -->
-    <div class="doctor-info">
-      <div class="doctor-details">
-        <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
-        <div class="doctor-text">
-          <h3>Dr. Mark</h3>
-          <p>Clinical Psychologist</p>
-          <p>★★★★★</p>
+@if (!loading) {
+  <div  class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+}
+@else{
+
+
+  <div class="appointment-container">
+    <div class="appointment-content">
+      <!-- Left Section: Doctor Info and Calendar -->
+      <div class="doctor-info">
+        <div class="doctor-details">
+          <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
+          <div class="doctor-text">
+            <h3>Dr. {{selectedDoctor.doctor_data.Name}}</h3>
+            <p>{{selectedDoctor.doctor_data.Specialization}}</p>
+            <p>{{"★".repeat(avgRating)}}{{"☆".repeat(5 - avgRating)}}</p>
+          </div>
         </div>
-      </div>
 
-      <div class="calendar-container">
-        <h3>Dr. Mark's Schedule</h3>
         <div class="calendar">
-          <div class="calendar-header">
-            <span>&lt; December &gt;</span>
+          <div class="month">
+            <button (click)="prevMonth()">&#8249;</button>
+            <span class="month-text">{{ getMonthYear() }}</span>
+            <button (click)="nextMonth()">&#8250;</button>
           </div>
-          <div class="calendar-grid">
-            <div class="calendar-cell">1</div>
-            <div class="calendar-cell">2</div>
-            <div class="calendar-cell">3</div>
-            <div class="calendar-cell">4</div>
-            <div class="calendar-cell">5</div>
-            <div class="calendar-cell">6</div>
-            <div class="calendar-cell">7</div>
-            <div class="calendar-cell">8</div>
-            <div class="calendar-cell">9</div>
-            <div class="calendar-cell">10</div>
-            <div class="calendar-cell">11</div>
-            <div class="calendar-cell">12</div>
-            <div class="calendar-cell">13</div>
-
-            <div class="calendar-cell selected">14</div>
-            <div class="calendar-cell">15</div>
-            <div class="calendar-cell">16</div>
-            <div class="calendar-cell">17</div>
-            <div class="calendar-cell">18</div>
-            <div class="calendar-cell">19</div>
-            <div class="calendar-cell">20</div>
-            <div class="calendar-cell">21</div>
-            <div class="calendar-cell">22</div>
-            <div class="calendar-cell">23</div>
-            <div class="calendar-cell">24</div>
-            <div class="calendar-cell">25</div>
-            <div class="calendar-cell">26</div>
-            <div class="calendar-cell">27</div>
-            <div class="calendar-cell">28</div>
-            <div class="calendar-cell">29</div>
-            <div class="calendar-cell">30</div>
-            <div class="calendar-cell">31</div>
-
-            <!-- Selected Date -->
-            <!-- More dates here -->
-          </div>
+          <button class="today-btn" (click)="goToToday()">Today</button>
+          <div class="days">
+            <span
+            *ngFor="let day of days"
+            [class.active]="day === selectedDay"
+            (click)="selectDay(day)"
+            >
+            {{ day }}
+          </span>
         </div>
       </div>
     </div>
@@ -63,21 +42,24 @@
     <div class="time-available">
       <h3>Time Available</h3>
       <div class="time-slots">
-        <button class="time-btn available">2:00 PM</button>
-        <button class="time-btn available">2:30 PM</button>
-        <button class="time-btn available">3:00 PM</button>
-        <button class="time-btn available">3:30 PM</button>
-        <button class="time-btn selected">4:00 PM</button>
-        <button class="time-btn available">4:30 PM</button>
-        <button class="time-btn available">5:00 PM</button>
-        <button class="time-btn available">5:30 PM</button>
-        <button class="time-btn available">6:00 PM</button>
-        <button class="time-btn available">6:30 PM</button>
-        <button class="time-btn available">7:00 PM</button>
-        <button class="time-btn available">8:30 PM</button>
+        @for ( timeSlot of timeTable; track $index) {
+          @if (timeSlot.isReserved == 0) {
+
+            <button
+                class="time-btn available"
+                [ngClass]="{'selected': selectedTime === timeSlot.time}"
+                (click)="selectTime(timeSlot.time)">
+                {{ timeSlot.time }}
+            </button>
+
+          }
+
+        }
       </div>
 
       <button (click)="goToCheckoutPage()" class="proceed-btn">Proceed</button>
     </div>
   </div>
 </div>
+
+}

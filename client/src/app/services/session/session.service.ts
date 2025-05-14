@@ -11,8 +11,8 @@ export class SessionService {
   constructor(private http: HttpClient) {}
 
   // View upcoming sessions for a patient
-  viewUpcomingSessionsPatient(patientId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/view-upcoming-sessions-patient/${patientId}`);
+  viewUpcomingSessionsPatient(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/view-upcoming-sessions-patient/`);
   }
 
   // View upcoming sessions for a doctor !!!!! al8y

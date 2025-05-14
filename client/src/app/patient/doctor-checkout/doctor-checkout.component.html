@@ -15,23 +15,44 @@
       <div class="doctor-upper">
         <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
         <div class="doctor-text">
-          <h3>Dr. Mark</h3>
-          <p>★★★★★</p>
-          <p>Clinical Psychologist</p>
+            <h3>Dr. {{selectedDoctor.doctor_data.Name}}</h3>
+            <p>{{selectedDoctor.doctor_data.Specialization}}</p>
+            <p>{{"★".repeat(avgRating)}}{{"☆".repeat(5 - avgRating)}}</p>
+          </div>
         </div>
-      </div>
+
 
       <div class="appointment-details">
         <label for="appointment-type">Choose Type of Appointment</label>
-        <select id="appointment-type" class="appointment-select">
-          <option value="video-call">Voice / Video Call</option>
-          <option value="chatting">Chatting</option>
+        <select id="appointment-type" class="appointment-select" name="communication_type" [(ngModel)]="communication_type">
+          <option value="Voice / Video Call">Voice / Video Call</option>
+          <option value="Chatting">Chatting</option>
         </select>
 
         <div class="appointment-duration">
-          <button class="duration-btn">30 min</button>
-          <button class="duration-btn selected">1 hour</button>
-          <button class="duration-btn">2 hours</button>
+          <div class="duration-buttons">
+          <button
+            class="duration-btn"
+            [ngClass]="{ 'selected': selectedDuration == '30' }"
+            (click)="selectDuration('30')">
+            30 min
+          </button>
+
+          <button
+            class="duration-btn"
+            [ngClass]="{ 'selected': selectedDuration == '60' }"
+            (click)="selectDuration('60')">
+            1 hour
+          </button>
+
+          <button
+            class="duration-btn"
+            [ngClass]="{ 'selected': selectedDuration == '120' }"
+            (click)="selectDuration('120')">
+            2 hours
+          </button>
+        </div>
+
         </div>
       </div>
     </div>
@@ -64,7 +85,7 @@
       </div>
 
       <div class="total-amount">
-        <p>Total Amount: LE 500.00</p>
+        <p>Total Amount: LE {{sessionPrice * multiplier}}</p>
       </div>
 
       <div class="button-wrapper">

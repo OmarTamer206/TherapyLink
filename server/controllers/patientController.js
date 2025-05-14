@@ -1,14 +1,14 @@
 const { executeQuery } = require("./databaseController"); // Adjust path if needed
 
 // Change the patient's therapist preference
-async function Change_Therapist_Preference(user, choice) {
+async function Change_Therapist_Preference(patient_ID, choice) {
   try {
     const query = `
       UPDATE patient
       SET Therapist_Preference = ?
       WHERE id = ?
     `;
-    const result = await executeQuery(query, [choice, user.id]);
+    const result = await executeQuery(query, [choice, patient_ID]);
 
     if (result.affectedRows > 0) {
       return {
@@ -30,14 +30,14 @@ async function Change_Therapist_Preference(user, choice) {
   }
 }
 
-// Submit feedback for a specific session
-async function Make_Feedback(session, rating, feedback) {
+// Submit feedback for a specific session asdasdasd    3adelah
+async function Make_Feedback(patient_ID , session_ID, rating, feedback) {
   try {
     const query = `
       INSERT INTO ${session.type}_session (session_ID, rating, feedback)
       VALUES (?, ?, ?)
     `;
-    const result = await executeQuery(query, [session.id, rating, feedback]);
+    const result = await executeQuery(query, [session_ID, rating, feedback]);
 
     if (result.affectedRows > 0) {
       return { success: true, message: "Feedback submitted successfully." };
@@ -53,16 +53,16 @@ async function Make_Feedback(session, rating, feedback) {
   }
 }
 
-// Create a new appointment for a patient
-async function Make_an_appointment(patientData, sessionData) {
+// Create a new appointment for a patient (DOCTOR)
+async function Make_an_appointment(patient_ID, sessionData) {
   try {
     const query = `
       INSERT INTO ${sessionData.type}_session (patient_ID, ${sessionData.type}_ID, communication_type, scheduled_time, cost , duration )
       VALUES (?, ?, ?, ?, ?, ?)
     `;
     const result = await executeQuery(query, [
-      patientData.id,
-      sessionData.id,
+      patient_ID,
+      sessionData.doctor_id,
       sessionData.com_type,
       sessionData.time,
       sessionData.cost,

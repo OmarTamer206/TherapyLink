@@ -1,16 +1,189 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TherapistService } from '../../services/therapist/therapist.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-doctor-appointment',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './doctor-appointment.component.html',
   styleUrl: './doctor-appointment.component.css',
 })
-export class DoctorAppointmentComponent {
-  constructor(private router: Router) {}
-  goToCheckoutPage() {
-    this.router.navigate(['patient/doctor-checkout']);
+export class DoctorAppointmentComponent implements OnInit {
+
+  loading=false;
+
+  doctor_id:any;
+
+  selectedTime: any = "";
+
+  currentDate = new Date();
+  selectedDay: number = 1;
+  days: number[] = [];
+
+  availableTimes: string[] = [
+  '9 AM', '11 AM', '1 PM', '3 PM',
+  '5 PM', '7 PM', '9 PM', '11 PM',
+  '1 AM', '3 AM'  // Note: changed "PM" to "AM" based on your list
+];
+  timeTable: any[]=[];
+  selectedDoctor: any;
+  avgRating: number = 1;
+
+
+
+     ngOnInit(): void {
+    // Access the state data from window.history
+    const state = window.history.state;
+
+    if (state) {
+      this.selectedDoctor = state.selectedDoctor;
+      this.doctor_id = state.selectedDoctor.doctor_data.id;
+      this.avgRating = parseInt(this.selectedDoctor.avgRating)
+
+      console.log('Selected Doctor:', this.selectedDoctor);
+      console.log('Doctor ID:', this.doctor_id);
+    }
+      this.generateDays();
+      this.goToToday();
+      this.loading = true;
   }
+
+
+  constructor(private router: Router ,private route: ActivatedRoute , private therapistService:TherapistService) {
+
+  }
+
+
+getAvailableTimes(){
+  this.timeTable=[];
+  this.selectedTime = ""
+
+    const date = `${this.currentDate.getFullYear()}-${String(this.currentDate.getMonth() + 1).padStart(2, '0')}-${String(this.selectedDay).padStart(2, '0')}`;
+
+    this.therapistService.viewAvailableTime(date,this.doctor_id,"doctor").subscribe((response) => {
+      console.log(response);
+      if (response.success) {
+        this.timeTable = response.data.map((item: any) => {
+          const d = new Date(item.available_date);
+          const hours = d.getHours() % 12 || 12;
+          const minutes = d.getMinutes().toString().padStart(2, '0');
+          const ampm = d.getHours() >= 12 ? 'PM' : 'AM';
+          const time = `${hours}:${minutes} ${ampm}`;
+
+          return {
+            time,
+            isReserved: item.IsReserved, // from backend
+            fullTimestamp: item.available_date // useful if needed later
+          };
+        });
+        console.log(this.timeTable);
+      } else {
+        alert("Failed to fetch available times");
+      }
+    }, (error) => {
+      console.log("error", error);
+      alert("Failed to fetch available times");
+    });
+}
+
+
+
+
+  generateDays() {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    this.days = Array.from({ length: lastDay }, (_, i) => i + 1);
+  }
+
+  selectDay(day: number) {
+    this.selectedDay = day;
+    this.getAvailableTimes();
+  }
+
+  nextMonth() {
+    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+    this.generateDays();
+    this.selectedDay = 1;
+    this.getAvailableTimes();
+
+  }
+
+  prevMonth() {
+    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+    this.generateDays();
+    this.selectedDay = 1;
+    this.getAvailableTimes();
+
+  }
+
+  getMonthYear() {
+    return this.currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+  }
+
+  goToToday() {
+    this.currentDate = new Date();
+    this.generateDays();
+    this.selectedDay = this.currentDate.getDate();
+    this.getAvailableTimes();
+
+  }
+
+  getSelectedDayInfo(): { dayName: string, dayNumber: number } {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth(); // 0-based
+    const date = new Date(year, month, this.selectedDay);
+
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }); // e.g., "Sat"
+    const dayNumber = date.getDate(); // e.g., 8
+
+    return { dayName, dayNumber };
+  }
+
+
+
+selectTime(time: string) {
+    this.selectedTime = time; // Update selected time
+    console.log("Selected Time:", this.selectedTime);
+  }
+
+
+  generateTimestamp(): string {
+
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+    const day = this.selectedDay;
+
+
+    const [hourStr, meridian] = this.selectedTime.split(' ');
+    let hour = parseInt(hourStr);
+    if (meridian === 'PM' && hour !== 12) hour += 12;
+    if (meridian === 'AM' && hour === 12) hour = 0;
+
+    const date = new Date(year, month, day, hour, 0, 0);
+
+    const timestamp =
+    `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')} ` +
+    `${String(hour).padStart(2, '0')}:00:00`;
+
+
+    console.log(timestamp);
+
+
+    return timestamp;
+  }
+
+
+  goToCheckoutPage() {
+    if(this.selectedTime != ""){
+      let timestamp = this.generateTimestamp();
+
+      this.router.navigate(
+        ['patient/doctor-checkout'],
+        { state: { selectedTime: timestamp, selectedDoctor: this.selectedDoctor } }
+      );
+    }
+    }
 }

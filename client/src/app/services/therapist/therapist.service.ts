@@ -44,9 +44,16 @@ export class TherapistService {
   }
 
   // View available time slots for a specific date
-  viewAvailableTime(date: string): Observable<any> {
+  viewAvailableTime(date: any , id?: any,type?:any): Observable<any> {
+    if(id && type)
+      return this.http.get(`${this.apiUrl}/available-time/${date}/${id}/${type}`);
+
+
+    else
     return this.http.get(`${this.apiUrl}/available-time/${date}`);
   }
+  // viewAvailableTimeAll(id: any,type:any): Observable<any> {
+  // }
 
   // Update available time for a doctor or life coach
   updateAvailableTime(timestamp: string[] , topic = null ): Observable<any> {
@@ -64,7 +71,7 @@ export class TherapistService {
     return this.http.get(`${this.apiUrl}/get-therapist-data`);
   }
   // View all doctors of a specific type (e.g., therapists, life coaches)
-  viewAllDoctors(doctorType: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/all-doctors/${doctorType}`);
+  viewAllDoctors(doctorType: string , doctor_specialization:string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/all-doctors/${doctorType}/${doctor_specialization}`);
   }
 }

@@ -11,8 +11,8 @@ export class PatientService {
   constructor(private http: HttpClient) {}
 
   // Change therapist preference for a patient
-  changeTherapistPreference(user: any, choice: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/change-therapist-preference`, { user, choice });
+  changeTherapistPreference( choice: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/change-therapist-preference`, { choice });
   }
 
   // Submit feedback for a session
@@ -21,8 +21,8 @@ export class PatientService {
   }
 
   // Create a new appointment for a patient
-  makeAppointment(patientData: any, sessionData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/make-appointment`, { patientData, sessionData });
+  makeAppointment(sessionData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/make-appointment`, { sessionData });
   }
 
   // Get all doctor sessions a patient has taken

@@ -47,12 +47,14 @@
 
   <div class="input-container">
     <input
+
       type="text"
       class="input-field"
       placeholder="Type Something..."
       [(ngModel)]="userInput"
       (keyup.enter)="sendMessage()"
       [disabled]="loading"
+
     />
     <button class="send-btn" (click)="sendMessage()" [disabled]="loading">
       <img src="send button.png" alt="Send Icon" />

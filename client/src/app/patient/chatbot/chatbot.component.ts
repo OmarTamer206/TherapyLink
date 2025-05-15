@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AgentService } from '../../services/agent/agent.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PieChartComponent } from '../../manager/pie-chart/pie-chart.component';
 import { Router } from '@angular/router';
+import { PatientService } from '../../services/patient/patient.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -23,10 +24,13 @@ pieChartData: any[]=[];
 pieChartLabels: any[]=[];
 probablePreference: any;
 
-  constructor(private agentService: AgentService , private router:Router) {}
+  constructor(private agentService: AgentService ,private patientService: PatientService , private router:Router) {}
+
+
+
 
   ngOnInit() {
-    // nothing yet until chat starts
+
   }
 
   changeChatState() {
@@ -37,6 +41,7 @@ probablePreference: any;
   startChat() {
     this.agentService.startSession(this.sessionId).subscribe(() => {
       this.askQuestion();
+
     });
   }
 
@@ -44,6 +49,8 @@ probablePreference: any;
     this.loading = true;
     this.agentService.getQuestion(this.sessionId).subscribe(
       (res) => {
+
+
         this.loading = false;
         if (res.done) {
           this.messages.push({ from: 'bot', text: 'End of questions.' });
@@ -58,6 +65,15 @@ probablePreference: any;
               if(summary.most_probable_status =="Depression and Suicidal")
             this.probablePreference = "Clinical Depression and Crisis Prevention Specialist"
 
+
+            this.patientService.changeTherapistPreference(this.probablePreference).subscribe((response)=>{
+
+            console.log(response);
+
+            },(error)=>{
+              console.log(error);
+
+            })
 
 
             this.showResults=true;

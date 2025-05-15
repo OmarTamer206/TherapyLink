@@ -86,6 +86,8 @@ p {
   flex-direction: column;
   justify-content: space-between;
   margin-top: 20px;
+  height: 88%;
+  overflow: auto;
 }
 
 .messages-container {
@@ -96,22 +98,44 @@ p {
 }
 
 .message {
-  margin-bottom: 15px;
-  padding: 50px;
-  border-radius: 10px;
-  max-width: 100%;
-  font-size: 20px;
+  margin-bottom: 12px;
+  padding: 15px 20px;
+  border-radius: 18px;
+  max-width: 60%;
+  font-size: 18px;
+  line-height: 1.4;
+  word-wrap: break-word; /* better browser support */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #e6f0f3; /* subtle background */
+  transition: background-color 0.3s ease;
+}
+
+
+.message p {
+  margin: 0;
+  color: white;
 }
 
 .received {
-  background-color: #e0f7fa;
-  align-self: flex-start;
+  background-color: #1abc9c;
+    justify-content: start;
+
 }
 
 .sent {
-  background-color: #b2ebf2;
-  align-self: flex-end;
+  background-color: #2ecc71;
+  justify-content: end;
 }
+
+.received-wrap {
+    justify-content: start;
+
+}
+
+.sent-wrap {
+  justify-content: end;
+}
+
 
 .input-container {
   display: flex;
@@ -141,4 +165,30 @@ p {
 .send-btn img {
   width: 30px;
   height: 30px;
+}
+
+.upper{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+  font-size: 24px;
+}
+.upper p:nth-child(1){
+  font-size: 30px;
+}
+
+.resultScreen{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.messageWrapper{
+  width: 100%;
+  display: flex;
 }

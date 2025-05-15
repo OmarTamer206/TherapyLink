@@ -21,8 +21,7 @@ export class HomeComponent {
       name: 'Mood and Anxiety Disorder Specialist',
       image: 'Child and Adolescent Therapist.png',
     },
-    { name: 'Clinical Depression Specialist', image: 'Counseling Psychologist.png' },
-    { name: 'Suicide Prevention and Crisis Specialist', image: 'Trauma Therapist.png' },
+    { name: 'Clinical Depression and Crisis Prevention Specialist', image: 'Trauma Therapist.png' },
   ];
 
   constructor(private router: Router,private patientService:PatientService) {

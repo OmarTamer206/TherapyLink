@@ -1,6 +1,6 @@
-<!-- app.component.html -->
-@if(!chatButtonState){
-<div class="chatbot-container">
+@if (!showResults) {
+  <!-- Initial welcome screen -->
+<div *ngIf="!chatButtonState" class="chatbot-container">
   <div class="chatbot-content">
     <div class="left-image">
       <img src="soret chatbot.png" alt="ChatBot Icon" class="chatbot-icon" />
@@ -9,8 +9,8 @@
     <div class="right-content">
       <h2>Welcome To Our ChatBot Test!</h2>
       <p>
-        "Your personal assistant for mental well-being is ready to listen,
-        guide, and connect you to the support your need."
+        Your personal assistant for mental well-being is ready to listen,
+        guide, and connect you to the support you need.
       </p>
       <button class="start-chatting-btn" (click)="changeChatState()">
         Start Chatting
@@ -18,27 +18,65 @@
     </div>
   </div>
 </div>
-} @else {
-<!-- app.component.html -->
-<div class="chatbot-container">
-  <div class="chatbot-content">
-    <div class="messages-container">
-      <div class="message received">
-        Iste culpa voluptatem sed earum itaque. Velit cum id consequatur...
-      </div>
-      <div class="message sent">Magni suscipit eos et praesentium odio at.</div>
-      <div class="message received">
-        Iste culpa voluptatem sed earum itaque. Velit cum id consequatur...
-      </div>
-      <div class="message sent">Magni suscipit eos et praesentium odio at.</div>
+
+<!-- Chat screen -->
+<div *ngIf="chatButtonState" class="chatbot-container">
+  <div class="chatbot-content chat-content">
+    <div class="messages-container" id="messages-container">
+
+
+
+      @for ( msg of messages; track $index) {
+        <div class="messageWrapper " [ngClass]="msg.from === 'bot' ? 'received-wrap' : 'sent-wrap'">
+
+          <div
+            class="message"
+            [ngClass]="msg.from === 'bot' ? 'received' : 'sent'"
+          >
+            <p>{{ msg.text }}</p>
+          </div>
+
+        </div>
+      }
+      <div *ngIf="loading" class="message received">Loading...</div>
+
+
+
     </div>
   </div>
+
   <div class="input-container">
-    <input type="text" class="input-field" placeholder="Type Something..." />
-    <button class="send-btn">
+    <input
+      type="text"
+      class="input-field"
+      placeholder="Type Something..."
+      [(ngModel)]="userInput"
+      (keyup.enter)="sendMessage()"
+      [disabled]="loading"
+    />
+    <button class="send-btn" (click)="sendMessage()" [disabled]="loading">
       <img src="send button.png" alt="Send Icon" />
     </button>
   </div>
 </div>
+
+
+}
+@else {
+
+  <div class="resultScreen">
+    <div class="upper">
+     <p>  After analyzing your text , the most probable type you need is {{probablePreference}} </p>
+     <p>  You can change it anytime from the homescreen</p>
+  </div>
+
+  <div class="pie">
+    <app-pie-chart [chartData]="pieChartData" [chartLabels]="pieChartLabels"></app-pie-chart>
+  </div>
+
+  <button class="start-chatting-btn" (click)="goToHome()">
+        Go to Home
+      </button>
+  </div>
 
 }

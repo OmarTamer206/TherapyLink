@@ -25,6 +25,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-right: 20px;
+  overflow-y: auto;
 }
 
 .doctor-list h3 {
@@ -66,6 +67,7 @@
   color: #00b8b8;
   text-decoration: none;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .view-link:hover {
@@ -158,4 +160,25 @@
 .doctor-details span:nth-child(2) {
   font-size: 0.8em;
   color: gray;
+}
+
+.doctor-profile{
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-info{
+  flex: 1;
+}
+.doctor-reviews{
+  flex: 3;
+  overflow-y: auto;
+}
+
+.no-reviews{
+  width: 100%;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

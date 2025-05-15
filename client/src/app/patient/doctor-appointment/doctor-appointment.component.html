@@ -53,7 +53,7 @@
             </button>
 
           }
-          @if (timeSlot.disabled == true) {
+          @if (timeSlot.disabled == true || timeSlot.isReserved == 1) {
 
             <button
                 class="time-btn not-available"

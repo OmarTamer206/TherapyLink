@@ -298,7 +298,7 @@ async function view_available_time(date, doctor_id, doctor_type) {
       query = `
       SELECT * FROM lifecoach_availability
       WHERE life_coach_id = ?
-        AND DATE(available_date) = ?
+        AND DATE(available_date) = ? AND full = 0
       ORDER BY available_date ASC
     `;
     }
@@ -316,38 +316,7 @@ async function view_available_time(date, doctor_id, doctor_type) {
   }
 }
 
-async function view_available_time_all(doctor_id, doctor_type) {
-  try {
-    let query =""
-    if (doctor_type === "doctor") {
-      query = `
-      SELECT * FROM doctor_availability
-      WHERE doctor_id = ?
-        AND DATE(available_date) > CURDATE() AND isReserved = 0
-      ORDER BY available_date ASC
-    `;
-    }
-    else{
-      query = `
-      SELECT * FROM lifecoach_availability
-      WHERE life_coach_id = ?
-        AND DATE(available_date) > CURDATE() AND isReserved = 0
-      ORDER BY available_date ASC
-    `;
-    }
-    
-    const result = await executeQuery(query, [doctor_id]);
 
-    return { success: true, data: result };
-    }
-   catch (error) {
-    return {
-      success: false,
-      message: "Error retrieving available times.",
-      error: error.message,
-    };
-  }
-}
 
 // Update available time for a doctor or life coach (update again 0-0)
 async function update_available_time(timestamps, doctor_id, type, topic = null) {
@@ -672,7 +641,6 @@ module.exports = {
   get_patient_data,
   update_patient_report,
   view_available_time,
-  view_available_time_all,
   update_available_time,
   delete_available_time,
   get_patient_analytics,

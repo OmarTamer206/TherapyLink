@@ -1,4 +1,4 @@
-<!-- Payment Success Screen -->
+<!-- doctor-checkout.component.html -->
 <div *ngIf="showSuccess" class="payment-success">
   <h2>Payment</h2>
   <div class="checkmark-circle">✔</div>
@@ -8,25 +8,26 @@
   <p class="amount">Amount Paid: <span>LE 500.00</span></p>
 </div>
 
-<!-- Default Checkout Screen -->
 <div *ngIf="!showSuccess" class="checkout-container">
   <div class="checkout-content">
-    <!-- Left: Doctor Info -->
+    <!-- Left Section: Doctor Info and Appointment Details -->
     <div class="doctor-info">
       <div class="doctor-upper">
         <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
         <div class="doctor-text">
-          <h3>Coach Mark</h3>
-          <p>★★★★★</p>
-          <p>Clinical Psychologist</p>
+            <h3>Dr. {{selectedDoctor.doctor_data.Name}}</h3>
+            <p>{{selectedDoctor.doctor_data.Specialization}}</p>
+            <p>{{"★".repeat(avgRating)}}{{"☆".repeat(5 - avgRating)}}</p>
+          </div>
         </div>
-      </div>
+
+
       <div class="lower">
         <span>Video Call For One Hour</span>
       </div>
     </div>
 
-    <!-- Right: Payment Info -->
+    <!-- Right Section: Payment Info -->
     <div class="payment-info">
       <h3>Payment Information</h3>
       <div class="payment-method">
@@ -54,7 +55,7 @@
       </div>
 
       <div class="total-amount">
-        <p>Total Amount: LE 500.00</p>
+        <p>Total Amount: LE {{sessionPrice * multiplier}}</p>
       </div>
 
       <div class="button-wrapper">

@@ -256,3 +256,29 @@
   color: #00b8b8;
   font-weight: bold;
 }
+
+.duration-buttons{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:100px
+}
+
+.duration-btn {
+    background-color: #00b8b8;
+
+
+  transition: background-color 0.3s ease;
+}
+
+.duration-btn:hover{
+  background-color: #009c9c;
+
+}
+
+.duration-btn.selected {
+  background-color: #007d87; /* darker color when selected */
+
+  color: white;
+}

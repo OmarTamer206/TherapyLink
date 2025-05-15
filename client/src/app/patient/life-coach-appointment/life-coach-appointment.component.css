@@ -87,6 +87,10 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 }
 
 .time-available h3 {
@@ -138,4 +142,97 @@
 
 .proceed-btn:hover {
   background-color: #009c9c;
+}
+
+.calendar {
+  border: 1px solid #0099a8;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.month {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  position: relative;
+  width: 300px; /* Add this line to fix width */
+  margin: 0 auto 10px auto; /* Center */
+}
+
+.month button {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.month-text {
+  text-align: center;
+  flex: 1;
+}
+
+.today-btn {
+  display: block;
+  margin: 0 auto 10px auto;
+  background-color: #0099a8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  text-align: center;
+
+  justify-items: center;
+  align-items: center;
+
+}
+
+.days span {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  transition: 0.3s;
+
+  width: 60px;
+  height: 60px;
+
+  display: flex;  /* Make the span a flex container */
+  align-items: center;  /* Vertically center the content */
+  justify-content: center;  /* Horizontally center the content */
+}
+
+.days span:hover {
+  background-color: #e0f7fa;
+}
+
+.days span.active {
+  background-color: #0099a8;
+  color: #fff;
+}
+
+.time-btn {
+  transition: background-color 0.3s ease;
+}
+
+.time-btn.selected {
+  background-color: #007d87; /* darker color when selected */
+}
+
+.time-btn.available:hover {
+  background-color: #007d87; /* lighter hover effect */
+}
+
+.time-btn.not-available {
+  background-color: gray; /* lighter hover effect */
+  cursor: not-allowed ;
 }

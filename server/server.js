@@ -8,6 +8,7 @@ const managerRoutes = require("./routes/managerRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const sessionRoutes = require("./routes/sessionRoutes");
 const therapistRoutes = require("./routes/therapistRoutes");
+const agentRoutes = require("./routes/agentRoutes");
 
 const { initializeChat } = require("./controllers/chatController");
 require("dotenv").config();
@@ -22,6 +23,7 @@ app.use("/manager",managerRoutes)
 app.use("/patient",patientRoutes)
 app.use("/session",sessionRoutes)
 app.use("/therapist",therapistRoutes)
+app.use('/agent', agentRoutes);
 const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(app);

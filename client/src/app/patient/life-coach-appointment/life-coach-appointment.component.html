@@ -41,6 +41,10 @@
     <!-- Right Section: Available Times -->
     <div class="time-available">
       <h3>Time Available</h3>
+      @if(sessionTopic !=""){
+      <h3>Topic : {{sessionTopic}}</h3>
+
+      }
       <div class="time-slots">
         @for ( timeSlot of timeTable; track $index) {
           @if (timeSlot.full == 0) {

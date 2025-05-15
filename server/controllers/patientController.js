@@ -114,14 +114,15 @@ async function Make_an_appointment(patient_ID, sessionData) {
     } else {
       // Step 2: Insert a new session if it doesn't exist already
       query = `
-        INSERT INTO ${sessionData.type}_session (coach_ID, scheduled_time, cost, duration) 
-        VALUES (?, ?, ?, ?);
+        INSERT INTO ${sessionData.type}_session (coach_ID, scheduled_time, cost, duration,topic) 
+        VALUES (?, ?, ?, ?, ?);
       `;
       result = await executeQuery(query, [
         sessionData.doctor_id,
         sessionData.time,
         sessionData.cost,
-        sessionData.duration
+        sessionData.duration,
+        sessionData.topic
       ]);
 
       // Step 3: Get the session_ID of the newly inserted session

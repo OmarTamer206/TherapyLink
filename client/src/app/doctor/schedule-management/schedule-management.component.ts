@@ -27,7 +27,7 @@ export class ScheduleManagementComponent {
 availableTimes: string[] = [
   '9 AM', '11 AM', '1 PM', '3 PM',
   '5 PM', '7 PM', '9 PM', '11 PM',
-  '1 AM', '3 AM'  // Note: changed "PM" to "AM" based on your list
+  '1 AM'  // Note: changed "PM" to "AM" based on your list
 ];
 
 timeTable: any[]=[];

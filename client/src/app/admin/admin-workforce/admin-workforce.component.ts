@@ -541,6 +541,10 @@ edit_old_email_verification:string = ""
         this.errorFlag = 'Specialization is required'
         return false;
       }
+      if(this.gender === '') {
+        this.errorFlag = 'Gender is required'
+        return false;
+      }
       if(this.description === '') {
         this.errorFlag = 'Description is required'
         return false;

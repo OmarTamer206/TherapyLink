@@ -418,7 +418,7 @@ async function get_patient_analytics(doctor_id, type) {
             rating, 
             COUNT(*) AS rating_count
         FROM feedback
-        WHERE doctor_ID = ? AND doctor_type = 'doctor'
+        WHERE doctor_id = ? AND doctor_type = 'doctor'
         GROUP BY rating;
       `;
 
@@ -430,7 +430,7 @@ async function get_patient_analytics(doctor_id, type) {
         FROM (
             SELECT patient_ID, COUNT(*) AS session_count
             FROM doctor_session
-            WHERE doctor_ID = 28
+            WHERE doctor_ID = ?
             GROUP BY patient_ID
         ) AS patient_sessions;
 

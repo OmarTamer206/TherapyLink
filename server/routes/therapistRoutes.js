@@ -169,6 +169,32 @@ router.get("/available-time/:date/:id/:type", async (req, res) => {
   }
 });
 
+router.get("/available-time/:date", async (req, res) => {
+
+  let doctor_id ;
+  let doctor_type ;
+
+  const { date } = req.params;
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+      console.log("1",process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      
+      
+        doctor_id = decoded.id;
+        doctor_type = decoded.role;
+      
+    const result = await view_available_time(date, doctor_id, doctor_type);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // // For Patient Use
 // router.get("/available-time/:id/:type", async (req, res) => {
 //   const { id, type } = req.params;

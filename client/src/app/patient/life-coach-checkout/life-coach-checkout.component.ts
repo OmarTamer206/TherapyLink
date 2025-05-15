@@ -24,6 +24,7 @@ export class LifeCoachCheckoutComponent {
   avgRating: number=1;
   sessionPrice: number =1;
   multiplier: number =1 ;
+  sessionTopic="";
 
    ngOnInit(): void {
     // Access the state data from window.history
@@ -35,6 +36,7 @@ export class LifeCoachCheckoutComponent {
       this.doctor_id = state.selectedDoctor.doctor_data.id;
       this.avgRating = parseInt(this.selectedDoctor.avgRating)
       this.sessionPrice = parseInt(this.selectedDoctor.doctor_data.Session_price)
+      this.sessionTopic = state.sessionTopic
 
       console.log('Selected Time:', this.selectedDoctor);
       console.log('Doctor ID:', this.doctor_id);
@@ -72,6 +74,7 @@ export class LifeCoachCheckoutComponent {
       com_type: this.communication_type,
       time: this.selectedTime,
       type:"life_coach",
+      topic:this.sessionTopic,
       cost: this.sessionPrice * this.multiplier,
       duration: this.selectedDuration,
       }

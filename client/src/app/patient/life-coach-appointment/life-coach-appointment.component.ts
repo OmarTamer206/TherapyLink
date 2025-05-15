@@ -30,6 +30,7 @@ export class LifeCoachAppointmentComponent {
   timeTable: any[]=[];
   selectedDoctor: any;
   avgRating: number = 1;
+  sessionTopic = "";
 
 
 
@@ -59,7 +60,7 @@ export class LifeCoachAppointmentComponent {
 getAvailableTimes(){
   this.timeTable=[];
   this.selectedTime = ""
-
+  this.sessionTopic = ""
     const date = `${this.currentDate.getFullYear()}-${String(this.currentDate.getMonth() + 1).padStart(2, '0')}-${String(this.selectedDay).padStart(2, '0')}`;
 
     this.therapistService.viewAvailableTime(date,this.doctor_id,"life_coach").subscribe((response) => {
@@ -71,6 +72,8 @@ getAvailableTimes(){
           const minutes = d.getMinutes().toString().padStart(2, '0');
           const ampm = d.getHours() >= 12 ? 'PM' : 'AM';
           const time = `${hours}:${minutes} ${ampm}`;
+
+          this.sessionTopic = item.topic;
 
           return {
             time,
@@ -213,7 +216,7 @@ selectTime(time: string) {
 
       this.router.navigate(
         ['patient/life-coach-checkout'],
-        { state: { selectedTime: timestamp, selectedDoctor: this.selectedDoctor } }
+        { state: { selectedTime: timestamp, selectedDoctor: this.selectedDoctor , sessionTopic: this.sessionTopic } }
       );
     }
     }

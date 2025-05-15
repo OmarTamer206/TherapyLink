@@ -22,10 +22,10 @@ export class DoctorAppointmentComponent implements OnInit {
   selectedDay: number = 1;
   days: number[] = [];
 
-  availableTimes: string[] = [
-  '9 AM', '11 AM', '1 PM', '3 PM',
-  '5 PM', '7 PM', '9 PM', '11 PM',
-  '1 AM', '3 AM'  // Note: changed "PM" to "AM" based on your list
+  availableTimes: any[] = [
+  '9:00 AM', '11:00 AM', '1:00 PM', '3:00 PM',
+  '5:00 PM', '7:00 PM', '9:00 PM', '11:00 PM',
+  '1:00 AM' // Note: changed "PM" to "AM" based on your list
 ];
   timeTable: any[]=[];
   selectedDoctor: any;
@@ -78,6 +78,16 @@ getAvailableTimes(){
             fullTimestamp: item.available_date // useful if needed later
           };
         });
+
+        this.availableTimes.forEach(time => {
+        const exists = this.timeTable.some(slot => slot.time === time);
+        if (!exists) {
+          this.timeTable.push({ time, disabled: true, fullTimestamp: '' });  // Adding the time to the list with default isReserved and empty timestamp
+        }
+      });
+
+      this.timeTable = this.sortTimeSlots(this.timeTable)
+
         console.log(this.timeTable);
       } else {
         alert("Failed to fetch available times");
@@ -88,7 +98,27 @@ getAvailableTimes(){
     });
 }
 
+ private convertTo24HourFormat(time: string): string {
+  const [hourStr, minuteStrWithMeridian] = time.split(':');
+  const [minuteStr, meridian] = minuteStrWithMeridian.split(' ');
 
+  let hour = parseInt(hourStr);
+  const minute = parseInt(minuteStr);
+
+  if (meridian === 'PM' && hour !== 12) hour += 12;
+  if (meridian === 'AM' && hour === 12) hour = 0;
+
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+// Function to sort the array based on time
+ private sortTimeSlots(timeSlots: any[]): any[] {
+  return timeSlots.sort((a, b) => {
+    const timeA = this.convertTo24HourFormat(a.time);
+    const timeB = this.convertTo24HourFormat(b.time);
+    return timeA.localeCompare(timeB);
+  });
+}
 
 
   generateDays() {

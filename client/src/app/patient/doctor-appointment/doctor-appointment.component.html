@@ -53,6 +53,16 @@
             </button>
 
           }
+          @if (timeSlot.disabled == true) {
+
+            <button
+                class="time-btn not-available"
+                disabled
+                >
+                {{ timeSlot.time }}
+            </button>
+
+          }
 
         }
       </div>

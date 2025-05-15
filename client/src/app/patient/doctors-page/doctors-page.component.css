@@ -161,3 +161,24 @@
   font-size: 0.8em;
   color: gray;
 }
+
+.doctor-profile{
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-info{
+  flex: 1;
+}
+.doctor-reviews{
+  flex: 3;
+  overflow-y: auto;
+}
+
+.no-reviews{
+  width: 100%;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -2,6 +2,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PatientService } from '../../services/patient/patient.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class DoctorCheckoutComponent implements OnInit {
   }
 
 
-  constructor(private router: Router,private route: ActivatedRoute) {}
+  constructor(private router: Router,private route: ActivatedRoute , private patientService:PatientService) {}
 
 
   selectDuration(duration: string): void {
@@ -59,6 +60,28 @@ export class DoctorCheckoutComponent implements OnInit {
 
     if(this.selectedDuration !=""){
 
+      // patient_ID,
+      // sessionData.doctor_id,
+      // sessionData.com_type,
+      // sessionData.time,
+      // sessionData.cost,
+      // sessionData.duration,
+
+      let sessionData = {
+      doctor_id: this.doctor_id,
+      com_type: this.communication_type,
+      time: this.selectedTime,
+      type:"doctor",
+      cost: this.sessionPrice * this.multiplier,
+      duration: this.selectedDuration,
+      }
+
+      console.log(sessionData);
+
+      this.patientService.makeAppointment(sessionData).subscribe((response)=>{
+        console.log(response);
+
+      })
 
       this.showSuccess = true;
 

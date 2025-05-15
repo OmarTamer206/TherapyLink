@@ -87,6 +87,10 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 }
 
 .time-available h3 {
@@ -226,4 +230,9 @@
 
 .time-btn.available:hover {
   background-color: #007d87; /* lighter hover effect */
+}
+
+.time-btn.not-available {
+  background-color: gray; /* lighter hover effect */
+  cursor: not-allowed ;
 }

@@ -48,6 +48,7 @@ import { SessionPageComponent } from './patient/session-page/session-page.compon
 import { SessionsLogComponent } from './patient/sessions-log/sessions-log.component';
 import { ManagerSettingsComponent } from './manager/manager-settings/manager-settings.component';
 import { PatientProfileComponent } from './patient/profile/profile.component';
+import { ChatSectionComponent } from './chat-section/chat-section.component';
 
 export const routes: Routes = [
   {
@@ -288,6 +289,10 @@ export const routes: Routes = [
         component: EmergencyTeamSettingsComponent,
       },
     ],
+  },
+  {
+    path: "chat",
+    component: ChatSectionComponent
   },
 
   {

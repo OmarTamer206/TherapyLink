@@ -1,0 +1,35 @@
+<section class="chat-container">
+  <div class="chat-header">
+    <h3>Chat</h3>
+    <span class="typing-indicator">{{ typingStatus }}</span>
+  </div>
+
+  <div class="chat-messages">
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [class.sent]="msg.senderId === userId"
+      [class.received]="msg.senderId !== userId"
+    >
+      <div class="message-content">
+        {{ msg.message }}
+      </div>
+      <div class="message-meta">
+        <span>{{ msg.senderType }}</span>
+        <span class="timestamp">{{ msg.timestamp | date: 'shortTime' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="message"
+      (keydown)="onTyping()"
+      (blur)="stopTyping()"
+      (keyup.enter)="sendMessage()"
+      placeholder="Type a message..."
+    />
+    <button (click)="sendMessage()" [disabled]="!message.trim()">Send</button>
+  </div>
+</section>

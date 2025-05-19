@@ -5,10 +5,11 @@ import { JournalComponent } from './journal/journal.component';
 import { NgFor, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TherapistService } from '../../services/therapist/therapist.service';
+import { ChatSectionComponent } from '../../chat-section/chat-section.component';
 
 @Component({
   standalone: true,
-  imports: [ReportComponent, JournalComponent, NgIf],
+  imports: [ReportComponent, JournalComponent, NgIf , ChatSectionComponent],
   selector: 'app-session',
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.css'],
@@ -34,6 +35,13 @@ export class SessionComponent implements OnInit ,OnDestroy {
   startButtonState = false;
 
 
+  chatId: string ="";
+  userId: string ="";
+  userType = 'doctor';
+  receiverId: string="";
+  receiverType = 'patient';
+
+
   constructor(private route:ActivatedRoute, private therapistService:TherapistService , private sessionService:SessionService) {
 
   }
@@ -47,6 +55,7 @@ export class SessionComponent implements OnInit ,OnDestroy {
       }
     });
 
+    this.getDoctorData();
 
     this.gatherSessionData();
 
@@ -57,15 +66,30 @@ export class SessionComponent implements OnInit ,OnDestroy {
   }
 
 // Hatet8yr fl lifecoach
+
+getDoctorData(){
+  this.therapistService.getTherapistData().subscribe((response) => {
+    console.log(response);
+    this.userId = response.data[0].id;
+    console.log(this.userId);
+  },(error)=>{
+    console.log("error",error);
+  });
+}
+
   gatherSessionData(){
     this.sessionService.viewSessionDetails(this.sessionID).subscribe((response) => {
       console.log(response);
       this.sessionData = response.data;
         this.therapistService.getPatientData(response.data.patient_ID).subscribe((response) => {
           this.patientData = response.data;
+          this.receiverId = this.patientData.patient[0].id;
+          console.log(this.receiverId);
+
           console.log(response);
 
           this.scheduledTime = this.sessionData.scheduled_time;
+          this.chatId = this.sessionData.chat_ID;
 
           const date = new Date(this.sessionData.scheduled_time)
           this.sessionData.date = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`

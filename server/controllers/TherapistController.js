@@ -238,7 +238,7 @@ async function get_patient_data(patient_id) {
       
     }
       const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
-      const patientQuery = `SELECT Name,Therapist_Preference FROM patient WHERE id = ?`;
+      const patientQuery = `SELECT id ,Name,Therapist_Preference FROM patient WHERE id = ?`;
     const journals = await executeQuery(journalQuery, [patient_id]);
     const patient = await executeQuery(patientQuery, [patient_id]);
     console.log("patient : ", patient_id);

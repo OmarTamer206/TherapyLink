@@ -10,7 +10,7 @@ section {
   display: flex;
   flex-direction: row; /* Stack the containers vertically */
   padding: 20px;
-  height: 90%;
+  height: 100%;
 }
 .left {
   display: flex;
@@ -154,7 +154,8 @@ section {
 /* Third Container: Video Call */
 .third {
   height: 540px;
-  background-color: white;
+  background-color: unset;
+  border: unset;
   display: flex;
   justify-content: center;
   align-items: center;

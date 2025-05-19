@@ -29,7 +29,28 @@
     </div>
 
     <div class="container third">
-      <p>Video Call</p>
+
+
+      @if(!chatId || !userId || !receiverId) {
+
+      <p>Loading chat...</p>
+
+    }@else{
+
+
+      <app-chat-section
+      *ngIf="chatId !='' && userId!='' && userType && receiverId!=''  && receiverType"
+      [chatId]="chatId"
+      [userId]="userId"
+      [userType]="userType"
+      [receiverId]="receiverId"
+      [receiverType]="receiverType"
+
+      style="width: 100%;height: 100%;"
+      ></app-chat-section>
+
+    }
+
     </div>
   </div>
 

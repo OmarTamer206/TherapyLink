@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const path = require("path");
+const { Server } = require("socket.io");
+
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const managerRoutes = require("./routes/managerRoutes");
@@ -10,27 +12,39 @@ const sessionRoutes = require("./routes/sessionRoutes");
 const therapistRoutes = require("./routes/therapistRoutes");
 const agentRoutes = require("./routes/agentRoutes");
 
-const { initializeChat } = require("./controllers/chatController");
+const { ChatController } = require("./controllers/chatController");
 require("dotenv").config();
 
 const app = express();
+const server = http.createServer(app);
+
+// 🔌 Initialize Socket.IO with CORS
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:4200", // Update with your Angular app origin
+    methods: ["GET", "POST"]
+  }
+});
+
+// 🔄 Real-time chat logic
+ChatController(io); // Call the function from chatController.js
+
+// 🌐 Middleware
 app.use(cors());
 app.use(express.json());
 
+// 📦 Routes
 app.use("/auth", authRoutes);
-app.use("/admin",adminRoutes)
-app.use("/manager",managerRoutes)
-app.use("/patient",patientRoutes)
-app.use("/session",sessionRoutes)
-app.use("/therapist",therapistRoutes)
-app.use('/agent', agentRoutes);
+app.use("/admin", adminRoutes);
+app.use("/manager", managerRoutes);
+app.use("/patient", patientRoutes);
+app.use("/session", sessionRoutes);
+app.use("/therapist", therapistRoutes);
+app.use("/agent", agentRoutes);
+
+// 📁 Static file serving for uploads
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
+// 🚀 Start Server
 const PORT = process.env.PORT || 3000;
-
-const server = http.createServer(app);
-
-initializeChat(server);
-
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads'))); // Serve the uploads folder
-
-
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

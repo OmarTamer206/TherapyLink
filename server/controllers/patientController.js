@@ -56,118 +56,120 @@ async function Make_Feedback(patient_ID , session_ID, rating, feedback) {
 // Create a new appointment for a patient (DOCTOR)
 async function Make_an_appointment(patient_ID, sessionData) {
   try {
-    let result ;
-    if(sessionData.type == "doctor"){
+    let result;
+    let sessionID;
+
+    // Doctor session handling
+    if (sessionData.type === "doctor") {
       let query = `UPDATE doctor_availability SET isReserved = 1 WHERE doctor_ID = ? AND available_date = ?`;
       
       await executeQuery(query, [
-      sessionData.doctor_id,
-      sessionData.time,
+        sessionData.doctor_id,
+        sessionData.time,
+      ]);
 
-    ]);
-      
-      
       query = `
-      INSERT INTO ${sessionData.type}_session (patient_ID, ${sessionData.type}_ID, communication_type, scheduled_time, cost , duration )
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
-      result = await executeQuery(query, [
-      patient_ID,
-      sessionData.doctor_id,
-      sessionData.com_type,
-      sessionData.time,
-      sessionData.cost,
-      sessionData.duration,
-    ]);
-    }
-    else{
-
-      let query = `UPDATE lifecoach_availability SET isReserved = 1 WHERE life_coach_ID = ? AND available_date = ?`;
-      
-      await executeQuery(query, [
-      sessionData.doctor_id,
-      sessionData.time,
-
-    ]);
-      
-
-    
-
-
-
-     query = `
-      SELECT session_ID 
-      FROM ${sessionData.type}_session 
-      WHERE coach_ID = ? 
-      AND scheduled_time = ?;
-    `;
-    
-     result = await executeQuery(query, [
-      sessionData.doctor_id,
-      sessionData.time
-    ]);
-
-    // If session exists, get its session_ID, else insert a new session
-    if (result.length > 0) {
-      // Session already exists, get session_ID
-      sessionID = result[0].session_ID;
-    } else {
-      // Step 2: Insert a new session if it doesn't exist already
-      query = `
-        INSERT INTO ${sessionData.type}_session (coach_ID, scheduled_time, cost, duration,topic) 
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO ${sessionData.type}_session (patient_ID, ${sessionData.type}_ID, communication_type, scheduled_time, cost , duration )
+        VALUES (?, ?, ?, ?, ?, ?)
       `;
       result = await executeQuery(query, [
+        patient_ID,
         sessionData.doctor_id,
+        sessionData.com_type,
         sessionData.time,
         sessionData.cost,
         sessionData.duration,
-        sessionData.topic
       ]);
 
-      // Step 3: Get the session_ID of the newly inserted session
-      sessionID = result.insertId;
-    }
+      // If the communication type is chat, create an entry in the chat table
+      if (sessionData.com_type === 'Chatting') {
+        // Insert into the chat table
+        query = `INSERT INTO chat () VALUES ()`; // Empty insert to create a chat entry
+        const chatResult = await executeQuery(query);
+        
+        // Update the session with the generated chat_id
+        await executeQuery(`UPDATE ${sessionData.type}_session SET chat_id = ? WHERE session_ID = ?`, [chatResult.insertId, result.insertId]);
+      } 
+      // If the communication type is call, create an entry in the call table
+      else if (sessionData.com_type === 'Voice / Video Call') {
+        // Insert into the call table
+        query = `INSERT INTO \`call\` () VALUES ()`; // Empty insert to create a call entry
+        const callResult = await executeQuery(query);
+        
+        // Update the session with the generated call_id
+        await executeQuery(`UPDATE ${sessionData.type}_session SET call_id = ? WHERE session_ID = ?`, [callResult.insertId, result.insertId]);
+      }
+    } 
+    // Life coach session handling
+    else {
+      let query = `UPDATE lifecoach_availability SET isReserved = 1 WHERE life_coach_ID = ? AND available_date = ?`;
 
-    query = `SELECT COUNT(*) AS count
-            FROM patient_lifecoach_session
-            WHERE session_ID = ?;`
-
-                  
-    const countCheck = await executeQuery(query, [
-      sessionID
-
-    ]);
-
-    console.log("count : ",countCheck[0].count);
-
-    // LIMITED TO 20 PATIENT ONLY IN THE GROUP SESSION
-    if(countCheck[0].count == 19){
-
-      query = `UPDATE lifecoach_availability SET full = 1 WHERE life_coach_ID = ? AND available_date = ?`;
-      
       await executeQuery(query, [
-      sessionData.doctor_id,
-      sessionData.time,
+        sessionData.doctor_id,
+        sessionData.time,
+      ]);
 
-    ]);
+      query = `
+        SELECT session_ID 
+        FROM ${sessionData.type}_session 
+        WHERE coach_ID = ? 
+        AND scheduled_time = ?;
+      `;
 
+      result = await executeQuery(query, [
+        sessionData.doctor_id,
+        sessionData.time,
+      ]);
+
+      // If session exists, get its session_ID, else insert a new session
+      if (result.length > 0) {
+        sessionID = result[0].session_ID;
+      } else {
+        query = `
+          INSERT INTO ${sessionData.type}_session (coach_ID, scheduled_time, cost, duration, topic) 
+          VALUES (?, ?, ?, ?, ?);
+        `;
+        result = await executeQuery(query, [
+          sessionData.doctor_id,
+          sessionData.time,
+          sessionData.cost,
+          sessionData.duration,
+          sessionData.topic,
+        ]);
+
+        sessionID = result.insertId;
+      }
+
+      query = `SELECT COUNT(*) AS count
+               FROM patient_lifecoach_session
+               WHERE session_ID = ?`;
+
+      const countCheck = await executeQuery(query, [sessionID]);
+      console.log("count : ", countCheck[0].count);
+
+      // LIMITED TO 20 PATIENT ONLY IN THE GROUP SESSION
+      if (countCheck[0].count === 19) {
+        query = `UPDATE lifecoach_availability SET full = 1 WHERE life_coach_ID = ? AND available_date = ?`;
+        await executeQuery(query, [
+          sessionData.doctor_id,
+          sessionData.time,
+        ]);
+      }
+
+      // Step 4: Insert into patient_lifecoach_session with patient_ID and session_ID
+      query = `
+        INSERT IGNORE INTO patient_lifecoach_session (patient_ID, session_ID) 
+        VALUES (?, ?);
+      `;
+      result = await executeQuery(query, [patient_ID, sessionID]);
+
+      // Insert into the call table for life coach (if applicable)
+      query = `INSERT INTO call () VALUES ()`;
+      const callResult = await executeQuery(query, [sessionID]);
+
+      // Add call_id to the session
+      await executeQuery(`UPDATE ${sessionData.type}_session SET call_id = ? WHERE session_ID = ?`, [callResult.insertId, sessionID]);
     }
-    
-
-    // Step 4: Insert into patient_lifecoach_session with patient_ID and session_ID
-    query = `
-      INSERT IGNORE INTO patient_lifecoach_session (patient_ID, session_ID) 
-      VALUES (?, ?);
-    `;
-    result = await executeQuery(query, [patient_ID, sessionID]);
-
-
-  
-    }
-
-    
-    
 
     if (result.affectedRows > 0) {
       return { success: true, message: "Appointment scheduled successfully." };
@@ -182,6 +184,7 @@ async function Make_an_appointment(patient_ID, sessionData) {
     };
   }
 }
+
 
 // Get all doctor sessions a patient has taken
 async function get_doctor_sessions_taken(patient_id) {

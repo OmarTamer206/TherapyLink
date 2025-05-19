@@ -1,46 +1,118 @@
-// Under Testing , database integration not done
+const { executeQuery } = require('./databaseController');
 
-const { Server } = require("socket.io");
+function ChatController(io) {
+  const chatParticipants = {};
+  const typingStatus = {};
 
-let io;
-const activeUsers = new Map(); // Stores active users with socket ID
+  io.on('connection', (socket) => {
+    console.log('Client connected:', socket.id);
 
-function initializeChat(server) {
-  io = new Server(server, {
-    cors: {
-      origin: "*", // Allow all origins (Adjust for production)
-    },
-  });
+    // ========================
+    // 🔄 Sync Session Start
+    // ========================
 
-  io.on("connection", (socket) => {
-    console.log("New user connected:", socket.id);
+    socket.on('patientReady', ({ sessionId }) => {
+      socket.join(sessionId);
+      if (!socket.sessionStatus) socket.sessionStatus = {};
+      socket.sessionStatus[sessionId] = { patientReady: true };
 
-    // Handle user joining chat
-    socket.on("joinChat", (userData) => {
-      activeUsers.set(socket.id, userData); // Store user info with socket ID
-      socket.broadcast.emit("userJoined", userData.name); // Notify others
-    });
-
-    // Handle incoming messages
-    socket.on("sendMessage", (messageData) => {
-      io.emit("receiveMessage", messageData); // Send to all users
-    });
-
-    // Handle "typing" indicator
-    socket.on("typing", (typingData) => {
-      socket.broadcast.emit("userTyping", typingData);
-    });
-
-    // Handle user disconnecting
-    socket.on("disconnect", () => {
-      const user = activeUsers.get(socket.id);
-      if (user) {
-        socket.broadcast.emit("userLeft", user.name);
-        activeUsers.delete(socket.id);
+      if (socket.sessionStatus[sessionId]?.doctorTriedToStart) {
+        io.to(sessionId).emit('sessionStart');
       }
-      console.log("User disconnected:", socket.id);
+    });
+
+    socket.on('doctorStartAttempt', ({ sessionId }) => {
+      if (!socket.sessionStatus) socket.sessionStatus = {};
+      const session = socket.sessionStatus[sessionId] || {};
+
+      if (session.patientReady) {
+        io.to(sessionId).emit('sessionStart');
+      } else {
+        socket.sessionStatus[sessionId] = { ...session, doctorTriedToStart: true };
+        socket.emit('waitingForPatient');
+      }
+    });
+
+    // ========================
+    // 💬 Chat Functionality
+    // ========================
+
+    socket.on('enterChat', async ({ chatId, userId, userType }) => {
+      socket.join(chatId);
+
+      // Store participants
+      if (!chatParticipants[chatId]) {
+        chatParticipants[chatId] = { participantA: { id: userId, type: userType } };
+      } else {
+        const existing = chatParticipants[chatId];
+
+        const alreadyRegistered = Object.values(existing).some(
+          (p) => p.id === userId && p.type === userType
+        );
+
+        if (!alreadyRegistered) {
+          // Assign as participantB if available
+          chatParticipants[chatId].participantB = { id: userId, type: userType };
+        }
+      }
+
+      console.log(`User ${userId} (${userType}) joined chat ${chatId}`);
+    });
+
+    socket.on('sendMessage', async ({ chatId, senderId, senderType, receiverId, receiverType, message }) => {
+      const timestamp = new Date();
+
+      await executeQuery(
+        `INSERT INTO message (chat_ID, message_content, receiver_type, sender_type, receiver_id, sender_id)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [chatId, message, receiverType, senderType, receiverId, senderId]
+      );
+
+      io.to(chatId).emit('receiveMessage', {
+        chatId,
+        message,
+        senderId,
+        senderType,
+        receiverId,
+        receiverType,
+        timestamp
+      });
+    });
+
+    socket.on('typing', ({ chatId, userId }) => {
+      if (!typingStatus[chatId]) typingStatus[chatId] = {};
+      typingStatus[chatId][userId] = true;
+
+      socket.to(chatId).emit('participantTyping', { userId, typing: true });
+    });
+
+    socket.on('stopTyping', ({ chatId, userId }) => {
+      if (typingStatus[chatId]) typingStatus[chatId][userId] = false;
+      socket.to(chatId).emit('participantTyping', { userId, typing: false });
+    });
+
+    socket.on('exitChat', ({ chatId, userId }) => {
+      socket.leave(chatId);
+
+      if (chatParticipants[chatId]) {
+        const p = chatParticipants[chatId];
+        if (p.participantA?.id === userId) delete p.participantA;
+        if (p.participantB?.id === userId) delete p.participantB;
+
+        if (!p.participantA && !p.participantB) {
+          delete chatParticipants[chatId];
+          delete typingStatus[chatId];
+        }
+      }
+
+      console.log(`User ${userId} left chat ${chatId}`);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Socket disconnected:', socket.id);
+      // You could also clean up here if needed
     });
   });
 }
 
-module.exports = { initializeChat };
+module.exports = {ChatController};

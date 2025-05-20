@@ -2,33 +2,50 @@ const { executeQuery } = require("./databaseController"); // Adjust path if need
 
 // View upcoming sessions for a patient
 async function view_upcoming_Sessions_patient(patient_id) {
+  console.log(patient_id , "from inside ");
+  
   try {
     const query = `
-      SELECT * FROM ${type}_session
-      WHERE patient_ID = ? AND schedule_time >= NOW()
-      ORDER BY schedule_time ASC
+
+SELECT 
+  'doctor' AS session_type, 
+  ds.session_ID, 
+  ds.scheduled_time, 
+  ds.duration, 
+  ds.patient_ID, 
+  ds.doctor_ID,
+  d.Name AS doctor_name  -- Add the doctor's name here
+FROM doctor_session ds
+JOIN doctor d ON ds.doctor_ID = d.id  -- Join the doctor table to get the name
+WHERE ds.patient_ID = ? 
+  AND ds.scheduled_time > NOW()
+
+UNION ALL
+
+SELECT 
+  'life_coach' AS session_type, 
+  lcs.session_ID, 
+  lcs.scheduled_time, 
+  lcs.duration, 
+  pls.patient_ID, 
+  lcs.coach_ID AS doctor_ID,
+  lc.Name AS life_coach_name  -- Add the life coach's name here
+FROM life_coach_session lcs
+JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
+JOIN life_coach lc ON lcs.coach_ID = lc.id  -- Join the life_coach table to get the name
+WHERE pls.patient_ID = ? 
+  AND lcs.scheduled_time > NOW()
+
+ORDER BY scheduled_time;
+
+
     `;
-    const result = await executeQuery(query, [patient_id]);
+    
+    const result = await executeQuery(query, [patient_id,patient_id]);
 
     return { success: true, data: result };
   } catch (error) {
     return { success: false, message: "Error retrieving upcoming sessions for patient.", error: error.message };
-  }
-}
-
-// View upcoming sessions for a doctor
-async function view_upcoming_Sessions_doctor(doctor_id) {
-  try {
-    const query = `
-      SELECT * FROM ${type}_session
-      WHERE ${type}_ID = ? AND schedule_time >= NOW()
-      ORDER BY  schedule_time ASC
-    `;
-    const result = await executeQuery(query, [doctor_id]);
-
-    return { success: true, data: result };
-  } catch (error) {
-    return { success: false, message: "Error retrieving upcoming sessions for doctor.", error: error.message };
   }
 }
 
@@ -112,20 +129,7 @@ async function initalize_emergency_session(patient_id) {
   }
 }
 
-async function view_upcoming_Sessions_patient(patient_id) {
-  try {
-    const query = `
-      SELECT * FROM ${type}_session
-      WHERE patient_ID = ? AND schedule_time >= NOW()
-      ORDER BY schedule_time ASC
-    `;
-    const result = await executeQuery(query, [patient_id]);
 
-    return { success: true, data: result };
-  } catch (error) {
-    return { success: false, message: "Error retrieving upcoming sessions for patient.", error: error.message };
-  }
-}
 
 async function cancellSession(session_ID, type) {
   try {
@@ -209,7 +213,6 @@ async function cancellSession(session_ID, type) {
 
 module.exports = {
   view_upcoming_Sessions_patient,
-  view_upcoming_Sessions_doctor,
   view_old_Sessions,
   view_session_details,
   initialize_communication,

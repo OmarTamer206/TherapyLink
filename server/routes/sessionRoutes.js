@@ -20,10 +20,12 @@ router.get("/view-upcoming-sessions-patient", async (req, res) => {
     
     
     try {
-    console.log("1",process.env.JWT_SECRET);
+    console.log("1000",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
     const result = await view_upcoming_Sessions_patient(decoded.id);
+      
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

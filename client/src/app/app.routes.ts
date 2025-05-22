@@ -136,7 +136,7 @@ export const routes: Routes = [
         component: LifeCoachPageComponent,
       },
       {
-        path: 'old-session/:id',
+        path: 'old-session',
         component: OldSessionComponent,
       },
       {
@@ -144,7 +144,7 @@ export const routes: Routes = [
         component: PatientProfileComponent,
       },
       {
-        path: 'session-page/:id',
+        path: 'session-page',
         component: SessionPageComponent,
       },
       {

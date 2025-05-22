@@ -1,12 +1,13 @@
-@if (!showFeedback && !showSuccess) {
+@if (!showFeedback) {
   <div class="session-container">
     <div class="session-content">
       <h2>Old Sessions</h2>
 
       <div class="session-info">
-        <span class="session-title">Session With: Dr. Magdy</span>
-        <span class="session-time">Timing: 9/1/2025 , 7:00 PM</span>
-        <span class="session-duration">30 minutes</span>
+        <span class="session-title">Session With: Dr. {{session.doctor_name}}</span>
+        <span class="session-time">Timing: {{session.date}} , {{session.time}}</span>
+      <span class="session-duration">Duration : {{session.duration}} minutes &nbsp; , &nbsp;  Session Method : {{session.communication_type}}</span>
+
       </div>
 
       <div class="session-details chat-box">
@@ -39,16 +40,33 @@
 
     <textarea placeholder="Write your feedback" [(ngModel)]="feedbackText"></textarea>
 
-    <button class="submit-btn" (click)="submitFeedback()">Submit</button>
+    <button class="submit-btn" (click)="submitFeedback()">{{feedbackButtonText}}</button>
   </div>
 }
-@else if (showSuccess) {
-  <div class="payment-success">
-    <h2>Payment</h2>
-    <div class="checkmark-circle">✔</div>
-    <h3>Session Payment Successful!</h3>
-    <p class="transaction">Transaction Number: 123456789</p>
-    <hr />
-    <p class="amount">Amount Paid: <span>LE 500.00</span></p>
-  </div>
+@if (showSuccess) {
+<div  class="feedback-popup-blue" role="alert" aria-live="assertive">
+  <svg
+    class="checkmark"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 52 52"
+    aria-hidden="true"
+  >
+    <circle
+      class="checkmark__circle"
+      cx="26"
+      cy="26"
+      r="25"
+      fill="none"
+    />
+    <path
+      class="checkmark__check"
+      fill="none"
+      d="M14 27l7 7 16-16"
+    />
+  </svg>
+  <p>Feedback submitted successfully!</p>
+</div>
+
+
+
 }

@@ -6,19 +6,21 @@ async function view_upcoming_Sessions_patient(patient_id) {
   
   try {
     const query = `
-
 SELECT 
   'doctor' AS session_type, 
   ds.session_ID, 
   ds.scheduled_time, 
   ds.duration, 
   ds.patient_ID, 
+  ds.communication_type,
   ds.doctor_ID,
-  d.Name AS doctor_name  -- Add the doctor's name here
+  ds.chat_ID,
+  ds.call_ID,
+  d.Name AS doctor_name
 FROM doctor_session ds
-JOIN doctor d ON ds.doctor_ID = d.id  -- Join the doctor table to get the name
+JOIN doctor d ON ds.doctor_ID = d.id
 WHERE ds.patient_ID = ? 
-  AND ds.scheduled_time > NOW()
+  AND ds.scheduled_time >= NOW()
 
 UNION ALL
 
@@ -28,13 +30,16 @@ SELECT
   lcs.scheduled_time, 
   lcs.duration, 
   pls.patient_ID, 
+  "Voice / Video Call" AS communication_type,
   lcs.coach_ID AS doctor_ID,
-  lc.Name AS life_coach_name  -- Add the life coach's name here
+  NULL AS chat_ID,                -- Add this to match doctor session columns
+  lcs.call_ID,
+  lc.Name AS life_coach_name
 FROM life_coach_session lcs
 JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
-JOIN life_coach lc ON lcs.coach_ID = lc.id  -- Join the life_coach table to get the name
+JOIN life_coach lc ON lcs.coach_ID = lc.id
 WHERE pls.patient_ID = ? 
-  AND lcs.scheduled_time > NOW()
+  AND lcs.scheduled_time >= NOW()
 
 ORDER BY scheduled_time;
 
@@ -48,6 +53,60 @@ ORDER BY scheduled_time;
     return { success: false, message: "Error retrieving upcoming sessions for patient.", error: error.message };
   }
 }
+
+async function view_previous_Sessions_patient(patient_id) {
+  console.log(patient_id , "from inside ");
+  
+  try {
+    const query = `
+SELECT 
+  'doctor' AS session_type, 
+  ds.session_ID, 
+  ds.scheduled_time, 
+  ds.duration, 
+  ds.patient_ID, 
+  ds.communication_type,
+  ds.doctor_ID,
+  ds.chat_ID,
+  ds.call_ID,
+  d.Name AS doctor_name
+FROM doctor_session ds
+JOIN doctor d ON ds.doctor_ID = d.id
+WHERE ds.patient_ID = ? 
+  AND ds.scheduled_time < NOW()
+
+UNION ALL
+
+SELECT 
+  'life_coach' AS session_type, 
+  lcs.session_ID, 
+  lcs.scheduled_time, 
+  lcs.duration, 
+  pls.patient_ID, 
+  "Voice / Video Call" AS communication_type,
+  lcs.coach_ID AS doctor_ID,
+  NULL AS chat_ID,                -- Add this to match doctor session columns
+  lcs.call_ID,
+  lc.Name AS life_coach_name
+FROM life_coach_session lcs
+JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
+JOIN life_coach lc ON lcs.coach_ID = lc.id
+WHERE pls.patient_ID = ? 
+  AND lcs.scheduled_time < NOW()
+
+ORDER BY scheduled_time;
+
+
+    `;
+    
+    const result = await executeQuery(query, [patient_id,patient_id]);
+
+    return { success: true, data: result };
+  } catch (error) {
+    return { success: false, message: "Error retrieving upcoming sessions for patient.", error: error.message };
+  }
+}
+
 
 // View past sessions for a patient
 async function view_old_Sessions(patient_id) {
@@ -213,6 +272,7 @@ async function cancellSession(session_ID, type) {
 
 module.exports = {
   view_upcoming_Sessions_patient,
+  view_previous_Sessions_patient,
   view_old_Sessions,
   view_session_details,
   initialize_communication,

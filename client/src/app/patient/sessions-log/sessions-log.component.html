@@ -1,186 +1,58 @@
-<!-- app.component.html -->
-<div class="sessions-container">
-  <div class="sessions-content">
-    <div class="sessions-column">
-      <h3>Upcoming Sessions</h3>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
 
-      <!-- Add more session items here -->
+@if(!loading){
+  <div  class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+}
+@else {
+
+
+  <div class="sessions-container">
+    <div class="sessions-content">
+      @if(upcomingSessions){
+        <div class="sessions-column">
+        <h3>Upcoming Sessions</h3>
+
+        @for ( session of upcomingSessions; track $index) {
+
+          <div (click)="goToSessionPage(session)" class="session-item">
+          <span>{{session.date}}</span>
+          <span>Session with Dr. {{session.doctor_name}}</span>
+          <span>{{session.time}}</span>
+        </div>
+        }
+
     </div>
+      }
+      @else {
+        <div class="no-sessions-column">
+        <h3>There is No Upcoming Sessions</h3>
 
-    <div class="sessions-column">
-      <h3>Previous Sessions</h3>
-      <div class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Session with Dr.Mark</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
-      <div (click)="goToOldSessionPage()" class="session-item">
-        <span>2/2/2025</span>
-        <span>Group Session</span>
-        <span>7:00PM</span>
-      </div>
+        </div>
+      }
 
-      <!-- Add more session items here -->
+          @if(previousSessions){
+        <div class="sessions-column">
+        <h3>Previous Sessions</h3>
+
+        @for ( session of previousSessions; track $index) {
+
+          <div (click)="goToOldSessionPage(session)" class="session-item">
+          <span>{{session.date}}</span>
+          <span>Session with Dr. {{session.doctor_name}}</span>
+          <span>{{session.time}}</span>
+        </div>
+        }
+
     </div>
+      }
+      @else {
+        <div class="no-sessions-column">
+        <h3>There is No Previous Sessions</h3>
+
+        </div>
+      }
   </div>
 </div>
+
+}

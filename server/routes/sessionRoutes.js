@@ -9,6 +9,7 @@ const {
   initalize_emergency_session,
   view_session_details,
   cancellSession,
+  view_previous_Sessions_patient,
 } = require("../controllers/SessionController");
 
 const router = express.Router();
@@ -25,6 +26,24 @@ router.get("/view-upcoming-sessions-patient", async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     const result = await view_upcoming_Sessions_patient(decoded.id);
+      
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/view-previous-sessions-patient", async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1000",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    const result = await view_previous_Sessions_patient(decoded.id);
       
     res.status(200).json(result);
   } catch (error) {

@@ -10,6 +10,7 @@ const {
   Write_in_journal,
   delete_from_journal,
   getProfileData,
+  check_Feedback,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -36,8 +37,8 @@ router.put("/change-therapist-preference", async (req, res) => {
 
 // Submit feedback for a specific session
 router.post("/submit-feedback", async (req, res) => {
-  const { session, rating, feedback } = req.body;
-  if (!session || !rating || !feedback)
+  const { session, rating, feedback , editState } = req.body;
+  if (!session || !rating || !feedback )
     return res.status(400).json({ error: "Missing session, rating or feedback" });
 
   const token = req.headers['authorization']?.split(' ')[1];
@@ -48,7 +49,29 @@ router.post("/submit-feedback", async (req, res) => {
     console.log("1",process.env.JWT_SECRET);
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await Make_Feedback(decoded.id,session , rating, feedback);
+    const result = await Make_Feedback(decoded.id,session , rating, feedback , editState);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/check-feedback/:session_ID/:session_type", async (req, res) => {
+  const { session_ID , session_type} = req.params;
+  if (!session_ID || !session_type )
+    return res.status(400).json({ error: "Missing session" });
+
+
+  
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    try {
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const result = await check_Feedback(decoded.id,session_ID , session_type);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

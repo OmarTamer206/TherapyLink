@@ -15,6 +15,10 @@ export class SessionService {
     return this.http.get(`${this.apiUrl}/view-upcoming-sessions-patient`);
   }
 
+    viewPreviousSessionsPatient(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/view-previous-sessions-patient`);
+  }
+
   // View upcoming sessions for a doctor !!!!! al8y
   viewUpcomingSessionsDoctor(doctorId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/view-upcoming-sessions-doctor/${doctorId}`);

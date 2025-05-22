@@ -18,7 +18,7 @@
       </div>
       <div class="start-session-container">
         <button class="session-timer-btn">Session Starts in <br>{{timeLeft}}</button>
-        <button class="start-session" [disabled]="!startButtonState">Start Session</button>
+        <button class="start-session" (click)="startSession()" [disabled]="!startButtonState">Start Session</button>
 
       </div>
     </div>
@@ -31,11 +31,15 @@
     <div class="container third">
 
 
-      @if(!chatId || !userId || !receiverId) {
+      @if(!sessionStarted) {
 
-      <p>Loading chat...</p>
+        <div class="session-waiting">
+          <p>Chat will be available after session starts</p>
+        </div>
 
-    }@else{
+      }
+
+    @else{
 
 
       <app-chat-section

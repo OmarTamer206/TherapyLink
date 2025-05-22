@@ -16,8 +16,12 @@ export class PatientService {
   }
 
   // Submit feedback for a session
-  submitFeedback(session: any, rating: number, feedback: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/submit-feedback`, { session, rating, feedback });
+  submitFeedback(session: any, rating: number, feedback: string,editState:boolean): Observable<any> {
+    return this.http.post(`${this.apiUrl}/submit-feedback`, { session, rating, feedback ,editState });
+  }
+
+  checkFeedback(session: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/check-feedback/${session.session_ID}/${session.session_type}`);
   }
 
   // Create a new appointment for a patient

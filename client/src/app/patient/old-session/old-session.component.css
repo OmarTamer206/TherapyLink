@@ -156,3 +156,62 @@ textarea {
   transform: scale(1.03);
   background-color: #002c39;
 }
+.feedback-popup-blue {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e8f0fe;
+  border: 2px solid #4285f4;
+  border-radius: 12px;
+  padding: 18px 30px;
+  max-width: 320px;
+  box-shadow: 0 8px 15px rgba(66, 133, 244, 0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1a73e8;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  animation: fadeInScale 0.4s ease forwards;
+  z-index: 1000;
+}
+
+.checkmark {
+  width: 40px;
+  height: 40px;
+  stroke: #1a73e8;
+  stroke-width: 4;
+  stroke-miterlimit: 10;
+  animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-linecap: round;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke-linecap: round;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+@keyframes stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}

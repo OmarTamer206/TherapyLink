@@ -40,6 +40,7 @@ export class SessionComponent implements OnInit ,OnDestroy {
   userType = 'doctor';
   receiverId: string="";
   receiverType = 'patient';
+  sessionStarted= false;
 
 
   constructor(private route:ActivatedRoute, private therapistService:TherapistService , private sessionService:SessionService) {
@@ -189,6 +190,9 @@ getDoctorData(){
     return num < 10 ? '0' + num : num.toString();
   }
 
+  startSession(){
+    this.sessionStarted =true
+  }
 
   checkLoading(){
 

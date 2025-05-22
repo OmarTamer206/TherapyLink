@@ -31,19 +31,60 @@ async function Change_Therapist_Preference(patient_ID, choice) {
 }
 
 // Submit feedback for a specific session asdasdasd    3adelah
-async function Make_Feedback(patient_ID , session_ID, rating, feedback) {
+async function Make_Feedback(patient_ID , session, rating, feedback , editState) {
   try {
-    const query = `
-      INSERT INTO ${session.type}_session (session_ID, rating, feedback)
-      VALUES (?, ?, ?)
+
+    let query
+    let result
+    
+    if(!editState){
+       query = `
+      INSERT INTO feedback (patient_ID,session_ID,doctor_type, doctor_ID , rating , reason)
+      VALUES (? , ?, ?, ? , ? , ? )
     `;
-    const result = await executeQuery(query, [session_ID, rating, feedback]);
+
+    result = await executeQuery(query, [patient_ID , session.session_ID , session.session_type , session.doctor_ID , rating , feedback]);
+    
+  }
+    else{
+       query = `
+      UPDATE feedback SET rating = ? , reason = ?
+      WHERE patient_ID = ? AND session_ID = ? AND doctor_type = ? AND doctor_ID = ?
+    `;
+
+    result = await executeQuery(query, [ rating , feedback , patient_ID , session.session_ID , session.session_type , session.doctor_ID ]);
+
+    }
+    
+    
 
     if (result.affectedRows > 0) {
       return { success: true, message: "Feedback submitted successfully." };
     } else {
       return { success: false, message: "Failed to submit feedback." };
     }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error submitting feedback.",
+      error: error.message,
+    };
+  }
+}
+
+async function check_Feedback(patient_ID , session_ID , session_type) {
+  try {
+
+    
+    
+    const query = `
+      SELECT * FROM feedback WHERE patient_id = ? AND session_id = ? AND doctor_type = ?
+    `;
+    const result = await executeQuery(query, [patient_ID , session_ID , session_type]);
+
+  
+      return { success: true, message: "Feedback submitted successfully." , data: result };
+  
   } catch (error) {
     return {
       success: false,
@@ -336,6 +377,7 @@ async function getProfileData(patient_ID){
 module.exports = {
   Change_Therapist_Preference,
   Make_Feedback,
+  check_Feedback,
   Make_an_appointment,
   get_doctor_sessions_taken,
   get_group_Sessions_taken,

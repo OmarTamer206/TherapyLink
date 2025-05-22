@@ -226,7 +226,7 @@ setCircleDasharray() {
   }
 
   goToUpcomingSessionPage(): void {
-    this.router.navigate([`patient/session-page/${this.upcomingSession.session_ID}`]);
+    this.router.navigate([`patient/session-page`],{ state: { session:this.upcomingSession } });
   }
 
   toggleTherapistPreference(): void {

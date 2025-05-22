@@ -1,58 +1,122 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SocketService {
-  private socket: Socket;
+  private socket!: Socket;
 
-  constructor() {
-    this.socket = io('http://localhost:3000'); // backend URL
+  connect(): void {
+    if (!this.socket || !this.socket.connected) {
+      this.socket = io('http://localhost:3000'); // adjust URL as needed
+      console.log('Socket connected:', this.socket.id);
+    }
   }
 
-  // Join Chat
-  joinChat(chatId: string, userId: string, userType: string) {
+  disconnect(): void {
+    if (this.socket) {
+      this.socket.disconnect();
+      console.log('Socket disconnected');
+    }
+  }
+
+  enterChat(chatId: string, userId: string, userType: string): void {
     this.socket.emit('enterChat', { chatId, userId, userType });
   }
 
-  // Send Message
-  sendMessage(data: {
-    chatId: string;
-    senderId: string;
-    senderType: string;
-    receiverId: string;
-    receiverType: string;
-    message: string;
-  }) {
-    this.socket.emit('sendMessage', data);
-  }
-
-  // Typing Indicators
-  typing(chatId: string, userId: string) {
-    this.socket.emit('typing', { chatId, userId });
-  }
-
-  stopTyping(chatId: string, userId: string) {
-    this.socket.emit('stopTyping', { chatId, userId });
-  }
-
-  // Exit
-  exitChat(chatId: string, userId: string) {
+  exitChat(chatId: string, userId: string): void {
     this.socket.emit('exitChat', { chatId, userId });
   }
 
-  // Listeners
-  onMessage(callback: (data: any) => void) {
-    this.socket.on('receiveMessage', callback);
+  sendMessage(
+    chatId: string,
+    senderId: string,
+    senderType: string,
+    receiverId: string,
+    receiverType: string,
+    message: string
+  ): void {
+    this.socket.emit('sendMessage', {
+      chatId,
+      senderId,
+      senderType,
+      receiverId,
+      receiverType,
+      message,
+    });
   }
 
-  onTyping(callback: (data: { userId: string; typing: boolean }) => void) {
-    this.socket.on('participantTyping', callback);
+  typing(chatId: string, userId: string): void {
+    this.socket.emit('typing', { chatId, userId });
   }
 
-  off(eventName: string) {
-    this.socket.off(eventName);
+  stopTyping(chatId: string, userId: string): void {
+    this.socket.emit('stopTyping', { chatId, userId });
+  }
+
+  patientReady(chatId: string): void {
+    this.socket.emit('patientReady', { chatId });
+  }
+
+  doctorReady(chatId: string, sessionDurationMinutes: number): void {
+    this.socket.emit('doctorReady', { chatId, sessionDurationMinutes });
+  }
+
+  onMessage(): Observable<any> {
+    return new Observable((observer) => {
+      const handler = (data: any) => observer.next(data);
+      this.socket.on('receiveMessage', handler);
+      return () => this.socket.off('receiveMessage', handler);
+    });
+  }
+
+  onPreviousMessages(): Observable<any[]> {
+    return new Observable((observer) => {
+      const handler = (messages: any[]) => observer.next(messages);
+      this.socket.on('previousMessages', handler);
+      return () => this.socket.off('previousMessages', handler);
+    });
+  }
+
+  onSystemMessage(): Observable<any> {
+    return new Observable((observer) => {
+      const handler = (msg: any) => observer.next(msg);
+      this.socket.on('systemMessage', handler);
+      return () => this.socket.off('systemMessage', handler);
+    });
+  }
+
+  onTyping(): Observable<{ userId: string; typing: boolean }> {
+    return new Observable((observer) => {
+      const handler = (data: { userId: string; typing: boolean }) => observer.next(data);
+      this.socket.on('participantTyping', handler);
+      return () => this.socket.off('participantTyping', handler);
+    });
+  }
+
+  onSessionStart(): Observable<void> {
+    return new Observable((observer) => {
+      const handler = () => observer.next();
+      this.socket.on('sessionStart', handler);
+      return () => this.socket.off('sessionStart', handler);
+    });
+  }
+
+  onSessionEnded(): Observable<void> {
+    return new Observable((observer) => {
+      const handler = () => observer.next();
+      this.socket.on('sessionEnded', handler);
+      return () => this.socket.off('sessionEnded', handler);
+    });
+  }
+
+  onErrorChat(): Observable<string> {
+    return new Observable((observer) => {
+      const handler = (msg: string) => observer.next(msg);
+      this.socket.on('errorChat', handler);
+      return () => this.socket.off('errorChat', handler);
+    });
   }
 }

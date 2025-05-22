@@ -1,35 +1,50 @@
 <section class="chat-container">
-  <div class="chat-header">
+  <header class="chat-header">
     <h3>Chat</h3>
     <span class="typing-indicator">{{ typingStatus }}</span>
-  </div>
+  </header>
 
-  <div class="chat-messages">
+  <div class="chat-messages" #messageContainer>
     <div
       *ngFor="let msg of messages"
-      class="message"
-      [class.sent]="msg.senderId === userId"
-      [class.received]="msg.senderId !== userId"
+      [ngClass]="{
+        'message': true,
+        'sent': msg.senderId === userId && msg.senderType !== 'system',
+        'received': msg.senderId !== userId && msg.senderType !== 'system',
+        'system': msg.senderType === 'system'
+      }"
     >
-      <div class="message-content">
-        {{ msg.message }}
-      </div>
-      <div class="message-meta">
-        <span>{{ msg.senderType }}</span>
+      <div class="message-content">{{ msg.message }}</div>
+      <div *ngIf="msg.senderType !== 'system'" class="message-meta">
+        <span class="sender-type">{{ msg.senderType }}</span>
         <span class="timestamp">{{ msg.timestamp | date: 'shortTime' }}</span>
       </div>
     </div>
   </div>
 
-  <div class="chat-input">
+  <form
+    class="chat-input"
+    *ngIf="!sessionEnded"
+    (submit)="sendMessage(); $event.preventDefault()"
+    autocomplete="off"
+    novalidate
+  >
     <input
       type="text"
+      name="chatMessage"
       [(ngModel)]="message"
+      (input)="onInputChange()"
       (keydown)="onTyping()"
       (blur)="stopTyping()"
-      (keyup.enter)="sendMessage()"
       placeholder="Type a message..."
+      required
+      autocomplete="off"
+      autofocus
     />
-    <button (click)="sendMessage()" [disabled]="!message.trim()">Send</button>
+    <button type="submit" [disabled]="isSendDisabled">Send</button>
+  </form>
+
+  <div *ngIf="sessionEnded" class="session-ended-message">
+    <em>The session has ended. Chat is closed.</em>
   </div>
 </section>

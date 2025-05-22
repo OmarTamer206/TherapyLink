@@ -1,93 +1,164 @@
 const { executeQuery } = require('./databaseController');
 
 function ChatController(io) {
-  const chatParticipants = {};
-  const typingStatus = {};
+  const chats = {}; // Shared chat states and metadata by chatId
+  const chatParticipants = {}; // tracks participants per chatId
+
+  // Helper: clear typing status for a user after 2 seconds
+  function scheduleTypingRemoval(chatId, userId) {
+    setTimeout(() => {
+      if (chats[chatId] && chats[chatId].typingStatus && chats[chatId].typingStatus[userId]) {
+        delete chats[chatId].typingStatus[userId];
+        io.to(chatId).emit('participantTyping', { userId, typing: false });
+      }
+    }, 2000);
+  }
+
+  // Helper: close chat session when session time ends
+  function scheduleSessionEnd(chatId) {
+    if (!chats[chatId] || !chats[chatId].sessionEndTime) return;
+
+    const delay = chats[chatId].sessionEndTime - Date.now();
+    if (delay <= 0) {
+      closeSession(chatId);
+      return;
+    }
+
+    setTimeout(() => closeSession(chatId), delay);
+  }
+
+  // Close session logic - notify clients and cleanup
+  function closeSession(chatId) {
+    io.to(chatId).emit('sessionEnded');
+    delete chats[chatId];
+    delete chatParticipants[chatId];
+  }
+
+  function checkIfSessionStarted(chatId) {
+    return chats[chatId] && chats[chatId].sessionStarted === true;
+  }
 
   io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
+    console.log(`Client connected: ${socket.id}`);
 
-    // ========================
-    // 🔄 Sync Session Start
-    // ========================
-
-    socket.on('patientReady', ({ sessionId }) => {
-      socket.join(sessionId);
-      if (!socket.sessionStatus) socket.sessionStatus = {};
-      socket.sessionStatus[sessionId] = { patientReady: true };
-
-      if (socket.sessionStatus[sessionId]?.doctorTriedToStart) {
-        io.to(sessionId).emit('sessionStart');
-      }
-    });
-
-    socket.on('doctorStartAttempt', ({ sessionId }) => {
-      if (!socket.sessionStatus) socket.sessionStatus = {};
-      const session = socket.sessionStatus[sessionId] || {};
-
-      if (session.patientReady) {
-        io.to(sessionId).emit('sessionStart');
-      } else {
-        socket.sessionStatus[sessionId] = { ...session, doctorTriedToStart: true };
-        socket.emit('waitingForPatient');
-      }
-    });
-
-    // ========================
-    // 💬 Chat Functionality
-    // ========================
-
-    socket.on('enterChat', async ({ chatId, userId, userType }) => {
+    socket.on('patientReady', ({ chatId }) => {
       socket.join(chatId);
+      if (!chats[chatId]) chats[chatId] = { typingStatus: {}, patientReady: false, doctorReady: false, sessionStarted: false };
 
-      // Store participants
-      if (!chatParticipants[chatId]) {
-        chatParticipants[chatId] = { participantA: { id: userId, type: userType } };
-      } else {
-        const existing = chatParticipants[chatId];
-
-        const alreadyRegistered = Object.values(existing).some(
-          (p) => p.id === userId && p.type === userType
-        );
-
-        if (!alreadyRegistered) {
-          // Assign as participantB if available
-          chatParticipants[chatId].participantB = { id: userId, type: userType };
-        }
+      chats[chatId].patientReady = true;
+      if (chats[chatId].doctorReady && !chats[chatId].sessionStarted) {
+        chats[chatId].sessionStarted = true;
+        io.to(chatId).emit('sessionStart');
+        scheduleSessionEnd(chatId);
       }
-
-      console.log(`User ${userId} (${userType}) joined chat ${chatId}`);
     });
+
+    socket.on('doctorReady', ({ chatId, sessionDurationMinutes }) => {
+      socket.join(chatId);
+      if (!chats[chatId]) chats[chatId] = { typingStatus: {}, patientReady: false, doctorReady: false, sessionStarted: false };
+
+      chats[chatId].doctorReady = true;
+      if (!chats[chatId].sessionStarted) {
+        chats[chatId].sessionStarted = true;
+        io.to(chatId).emit('sessionStart');
+        chats[chatId].sessionEndTime = Date.now() + sessionDurationMinutes * 60 * 1000;
+        scheduleSessionEnd(chatId);
+      }
+    });
+
+socket.on('enterChat', async ({ chatId, userId, userType }) => {
+  socket.join(chatId);
+
+  if (!chatParticipants[chatId]) chatParticipants[chatId] = {};
+
+  const wasPresent = chatParticipants[chatId][userId] !== undefined;
+  chatParticipants[chatId][userId] = userType;
+
+  if (!chats[chatId]) {
+    chats[chatId] = {
+      typingStatus: {},
+      patientReady: false,
+      doctorReady: false,
+      sessionStarted: false,
+      sessionEndTime: null,
+    };
+  }
+
+  // If session started, tell this socket ONLY to start session UI
+  if (chats[chatId].sessionStarted) {
+    socket.emit('sessionStart');
+    console.log(`User ${userId} re-entered ongoing session ${chatId}`);
+  } else {
+    console.log(`User ${userId} entered chat ${chatId}, session not started`);
+  }
+
+  // Send previous messages always
+  try {
+    const previousMessages = await executeQuery(
+      `SELECT chat_ID AS chatId, message_content AS message, sender_id AS senderId, sender_type AS senderType, receiver_id AS receiverId, receiver_type AS receiverType, time AS timestamp
+       FROM message WHERE chat_ID = ? ORDER BY time ASC`,
+      [chatId]
+    );
+    socket.emit('previousMessages', previousMessages);
+    console.log(`Sent ${previousMessages.length} messages to user ${userId}`);
+  } catch (err) {
+    console.error('Error loading previous messages:', err);
+  }
+
+  // Send join notification only if session started and user is NEW in this session
+  if (chats[chatId].sessionStarted && !wasPresent) {
+    const joinMsg = {
+      chatId,
+      message: `${userType.charAt(0).toUpperCase() + userType.slice(1)} ${userId} has joined the chat.`,
+      senderId: 'system',
+      senderType: 'system',
+      receiverId: null,
+      receiverType: null,
+      timestamp: new Date(),
+    };
+    io.to(chatId).emit('systemMessage', joinMsg);
+  }
+
+  console.log(`Participants in chat ${chatId}:`, chatParticipants[chatId]);
+});
+
 
     socket.on('sendMessage', async ({ chatId, senderId, senderType, receiverId, receiverType, message }) => {
-      const timestamp = new Date();
-
-      await executeQuery(
-        `INSERT INTO message (chat_ID, message_content, receiver_type, sender_type, receiver_id, sender_id)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [chatId, message, receiverType, senderType, receiverId, senderId]
-      );
-
-      io.to(chatId).emit('receiveMessage', {
-        chatId,
-        message,
-        senderId,
-        senderType,
-        receiverId,
-        receiverType,
-        timestamp
-      });
+      if (!chats[chatId]?.sessionStarted) {
+        socket.emit('errorChat', 'Session not started or chat closed');
+        return;
+      }
+      try {
+        await executeQuery(
+          `INSERT INTO message (chat_ID, message_content, receiver_type, sender_type, receiver_id, sender_id)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+          [chatId, message, receiverType, senderType, receiverId, senderId]
+        );
+        io.to(chatId).emit('receiveMessage', {
+          chatId,
+          message,
+          senderId,
+          senderType,
+          receiverId,
+          receiverType,
+          timestamp: new Date()
+        });
+      } catch (err) {
+        socket.emit('errorChat', 'Failed to save message');
+      }
     });
 
     socket.on('typing', ({ chatId, userId }) => {
-      if (!typingStatus[chatId]) typingStatus[chatId] = {};
-      typingStatus[chatId][userId] = true;
-
+      if (!chats[chatId]) return;
+      if (!chats[chatId].typingStatus) chats[chatId].typingStatus = {};
+      chats[chatId].typingStatus[userId] = true;
       socket.to(chatId).emit('participantTyping', { userId, typing: true });
+      scheduleTypingRemoval(chatId, userId);
     });
 
     socket.on('stopTyping', ({ chatId, userId }) => {
-      if (typingStatus[chatId]) typingStatus[chatId][userId] = false;
+      if (!chats[chatId]?.typingStatus) return;
+      delete chats[chatId].typingStatus[userId];
       socket.to(chatId).emit('participantTyping', { userId, typing: false });
     });
 
@@ -95,24 +166,32 @@ function ChatController(io) {
       socket.leave(chatId);
 
       if (chatParticipants[chatId]) {
-        const p = chatParticipants[chatId];
-        if (p.participantA?.id === userId) delete p.participantA;
-        if (p.participantB?.id === userId) delete p.participantB;
+        delete chatParticipants[chatId][userId];
 
-        if (!p.participantA && !p.participantB) {
+        // Broadcast leave notification if mid-session
+        if (chats[chatId]?.sessionStarted) {
+          io.to(chatId).emit('systemMessage', {
+            chatId,
+            message: `User ${userId} has left the chat.`,
+            senderId: 'system',
+            senderType: 'system',
+            receiverId: null,
+            receiverType: null,
+            timestamp: new Date()
+          });
+        }
+
+        if (Object.keys(chatParticipants[chatId]).length === 0) {
           delete chatParticipants[chatId];
-          delete typingStatus[chatId];
+          delete chats[chatId];
         }
       }
-
-      console.log(`User ${userId} left chat ${chatId}`);
     });
 
     socket.on('disconnect', () => {
-      console.log('Socket disconnected:', socket.id);
-      // You could also clean up here if needed
+      console.log(`Socket disconnected: ${socket.id}`);
     });
   });
 }
 
-module.exports = {ChatController};
+module.exports = { ChatController };

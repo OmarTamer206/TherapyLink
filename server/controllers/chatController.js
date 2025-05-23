@@ -28,7 +28,7 @@ function ChatController(io) {
   }
 
   // Close session logic - notify clients and cleanup
-  function closeSession(chatId) {
+  async function closeSession(chatId) {
     io.to(chatId).emit('sessionEnded');
     delete chats[chatId];
     delete chatParticipants[chatId];
@@ -40,6 +40,44 @@ function ChatController(io) {
 
   io.on('connection', (socket) => {
     console.log(`Client connected: ${socket.id}`);
+
+    // Fetch user names from the database by userId
+    async function getUserName(userId , userType) {
+      try {
+        const user = await executeQuery(`SELECT Name FROM ${userType} WHERE id = ?`, [userId]);
+        if(userType != "patient" && user[0].Name)
+          user[0].Name = `Dr. ${user[0]?.Name}`;
+
+        return user[0]?.Name || 'Unknown';
+      } catch (err) {
+        console.error('Error fetching user name:', err);
+        return 'Unknown';
+      }
+    }
+
+    async function getPreviousMessages(chatId) {
+  try {
+    const previousMessages = await executeQuery(
+      `SELECT m.chat_ID AS chatId, m.message_content AS message, m.sender_id AS senderId, 
+              m.sender_type AS senderType, m.receiver_id AS receiverId, m.receiver_type AS receiverType, 
+              m.time AS timestamp
+       FROM message m
+       WHERE m.chat_ID = ? ORDER BY m.time ASC`,
+      [chatId]
+    );
+
+    // For each message, fetch sender's name based on sender_type
+    for (let message of previousMessages) {
+      const senderName = await getUserName(message.senderId, message.senderType);
+      message.senderName = senderName;
+    }
+
+    return previousMessages;
+  } catch (err) {
+    console.error('Error loading previous messages:', err);
+    return [];
+  }
+}
 
     socket.on('patientReady', ({ chatId }) => {
       socket.join(chatId);
@@ -66,62 +104,59 @@ function ChatController(io) {
       }
     });
 
-socket.on('enterChat', async ({ chatId, userId, userType }) => {
-  socket.join(chatId);
+    socket.on('enterChat', async ({ chatId, userId, userType }) => {
+      socket.join(chatId);
 
-  if (!chatParticipants[chatId]) chatParticipants[chatId] = {};
+      // Fetch user name from database
+      const userName = await getUserName(userId, userType);
 
-  const wasPresent = chatParticipants[chatId][userId] !== undefined;
-  chatParticipants[chatId][userId] = userType;
+      if (!chatParticipants[chatId]) chatParticipants[chatId] = {};
 
-  if (!chats[chatId]) {
-    chats[chatId] = {
-      typingStatus: {},
-      patientReady: false,
-      doctorReady: false,
-      sessionStarted: false,
-      sessionEndTime: null,
-    };
-  }
+      const wasPresent = chatParticipants[chatId][userId] !== undefined;
+      chatParticipants[chatId][userId] = { type: userType, name: userName };
 
-  // If session started, tell this socket ONLY to start session UI
-  if (chats[chatId].sessionStarted) {
-    socket.emit('sessionStart');
-    console.log(`User ${userId} re-entered ongoing session ${chatId}`);
-  } else {
-    console.log(`User ${userId} entered chat ${chatId}, session not started`);
-  }
+      if (!chats[chatId]) {
+        chats[chatId] = {
+          typingStatus: {},
+          patientReady: false,
+          doctorReady: false,
+          sessionStarted: false,
+          sessionEndTime: null,
+        };
+      }
 
-  // Send previous messages always
-  try {
-    const previousMessages = await executeQuery(
-      `SELECT chat_ID AS chatId, message_content AS message, sender_id AS senderId, sender_type AS senderType, receiver_id AS receiverId, receiver_type AS receiverType, time AS timestamp
-       FROM message WHERE chat_ID = ? ORDER BY time ASC`,
-      [chatId]
-    );
-    socket.emit('previousMessages', previousMessages);
-    console.log(`Sent ${previousMessages.length} messages to user ${userId}`);
-  } catch (err) {
-    console.error('Error loading previous messages:', err);
-  }
+      if (chats[chatId].sessionStarted) {
+        socket.emit('sessionStart');
+        console.log(`User ${userId} re-entered ongoing session ${chatId}`);
+      } else {
+        console.log(`User ${userId} entered chat ${chatId}, session not started`);
+      }
 
-  // Send join notification only if session started and user is NEW in this session
-  if (chats[chatId].sessionStarted && !wasPresent) {
-    const joinMsg = {
-      chatId,
-      message: `${userType.charAt(0).toUpperCase() + userType.slice(1)} ${userId} has joined the chat.`,
-      senderId: 'system',
-      senderType: 'system',
-      receiverId: null,
-      receiverType: null,
-      timestamp: new Date(),
-    };
-    io.to(chatId).emit('systemMessage', joinMsg);
-  }
+      // Send previous messages always
+      try {
+      const previousMessages = await getPreviousMessages(chatId);
+      socket.emit('previousMessages', previousMessages);
+      console.log(`Sent ${previousMessages.length} messages to user ${userId}`);
+    } catch (err) {
+      console.error('Error loading previous messages:', err);
+    }
 
-  console.log(`Participants in chat ${chatId}:`, chatParticipants[chatId]);
-});
+      // Send join notification only if session started and user is NEW in this session
+      if (chats[chatId].sessionStarted && !wasPresent) {
+        const joinMsg = {
+          chatId,
+          message: `${userName} has joined the chat.`,
+          senderId: 'system',
+          senderType: 'system',
+          receiverId: null,
+          receiverType: null,
+          timestamp: new Date(),
+        };
+        io.to(chatId).emit('systemMessage', joinMsg);
+      }
 
+      console.log(`Participants in chat ${chatId}:`, chatParticipants[chatId]);
+    });
 
     socket.on('sendMessage', async ({ chatId, senderId, senderType, receiverId, receiverType, message }) => {
       if (!chats[chatId]?.sessionStarted) {
@@ -134,25 +169,33 @@ socket.on('enterChat', async ({ chatId, userId, userType }) => {
            VALUES (?, ?, ?, ?, ?, ?)`,
           [chatId, message, receiverType, senderType, receiverId, senderId]
         );
+
+        // Fetch sender name from database
+        const senderName = await getUserName(senderId , senderType);
         io.to(chatId).emit('receiveMessage', {
           chatId,
           message,
           senderId,
           senderType,
+          senderName,  // Pass the sender name
           receiverId,
           receiverType,
-          timestamp: new Date()
+          timestamp: new Date(),
         });
       } catch (err) {
         socket.emit('errorChat', 'Failed to save message');
       }
     });
 
-    socket.on('typing', ({ chatId, userId }) => {
+     socket.on('typing', async ({ chatId, userId ,userType }) => {
       if (!chats[chatId]) return;
+
+      const userName = await getUserName(userId, chatParticipants[chatId][userId].type); 
+
+
       if (!chats[chatId].typingStatus) chats[chatId].typingStatus = {};
       chats[chatId].typingStatus[userId] = true;
-      socket.to(chatId).emit('participantTyping', { userId, typing: true });
+      socket.to(chatId).emit('participantTyping', { userId, userName ,typing: true });
       scheduleTypingRemoval(chatId, userId);
     });
 
@@ -165,27 +208,58 @@ socket.on('enterChat', async ({ chatId, userId, userType }) => {
     socket.on('exitChat', ({ chatId, userId }) => {
       socket.leave(chatId);
 
+      if (chats[chatId]?.sessionStarted) {
+        io.to(chatId).emit('systemMessage', {
+          chatId,
+          message: `${chatParticipants[chatId][userId].name} has left the chat.`,
+          senderId: 'system',
+          senderType: 'system',
+          receiverId: null,
+          receiverType: null,
+          timestamp: new Date(),
+        });
+      }
       if (chatParticipants[chatId]) {
         delete chatParticipants[chatId][userId];
 
-        // Broadcast leave notification if mid-session
-        if (chats[chatId]?.sessionStarted) {
-          io.to(chatId).emit('systemMessage', {
-            chatId,
-            message: `User ${userId} has left the chat.`,
-            senderId: 'system',
-            senderType: 'system',
-            receiverId: null,
-            receiverType: null,
-            timestamp: new Date()
-          });
-        }
 
         if (Object.keys(chatParticipants[chatId]).length === 0) {
           delete chatParticipants[chatId];
           delete chats[chatId];
         }
       }
+    });
+
+    // Doctor manually ends the session
+    socket.on('doctorEndSession', async ({ chatId, userId }) => {
+      if (!chats[chatId]) {
+        console.log("1");
+        
+        socket.emit('errorChat', 'Session not found or already ended');
+        return;
+      }
+
+      const isDoctor = chatParticipants[chatId][userId].type === 'doctor';
+      if (!isDoctor) {
+        console.log("2");
+
+        socket.emit('errorChat', 'Only doctor can end the session');
+        return;
+      }
+
+        console.log("3");
+
+
+      delete chats[chatId].sessionStarted;
+      delete chats[chatId].sessionEndTime;
+
+      await executeQuery(
+          `UPDATE ${chatParticipants[chatId][userId].type}_session SET ended = 1 WHERE chat_ID = ?`,
+          [chatId]
+        );
+
+      io.to(chatId).emit('sessionEnded');
+      console.log(`Doctor ${userId} manually ended session ${chatId}`);
     });
 
     socket.on('disconnect', () => {

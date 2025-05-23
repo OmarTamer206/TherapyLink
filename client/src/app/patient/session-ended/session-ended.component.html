@@ -1,0 +1,55 @@
+<main>
+  <section class="session-ended-container">
+  <h2>Session Ended</h2>
+  <p>Your session has ended. Thank you for attending!</p>
+</section>
+
+
+<div class="feedbackContainer">
+      <!-- Feedback Modal -->
+    <div  class="feedback-modal">
+
+      <div class="stars">
+        <span
+          *ngFor="let star of stars; let i = index"
+          [ngClass]="{ filled: i < rating }"
+          (click)="setRating(i + 1)"
+          >★</span
+        >
+      </div>
+
+      <h3>We need your feedback!</h3>
+      <p>How would you rate your experience with the app today?</p>
+
+      <textarea placeholder="Write your feedback" [(ngModel)]="feedbackText"></textarea>
+
+      <button class="submit-btn" (click)="submitFeedback()">{{ feedbackButtonText }}</button>
+    </div>
+</div>
+
+    <!-- Success Popup -->
+    <div
+      *ngIf="showSuccess"
+      class="feedback-popup-blue"
+      role="alert"
+      aria-live="assertive"
+    >
+      <svg
+        class="checkmark"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 52 52"
+        aria-hidden="true"
+      >
+        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+        <path
+          class="checkmark__check"
+          fill="none"
+          d="M14 27l7 7 16-16"
+        />
+      </svg>
+      <p>Feedback submitted successfully!</p>
+    </div>
+
+
+
+</main>

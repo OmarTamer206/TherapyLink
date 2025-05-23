@@ -19,8 +19,9 @@ SELECT
   d.Name AS doctor_name
 FROM doctor_session ds
 JOIN doctor d ON ds.doctor_ID = d.id
-WHERE ds.patient_ID = ? 
-  AND ds.scheduled_time >= NOW()
+WHERE ds.patient_ID = ?  AND ds.ended = 0
+  AND ds.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR) -- 2 hours before current time
+  
 
 UNION ALL
 
@@ -38,10 +39,11 @@ SELECT
 FROM life_coach_session lcs
 JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
 JOIN life_coach lc ON lcs.coach_ID = lc.id
-WHERE pls.patient_ID = ? 
-  AND lcs.scheduled_time >= NOW()
+WHERE pls.patient_ID = ? AND lcs.ended = 0
+  AND lcs.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR) -- 2 hours before current time
 
-ORDER BY scheduled_time;
+ORDER BY scheduled_time DESC
+
 
 
     `;
@@ -94,7 +96,7 @@ JOIN life_coach lc ON lcs.coach_ID = lc.id
 WHERE pls.patient_ID = ? 
   AND lcs.scheduled_time < NOW()
 
-ORDER BY scheduled_time;
+ORDER BY scheduled_time DESC;
 
 
     `;
@@ -122,6 +124,40 @@ async function view_old_Sessions(patient_id) {
   } catch (error) {
     return { success: false, message: "Error retrieving old sessions for patient.", error: error.message };
   }
+}
+
+async function getUserName(userId , userType) {
+      try {
+        const user = await executeQuery(`SELECT Name FROM ${userType} WHERE id = ?`, [userId]);
+        if(userType != "patient" && user[0].Name)
+          user[0].Name = `Dr. ${user[0]?.Name}`;
+
+        return user[0]?.Name || 'Unknown';
+      } catch (err) {
+        console.error('Error fetching user name:', err);
+        return 'Unknown';
+      }
+    }
+
+async function get_chat_messages(chatId){
+
+  const query = `
+      SELECT m.chat_ID AS chatId, m.message_content AS message, m.sender_id AS senderId, 
+             m.sender_type AS senderType, m.receiver_id AS receiverId, m.receiver_type AS receiverType, 
+             m.time AS timestamp
+      FROM message m
+      WHERE m.chat_ID = ? ORDER BY m.time ASC
+    `;
+    const messages = await executeQuery(query, [chatId]);
+    
+    // Fetch names for the senders
+    for (let message of messages) {
+      const senderName = await getUserName(message.senderId, message.senderType); // You'll need to implement this
+      message.senderName = senderName;
+    }
+
+    return messages;
+
 }
 
 // View session details for a specific past session
@@ -274,6 +310,7 @@ module.exports = {
   view_upcoming_Sessions_patient,
   view_previous_Sessions_patient,
   view_old_Sessions,
+  get_chat_messages,
   view_session_details,
   initialize_communication,
   initalize_emergency_session,

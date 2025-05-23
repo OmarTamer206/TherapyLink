@@ -120,9 +120,9 @@ router.get("/patient-data/:patient_id", async (req, res) => {
 
 // Update patient report after a session [msh 3arf ha3ml eh fl ]
 router.put("/update-patient-report", async (req, res) => {
-  const { session_data } = req.body;
-  if ( !session_data)
-    return res.status(400).json({ error: "Missing doctor_id or session_data" });
+  const { session_data , report } = req.body;
+  if ( !session_data , !report)
+    return res.status(400).json({ error: "Missing report or session_data" });
   
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'Access denied' });
@@ -132,7 +132,7 @@ router.put("/update-patient-report", async (req, res) => {
   console.log("1",process.env.JWT_SECRET);
   
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const result = await update_patient_report(decoded.id, session_data);
+    const result = await update_patient_report(report, session_data ,decoded.role);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

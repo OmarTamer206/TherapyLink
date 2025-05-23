@@ -16,68 +16,74 @@
           <p class="specialization">{{patientData.patient[0].Therapist_Preference}}</p>
         </div>
       </div>
-      <div class="start-session-container">
-        <button class="session-timer-btn">Session Starts in <br>{{timeLeft}}</button>
+      <div class="start-session-container" [ngClass]="{'display-none': sessionStarted}">
+        <button *ngIf="!isExpired" class="session-timer-btn">Session Starts in <br>{{timeLeft}}</button>
         <button class="start-session" (click)="startSession()" [disabled]="!startButtonState">Start Session</button>
-
+      </div>
+      <div class="end-session-container" [ngClass]="{'display-none': !sessionStarted , 'display-flex':sessionStarted }">
+        <button class="start-session" (click)="endSession()">End Session</button>
       </div>
     </div>
 
     <div class="container second">
       <span class="session-date">Session Date: {{sessionData.date}}</span>
-      <span class="session-duration">Duration: {{sessionData.time}}</span>
+      <span class="session-duration">Time: {{sessionData.time}}</span>
+      <span class="session-duration">Duration: {{sessionData.Duration}} minutes</span>
     </div>
 
     <div class="container third">
-
-
-      @if(!sessionStarted) {
-
+      <ng-container *ngIf="!sessionStarted">
         <div class="session-waiting">
           <p>Chat will be available after session starts</p>
         </div>
+      </ng-container>
 
-      }
-
-    @else{
-
-
-      <app-chat-section
-      *ngIf="chatId !='' && userId!='' && userType && receiverId!=''  && receiverType"
-      [chatId]="chatId"
-      [userId]="userId"
-      [userType]="userType"
-      [receiverId]="receiverId"
-      [receiverType]="receiverType"
-
-      style="width: 100%;height: 100%;"
-      ></app-chat-section>
-
-    }
-
+      <ng-container *ngIf="sessionStarted && !sessionEnded">
+        <app-chat-section
+          *ngIf="chatId && userId && userType && receiverId && receiverType"
+          [chatId]="chatId"
+          [userId]="userId"
+          [userType]="userType"
+          [receiverId]="receiverId"
+          [receiverType]="receiverType"
+          style="width: 100%;height: 100%;"
+        ></app-chat-section>
+      </ng-container>
     </div>
   </div>
 
   <div class="right">
     <div class="top">
       <div class="buttons-container">
-        <button class="view-report" (click)="toggleReport()">
-          View Report
-        </button>
-        <button class="view-journal" (click)="toggleJournal()">
-          View Journal
-        </button>
+        <button class="view-report" (click)="toggleReport()">View Report</button>
+        <button class="view-journal" (click)="toggleJournal()">View Journal</button>
       </div>
     </div>
     <div class="bottom">
       <div *ngIf="showReport" class="right-content">
-        <app-report [doctorReport] = "patientData.reports"></app-report>
+        <app-report [doctorReport]="patientData.reports"></app-report>
       </div>
       <div *ngIf="showJournal" class="right-content">
-        <app-journal [journalEntries] = "patientData.journals"></app-journal>
+        <app-journal [journalEntries]="patientData.journals"></app-journal>
       </div>
     </div>
   </div>
 </section>
+
+<!-- SESSION ENDED REPORT MODAL -->
+<div class="modal-overlay" *ngIf="sessionEnded && !reportSubmitted">
+  <div class="modal">
+    <h2>Session Ended - Submit Patient Report</h2>
+    <textarea
+      [(ngModel)]="doctorReport"
+      placeholder="Write your report here..."
+      rows="8"
+    ></textarea>
+    <div class="modal-buttons">
+      <button (click)="submitReport()" [disabled]="!doctorReport.trim()">Submit</button>
+    </div>
+  </div>
+</div>
+
 
 }

@@ -2,16 +2,17 @@ import { SessionService } from './../../services/session/session.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ReportComponent } from './report/report.component';
 import { JournalComponent } from './journal/journal.component';
-import { NgFor, NgIf } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TherapistService } from '../../services/therapist/therapist.service';
 import { ChatSectionComponent } from '../../chat-section/chat-section.component';
 import { SocketService } from '../../services/chat/chat.service';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
-  imports: [ReportComponent, JournalComponent, NgIf, ChatSectionComponent],
+  imports: [ReportComponent, JournalComponent, NgIf, ChatSectionComponent , CommonModule , FormsModule],
   selector: 'app-session',
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.css'],
@@ -43,12 +44,17 @@ export class SessionComponent implements OnInit, OnDestroy {
   receiverType = 'patient';
 
   sessionStarted = false;
+  sessionEnded = false;
+
+  doctorReport = '';
+  reportSubmitted = false;
 
   private subscriptions: Subscription[] = [];
   duration: any;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private therapistService: TherapistService,
     private sessionService: SessionService,
     private socketService: SocketService
@@ -73,7 +79,7 @@ export class SessionComponent implements OnInit, OnDestroy {
     // Wait until chatId and userId are set (from gatherSessionData), so we add a small delay
     const initCheck = setInterval(() => {
       if (this.chatId && this.userId) {
-        this.socketService.enterChat(this.chatId, this.userId, this.userType);
+        this.socketService.enterChat(this.chatId, this.userId, this.userType );
 
         this.subscriptions.push(
           this.socketService.onSessionStart().subscribe(() => {
@@ -86,6 +92,7 @@ export class SessionComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
           this.socketService.onSessionEnded().subscribe(() => {
             this.sessionStarted = false;
+            this.sessionEnded = true;
             this.isExpired = true;
             console.log('Session ended (socket event)');
           })
@@ -124,6 +131,11 @@ export class SessionComponent implements OnInit, OnDestroy {
       (response) => {
         console.log('Session Data:', response);
         this.sessionData = response.data;
+
+        if(this.sessionData.ended == 1){
+          this.router.navigate(['/doctor/dashboard']);
+        }
+
         this.therapistService.getPatientData(response.data.patient_ID).subscribe(
           (response) => {
             this.patientData = response.data;
@@ -195,7 +207,9 @@ export class SessionComponent implements OnInit, OnDestroy {
     if (diff <= 0) {
       this.timeLeft = '';
       this.isExpired = true;
-      this.startButtonState = false;
+      this.startButtonState = true;
+      this.check2 = true;
+      this.checkLoading();
       clearInterval(this.intervalId);
       return;
     }
@@ -224,6 +238,30 @@ export class SessionComponent implements OnInit, OnDestroy {
     // Notify server that doctor is ready to start session
     ; // fallback to 30
     this.socketService.doctorReady(this.chatId, this.duration);
+  }
+    endSession() {
+    // Notify server that doctor is ready to start session
+    ; // fallback to 30
+    this.socketService.doctorEndSession(this.chatId,this.userId);
+    this.sessionEnded = true;
+  }
+
+
+   submitReport() {
+    if (!this.doctorReport.trim()) return;
+
+    this.therapistService.updatePatientReport(this.doctorReport,this.sessionData).subscribe({
+      next: () => {
+
+      this.router.navigate(['/doctor/dashboard']);
+
+
+      },
+      error: (err) => {
+        console.error('Failed to submit report:', err);
+        alert('Failed to submit report. Please try again.');
+      }
+    });
   }
 
   checkLoading() {

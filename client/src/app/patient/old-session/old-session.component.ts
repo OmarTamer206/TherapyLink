@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { SessionService } from '../../services/session/session.service';
 import { Router } from '@angular/router';
 import { PatientService } from '../../services/patient/patient.service';
+import { OldChatComponent } from '../../old-chat/old-chat.component';
 
 @Component({
   selector: 'app-old-session',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule , OldChatComponent],
   templateUrl: './old-session.component.html',
   styleUrls: ['./old-session.component.css']
 })

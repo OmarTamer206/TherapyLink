@@ -29,6 +29,11 @@ export class SessionService {
     return this.http.get(`${this.apiUrl}/view-old-sessions/${patientId}`);
   }
 
+  getSessionMessages(chatId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-messages/${chatId}`);
+
+  }
+
   // View session details for a specific past session
   viewSessionDetails(sessionId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/view-session-details/${sessionId}`);

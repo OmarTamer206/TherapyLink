@@ -39,8 +39,8 @@ export class TherapistService {
   }
 
   // Update patient report after a session
-  updatePatientReport( sessionData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update-patient-report`, {  session_data: sessionData });
+  updatePatientReport( report:any ,sessionData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update-patient-report`, {  session_data: sessionData , report});
   }
 
   // View available time slots for a specific date

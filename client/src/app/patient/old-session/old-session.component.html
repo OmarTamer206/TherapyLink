@@ -11,10 +11,12 @@
       </div>
 
       <div class="session-details chat-box">
-        <div class="chat left">Iste culpa voluptatum sed earum itaque...</div>
-        <div class="chat right">Magni suscipit eos et praesentium odio...</div>
-        <div class="chat left">Iste culpa voluptatum sed earum itaque...</div>
-        <div class="chat right">Magni suscipit eos et praesentium odio...</div>
+        <app-old-chat
+          [chatId]="chatId"
+          [userId]="userId"
+          style="width: 100%; height: 100%;">
+
+        </app-old-chat>
       </div>
 
       <div class="rate-and-feedback" (click)="toggleFeedback()">

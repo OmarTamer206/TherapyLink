@@ -1,12 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-  AfterViewChecked,
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { SocketService } from '../services/chat/chat.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -19,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
-export class ChatSectionComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ChatSectionComponent implements OnInit, OnDestroy {
   @Input() chatId!: string;
   @Input() userId!: string;
   @Input() userType!: string;
@@ -33,7 +25,7 @@ export class ChatSectionComponent implements OnInit, OnDestroy, AfterViewChecked
   typingStatus = '';
   sessionStarted = false;
   sessionEnded = false;
-  isSendDisabled = true;
+  isSendDisabled = true;  // Disable send button initially
 
   private subscriptions: Subscription[] = [];
 
@@ -46,29 +38,29 @@ export class ChatSectionComponent implements OnInit, OnDestroy, AfterViewChecked
     this.subscriptions.push(
       this.socketService.onPreviousMessages().subscribe((prevMessages) => {
         this.messages = [...prevMessages];
-        this.scrollToBottom();
+        setTimeout(() => this.scrollToBottom(), 0);
       })
     );
 
     this.subscriptions.push(
       this.socketService.onSystemMessage().subscribe((msg) => {
         this.messages.push(msg);
-        this.scrollToBottom();
+        setTimeout(() => this.scrollToBottom(), 0);
       })
     );
 
     this.subscriptions.push(
       this.socketService.onMessage().subscribe((msg) => {
         this.messages.push(msg);
-        this.scrollToBottom();
+        setTimeout(() => this.scrollToBottom(), 0);
       })
     );
 
     this.subscriptions.push(
-      this.socketService.onTyping().subscribe(({ userId, typing }) => {
-        this.typingStatus = typing ? `User ${userId} is typing...` : '';
-      })
-    );
+  this.socketService.onTyping().subscribe(({ userId, userName, typing }) => {
+    this.typingStatus = typing ? `${userName} is typing...` : ''; // Use userName here
+  })
+);
 
     this.subscriptions.push(
       this.socketService.onSessionStart().subscribe(() => {
@@ -93,19 +85,18 @@ export class ChatSectionComponent implements OnInit, OnDestroy, AfterViewChecked
     );
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
   scrollToBottom(): void {
     try {
       this.messageContainer.nativeElement.scrollTop =
         this.messageContainer.nativeElement.scrollHeight;
-    } catch {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
+  // Update the button state based on the input message content
   onInputChange() {
-    this.isSendDisabled = !this.message.trim();
+    this.isSendDisabled = !this.message.trim();  // Disable button if message is empty
   }
 
   sendMessage() {
@@ -120,7 +111,7 @@ export class ChatSectionComponent implements OnInit, OnDestroy, AfterViewChecked
       this.message
     );
     this.message = '';
-    this.isSendDisabled = true;
+    this.isSendDisabled = true; // Disable send button after sending the message
     this.stopTyping();
   }
 

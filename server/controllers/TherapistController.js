@@ -42,7 +42,7 @@ async function get_upcoming_sessions(doctor_id, type) {
         SELECT s.*, p.name AS patient_name
         FROM doctor_session s
         JOIN patient p ON s.patient_id = p.id
-        WHERE s.doctor_id = ? AND s.scheduled_time > NOW() AND s.isCancelled = 0
+        WHERE s.doctor_id = ? AND s.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR) AND s.isCancelled = 0 AND s.ended = 0
         ORDER BY s.scheduled_time ASC
       `;
     } else {
@@ -56,8 +56,9 @@ async function get_upcoming_sessions(doctor_id, type) {
             patient_lifecoach_session pls ON pls.session_ID = lcs.session_ID
         WHERE 
             lcs.coach_ID = ? 
-            AND lcs.scheduled_time > NOW()
-            AND lcs.isCancelled = 0
+            AND lcs.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR)
+            AND lcs.isCancelled = 0 
+            AND lcs.ended = 0
         GROUP BY 
             lcs.session_ID
         ORDER BY 
@@ -254,18 +255,18 @@ async function get_patient_data(patient_id) {
 }
 
 // Update patient report after a session(UPDATE DB 0_-)
-async function update_patient_report(doctor_id, session_data) {
+async function update_patient_report(report, session_data , doctor_type) {
+
   try {
     const query = `
-      INSERT INTO patient_reports (doctor_id, patient_id, session_id, report_content, created_at)
-      VALUES (?, ?, ?, ?, NOW())
-      ON DUPLICATE KEY UPDATE report_content = VALUES(report_content), updated_at = NOW()
+      INSERT INTO report (report_content, patient_id, reporter_id, reporter_type)
+      VALUES (?, ?, ?, ?)
     `;
     const result = await executeQuery(query, [
-      doctor_id,
-      session_data.patient_id,
-      session_data.session_id,
-      session_data.report_content,
+      report,
+      session_data.patient_ID,
+      session_data.doctor_ID,
+      doctor_type,
     ]);
 
     if (result.affectedRows > 0) {

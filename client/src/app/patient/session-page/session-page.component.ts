@@ -25,6 +25,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
   check2 = false;
 
   sessionStarted = false;
+  sessionEnded = false;
 
   chatId: string = '';
   userId: string = '';
@@ -78,8 +79,11 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.socketService.onSessionEnded().subscribe(() => {
         this.sessionStarted = false;
+        console.log("sdasdasd");
+
         this.isExpired = true;
         console.log('Session ended');
+        this.router.navigate(['/patient/session-ended'],{ state: { session:this.session } ,replaceUrl: true });
       })
     );
 
@@ -119,6 +123,8 @@ export class SessionPageComponent implements OnInit, OnDestroy {
 
     this.timeLeft = `${this.pad(days)} days : ${this.pad(hours)} Hours : ${this.pad(minutes)} Minutes : ${this.pad(seconds)} Seconds`;
 
+
+
     if (!this.countInit) {
       this.countInit = true;
       this.check2 = true;
@@ -138,6 +144,10 @@ export class SessionPageComponent implements OnInit, OnDestroy {
       this.socketService.doctorReady(this.chatId, durationMinutes);
     }
   }
+
+  goHome() {
+  this.router.navigate(['patient/home']); // adjust route path as needed
+}
 
   checkLoading(): void {
     if (this.check1 && this.check2) {

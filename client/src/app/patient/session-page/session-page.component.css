@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  justify-content: center;
 
   background-color: #ffffff;
   border-radius: 10px;
@@ -133,4 +133,44 @@
 .startButton:disabled{
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.stretch{
+  height: 85%;
+}
+
+
+.session-ended-section {
+  text-align: center;
+  padding: 40px 20px;
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.session-ended-section h3 {
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+.session-ended-section p {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+}
+
+.btn-home {
+  padding: 10px 30px;
+  font-size: 1rem;
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-home:hover {
+  background-color: #388e3c;
 }

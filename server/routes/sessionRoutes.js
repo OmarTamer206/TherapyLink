@@ -10,6 +10,7 @@ const {
   view_session_details,
   cancellSession,
   view_previous_Sessions_patient,
+  get_chat_messages,
 } = require("../controllers/SessionController");
 
 const router = express.Router();
@@ -70,6 +71,22 @@ router.get("/view-old-sessions/:patient_id", async (req, res) => {
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/get-messages/:chatId', async (req, res) => {
+  const { chatId } = req.params;
+
+  if(!chatId)
+    return res.status(400).json({ error: 'Chat ID is required' });
+
+  try {
+    
+    result = await get_chat_messages(chatId);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching session messages:', err);
+    res.status(500).json({ error: 'Failed to fetch messages' });
   }
 });
 

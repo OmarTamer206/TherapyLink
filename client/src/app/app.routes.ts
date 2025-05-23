@@ -49,6 +49,7 @@ import { SessionsLogComponent } from './patient/sessions-log/sessions-log.compon
 import { ManagerSettingsComponent } from './manager/manager-settings/manager-settings.component';
 import { PatientProfileComponent } from './patient/profile/profile.component';
 import { ChatSectionComponent } from './chat-section/chat-section.component';
+import { SessionEndedComponent } from './patient/session-ended/session-ended.component';
 
 export const routes: Routes = [
   {
@@ -138,6 +139,10 @@ export const routes: Routes = [
       {
         path: 'old-session',
         component: OldSessionComponent,
+      },
+      {
+        path: 'session-ended',
+        component: SessionEndedComponent,
       },
       {
         path: 'profile',

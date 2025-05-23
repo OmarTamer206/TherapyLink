@@ -25,20 +25,7 @@
     </div>
   </div>
 
-  <form class="chat-input" *ngIf="!sessionEnded" (submit)="sendMessage(); $event.preventDefault()">
-    <input
-      type="text"
-      name="message"
-      [(ngModel)]="message"
-      (input)="onInputChange()"
-      (keydown)="onTyping()"
-      (blur)="stopTyping()"
-      placeholder="Type a message..."
-      autocomplete="off"
-      required
-    />
-    <button type="submit" >Send</button>
-  </form>
+
 
   <div *ngIf="sessionEnded" class="session-ended-message">
     <em>The session has ended. Chat is closed.</em>

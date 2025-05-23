@@ -50,6 +50,7 @@ timePassed = 0;
 timeLeft = this.TIME_LIMIT;
 timerInterval:any = null;
 remainingPathColor = this.COLOR_CODES.info.color;
+timerLabel:any
 
 loading = false;
 
@@ -65,31 +66,61 @@ startTimer() {
   if(this.upcomingSession){
       this.timerInterval = setInterval(() => {
 
-    if( this.check3 == false){
-      this.check3 = true
-      this.checkLoading();
-    }
+
+
+
+
 
     if(this.TIME_LIMIT)
     {
-      this.timePassed = this.timePassed += 1000;
-    this.timeLeft = this.TIME_LIMIT - this.timePassed;
-    document.getElementById("base-timer-label")!.innerHTML = this.formatTime(
-      this.timeLeft
-    );
+      if(isNaN(this.TIME_LIMIT) || this.TIME_LIMIT < 0){
+        this.timeLeft = 'Session Started';
+      this.timerLabel = this.timeLeft
+          this.onTimesUp();
+
+      }
+      else if(this.TIME_LIMIT != "Session Started"){
+
+        this.timePassed = this.timePassed += 1000;
+        this.timeLeft = this.TIME_LIMIT - this.timePassed;
+
+
+        if (this.timeLeft < 0 || this.timeLeft == 'Session Started') {
+
+          this.timeLeft = 'Session Started';
+
+          this.timerLabel = this.timeLeft
+          this.onTimesUp();
+
+        }
+        else{
+
+
+          this.timerLabel = this.formatTime(
+            this.timeLeft
+          );
+        }
+    }
+    if( this.check3 == false){
+        this.check3 = true
+        this.checkLoading();
+
+      }
     this.setCircleDasharray();
     this.setRemainingPathColor(this.timeLeft);
 
-    if (this.timeLeft === 0) {
-      this.onTimesUp();
-    }
-    }
+
+
+
+
+
+  }
+
+
+
   }, 1000);
   }
-  else{
-    this.check3 = true
-      this.checkLoading();
-  }
+
 
 
 }
@@ -103,6 +134,7 @@ formatTime(time:any) {
   if (seconds < 10) {
     seconds = `0${seconds}`;
   }
+
 
    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
@@ -155,7 +187,10 @@ setCircleDasharray() {
   }
 
   onTimesUp() {
+    console.log('Session Started');
+
     clearInterval(this.timerInterval);
+    this.timerInterval = null;
   }
 
 
@@ -179,7 +214,7 @@ setCircleDasharray() {
 
   }
 
-  getUpcomingSessions(){
+   getUpcomingSessions(){
     this.sessionService.viewUpcomingSessionsPatient().subscribe((response)=>{
       console.log(response);
 
@@ -205,7 +240,23 @@ setCircleDasharray() {
 
       }
 
-    this.startTimer();
+      if(!this.TIME_LIMIT || isNaN(this.TIME_LIMIT)){
+        this.check3 = true
+      this.checkLoading();
+
+      }
+      if(this.TIME_LIMIT < 0){
+        console.log(this.TIME_LIMIT);
+
+
+      this.timerLabel = 'Session Started';
+        this.check3 = true
+      this.checkLoading();
+      }else{
+
+
+        this.startTimer();
+      }
 
 
       this.check2 = true;
@@ -258,7 +309,7 @@ setCircleDasharray() {
   }
 }
 
-checkLoading(){
+async checkLoading(){
   if(this.check1 && this.check2 && this.check3 ){
     this.loading = true;
   }

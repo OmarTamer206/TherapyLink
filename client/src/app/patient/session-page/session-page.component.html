@@ -2,16 +2,27 @@
 <div class="session-container">
   <div class="session-content">
     <div class="title"><h2>Upcoming Session</h2></div>
+
     <div class="session-info">
       <span class="session-title">Session With: Dr. {{session.doctor_name}}</span>
       <span class="session-time">Timing: {{session.date}} , {{session.time}}</span>
-      <span class="session-duration">Duration : {{session.duration}} minutes &nbsp; , &nbsp;  Session Method : {{session.communication_type}}</span>
-
+      <span class="session-duration">
+        Duration : {{session.duration}} minutes &nbsp; , &nbsp;  Session Method : {{session.communication_type}}
+      </span>
     </div>
-    <div class="session-details">
-      @if(sessionStarted){
-        <app-chat-section
-        *ngIf="chatId && userId && userType && receiverId && receiverType"
+
+    <div class="session-details" [ngClass]="{'stretch': sessionStarted && !sessionEnded}">
+
+      <!-- Session Ended Section -->
+      <section *ngIf="sessionEnded" class="session-ended-section">
+        <h3>Session Ended</h3>
+        <p>Your session has ended. Thank you for attending!</p>
+        <button (click)="goHome()" class="btn-home">Go to Home</button>
+      </section>
+
+      <!-- Active Chat -->
+      <app-chat-section
+        *ngIf="sessionStarted && !sessionEnded && chatId && userId && userType && receiverId && receiverType"
         [chatId]="chatId"
         [userId]="userId"
         [userType]="userType"
@@ -19,16 +30,19 @@
         [receiverType]="receiverType"
         style="width: 100%; height: 100%;"
       ></app-chat-section>
-      }
-      @else {
-        <div class="session-waiting">
-          <p>Chat will be available after session starts</p>
-        </div>
-      }
+
+      <!-- Waiting for session start -->
+      <div *ngIf="!sessionStarted && !sessionEnded" class="session-waiting">
+        <p>Chat will be available after session starts</p>
+      </div>
     </div>
-    <div class="session-timer">
+
+    <!-- Start session controls -->
+    <div *ngIf="!sessionStarted && !sessionEnded && !isExpired" class="session-timer">
       <span>Starts in: {{timeLeft}}</span>
-      <button (click)="startSession()" [disabled]="!startButtonState" class="startButton">Start Session</button>
+    </div>
+    <div *ngIf="!sessionStarted && isExpired" class="session-timer">
+      <span>Waiting for the doctor to start the session</span>
     </div>
   </div>
 </div>

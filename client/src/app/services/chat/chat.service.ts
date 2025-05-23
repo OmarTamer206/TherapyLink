@@ -10,7 +10,7 @@ export class SocketService {
 
   connect(): void {
     if (!this.socket || !this.socket.connected) {
-      this.socket = io('http://localhost:3000'); // adjust URL as needed
+      this.socket = io('http://localhost:3000'); // Adjust URL as needed
       console.log('Socket connected:', this.socket.id);
     }
   }
@@ -22,6 +22,7 @@ export class SocketService {
     }
   }
 
+  // Enter chat with userId and userType
   enterChat(chatId: string, userId: string, userType: string): void {
     this.socket.emit('enterChat', { chatId, userId, userType });
   }
@@ -30,6 +31,7 @@ export class SocketService {
     this.socket.emit('exitChat', { chatId, userId });
   }
 
+  // Send message with senderId, senderType, and receiver details
   sendMessage(
     chatId: string,
     senderId: string,
@@ -64,6 +66,7 @@ export class SocketService {
     this.socket.emit('doctorReady', { chatId, sessionDurationMinutes });
   }
 
+  // Observable to get messages
   onMessage(): Observable<any> {
     return new Observable((observer) => {
       const handler = (data: any) => observer.next(data);
@@ -72,6 +75,7 @@ export class SocketService {
     });
   }
 
+  // Get previous messages for the chat
   onPreviousMessages(): Observable<any[]> {
     return new Observable((observer) => {
       const handler = (messages: any[]) => observer.next(messages);
@@ -80,6 +84,7 @@ export class SocketService {
     });
   }
 
+  // Get system messages (like errors or session updates)
   onSystemMessage(): Observable<any> {
     return new Observable((observer) => {
       const handler = (msg: any) => observer.next(msg);
@@ -88,14 +93,16 @@ export class SocketService {
     });
   }
 
-  onTyping(): Observable<{ userId: string; typing: boolean }> {
-    return new Observable((observer) => {
-      const handler = (data: { userId: string; typing: boolean }) => observer.next(data);
-      this.socket.on('participantTyping', handler);
-      return () => this.socket.off('participantTyping', handler);
-    });
-  }
+  // Typing status for participants
+onTyping(): Observable<{ userId: string; userName: string; typing: boolean }> {
+  return new Observable((observer) => {
+    const handler = (data: { userId: string; userName: string; typing: boolean }) => observer.next(data);
+    this.socket.on('participantTyping', handler);
+    return () => this.socket.off('participantTyping', handler);
+  });
+}
 
+  // Session start event
   onSessionStart(): Observable<void> {
     return new Observable((observer) => {
       const handler = () => observer.next();
@@ -104,6 +111,7 @@ export class SocketService {
     });
   }
 
+  // Session ended event
   onSessionEnded(): Observable<void> {
     return new Observable((observer) => {
       const handler = () => observer.next();
@@ -112,11 +120,17 @@ export class SocketService {
     });
   }
 
+  // Error handling event
   onErrorChat(): Observable<string> {
     return new Observable((observer) => {
       const handler = (msg: string) => observer.next(msg);
       this.socket.on('errorChat', handler);
       return () => this.socket.off('errorChat', handler);
     });
+  }
+
+  // Emit doctor end session
+  doctorEndSession(chatId: string, userId: string): void {
+    this.socket.emit('doctorEndSession', { chatId, userId });
   }
 }

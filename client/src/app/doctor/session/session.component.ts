@@ -9,10 +9,12 @@ import { ChatSectionComponent } from '../../chat-section/chat-section.component'
 import { SocketService } from '../../services/chat/chat.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { CallComponent } from '../../call/call.component';
+import { CallService } from '../../services/call/call.service';
 
 @Component({
   standalone: true,
-  imports: [ReportComponent, JournalComponent, NgIf, ChatSectionComponent , CommonModule , FormsModule],
+  imports: [ReportComponent, JournalComponent, NgIf, ChatSectionComponent , CommonModule , FormsModule , CallComponent],
   selector: 'app-session',
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.css'],
@@ -38,8 +40,10 @@ export class SessionComponent implements OnInit, OnDestroy {
   startButtonState = false;
 
   chatId: string = '';
+  callId: string = '';
   userId: string = '';
   userType = 'doctor';
+  userName = '';
   receiverId: string = '';
   receiverType = 'patient';
 
@@ -51,13 +55,15 @@ export class SessionComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
   duration: any;
+  comm_type: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private therapistService: TherapistService,
     private sessionService: SessionService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private callService: CallService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +84,7 @@ export class SessionComponent implements OnInit, OnDestroy {
 
     // Wait until chatId and userId are set (from gatherSessionData), so we add a small delay
     const initCheck = setInterval(() => {
-      if (this.chatId && this.userId) {
+      if (this.chatId!=null && this.userId) {
         this.socketService.enterChat(this.chatId, this.userId, this.userType );
 
         this.subscriptions.push(
@@ -100,6 +106,30 @@ export class SessionComponent implements OnInit, OnDestroy {
 
         clearInterval(initCheck);
       }
+      else if (this.callId != null && this.userId) {
+        this.callService.connect();
+
+        this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
+
+        this.subscriptions.push(
+          this.callService.onCallEnded().subscribe(() => {
+            this.sessionEnded = true;
+            alert('The call has ended.');
+            this.router.navigate(['/doctor/dashboard'], { replaceUrl: true });
+          })
+        );
+
+        // Optional: handle participant updates for real-time UI updates
+        this.subscriptions.push(
+          this.callService.onParticipantsUpdate().subscribe((participants) => {
+            console.log('Participants updated:', participants);
+            // You can add additional UI handling here if required
+          })
+        );
+
+        clearInterval(initCheck);
+      }
+
     }, 100);
 
     this.updateCountdown();
@@ -108,16 +138,28 @@ export class SessionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
-    this.socketService.exitChat(this.chatId, this.userId);
-    this.socketService.disconnect();
+
+    if (this.chatId!=null) {
+      this.socketService.exitChat(this.chatId, this.userId);
+      this.socketService.disconnect();
+    }
+
+    if (this.callId!=null) {
+      this.callService.leaveCall(this.callId, this.userId);
+      this.callService.disconnect();
+    }
+
     clearInterval(this.intervalId);
   }
+
 
   getDoctorData() {
     this.therapistService.getTherapistData().subscribe(
       (response) => {
         console.log('Doctor Data:', response);
         this.userId = response.data[0].id;
+        this.userName = response.data[0].Name;
+
         console.log('UserId set to:', this.userId);
       },
       (error) => {
@@ -131,6 +173,8 @@ export class SessionComponent implements OnInit, OnDestroy {
       (response) => {
         console.log('Session Data:', response);
         this.sessionData = response.data;
+        this.comm_type = this.sessionData.communication_type;
+        this.callId = this.sessionData.call_ID;
 
         if(this.sessionData.ended == 1){
           this.router.navigate(['/doctor/dashboard']);
@@ -237,12 +281,30 @@ export class SessionComponent implements OnInit, OnDestroy {
   startSession() {
     // Notify server that doctor is ready to start session
     ; // fallback to 30
-    this.socketService.doctorReady(this.chatId, this.duration);
+    if(this.chatId!= null){
+      this.socketService.doctorReady(this.chatId, this.duration);
+      this.sessionStarted = true;
+    }
+    if(this.callId!= null){
+      console.log(this.userName);
+      console.log(this.comm_type);
+
+      this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
+      this.sessionStarted = true;
+      this.callService.emitSessionStarted(this.callId);
+
+
+    }
   }
     endSession() {
     // Notify server that doctor is ready to start session
     ; // fallback to 30
-    this.socketService.doctorEndSession(this.chatId,this.userId);
+    if(this.chatId!= null){
+      this.socketService.doctorEndSession(this.chatId,this.userId);
+    }
+    if(this.callId!= null){
+      this.callService.leaveCall(this.callId, this.userId);
+    }
     this.sessionEnded = true;
   }
 

@@ -32,13 +32,18 @@
     </div>
 
     <div class="container third">
-      <ng-container *ngIf="!sessionStarted">
+      <ng-container *ngIf="!sessionStarted && comm_type == 'Chatting'">
         <div class="session-waiting">
           <p>Chat will be available after session starts</p>
         </div>
       </ng-container>
+      <ng-container *ngIf="!sessionStarted && comm_type == 'Voice / Video Call'">
+        <div class="session-waiting">
+          <p>Call will be available after session starts</p>
+        </div>
+      </ng-container>
 
-      <ng-container *ngIf="sessionStarted && !sessionEnded">
+      <ng-container *ngIf="sessionStarted && !sessionEnded && comm_type == 'Chatting'">
         <app-chat-section
           *ngIf="chatId && userId && userType && receiverId && receiverType"
           [chatId]="chatId"
@@ -49,6 +54,20 @@
           style="width: 100%;height: 100%;"
         ></app-chat-section>
       </ng-container>
+
+      <ng-container *ngIf="sessionStarted && !sessionEnded && comm_type == 'Voice / Video Call'">
+        <app-call
+      *ngIf="sessionStarted && !sessionEnded && callId && userId && userType && receiverType "
+        [call_ID]="callId"
+        [userId]="userId"
+        [userType]="userType"
+        [userName]="userName"
+        style="width: 100%; height: 100%;"
+      >
+
+      </app-call>
+      </ng-container>
+
     </div>
   </div>
 

@@ -1,0 +1,37 @@
+<div class="call-wrapper">
+  <div class="video-area">
+    <video #remoteVideo autoplay playsinline class="video remote"></video>
+    <video #localVideo autoplay playsinline muted class="video local"></video>
+  </div>
+
+  <div class="participants-container">
+    <div class="participant-card" *ngFor="let participant of participants | keyvalue">
+      <div class="avatar">{{ participant.value.userName.charAt(0) }}</div>
+      <div class="participant-info">
+        <h3>{{ participant.value.userName }}</h3>
+        <span class="type">{{ participant.value.userType }}</span>
+        <div class="status-icons">
+          <span [class.active]="!participant.value.muted">🎤</span>
+          <span [class.active]="participant.value.videoOn">📹</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="call-controls">
+    <button class="control-btn mute-btn" (click)="toggleMute()">
+      {{ muted ? 'Unmute 🎤' : 'Mute 🔇' }}
+    </button>
+    <button class="control-btn video-btn" (click)="toggleVideo()">
+      {{ videoOn ? 'Stop Video 📷' : 'Start Video 🎥' }}
+    </button>
+    <button class="control-btn leave-btn" (click)="leave()">
+      Leave Call 🚪
+    </button>
+    <button class="control-btn end-btn"
+            *ngIf="['doctor', 'life_coach', 'emergency_team'].includes(userType)"
+            (click)="endCall()">
+      End Call for All ⛔
+    </button>
+  </div>
+</div>

@@ -57,6 +57,7 @@ loading = false;
 check1=false;
 check2=false;
 check3=false;
+  patient_name: any;
 
 startTimer() {
 
@@ -218,7 +219,7 @@ setCircleDasharray() {
     this.sessionService.viewUpcomingSessionsPatient().subscribe((response)=>{
       console.log(response);
 
-
+      this.patient_name = response.patient_name
       this.upcomingSession = response.data[0]
 
       if(this.upcomingSession){
@@ -277,7 +278,7 @@ setCircleDasharray() {
   }
 
   goToUpcomingSessionPage(): void {
-    this.router.navigate([`patient/session-page`],{ state: { session:this.upcomingSession } });
+    this.router.navigate([`patient/session-page`],{ state: { session:this.upcomingSession , patient_name:this.patient_name} });
   }
 
   toggleTherapistPreference(): void {

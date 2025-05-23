@@ -42,7 +42,7 @@ JOIN life_coach lc ON lcs.coach_ID = lc.id
 WHERE pls.patient_ID = ? AND lcs.ended = 0
   AND lcs.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR) -- 2 hours before current time
 
-ORDER BY scheduled_time DESC
+ORDER BY scheduled_time
 
 
 
@@ -50,7 +50,7 @@ ORDER BY scheduled_time DESC
     
     const result = await executeQuery(query, [patient_id,patient_id]);
 
-    return { success: true, data: result };
+    return { success: true, data: result , patient_name: await getUserName(patient_id , "patient")};
   } catch (error) {
     return { success: false, message: "Error retrieving upcoming sessions for patient.", error: error.message };
   }

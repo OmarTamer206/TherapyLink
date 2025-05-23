@@ -13,6 +13,7 @@ const therapistRoutes = require("./routes/therapistRoutes");
 const agentRoutes = require("./routes/agentRoutes");
 
 const { ChatController } = require("./controllers/chatController");
+const { CallController } = require("./controllers/callController");
 require("dotenv").config();
 
 const app = express();
@@ -28,6 +29,8 @@ const io = new Server(server, {
 
 // 🔄 Real-time chat logic
 ChatController(io); // Call the function from chatController.js
+
+CallController(io); // Add this below your ChatController initialization
 
 // 🌐 Middleware
 app.use(cors());

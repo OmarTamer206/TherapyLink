@@ -62,6 +62,14 @@ export class CallService {
     });
   }
 
+  checkCallStatus(callId: string, userId: string): Promise<boolean> {
+  return new Promise(resolve => {
+    this.socket.emit('checkCallStatus', { call_ID: callId, userId }, (response: { rejoinAllowed: boolean }) => {
+      resolve(response.rejoinAllowed);
+    });
+  });
+}
+
   sendWebRTCOffer(call_ID: string, offer: RTCSessionDescriptionInit, senderId: string): void {
     this.socket.emit('webrtc-offer', { call_ID, offer, senderId });
   }
@@ -91,4 +99,13 @@ export class CallService {
       this.socket.on('webrtc-ice-candidate', data => observer.next(data));
     });
   }
+
+  onRejoinRequest(): Observable<{ call_ID: string; targetId: string }> {
+  return new Observable(observer => {
+    const handler = (data: any) => observer.next(data);
+    this.socket.on('rejoinRequest', handler);
+    return () => this.socket.off('rejoinRequest', handler);
+  });
+}
+
 }

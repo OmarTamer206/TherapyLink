@@ -106,6 +106,19 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     else if (this.callId != null){
        this.callService.connect();
 
+       this.callService.checkCallStatus(this.callId, this.userId).then(rejoin => {
+        if (rejoin) {
+          this.callService.joinCall(this.callId, this.userId, this.userType, this.patient_name);
+          this.sessionStarted = true;
+
+          setTimeout(() => {
+            const comp = document.querySelector('app-call') as any;
+            comp?.startMediaAndConnect?.();
+          }, 300);
+        } else {
+          console.log('Call is not active or already ended.');
+        }
+      });
 
        this.subscriptions.push(
 

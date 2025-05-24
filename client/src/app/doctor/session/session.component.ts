@@ -109,6 +109,25 @@ export class SessionComponent implements OnInit, OnDestroy {
       else if (this.callId != null && this.userId) {
         this.callService.connect();
 
+        this.callService.checkCallStatus(this.callId, this.userId).then(rejoin => {
+          if (rejoin) {
+            this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
+            this.sessionStarted = true;
+
+           setTimeout(() => {
+              const comp = document.querySelector('app-call') as any;
+              comp?.startMediaAndConnect?.();
+
+              // 👇 Force initiator to re-send offer
+              if (['doctor', 'life_coach', 'emergency_team'].includes(this.userType)) {
+                setTimeout(() => comp?.forceOffer?.(), 800); // slight delay to ensure connection is up
+              }
+            }, 300);
+          } else {
+            console.log('Call is not active or already ended.');
+          }
+        });
+
         this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
 
         this.subscriptions.push(

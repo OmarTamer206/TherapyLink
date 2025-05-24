@@ -1,6 +1,5 @@
 import {
-  Component, OnInit, OnDestroy, Input,
-  ViewChild, ElementRef
+  Component, OnInit, OnDestroy, Input, ViewChild, ElementRef
 } from '@angular/core';
 import { CallService } from '../services/call/call.service';
 import { CommonModule } from '@angular/common';
@@ -53,16 +52,27 @@ export class CallComponent implements OnInit, OnDestroy {
     });
 
     this.callService.onSessionStarted().subscribe(() => {
-      console.log('Session started (signal)');
+      console.log('Session started');
       this.startMediaAndConnect();
     });
 
-    await this.startMediaAndConnect(); // always try to start on init
+    this.callService.onRejoinRequest().subscribe(async ({ call_ID, targetId }) => {
+      if (
+        this.call_ID === call_ID &&
+        ['doctor', 'life_coach', 'emergency_team'].includes(this.userType)
+      ) {
+        console.log('Rejoin request received');
+        if (!this.peerConnection || this.peerConnection.connectionState === 'closed') {
+          await this.startMediaAndConnect();
+        }
+        this.forceOffer();
+      }
+    });
 
     this.callService.onWebRTCOffer().subscribe(async ({ offer, senderId }) => {
+      console.log('Offer received');
       if (!this.peerConnection) {
-        console.warn('PeerConnection not ready');
-        return;
+        await this.startMediaAndConnect();
       }
 
       try {
@@ -74,18 +84,19 @@ export class CallComponent implements OnInit, OnDestroy {
         this.callService.sendWebRTCAnswer(this.call_ID, answer, this.userId);
         this.flushPendingCandidates();
       } catch (err) {
-        console.error('Error setting offer:', err);
+        console.error('Error handling offer:', err);
       }
     });
 
     this.callService.onWebRTCAnswer().subscribe(async ({ answer }) => {
-      if (!this.peerConnection) return;
-      try {
-        await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-        this.remoteDescriptionSet = true;
-        this.flushPendingCandidates();
-      } catch (err) {
-        console.error('Error setting answer:', err);
+      if (this.peerConnection) {
+        try {
+          await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+          this.remoteDescriptionSet = true;
+          this.flushPendingCandidates();
+        } catch (err) {
+          console.error('Error setting answer:', err);
+        }
       }
     });
 
@@ -101,48 +112,10 @@ export class CallComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.callService.onRejoinRequest().subscribe(({ call_ID, targetId }) => {
-  if (
-    this.call_ID === call_ID &&
-    ['doctor', 'life_coach', 'emergency_team'].includes(this.userType)
-  ) {
-    console.log('Rejoin request received — sending new offer');
-    this.forceOffer();
-  }
-});
-
-
+    await this.startMediaAndConnect();
   }
 
-  toggleMute(): void {
-    if (this.localStream) {
-      this.muted = !this.muted;
-      this.localStream.getAudioTracks().forEach(track => track.enabled = !this.muted);
-      this.callService.toggleMute(this.call_ID, this.userId, this.muted);
-    }
-  }
-
-  toggleVideo(): void {
-    if (this.localStream) {
-      this.videoOn = !this.videoOn;
-      this.localStream.getVideoTracks().forEach(track => track.enabled = this.videoOn);
-      this.callService.toggleVideo(this.call_ID, this.userId, this.videoOn);
-    }
-  }
-
-  leave(): void {
-    this.callService.leaveCall(this.call_ID, this.userId);
-    if (this.peerConnection) this.peerConnection.close();
-    if (this.localStream) this.localStream.getTracks().forEach(track => track.stop());
-  }
-
-  endCall(): void {
-    if (['doctor', 'life_coach', 'emergency_team'].includes(this.userType)) {
-      this.callService.endCall(this.call_ID, this.userId);
-    }
-  }
-
-  public async startMediaAndConnect(): Promise<void> {
+  async startMediaAndConnect(): Promise<void> {
     try {
       if (this.peerConnection) this.peerConnection.close();
       if (this.localStream) this.localStream.getTracks().forEach(t => t.stop());
@@ -174,16 +147,19 @@ export class CallComponent implements OnInit, OnDestroy {
           this.callService.sendIceCandidate(this.call_ID, event.candidate.toJSON(), this.userId);
         }
       };
+    } catch (err) {
+      console.error('Failed to start media:', err);
+    }
+  }
 
-      if (['doctor', 'life_coach', 'emergency_team'].includes(this.userType)) {
-        const offer = await this.peerConnection.createOffer();
-        await this.peerConnection.setLocalDescription(offer);
-        this.callService.sendWebRTCOffer(this.call_ID, offer, this.userId);
-      }
-
-    } catch (error) {
-      console.error('startMediaAndConnect failed:', error);
-      alert('Camera/Microphone permission denied or not available.');
+  public async forceOffer(): Promise<void> {
+    if (!this.peerConnection || !this.localStream) return;
+    try {
+      const offer = await this.peerConnection.createOffer();
+      await this.peerConnection.setLocalDescription(offer);
+      this.callService.sendWebRTCOffer(this.call_ID, offer, this.userId);
+    } catch (err) {
+      console.error('forceOffer error:', err);
     }
   }
 
@@ -193,28 +169,41 @@ export class CallComponent implements OnInit, OnDestroy {
       try {
         await this.peerConnection!.addIceCandidate(new RTCIceCandidate(candidate));
       } catch (err) {
-        console.error('Error adding ICE:', err);
+        console.error('Flush ICE error:', err);
       }
     });
     this.pendingCandidates = [];
   }
 
-  public async forceOffer(): Promise<void> {
-  if (!this.peerConnection || this.peerConnection.connectionState === 'closed') {
-    console.warn('Cannot send offer: PeerConnection is not available');
-    return;
+  toggleMute(): void {
+    if (this.localStream) {
+      this.muted = !this.muted;
+      this.localStream.getAudioTracks().forEach(track => track.enabled = !this.muted);
+      this.callService.toggleMute(this.call_ID, this.userId, this.muted);
+    }
   }
 
-  try {
-    const offer = await this.peerConnection.createOffer();
-    await this.peerConnection.setLocalDescription(offer);
-    this.callService.sendWebRTCOffer(this.call_ID, offer, this.userId);
-    console.log('[WebRTC] Force-offer sent due to rejoin');
-  } catch (err) {
-    console.error('Error forcing offer:', err);
+  toggleVideo(): void {
+    if (this.localStream) {
+      this.videoOn = !this.videoOn;
+      this.localStream.getVideoTracks().forEach(track => track.enabled = this.videoOn);
+      this.callService.toggleVideo(this.call_ID, this.userId, this.videoOn);
+    }
   }
-}
 
+  leave(): void {
+    this.callService.leaveCall(this.call_ID, this.userId);
+    if (this.peerConnection) this.peerConnection.close();
+    if (this.localStream) this.localStream.getTracks().forEach(track => track.stop());
+    this.localVideoRef.nativeElement.srcObject = null;
+    this.remoteVideoRef.nativeElement.srcObject = null;
+  }
+
+  endCall(): void {
+    if (['doctor', 'life_coach', 'emergency_team'].includes(this.userType)) {
+      this.callService.endCall(this.call_ID, this.userId);
+    }
+  }
 
   ngOnDestroy(): void {
     this.leave();

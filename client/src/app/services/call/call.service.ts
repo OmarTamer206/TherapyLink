@@ -32,7 +32,7 @@ export class CallService {
     this.socket.emit('endCall', { call_ID, userId });
   }
 
-  emitSessionStarted(call_ID: string): void {
+  emitSessionStarted(call_ID: string,durationMinutes: any): void {
     this.socket.emit('startSession', { call_ID });
   }
 

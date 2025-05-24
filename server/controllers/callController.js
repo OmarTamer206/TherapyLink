@@ -3,6 +3,42 @@ const { executeQuery } = require('./databaseController');
 function CallController(io) {
   const activeCalls = {}; // Tracks active calls by call_ID
 
+
+  function scheduleCallEnd(call_ID) {
+  if (!activeCalls[call_ID] || !activeCalls[call_ID].sessionEndTime) return;
+
+  const delay = activeCalls[call_ID].sessionEndTime - Date.now();
+  if (delay <= 0) {
+    endSession(call_ID);
+    return;
+  }
+
+  activeCalls[call_ID].sessionTimeout = setTimeout(() => {
+    endSession(call_ID, activeCalls[call_ID].sessionOwnerType);
+  }, delay);
+}
+
+async function endSession(call_ID) {
+  if (!activeCalls[call_ID]) return;
+
+    
+      
+        activeCalls[call_ID].sessionEnded = true;
+
+        io.to(call_ID).emit('callEnded');
+
+        const sessionTable = `${user.userType}_session`;
+        await executeQuery(`UPDATE ${sessionTable} SET ended = 1 WHERE call_ID = ?`, [call_ID]);
+
+        delete activeCalls[call_ID];
+        console.log(`Call ${call_ID} ended by ${user.userName} (${user.userType})`);
+      
+
+ 
+
+  delete activeCalls[call_ID];
+}
+
   io.on('connection', (socket) => {
     console.log(`Client connected for call: ${socket.id}`);
 
@@ -48,6 +84,10 @@ function CallController(io) {
       };
 
       io.to(call_ID).emit('participantsUpdate', activeCalls[call_ID].participants);
+
+    //   if (userType === 'patient' ) {
+    //     io.to(call_ID).emit('sessionStarted');
+    //     }
 
       for (const id in activeCalls[call_ID].participants) {
         if (id !== userId) {
@@ -117,13 +157,15 @@ function CallController(io) {
     });
 
     // Manual start of session by doctor/life_coach/emergency_team
-    socket.on('startSession', ({ call_ID }) => {
-      if (activeCalls[call_ID]) {
-        activeCalls[call_ID].callStarted = true;
-        io.to(call_ID).emit('sessionStarted');
-        console.log(`Session started for call ${call_ID}`);
-      }
-    });
+    socket.on('startSession', ({ call_ID, durationMinutes }) => {
+  if (activeCalls[call_ID]) {
+    activeCalls[call_ID].callStarted = true;
+    activeCalls[call_ID].sessionEndTime = Date.now() + durationMinutes * 60 * 1000;
+    io.to(call_ID).emit('sessionStarted');
+    console.log(`Session started for call ${call_ID} for ${durationMinutes} minutes`);
+    scheduleCallEnd(call_ID);
+  }
+});
 
     socket.on('disconnect', () => {
       for (const call_ID in activeCalls) {

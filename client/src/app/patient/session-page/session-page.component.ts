@@ -138,7 +138,6 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.callService.onCallEnded().subscribe(() => {
         this.sessionEnded = true;
-        alert('The call has ended.');
         this.router.navigate(['/patient/session-ended'], { state: { session: this.session }, replaceUrl: true });
       })
     );

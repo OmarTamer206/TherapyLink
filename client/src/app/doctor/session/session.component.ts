@@ -310,7 +310,7 @@ export class SessionComponent implements OnInit, OnDestroy {
 
       this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
       this.sessionStarted = true;
-      this.callService.emitSessionStarted(this.callId);
+      this.callService.emitSessionStarted(this.callId,this.duration);
 
 
     }
@@ -322,7 +322,7 @@ export class SessionComponent implements OnInit, OnDestroy {
       this.socketService.doctorEndSession(this.chatId,this.userId);
     }
     if(this.callId!= null){
-      this.callService.leaveCall(this.callId, this.userId);
+      this.callService.endCall(this.callId, this.userId);
     }
     this.sessionEnded = true;
   }

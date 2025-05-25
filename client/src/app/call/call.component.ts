@@ -47,7 +47,7 @@ export class CallComponent implements OnInit, OnDestroy {
     this.callService.onParticipantsUpdate().subscribe(p => this.participants = p);
     this.callService.onCallEnded().subscribe(() => {
       this.callEnded = true;
-      alert('Call ended');
+
       this.leave();
     });
 
@@ -192,12 +192,51 @@ export class CallComponent implements OnInit, OnDestroy {
   }
 
   leave(): void {
-    this.callService.leaveCall(this.call_ID, this.userId);
-    if (this.peerConnection) this.peerConnection.close();
-    if (this.localStream) this.localStream.getTracks().forEach(track => track.stop());
-    this.localVideoRef.nativeElement.srcObject = null;
-    this.remoteVideoRef.nativeElement.srcObject = null;
+  this.callService.leaveCall(this.call_ID, this.userId);
+
+  // ✅ Stop all media tracks (releases camera/mic)
+  if (this.localStream) {
+    this.localStream.getTracks().forEach(track => {
+      track.stop();
+    });
+    this.localStream = null!;
   }
+
+  // ✅ Close peer connection
+  if (this.peerConnection) {
+    this.peerConnection.ontrack = null;
+    this.peerConnection.onicecandidate = null;
+    this.peerConnection.close();
+    this.peerConnection = null!;
+  }
+
+  // ✅ Clear video elements and force refresh
+  if (this.localVideoRef?.nativeElement) {
+    this.localVideoRef.nativeElement.pause();
+    this.localVideoRef.nativeElement.srcObject = null;
+    this.localVideoRef.nativeElement.load(); // Force DOM update
+  }
+
+  if (this.remoteVideoRef?.nativeElement) {
+    this.remoteVideoRef.nativeElement.pause();
+    this.remoteVideoRef.nativeElement.srcObject = null;
+    this.remoteVideoRef.nativeElement.load(); // Force DOM update
+  }
+
+  // ✅ Reset flags
+  this.videoOn = false;
+  this.muted = false;
+  this.callEnded = true;
+  this.remoteDescriptionSet = false;
+  this.pendingCandidates = [];
+
+  navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+  .then(stream => stream.getTracks().forEach(track => track.stop()))
+  .catch(() => {});
+
+}
+
+
 
   endCall(): void {
     if (['doctor', 'life_coach', 'emergency_team'].includes(this.userType)) {

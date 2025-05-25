@@ -99,7 +99,9 @@ export class SessionPageComponent implements OnInit, OnDestroy {
 
         this.isExpired = true;
         console.log('Session ended');
-        this.router.navigate(['/patient/session-ended'],{ state: { session:this.session } ,replaceUrl: true });
+        // this.router.navigate(['/patient/session-ended'],{ state: { session:this.session } ,replaceUrl: true });
+        window.location.href = '/patient/session-ended';
+
       })
     );
     }

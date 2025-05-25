@@ -32,8 +32,8 @@ export class CallService {
     this.socket.emit('endCall', { call_ID, userId });
   }
 
-  emitSessionStarted(call_ID: string,durationMinutes: any): void {
-    this.socket.emit('startSession', { call_ID });
+  emitSessionStarted(call_ID: string,session_type:string,durationMinutes: any): void {
+    this.socket.emit('startSession', { call_ID ,session_type, durationMinutes });
   }
 
   toggleMute(call_ID: string, userId: string, muted: boolean): void {

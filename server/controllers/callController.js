@@ -4,7 +4,7 @@ function CallController(io) {
   const activeCalls = {}; // Tracks active calls by call_ID
 
 
-  function scheduleCallEnd(call_ID) {
+  function scheduleCallEnd(call_ID , session_type) {
   if (!activeCalls[call_ID] || !activeCalls[call_ID].sessionEndTime) return;
 
   const delay = activeCalls[call_ID].sessionEndTime - Date.now();
@@ -14,11 +14,11 @@ function CallController(io) {
   }
 
   activeCalls[call_ID].sessionTimeout = setTimeout(() => {
-    endSession(call_ID, activeCalls[call_ID].sessionOwnerType);
+    endSession(call_ID,session_type);
   }, delay);
 }
 
-async function endSession(call_ID) {
+async function endSession(call_ID , session_type) {
   if (!activeCalls[call_ID]) return;
 
     
@@ -27,11 +27,11 @@ async function endSession(call_ID) {
 
         io.to(call_ID).emit('callEnded');
 
-        const sessionTable = `${user.userType}_session`;
+        const sessionTable = `${session_type}_session`;
         await executeQuery(`UPDATE ${sessionTable} SET ended = 1 WHERE call_ID = ?`, [call_ID]);
 
         delete activeCalls[call_ID];
-        console.log(`Call ${call_ID} ended by ${user.userName} (${user.userType})`);
+        console.log(`Call ${call_ID} ended by ${sessionTable} `);
       
 
  
@@ -157,13 +157,13 @@ async function endSession(call_ID) {
     });
 
     // Manual start of session by doctor/life_coach/emergency_team
-    socket.on('startSession', ({ call_ID, durationMinutes }) => {
+    socket.on('startSession', ({ call_ID,session_type, durationMinutes }) => {
   if (activeCalls[call_ID]) {
     activeCalls[call_ID].callStarted = true;
     activeCalls[call_ID].sessionEndTime = Date.now() + durationMinutes * 60 * 1000;
     io.to(call_ID).emit('sessionStarted');
-    console.log(`Session started for call ${call_ID} for ${durationMinutes} minutes`);
-    scheduleCallEnd(call_ID);
+    console.log(`Session started for call ${call_ID} for ${durationMinutes} minutes (${session_type} session)`);
+    scheduleCallEnd(call_ID , session_type);
   }
 });
 

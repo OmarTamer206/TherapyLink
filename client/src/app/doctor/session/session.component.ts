@@ -133,8 +133,7 @@ export class SessionComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
           this.callService.onCallEnded().subscribe(() => {
             this.sessionEnded = true;
-            alert('The call has ended.');
-            this.router.navigate(['/doctor/dashboard'], { replaceUrl: true });
+
           })
         );
 
@@ -310,7 +309,7 @@ export class SessionComponent implements OnInit, OnDestroy {
 
       this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
       this.sessionStarted = true;
-      this.callService.emitSessionStarted(this.callId,this.duration);
+      this.callService.emitSessionStarted(this.callId,"doctor",this.duration);
 
 
     }
@@ -334,8 +333,8 @@ export class SessionComponent implements OnInit, OnDestroy {
     this.therapistService.updatePatientReport(this.doctorReport,this.sessionData).subscribe({
       next: () => {
 
-      this.router.navigate(['/doctor/dashboard']);
-
+      // this.router.navigate(['/doctor/dashboard']);
+      window.location.href = '/doctor/dashboard';
 
       },
       error: (err) => {

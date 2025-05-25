@@ -1,37 +1,43 @@
 <div class="call-wrapper">
-  <div class="video-area">
-    <video #remoteVideo autoplay playsinline class="video remote"></video>
-    <video #localVideo autoplay playsinline muted class="video local"></video>
-  </div>
 
-  <div class="participants-container">
-    <div class="participant-card" *ngFor="let participant of participants | keyvalue">
-      <div class="avatar">{{ participant.value.userName.charAt(0) }}</div>
-      <div class="participant-info">
-        <h3>{{ participant.value.userName }}</h3>
-        <span class="type">{{ participant.value.userType }}</span>
-        <div class="status-icons">
-          <span [class.active]="!participant.value.muted">🎤</span>
-          <span [class.active]="participant.value.videoOn">📹</span>
+  <!-- Main video area -->
+  <div class="video-area" #videoArea>
+    <!-- Sidebar for participants -->
+    <div class="sidebar" [class.hidden]="sidebarHidden">
+      <h3>Participants</h3>
+      <div class="participant-list">
+        <div class="participant-card" *ngFor="let participant of participants | keyvalue">
+          <div *ngIf="participant.value.userType != 'patient'" class="avatar">Dr</div>
+          <div *ngIf="participant.value.userType == 'patient'" class="avatar">{{ participant.value.userName.charAt(0) }}</div>
+          <div class="participant-info">
+            <strong *ngIf="participant.value.userType != 'patient'">Dr. {{ participant.value.userName }}</strong>
+            <strong *ngIf="participant.value.userType == 'patient'">{{ participant.value.userName }}</strong>
+            <small>{{ participant.value.userType }}</small>
+            <div class="status-icons">
+              <span [class.active]="!participant.value.muted">🎤</span>
+              <span [class.active]="participant.value.videoOn">📹</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+    <video #remoteVideo autoplay playsinline class="video remote"></video>
+    <video #localVideo autoplay playsinline muted class="video local"></video>
 
-  <div class="call-controls">
-    <button class="control-btn mute-btn" (click)="toggleMute()">
-      {{ muted ? 'Unmute 🎤' : 'Mute 🔇' }}
+    <!-- Controls -->
+    <div class="call-controls">
+      <button class="control-btn mute-btn" (click)="toggleMute()">
+        {{ muted ? 'Unmute 🎤' : 'Mute 🔇' }}
+      </button>
+      <button class="control-btn video-btn" (click)="toggleVideo()">
+        {{ videoOn ? 'Stop Video 📷' : 'Start Video 🎥' }}
+      </button>
+      <button class="control-btn toggle-sidebar" (click)="sidebarHidden = !sidebarHidden">
+        {{ sidebarHidden ? 'Show Participants' : 'Hide Participants' }}
+      </button>
+      <button class="control-btn fullscreen-btn" (click)="toggleFullScreen()">
+      {{ isFullscreen ? 'Exit Fullscreen ⬆️' : 'Fullscreen ⬇️' }}
     </button>
-    <button class="control-btn video-btn" (click)="toggleVideo()">
-      {{ videoOn ? 'Stop Video 📷' : 'Start Video 🎥' }}
-    </button>
-    <button class="control-btn leave-btn" (click)="leave()">
-      Leave Call 🚪
-    </button>
-    <button class="control-btn end-btn"
-            *ngIf="['doctor', 'life_coach', 'emergency_team'].includes(userType)"
-            (click)="endCall()">
-      End Call for All ⛔
-    </button>
+    </div>
   </div>
 </div>

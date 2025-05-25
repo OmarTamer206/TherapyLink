@@ -24,6 +24,10 @@ export class CallComponent implements OnInit, OnDestroy {
   videoOn = false;
   callEnded = false;
 
+  sidebarHidden = true;
+  isFullscreen = false;
+
+
   pendingCandidates: RTCIceCandidateInit[] = [];
   remoteDescriptionSet = false;
 
@@ -34,6 +38,7 @@ export class CallComponent implements OnInit, OnDestroy {
 
   @ViewChild('localVideo', { static: false }) localVideoRef!: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo', { static: false }) remoteVideoRef!: ElementRef<HTMLVideoElement>;
+  @ViewChild('videoArea') videoAreaRef!: ElementRef;
 
   localStream!: MediaStream;
   peerConnection!: RTCPeerConnection;
@@ -243,6 +248,31 @@ export class CallComponent implements OnInit, OnDestroy {
       this.callService.endCall(this.call_ID, this.userId);
     }
   }
+
+
+toggleFullScreen(): void {
+  const elem = this.videoAreaRef.nativeElement;
+
+  if (!this.isFullscreen) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if ((<any>elem).webkitRequestFullscreen) {
+      (<any>elem).webkitRequestFullscreen(); // Safari
+    } else if ((<any>elem).msRequestFullscreen) {
+      (<any>elem).msRequestFullscreen(); // IE11
+    }
+    this.isFullscreen = true;
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if ((<any>document).webkitExitFullscreen) {
+      (<any>document).webkitExitFullscreen();
+    } else if ((<any>document).msExitFullscreen) {
+      (<any>document).msExitFullscreen();
+    }
+    this.isFullscreen = false;
+  }
+}
 
   ngOnDestroy(): void {
     this.leave();

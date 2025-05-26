@@ -50,6 +50,7 @@ import { ManagerSettingsComponent } from './manager/manager-settings/manager-set
 import { PatientProfileComponent } from './patient/profile/profile.component';
 import { ChatSectionComponent } from './chat-section/chat-section.component';
 import { SessionEndedComponent } from './patient/session-ended/session-ended.component';
+import { LifeCoachSessionEndedComponent } from './life-coach/session-ended/session-ended.component';
 
 export const routes: Routes = [
   {
@@ -217,6 +218,10 @@ export const routes: Routes = [
       {
         path: 'session/:id',
         component: lifeSessionComponent,
+      },
+      {
+        path: 'session-ended',
+        component: LifeCoachSessionEndedComponent,
       },
     ],
   },

@@ -41,7 +41,7 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
 
   callId: string = '';
   userId: string = '';
-  userType = 'doctor';
+  userType = 'life_coach';
   userName = '';
   receiverId: string = '';
   receiverType = 'patient';
@@ -279,7 +279,7 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
     }
     this.sessionEnded = true;
 
-    window.location.href = '/life-coach/dashboard';
+    window.location.href = '/life-coach/session-ended';
   }
 
 

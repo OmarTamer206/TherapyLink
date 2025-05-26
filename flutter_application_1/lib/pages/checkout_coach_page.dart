@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/payment_done.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -223,7 +224,11 @@ class _CheckoutCoachPageState extends State<CheckoutCoachPage> {
   Widget _buildCheckoutButton() {
     return ElevatedButton(
       onPressed: () {
-        // Add payment processing or navigation here
+        // Navigate to PaymentSuccessPage (payment_done.dart) when Check Out button is pressed
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PaymentSuccessPage()),
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 24, 41, 125),

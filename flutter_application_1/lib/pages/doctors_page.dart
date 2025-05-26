@@ -26,10 +26,14 @@ class DoctorsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFDFF0F4),
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: Colors.black),
+        leading: IconButton(onPressed:() {
+            Navigator.pop(context);  // Handles the back button
+          }, icon: const Icon(Icons.arrow_back, color: Colors.black),)
+        ,
         title: const Text(
           'Doctors',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          
         ),
         centerTitle: true,
       ),

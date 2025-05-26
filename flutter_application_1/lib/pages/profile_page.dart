@@ -9,40 +9,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // Sample notifications
-  final List<String> notifications = [
-    "Your session starts in 20 minutes.",
-    "You have an upcoming group therapy at 5:00 PM.",
-    "Emergency team on standby.",
-  ];
+
 
   // Function to show notifications
-  void _showNotifications() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Notifications"),
-          content: SingleChildScrollView(
-            child: Column(
-              children: notifications
-                  .map((notification) => ListTile(
-                        title: Text(notification),
-                      ))
-                  .toList(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
         ),
         centerTitle: true,
-        flexibleSpace: Padding(
-          padding: const EdgeInsets.only(top: 10, left: 10), // Reduced top padding
-          child: Row(
-            children: [
-              // Notification icon placed on the top left under the logo
-              IconButton(
-                icon: const Icon(Icons.notifications),
-                color: const Color.fromARGB(255, 24, 41, 125),
-                onPressed: _showNotifications, // Show notifications when pressed
-              ),
-            ],
-          ),
-        ),
+        
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),

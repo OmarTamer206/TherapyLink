@@ -66,7 +66,7 @@
     <!-- Right Section (Timer + Upcoming Sessions) -->
     <div style="width: 300px; display: flex; flex-direction: column; gap: 20px;">
       <!-- Timer Card -->
-      <app-countdown  [scheduledTime]='upcomingSessionDate' [sessionId]="upcomingSessionID" [state]="upcomingSessionState"></app-countdown>
+      <app-countdown  [scheduledTime]='upcomingSessionDate' [sessionId]="upcomingSessionID" [state]="upcomingSessionState" [doctorType]="'doctor'"></app-countdown>
 
       <!-- Scrollable Upcoming Sessions -->
       <!-- Scrollable Upcoming Sessions with fixed height -->

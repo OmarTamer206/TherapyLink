@@ -16,16 +16,74 @@
   gap: 20px;
 }
 
-/* Life Coach's Sessions Header */
-.session-title {
+.upper{
+
   background-color: white;
   text-align: center;
-  font-size: 24px;
   font-weight: bold;
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+/* Life Coach's Sessions Header */
+.session-title {
+
+font-size: 1.2em;
+
+}
+
+
+/* Start Session and Session Starts In Button */
+.start-session-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+.end-session-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.session-timer-btn,
+.start-session {
+  background-color: #06303e; /* Same color as View Journal button */
+  color: white;
+  border: none;
+  padding: 10px 30px; /* Ensure both buttons are the same size */
+  font-size: 16px; /* Same font size */
+  border-radius: 5px;
+  cursor: pointer;
+  width: 270px;
+}
+
+.start-session:disabled{
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.start-session:disabled:hover{
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.session-timer-btn:hover,
+.start-session:hover {
+  background-color: #06303e;
+}
+
+.session-timer-btn:focus,
+.start-session:focus {
+  outline: none;
+}
+
+
 
 /* Date & Time Container */
 .session-info-row {
@@ -133,4 +191,77 @@
 }
 .entry-box h3 {
   margin-bottom: 10px;
+}
+
+.session-waiting{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 36px;
+  background-color: #fff;
+  width: 100%;
+}
+
+.display-none{
+  display: none;
+}
+.display-flex{
+  display: flex;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 700px;
+  height: 400px;
+  max-width: 90vw;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+      justify-content: space-between;
+    align-items: center;
+}
+
+.modal textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-buttons button {
+  background-color: #06303e;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-buttons button[disabled] {
+  background-color: #999;
+  cursor: not-allowed;
 }

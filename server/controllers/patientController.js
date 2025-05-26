@@ -205,7 +205,7 @@ async function Make_an_appointment(patient_ID, sessionData) {
       result = await executeQuery(query, [patient_ID, sessionID]);
 
       // Insert into the call table for life coach (if applicable)
-      query = `INSERT INTO call () VALUES ()`;
+      query = `INSERT INTO \`call\` () VALUES ()`;
       const callResult = await executeQuery(query, [sessionID]);
 
       // Add call_id to the session

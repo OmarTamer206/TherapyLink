@@ -1,9 +1,28 @@
+
+@if (!loading) {
+  <div  class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+}
+@else {
 <section class="session-layout">
   <!-- Center Section -->
   <div class="center-section">
     <!-- Header -->
-    <h2 class="session-title">{{sessionData.topic}} Session</h2>
+    <div class="upper">
 
+      <h2 class="session-title">Session Topic : {{sessionData.topic}} </h2>
+
+      <div class="right">
+        <div class="start-session-container" [ngClass]="{'display-none': sessionStarted}">
+        <button *ngIf="!isExpired" class="session-timer-btn">Session Starts in <br>{{timeLeft}}</button>
+        <button class="start-session" (click)="startSession()" [disabled]="!startButtonState">Start Session</button>
+      </div>
+      <div class="end-session-container" [ngClass]="{'display-none': !sessionStarted , 'display-flex':sessionStarted }">
+        <button class="start-session" (click)="endSession()">End Session</button>
+      </div>
+      </div>
+    </div>
     <!-- Session Date & Time -->
     <div class="session-info-row">
       <span class="session-date">Session Date: {{sessionData.date}}</span>
@@ -12,7 +31,23 @@
 
     <!-- Video Call Section -->
     <div class="video-call-box">
-      <p>Video Call</p>
+      <ng-container *ngIf="!sessionStarted" >
+         <div class="session-waiting">
+           <p>Call will be available after session starts</p>
+         </div>
+       </ng-container>
+      <ng-container *ngIf="sessionStarted && !sessionEnded">
+        <app-call
+      *ngIf="sessionStarted && !sessionEnded && callId && userId && userType && receiverType "
+        [call_ID]="callId"
+        [userId]="userId"
+        [userType]="userType"
+        [userName]="userName"
+        style="width: 100%; height: 100%;"
+      >
+
+      </app-call>
+      </ng-container>
     </div>
   </div>
 
@@ -44,3 +79,4 @@
     </div>
   </div>
 </section>
+}

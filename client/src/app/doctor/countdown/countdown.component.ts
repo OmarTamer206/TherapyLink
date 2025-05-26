@@ -12,6 +12,7 @@ import { CommonModule, NgIf } from '@angular/common';
 export class CountdownComponent implements OnInit, OnDestroy {
   @Input() scheduledTime!: string; // ISO string
   @Input() sessionId!: number;
+  @Input() doctorType!: string;
   @Input() state!: string;
 
   timeLeft: string = '';
@@ -57,7 +58,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
 
   navigateToSession(): void {
     if (this.state !== 'No Upcoming Sessions') {
-      this.router.navigate(['doctor/session', this.sessionId]);
+      this.router.navigate([`${this.doctorType}/session`, this.sessionId]);
     }
   }
 }

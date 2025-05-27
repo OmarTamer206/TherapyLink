@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBottomBar(BuildContext context) {
     return Container(
+      
       decoration: const BoxDecoration(
         color: Color(0xFF1F2937),
         borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
@@ -114,123 +115,118 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
+          width: double.maxFinite,
+          height: double.maxFinite,
+          padding: const EdgeInsets.only(top: 14),
+          decoration: const BoxDecoration(
+            color: Color(0xFFDDF1F4),
+          ),
           child: Column(
             children: [
-              Container(
-                width: double.maxFinite,
-                padding: const EdgeInsets.only(top: 14),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFDDF1F4),
+              _buildAppBar(context),
+              const SizedBox(height: 24),
+              const Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Welcome Emily !",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
-                child: Column(
-                  children: [
-                    _buildAppBar(context),
-                    const SizedBox(height: 24),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Welcome Emily !",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+              ),
+              const SizedBox(height: 11),
+              const Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Upcoming Session",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SessionsPage()),
+                  );
+                },
+                child: Container(
+                  width: double.maxFinite,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Session With: Dr. Magdy",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 11),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Upcoming Session",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        "Timing: 9/1/2025 , 7:00 PM",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SessionsPage()),
-                        );
-                      },
-                      child: Container(
+                      const SizedBox(height: 40),
+                      Container(
+                        height: 240,
                         width: double.maxFinite,
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(6),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 12,
-                              offset: const Offset(0, 6),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Session With: Dr. Magdy",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            const Text(
-                              "Timing: 9/1/2025 , 7:00 PM",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            const SizedBox(height: 40),
-                            Container(
-                              height: 240,
-                              width: double.maxFinite,
-                              margin: const EdgeInsets.symmetric(horizontal: 38),
-                              child: const DynamicCountdownWidget(
-                                sessionTime: "2025-05-27 04:29:00",
-                              ),
-                            ),
-                            const SizedBox(height: 30),
-                          ],
+                        margin: const EdgeInsets.symmetric(horizontal: 38),
+                        child: const DynamicCountdownWidget(
+                          sessionTime: "2025-05-27 21:32:00",
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 25),
-                    const Divider(indent: 20, endIndent: 20, color: Color(0xFF149FA8)),
-                    const SizedBox(height: 25),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          Expanded(child: _buildChangeTherapistButton(context)),
-                          const SizedBox(width: 12),
-                          Expanded(child: _buildChooseDoctorButton(context)),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _buildRepeatChatbotButton(context),
-                    const SizedBox(height: 30),
+                      const SizedBox(height: 30),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 25),
+              const Divider(indent: 20, endIndent: 20, color: Color(0xFF149FA8)),
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    Expanded(child: _buildChangeTherapistButton(context)),
+                    const SizedBox(width: 12),
+                    Expanded(child: _buildChooseDoctorButton(context)),
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
+              _buildRepeatChatbotButton(context),
+              const SizedBox(height: 30),
             ],
           ),
         ),

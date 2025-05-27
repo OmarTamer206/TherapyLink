@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'session_feedback_page.dart'; // Import the Session Feedback page
+import 'session_feedback_page.dart';
 
 class SessionsPage extends StatelessWidget {
   const SessionsPage({super.key});
@@ -22,6 +22,9 @@ class SessionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final containerWidth = screenWidth * 0.9;
+
     return Scaffold(
       backgroundColor: const Color(0xFFDFF0F4),
       appBar: AppBar(
@@ -37,82 +40,136 @@ class SessionsPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Upcoming Sessions',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 26),
+              child: Text(
+                "Upcoming Sessions",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-            const SizedBox(height: 10),
-            _buildSessionList(upcomingSessions, false, context), // Upcoming sessions - Non-tappable
+            const SizedBox(height: 12),
+            Center(
+              child: SizedBox(
+                width: containerWidth,
+                height: 220,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Scrollbar(
+                    child: _buildSessionList(upcomingSessions, false, context),
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 30),
-            const Text(
-              'Previous Sessions',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 26),
+              child: Text(
+                "Previous Sessions",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-            const SizedBox(height: 10),
-            _buildSessionList(previousSessions, true, context), // Previous sessions - Tappable
+            const SizedBox(height: 12),
+            Center(
+              child: SizedBox(
+                width: containerWidth,
+                height: 220,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Scrollbar(
+                    child: _buildSessionList(previousSessions, true, context),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
           ],
         ),
       ),
     );
   }
 
-  // Method to build the session list
   Widget _buildSessionList(List<Map<String, String>> sessions, bool isPrevious, BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: sessions.length,
-        itemBuilder: (context, index) {
-          final session = sessions[index];
-          return GestureDetector(
-            onTap: isPrevious ? () {
-              // If it's a previous session, navigate to the session feedback page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SessionFeedbackPage(
-                    sessionWith: session['title']!,
-                    sessionDate: session['date']!,
-                  ),
-                ),
-              );
-            } : null, // Upcoming sessions are non-tappable
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    session['title']!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Date: ${session['date']}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Time: ${session['time']}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+    return ListView.separated(
+      itemCount: sessions.length,
+      shrinkWrap: true,
+      physics: const AlwaysScrollableScrollPhysics(),
+      separatorBuilder: (context, index) => const Divider(
+        height: 1,
+        thickness: 0.8,
+        color: Color(0xFF00B4A6),
       ),
+      itemBuilder: (context, index) {
+        final session = sessions[index];
+        return GestureDetector(
+          onTap: isPrevious
+              ? () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SessionFeedbackPage(
+                        sessionWith: session['title']!,
+                        sessionDate: session['date']!,
+                      ),
+                    ),
+                  );
+                }
+              : null,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+           child: Row(
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    SizedBox(
+      width: 80, // fixed width for date
+      child: Text(
+        session['date']!,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ),
+    Expanded(
+      child: Text(
+        session['title']!,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        textAlign: TextAlign.left, // left-aligned for consistency
+      ),
+    ),
+    SizedBox(
+      width: 70, // fixed width for time
+      child: Text(
+        session['time']!,
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.black54,
+          fontWeight: FontWeight.w400,
+        ),
+        textAlign: TextAlign.right,
+      ),
+    ),
+  ],
+),
+
+          ),
+        );
+      },
     );
   }
 }

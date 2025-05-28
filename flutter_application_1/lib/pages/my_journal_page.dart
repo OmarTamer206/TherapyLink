@@ -43,12 +43,22 @@ class _MyJournalPageState extends State<MyJournalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFDFF0F4),
       appBar: AppBar(
-        title: const Text('My Journal'),
+        backgroundColor: const Color(0xFFDFF0F4),
+        elevation: 0,
+        title: const Text(
+          'My Journal',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1F2937),
+          ),
+        ),
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF1F2937)),
           onPressed: () {
-            Navigator.pop(context);  // Handles the back button
+            Navigator.pop(context);
           },
         ),
       ),
@@ -78,6 +88,7 @@ class _MyJournalPageState extends State<MyJournalPage> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
+                                color: Color(0xFF1F2937),
                               ),
                             ),
                             const Spacer(),
@@ -88,18 +99,21 @@ class _MyJournalPageState extends State<MyJournalPage> {
                                 });
                               },
                               child: const Icon(Icons.delete_outline,
-                                  color: Colors.black54),
+                                  color: Color(0xFF1F2937)),
                             ),
                           ],
                         ),
                         const SizedBox(height: 10),
                         Text(
                           entry['text']!,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF1F2937),
+                          ),
                         ),
                         const SizedBox(height: 10),
                         const Divider(
-                          color: Colors.teal,
+                          color: Color(0xFF00B4A6),
                           thickness: 1,
                         ),
                       ],
@@ -110,46 +124,57 @@ class _MyJournalPageState extends State<MyJournalPage> {
             ),
 
             // Input Field
-            Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      decoration: const InputDecoration(
-                        hintText: "Type Something...",
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.send,
-                        color: Color.fromARGB(255, 24, 41, 125)),
-                    onPressed: () {
-                      if (_textController.text.trim().isNotEmpty) {
-                        setState(() {
-                          journalEntries.add({
-                            "date": DateTime.now()
-                                .toString()
-                                .split(" ")
-                                .first
-                                .replaceAll("-", "/"),
-                            "text": _textController.text.trim(),
-                          });
-                          _textController.clear();
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
+      // Input Field (styled like the image)
+Container(
+  margin: const EdgeInsets.only(bottom: 16),
+  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Row(
+    children: [
+      Expanded(
+        child: TextField(
+          controller: _textController,
+          decoration: const InputDecoration(
+            hintText: "Type Something...",
+            hintStyle: TextStyle(color: Color(0xFF9CA3AF)),
+            border: InputBorder.none,
+          ),
+          style: const TextStyle(color: Color(0xFF1F2937)),
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          if (_textController.text.trim().isNotEmpty) {
+            setState(() {
+              journalEntries.add({
+                "date": DateTime.now()
+                    .toString()
+                    .split(" ")
+                    .first
+                    .replaceAll("-", "/"),
+                "text": _textController.text.trim(),
+              });
+              _textController.clear();
+            });
+          }
+        },
+        child: Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            color: Color(0xFF00B4A6),
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: const Icon(Icons.send, color: Colors.white, size: 20),
+        ),
+      ),
+    ],
+  ),
+),
+
           ],
         ),
       ),

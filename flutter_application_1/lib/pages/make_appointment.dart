@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'checkout_page.dart'; // Import the CheckoutPage
+import 'checkout_page.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -38,7 +38,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);  // Ensure the back button works
+            Navigator.pop(context);
           },
         ),
         title: const Text(
@@ -47,25 +47,32 @@ class _AppointmentPageState extends State<AppointmentPage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          _buildDoctorCard(),
-          _buildCalendar(),
-          const SizedBox(height: 10),
-          const Text("Time Available", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          _buildTimeGrid(),
-          const SizedBox(height: 20),
-          _buildProceedButton(context),  // Pass context to proceed button
-        ],
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            _buildDoctorCard(),
+            const SizedBox(height: 10),
+            _buildCalendar(),
+            const SizedBox(height: 20),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Time Available", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+            const SizedBox(height: 10),
+            _buildTimeGrid(),
+            const SizedBox(height: 30),
+            _buildProceedButton(context),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildDoctorCard() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -75,7 +82,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
         children: const [
           CircleAvatar(
             radius: 24,
-            backgroundImage: AssetImage('assets/doctor.png'), // Replace with your image
+            backgroundImage: AssetImage('assets/doctor.png'),
           ),
           SizedBox(width: 12),
           Column(
@@ -92,7 +99,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
 
   Widget _buildCalendar() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -102,10 +109,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
         lastDay: DateTime.utc(2030, 12, 31),
         focusedDay: _focusedDay,
         calendarStyle: const CalendarStyle(
-          todayDecoration: BoxDecoration(), // Remove highlight from today
-          todayTextStyle: TextStyle(), // Makes today's text look normal unless selected
+          todayDecoration: BoxDecoration(),
           selectedDecoration: BoxDecoration(
-            color: Color(0xFF013B47),
+            color: Color(0xFF1F2937),
             shape: BoxShape.circle,
           ),
           selectedTextStyle: TextStyle(
@@ -113,9 +119,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        selectedDayPredicate: (day) {
-          return isSameDay(_selectedDay, day);
-        },
+        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             _selectedDay = selectedDay;
@@ -127,72 +131,60 @@ class _AppointmentPageState extends State<AppointmentPage> {
   }
 
   Widget _buildTimeGrid() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Wrap(
-        spacing: 12,
-        runSpacing: 12,
-        children: times.map((time) {
-          bool isSelected = time == _selectedTime;
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedTime = time;
-              });
-            },
-            child: Container(
-              width: 80,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF013B47) : const Color(0xFF01B5C5),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Text(
-                time,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: times.map((time) {
+        bool isSelected = time == _selectedTime;
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              _selectedTime = time;
+            });
+          },
+          child: Container(
+            width: 80,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isSelected ? const Color(0xFF1F2937) : const Color(0xFF00B4A6),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              time,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          );
-        }).toList(),
-      ),
+          ),
+        );
+      }).toList(),
     );
   }
 
   Widget _buildProceedButton(BuildContext context) {
-    return Padding(   
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      
-      child: ElevatedButton(
-        
-        style: ElevatedButton.styleFrom(
-          
-          backgroundColor: const Color.fromARGB(255, 24, 41, 125),
-          minimumSize: const Size.fromHeight(50),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF1F2937),
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      ),
+      onPressed: () {
+        if (_selectedDay != null && _selectedTime != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CheckoutPage()),
+          );
+        }
+      },
+      child: const Text(
+        'Proceed',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
         ),
-        onPressed: () {
-          if (_selectedDay != null && _selectedTime != null) {
-            // Navigate to Checkout Page when proceed button is pressed
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CheckoutPage()),
-            );
-          }
-        },
-       child: const Text(
-  'Proceed',
-  style: TextStyle(
-    color: Colors.white, // 👈 Add this line
-    fontWeight: FontWeight.bold,
-    fontSize: 16,
-  ),
-),
-
       ),
     );
   }

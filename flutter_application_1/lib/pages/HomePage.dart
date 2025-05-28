@@ -203,7 +203,7 @@ class HomeScreen extends StatelessWidget {
                         width: double.maxFinite,
                         margin: const EdgeInsets.symmetric(horizontal: 38),
                         child: const DynamicCountdownWidget(
-                          sessionTime: "2025-05-27 21:32:00",
+                          sessionTime: "2025-05-29 21:32:00",
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -446,23 +446,27 @@ class _DynamicCountdownWidgetState extends State<DynamicCountdownWidget>
     super.dispose();
   }
 
-  String _formatTimeLeft() {
-    if (_timeLeft.isNegative || _timeLeft == Duration.zero) {
-      return "Session Started";
-    }
-
-    final hours = _timeLeft.inHours;
-    final minutes = _timeLeft.inMinutes % 60;
-    final seconds = _timeLeft.inSeconds % 60;
-
-    if (hours > 0) {
-      return "$hours h $minutes m $seconds s left";
-    } else if (minutes > 0) {
-      return "$minutes m $seconds s left";
-    } else {
-      return "$seconds seconds left";
-    }
+   String _formatTimeLeft() {
+  if (_timeLeft.isNegative || _timeLeft == Duration.zero) {
+    return "Session Started";
   }
+
+  final days = _timeLeft.inDays;
+  final hours = _timeLeft.inHours % 24;
+  final minutes = _timeLeft.inMinutes % 60;
+  final seconds = _timeLeft.inSeconds % 60;
+
+  if (days > 0) {
+    return "$days d $hours h $minutes m $seconds s left";
+  } else if (hours > 0) {
+    return "$hours h $minutes m $seconds s left";
+  } else if (minutes > 0) {
+    return "$minutes m $seconds s left";
+  } else {
+    return "$seconds seconds left";
+  }
+}
+
 
   double _getProgressValue() {
     if (_timeLeft.isNegative) return 1.0;

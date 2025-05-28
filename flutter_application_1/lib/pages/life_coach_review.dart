@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'make_appointment_coach.dart';  // Ensure this import is added
+import 'make_appointment_coach.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -11,36 +11,41 @@ void main() {
 class LifeCoachReviewPage extends StatelessWidget {
   const LifeCoachReviewPage({super.key});
 
+  static const Color mainColor = Color(0xFF1F2937);
+  static const Color bgColor = Color(0xFFDFF0F4);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDFF0F4),
+      backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFDFF0F4),
+        backgroundColor: bgColor,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);  // Go back to the previous screen
-          },
-        ),
         title: const Text(
-          "Dr. Mohamed's Life Coach Page",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          "Life Coach Page",
+          style: TextStyle(color: mainColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: mainColor),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Column(
         children: [
-          _buildLifeCoachInfo(),
-          const SizedBox(height: 10),
+          _buildLifeCoachCard(),
+          const SizedBox(height: 16),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Reviews',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: mainColor,
+                ),
               ),
             ),
           ),
@@ -49,34 +54,43 @@ class LifeCoachReviewPage extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
-                _buildReviewCard("Dr. Mohamed", "Dr. Mohamed helped me unlock my potential and work through many personal challenges. His insights were profound and helped me build a positive mindset."),
-                _buildReviewCard("Dr. Mohamed", "I was feeling lost and unmotivated, but Dr. Mohamed gave me actionable strategies that made me feel empowered and focused."),
-                _buildReviewCard("Dr. Mohamed", "His compassionate approach made me feel heard and understood. I felt supported throughout my journey and made significant progress."),
+                _buildReviewCard(
+                  "Dr. Mohamed",
+                  "Dr. Mohamed helped me unlock my potential and work through many personal challenges. His insights were profound and helped me build a positive mindset.",
+                ),
+                _buildReviewCard(
+                  "Dr. Mohamed",
+                  "I was feeling lost and unmotivated, but Dr. Mohamed gave me actionable strategies that made me feel empowered and focused.",
+                ),
+                _buildReviewCard(
+                  "Dr. Mohamed",
+                  "His compassionate approach made me feel heard and understood. I felt supported throughout my journey and made significant progress.",
+                ),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 24, 41, 125), // Your custom color
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
               onPressed: () {
-                // Navigate to the make_appointment_coach page when clicked
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MakeAppointmentCoachPage()),  // Correct page navigation
+                  MaterialPageRoute(
+                      builder: (context) => const MakeAppointmentCoachPage()),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: mainColor,
+                minimumSize: const Size.fromHeight(50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               child: const Text(
                 'Make Appointment',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 18,
                   color: Colors.white,
                 ),
               ),
@@ -87,31 +101,52 @@ class LifeCoachReviewPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLifeCoachInfo() {
+  Widget _buildLifeCoachCard() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
-        children: const [
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage('assets/life_coach.png'), // Replace with actual asset or URL
+        children: [
+          const CircleAvatar(
+            radius: 32,
+            backgroundImage: AssetImage('assets/life_coach.png'),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
-                Text('Dr. Mohamed ★★★★★', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Life Coach'),
+                Row(
+                  children: [
+                    Text(
+                      'Dr. Mohamed ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: mainColor,
+                      ),
+                    ),
+                    Text(
+                      '★★★★★',
+                      style: TextStyle(fontSize: 14, color: mainColor),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Life Coach',
+                  style: TextStyle(fontSize: 13, color: mainColor),
+                ),
                 SizedBox(height: 6),
                 Text(
                   "I am Dr. Mohamed, a dedicated life coach specializing in empowering individuals to unlock their full potential and navigate life challenges with confidence.",
-                  style: TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 12, color: mainColor),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -121,7 +156,7 @@ class LifeCoachReviewPage extends StatelessWidget {
     );
   }
 
-  static Widget _buildReviewCard(String name, String content) {
+  Widget _buildReviewCard(String name, String content) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
@@ -132,11 +167,21 @@ class LifeCoachReviewPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+              color: mainColor,
+            ),
+          ),
           const SizedBox(height: 6),
-          Text(content),
-          const SizedBox(height: 10),
-          Container(height: 1, color: Colors.teal),
+          Text(
+            content,
+            style: const TextStyle(fontSize: 13, color: mainColor),
+          ),
+          const SizedBox(height: 12),
+          const Divider(color: Color(0xFF00B4A6), thickness: 1),
         ],
       ),
     );

@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: EditProfilePage(),
-  ));
-}
-
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
@@ -15,156 +8,148 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  // Controllers for text fields
-  final TextEditingController _nameController = TextEditingController(text: 'Emily Mark');
-  final TextEditingController _dobController = TextEditingController(text: '9/1/2005');
-  final TextEditingController _phoneController = TextEditingController(text: '01056703248');
-  final TextEditingController _emailController = TextEditingController(text: 'emilysmark@gmail.com');
-  final TextEditingController _passwordController = TextEditingController(text: 'Password123');
+  final TextEditingController _nameController = TextEditingController(text: "Emily Mark");
+  final TextEditingController _dobController = TextEditingController(text: "9 / 1 / 2005");
+  final TextEditingController _phoneController = TextEditingController(text: "010-5670-3248");
+  final TextEditingController _emailController = TextEditingController(text: "Emilymark@gmail.com");
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
-  String maritalStatus = 'Single';  // Default marital status
-  final List<String> statuses = ['Single', 'Married', 'Divorced', 'Other'];
+  String _maritalStatus = 'Single';
+  String _gender = 'Female';
+  final List<String> _maritalStatusOptions = ['Single', 'Married', 'Divorced', 'Widowed'];
+  final List<String> _genderOptions = ['Male', 'Female'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFE6F3F7),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFDFF0F4),
+        backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: const BackButton(color: Colors.black),
         title: const Text(
           'Edit Profile',
           style: TextStyle(
-            color: Colors.black,
             fontWeight: FontWeight.bold,
+            color: Color(0xFF1F2937),
+            fontSize: 20,
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // Go back to the previous page
-          },
-        ),
+        centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=47'),
-            ),
-            const SizedBox(height: 30), 
-            Container(
-              padding: const EdgeInsets.all(20),
+      body: Column(
+        children: [
+          const SizedBox(height: 10),
+          const CircleAvatar(
+            radius: 50,
+            backgroundImage: AssetImage('assets/profile.jpg'), // Replace with NetworkImage if needed
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Container(
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
                 children: [
-                  _buildTextField(_nameController, Icons.person, 'Name'),
-                  const SizedBox(height: 16),
-                  _buildTextField(_dobController, Icons.calendar_today, 'Date of Birth'),
-                  const SizedBox(height: 16),
-                  _buildDropdownField(),
-                  const SizedBox(height: 16),
-                  _buildTextField(_phoneController, Icons.phone, 'Phone', keyboardType: TextInputType.number),
-                  const SizedBox(height: 16),
-                  _buildTextField(_emailController, Icons.email, 'Email'),
-                  const SizedBox(height: 16),
-                  _buildTextField(_passwordController, Icons.lock, 'Password', obscureText: true),
+                  _buildInputField(Icons.person_outline, 'Name', _nameController),
+                  _buildInputField(Icons.calendar_today_outlined, 'Date of Birth', _dobController),
+                  _buildDropdownField(Icons.group_outlined, 'Marital Status', _maritalStatus, _maritalStatusOptions, (value) {
+                    setState(() {
+                      _maritalStatus = value!;
+                    });
+                  }),
+                  _buildDropdownField(Icons.accessibility, 'Gender', _gender, _genderOptions, (value) {
+                    setState(() {
+                      _gender = value!;
+                    });
+                  }),
+                  _buildInputField(Icons.phone_outlined, 'Phone Number', _phoneController),
+                  _buildInputField(Icons.email_outlined, 'Email', _emailController),
+                  _buildInputField(Icons.lock_outline, 'Password', _passwordController, obscureText: true),
+                  _buildInputField(Icons.lock_outline, 'Confirm Password', _confirmPasswordController, obscureText: true),
                 ],
               ),
             ),
-
-            const SizedBox(height: 30),
-
-            // Confirm button
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle profile update (you can add logic to update the profile)
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Profile updated successfully!')),
-                  );
-
-                  // After a brief moment, navigate back to the previous page
-                  Future.delayed(const Duration(seconds: 1), () {
-                    Navigator.pop(context); // Go back to the previous page after update
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 24, 41, 125), 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                ),
-                child: const Text(
-                  'Confirm',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+          ),
+          const SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1F2937),
+                minimumSize: const Size.fromHeight(50),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onPressed: () {
+                // Handle confirm action
+              },
+              child: const Text(
+                'Confirm',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
               ),
             ),
-            const SizedBox(height: 30),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  // Build a custom text field widget
-  Widget _buildTextField(
-    TextEditingController controller,
-    IconData icon,
-    String label, {
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        prefixIcon: Icon(icon, color: const Color.fromARGB(255, 24, 41, 125)),
-        hintText: label,
-        border: const UnderlineInputBorder(),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color.fromARGB(255, 24, 41, 125)),
-        ),
+  Widget _buildInputField(IconData icon, String label, TextEditingController controller,
+      {bool obscureText = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        children: [
+          Icon(icon, color:Color(0xFF1F2937)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                hintText: label,
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.teal), // Same color as icon
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  // Build a dropdown for marital status
-  Widget _buildDropdownField() {
-    return DropdownButtonFormField<String>(
-      value: maritalStatus,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.group_outlined, color: Color.fromARGB(255, 24, 41, 125)),
-        hintText: 'Marital Status',
-        border: UnderlineInputBorder(),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color.fromARGB(255, 24, 41, 125)),
-        ),
+  Widget _buildDropdownField(IconData icon, String label, String value, List<String> options, ValueChanged<String?> onChanged) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        children: [
+          Icon(icon, color: Color(0xFF1F2937)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: DropdownButtonFormField<String>(
+              value: value,
+              decoration: const InputDecoration(border: UnderlineInputBorder()),
+              items: options.map((String option) {
+                return DropdownMenuItem<String>(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ],
       ),
-      items: statuses
-          .map((status) => DropdownMenuItem(
-                value: status,
-                child: Text(status),
-              ))
-          .toList(),
-      onChanged: (value) {
-        setState(() {
-          maritalStatus = value!;
-        });
-      },
     );
   }
 }

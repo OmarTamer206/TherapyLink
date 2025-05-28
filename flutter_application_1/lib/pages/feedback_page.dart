@@ -17,7 +17,6 @@ class FeedbackPage extends StatefulWidget {
 class _FeedbackPageState extends State<FeedbackPage> {
   int selectedRating = 0;
 
-  // Function to show the dialog if no rating is selected
   void _showNoRatingDialog() {
     showDialog(
       context: context,
@@ -27,9 +26,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           content: const Text("You must rate the session before submitting your feedback."),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text("OK"),
             ),
           ],
@@ -47,169 +44,153 @@ class _FeedbackPageState extends State<FeedbackPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context); // This will navigate back to the previous screen
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Feedback',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          'Old Sessions',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+    body: Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child: Column(
+    children: [
+      const SizedBox(height: 20), // Increased from 10 → pushes "Session With"
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          Text(
+            'Session With: Dr. Magdy',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 4), // pushes down "30 minutes"
+            child: Text('30 minutes'),
+          ),
+        ],
+      ),
+      const SizedBox(height: 6),
+      const Align(
+        alignment: Alignment.centerLeft,
+        child: Text('Timing: 9/1/2025 , 7:00 PM'),
+      ),
+      const SizedBox(height: 40),
+
+      // Feedback Container
+      Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.55, // Bigger container
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: Column(
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Icon(Icons.close, size: 24),
+            ),
             const SizedBox(height: 10),
+
+            // Star Row
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Session With: Dr. Magdy',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text('30 minutes'),
-              ],
-            ),
-            const SizedBox(height: 4),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Timing: 9/1/2025 , 7:00 PM'),
-            ),
-            const SizedBox(height: 30),
-            const SizedBox(height: 40), // 👈 push the container lower
-
-            // Feedback Card (Bigger)
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-              height: 360, // 👈 Taller container
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          // TODO: Close feedback card
-                        },
-                        child: const Icon(Icons.close),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Star Row for Rating
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(5, (index) {
-                      return IconButton(
-                        iconSize: 46,
-                        onPressed: () {
-                          setState(() {
-                            selectedRating = index + 1;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.star,
-                          color: index < selectedRating
-                              ? const Color(0xFF01B5C5)
-                              : Colors.grey.shade300,
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'We need your feedback!',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'How would you rate your\nexperience with the app today?',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Feedback Text Field
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: const TextField(
-                      maxLines: 2,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Write your feedback',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const Spacer(),
-
-            // Submit Button
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Check if no rating has been selected
-                  if (selectedRating == 0) {
-                    // Show a dialog asking the user to rate
-                    _showNoRatingDialog();
-                  } else {
-                    // Show SnackBar with Thank You message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Thank you for your feedback!'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-
-                    // After a short delay, navigate back twice to the SessionsPage
-                    Future.delayed(const Duration(seconds: 2), () {
-                      // First pop the current page (FeedbackPage)
-                      Navigator.pop(context);
-
-                      // Second pop to go back to SessionsPage
-                      Navigator.pop(context); // This will return the user to the SessionsPage
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(5, (index) {
+                return IconButton(
+                  iconSize: 47,
+                  onPressed: () {
+                    setState(() {
+                      selectedRating = index + 1;
                     });
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 24, 41, 125),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+                  },
+                  icon: Icon(
+                    Icons.star,
+                    color: index < selectedRating
+                        ? const Color(0xFF00B4A6)
+                        : Colors.grey.shade300,
                   ),
-                ),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+                );
+              }),
+            ),
+
+            const SizedBox(height: 50), // More space before feedback header
+            const Text(
+              'We need your feedback!',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'How would you rate your\nexperience with the app today?',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20, color: Colors.grey),
+            ),
+            const SizedBox(height: 70), // More space before feedback box
+
+            // Feedback Text Box
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const TextField(
+                maxLines: 3,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Write your feedback',
                 ),
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
+
+      const Spacer(),
+
+      // Submit Button
+      SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          onPressed: () {
+            if (selectedRating == 0) {
+              _showNoRatingDialog();
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Thank you for your feedback!'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              Future.delayed(const Duration(seconds: 2), () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              });
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF1F2937),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+          ),
+          child: const Text(
+            'Submit',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 20),
+    ],
+  ),
+),
+
     );
   }
 }

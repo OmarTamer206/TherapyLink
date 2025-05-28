@@ -1,0 +1,327 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff; /* Set background color to white */
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  display: flex;
+  flex-direction: row; /* Stack the containers vertically */
+  padding: 20px;
+  height: 100%;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex: 2.5;
+  gap: 25px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  gap: 25px;
+}
+/* Each container */
+.container {
+  width: 95%; /* Set the width for all containers */
+  height: auto; /* Let the height adjust based on content */
+  background-color: #fff; /* White background */
+  border: 2px solid #fff; /* White borders */
+}
+
+/* Top Section: Life Coach Sessions */
+.first {
+  height: 150px; /* Increased the height of the first container */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Session Info */
+.session-info {
+  display: flex;
+  align-items: center;
+}
+
+/* Image placeholder */
+.image-placeholder {
+  width: 60px;
+  height: 60px;
+  background-color: black;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+/* Name and Specialization */
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.specialization {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+/* Start Session and Session Starts In Button */
+.start-session-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+.end-session-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.session-timer-btn,
+.start-session {
+  background-color: #06303e; /* Same color as View Journal button */
+  color: white;
+  border: none;
+  padding: 10px 30px; /* Ensure both buttons are the same size */
+  font-size: 16px; /* Same font size */
+  border-radius: 5px;
+  cursor: pointer;
+  width: 270px;
+}
+
+.start-session:disabled{
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.start-session:disabled:hover{
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.session-timer-btn:hover,
+.start-session:hover {
+  background-color: #06303e;
+}
+
+.session-timer-btn:focus,
+.start-session:focus {
+  outline: none;
+}
+
+/* View Report Button */
+.session-timer-btn {
+  background-color: transparent;
+  border: 2px solid #3498db; /* Restored the previous border color */
+  color: #3498db; /* Restored the previous text color */
+}
+
+.session-timer-btn:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+/* Second Container: Session Date & Duration */
+.second {
+  height: 50px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px; /* Add some horizontal padding */
+  border: 2px solid #fff; /* White borders */
+}
+
+.session-date {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* Black color for session date */
+}
+
+.session-duration {
+  font-size: 16px;
+  color: #7f8c8d; /* Gray color for session duration */
+}
+
+/* Third Container: Video Call */
+.third {
+  height: 540px;
+  background-color: unset;
+  border: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Button Container */
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Button Styles */
+.view-report,
+.view-journal {
+  padding: 15px 30px; /* Increase the padding for bigger buttons */
+  font-size: 18px; /* Increase font size for larger text */
+  border-radius: 8px; /* Optionally adjust border radius for a smoother look */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 300px; /* You can adjust this if you want them to be a fixed width */
+}
+
+.view-report {
+  background-color: transparent;
+  border: 2px solid #06303e;
+  color: #002843;
+}
+
+.view-report:hover {
+  background-color: #06303e;
+  color: white;
+}
+
+.view-journal {
+  background-color: #06303e;
+  color: white;
+  border: none;
+}
+
+.view-journal:hover {
+  background-color: #06303e;
+}
+
+.view-report:focus,
+.view-journal:focus {
+  outline: none;
+}
+
+/* Section for displaying Report and Journal side by side with Video Call */
+.right-content {
+  width: 100%; /* Width for report and journal to sit next to video */
+  background-color: white;
+  padding: 20px;
+  border: 2px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+  height: 540px;
+  max-height: 540px;
+  overflow-y: auto;
+}
+
+/* Styling for Journal and Report */
+.journal,
+.report {
+  background-color: white;
+  padding: 20px;
+  border: 2px solid #ddd;
+}
+
+.journal h3,
+.report h3 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.journal p,
+.report p {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+hr {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+}
+
+.bottom{
+  width: 90%;
+}
+
+.session-waiting{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 36px;
+  background-color: #fff;
+  width: 100%;
+}
+
+.display-none{
+  display: none;
+}
+.display-flex{
+  display: flex;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 700px;
+  height: 400px;
+  max-width: 90vw;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+      justify-content: space-between;
+    align-items: center;
+}
+
+.modal textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-buttons button {
+  background-color: #06303e;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-buttons button[disabled] {
+  background-color: #999;
+  cursor: not-allowed;
+}

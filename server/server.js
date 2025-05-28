@@ -10,10 +10,12 @@ const managerRoutes = require("./routes/managerRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const sessionRoutes = require("./routes/sessionRoutes");
 const therapistRoutes = require("./routes/therapistRoutes");
+const emergencyRoutes = require("./routes/emergencyRoutes");
 const agentRoutes = require("./routes/agentRoutes");
 
 const { ChatController } = require("./controllers/chatController");
 const { CallController } = require("./controllers/callController");
+const { EmergencySocket } = require("./controllers/emergencySocket");
 require("dotenv").config();
 
 const app = express();
@@ -32,6 +34,8 @@ ChatController(io); // Call the function from chatController.js
 
 CallController(io); // Add this below your ChatController initialization
 
+EmergencySocket(io); // Add this below your ChatController initialization
+
 // 🌐 Middleware
 app.use(cors());
 app.use(express.json());
@@ -43,6 +47,7 @@ app.use("/manager", managerRoutes);
 app.use("/patient", patientRoutes);
 app.use("/session", sessionRoutes);
 app.use("/therapist", therapistRoutes);
+app.use("/emergency", emergencyRoutes);
 app.use("/agent", agentRoutes);
 
 // 📁 Static file serving for uploads

@@ -42,7 +42,7 @@
   flex-direction: row; /* Align left and right panels horizontally */
   justify-content: space-between;
   gap: 30px; /* Space between the left and right panels */
-  width: 90%; /* Adjust form width to fit the screen */
+  width: 100%; /* Adjust form width to fit the screen */
   max-width: 1200px; /* Max width to avoid too wide */
   background-color: #ffffff;
   padding: 40px;
@@ -55,7 +55,7 @@
 .right {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align items at the top */
+  justify-content: space-between; /* Align items at the top */
   align-items: flex-start;
   width: 48%; /* Equal width for both left and right panels */
 }

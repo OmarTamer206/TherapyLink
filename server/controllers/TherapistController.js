@@ -256,7 +256,8 @@ async function get_patient_data(patient_id) {
 
 // Update patient report after a session(UPDATE DB 0_-)
 async function update_patient_report(report, session_data , doctor_type) {
-
+  console.log(report, session_data , doctor_type);
+  
   try {
     const query = `
       INSERT INTO report (report_content, patient_id, reporter_id, reporter_type)

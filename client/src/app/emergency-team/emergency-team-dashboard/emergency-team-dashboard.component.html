@@ -3,10 +3,10 @@
   <div class="request-list">
     <div class="request-item" *ngFor="let request of requests">
       <div class="profile-info">
-        <img src="profile png.png" alt="Profile Image" class="profile-image" />
-        <span class="request-name">{{ request.name }}</span>
+        <img [src]="request.image || 'profileDefault.png'" alt="Profile Image" class="profile-image" />
+        <span class="request-name">{{ request.Name }}</span>
       </div>
-      <button class="accept-button">Accept</button>
+      <button class="accept-button" (click)="acceptRequest(request)">Accept</button>
     </div>
   </div>
 </div>

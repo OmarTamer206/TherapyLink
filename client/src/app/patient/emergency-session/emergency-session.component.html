@@ -1,0 +1,45 @@
+<!-- app.component.html -->
+<div class="session-container">
+  <div class="session-content">
+    <div class="title"><h2>Emergency Session</h2></div>
+
+
+    <div class="session-details" [ngClass]="{'stretch': sessionStarted && !sessionEnded}">
+
+      <!-- Session Ended Section -->
+      <section *ngIf="sessionEnded" class="session-ended-section">
+        <h3>Session Ended</h3>
+        <p>Your session has ended. Thank you for attending!</p>
+        <button (click)="goHome()" class="btn-home">Go to Home</button>
+      </section>
+
+
+
+      <!-- Active Call -->
+
+      <app-call
+      *ngIf="sessionStarted && !sessionEnded && callId && userId && userType "
+        [call_ID]="callId"
+        [userId]="userId"
+        [userType]="userType"
+        [userName]="patient_name"
+        style="width: 100%; height: 100%;"
+      >
+
+      </app-call>
+
+      <!-- Waiting for session start -->
+      <div *ngIf="!sessionStarted && !sessionEnded " class="session-waiting">
+        <p>Waiting for Session Start</p>
+      </div>
+
+
+    </div>
+
+    <!-- Start session controls -->
+    <div *ngIf="!sessionStarted && !sessionEnded && !isExpired" class="session-timer">
+      <span>Member of Emergency Team will reach you soon ...</span>
+    </div>
+
+  </div>
+</div>

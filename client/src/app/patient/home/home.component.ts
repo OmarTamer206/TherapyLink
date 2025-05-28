@@ -58,6 +58,7 @@ check1=false;
 check2=false;
 check3=false;
   patient_name: any;
+  patientData: any;
 
 startTimer() {
 
@@ -199,7 +200,7 @@ setCircleDasharray() {
   getProfileData(){
     this.patientService.getProfileData().subscribe((response)=>{
       console.log(response);
-
+      this.patientData = response.data.patient[0];
       this.selectedTherapist = response.data.patient[0].Therapist_Preference
 
       console.log(this.selectedTherapist);
@@ -271,6 +272,10 @@ setCircleDasharray() {
 
   goToChatbot(): void {
     this.router.navigate(['patient/chatbot']);
+  }
+
+  goToEmergencySession(): void {
+    this.router.navigate(['patient/emergency-session'],{ state: { patientData:this.patientData} });
   }
 
   goToDoctorsPage(): void {

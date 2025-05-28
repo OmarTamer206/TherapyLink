@@ -51,7 +51,6 @@ async function loginStaff(data) {
 
       if (users.length !== 0) 
       {
-        console.log('not found');
         
         roleOfUser = staffRoles[role]
         break;

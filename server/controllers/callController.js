@@ -7,6 +7,8 @@ function CallController(io) {
   function scheduleCallEnd(call_ID , session_type) {
   if (!activeCalls[call_ID] || !activeCalls[call_ID].sessionEndTime) return;
 
+if(activeCalls[call_ID].sessionEndTime =="no") return
+
   const delay = activeCalls[call_ID].sessionEndTime - Date.now();
   if (delay <= 0) {
     endSession(call_ID);
@@ -160,9 +162,13 @@ async function endSession(call_ID , session_type) {
     socket.on('startSession', ({ call_ID,session_type, durationMinutes }) => {
   if (activeCalls[call_ID]) {
     activeCalls[call_ID].callStarted = true;
+    if(durationMinutes != "no")
     activeCalls[call_ID].sessionEndTime = Date.now() + durationMinutes * 60 * 1000;
+    
     io.to(call_ID).emit('sessionStarted');
     console.log(`Session started for call ${call_ID} for ${durationMinutes} minutes (${session_type} session)`);
+    
+    if(durationMinutes != "no")
     scheduleCallEnd(call_ID , session_type);
   }
 });

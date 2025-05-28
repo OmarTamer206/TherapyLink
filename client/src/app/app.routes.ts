@@ -19,7 +19,6 @@ import { AdminSettingsComponent } from './admin/admin-settings/admin-settings.co
 import { EmergencyTeamComponent } from './emergency-team/emergency-team.component';
 import { EmergencyTeamDashboardComponent } from './emergency-team/emergency-team-dashboard/emergency-team-dashboard.component';
 import { EmergencyTeamChatComponent } from './emergency-team/emergency-team-chat/emergency-team-chat.component';
-import { EmergencyTeamOperationsComponent } from './emergency-team/emergency-team-operations/emergency-team-operations.component';
 import { EmergencyTeamSettingsComponent } from './emergency-team/emergency-team-settings/emergency-team-settings.component';
 import { HomeComponent } from './patient/home/home.component';
 import { DoctorDashboardComponent } from './doctor/doctor-dashboard/doctor-dashboard.component';
@@ -51,6 +50,8 @@ import { PatientProfileComponent } from './patient/profile/profile.component';
 import { ChatSectionComponent } from './chat-section/chat-section.component';
 import { SessionEndedComponent } from './patient/session-ended/session-ended.component';
 import { LifeCoachSessionEndedComponent } from './life-coach/session-ended/session-ended.component';
+import { EmergencySessionComponent } from './emergency-team/emergency-session/emergency-session.component';
+import { EmergencySessionPatientComponent } from './patient/emergency-session/emergency-session.component';
 
 export const routes: Routes = [
   {
@@ -156,6 +157,10 @@ export const routes: Routes = [
       {
         path: 'session-log',
         component: SessionsLogComponent,
+      },
+      {
+        path: 'emergency-session',
+        component: EmergencySessionPatientComponent,
       },
     ],
   },
@@ -286,10 +291,7 @@ export const routes: Routes = [
         path: 'emergency-team-dashboard',
         component: EmergencyTeamDashboardComponent,
       },
-      {
-        path: 'emergency-team-operations',
-        component: EmergencyTeamOperationsComponent,
-      },
+
       {
         path: 'emergency-team-chat',
         component: EmergencyTeamChatComponent,
@@ -297,6 +299,10 @@ export const routes: Routes = [
       {
         path: 'emergency-team-settings',
         component: EmergencyTeamSettingsComponent,
+      },
+      {
+        path: 'emergency-team-session',
+        component: EmergencySessionComponent,
       },
     ],
   },

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'chat_page.dart';
+import 'HomePage.dart'; // Ensure this import is correct
 
 class ChatBotWelcomePage extends StatelessWidget {
   const ChatBotWelcomePage({super.key});
@@ -6,13 +8,36 @@ class ChatBotWelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDFF0F4), // Light blue background
+      backgroundColor: const Color(0xFFDFF0F4),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFDFF0F4),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+          Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(builder: (context) => const HomePage()),
+  (route) => false, // Remove all previous routes
+);
+
+          },
+        ),
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: Image.asset(
+                  'assets/images/chatbot.png',
+                  height: 280,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(height: 32),
               const Text(
                 "Say hi to your Therapy Assistant",
                 style: TextStyle(
@@ -28,26 +53,21 @@ class ChatBotWelcomePage extends StatelessWidget {
                   fontSize: 16,
                   color: Color(0xFF4B5563),
                   height: 1.5,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const Spacer(),
-            Center(
-  child: Image.asset(
-    'assets/images/chatbot.png',
-    height: 180,
-    fit: BoxFit.contain,
-  ),
-),
-
               const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/chat');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ChatBotPage()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00333F),
+                    backgroundColor: const Color(0xFF1F2937),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -67,14 +87,17 @@ class ChatBotWelcomePage extends StatelessWidget {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
                   },
                   child: const Text(
                     "Maybe later",
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF6B7280),
-                      fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

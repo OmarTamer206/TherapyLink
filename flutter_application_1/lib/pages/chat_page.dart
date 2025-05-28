@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'HomePage.dart';
 
 class ChatBotPage extends StatefulWidget {
   const ChatBotPage({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class ChatBotPage extends StatefulWidget {
 class _ChatBotPageState extends State<ChatBotPage> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  
+
   List<ChatMessage> messages = [
     ChatMessage(
       text: "Magna suscipit eos et presentium odio et.",
@@ -18,7 +19,8 @@ class _ChatBotPageState extends State<ChatBotPage> {
       timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
     ),
     ChatMessage(
-      text: "Iste cursus voluptatum sed earum fugiat. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Odio quas minus consequatur qui ut et eum suscipit ratione. Cumque sapiente fugit dolor.",
+      text:
+          "Iste cursus voluptatum sed earum fugiat. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Odio quas minus consequatur qui ut et eum suscipit ratione. Cumque sapiente fugit dolor.",
       isUser: true,
       timestamp: DateTime.now().subtract(const Duration(minutes: 8)),
     ),
@@ -28,7 +30,8 @@ class _ChatBotPageState extends State<ChatBotPage> {
       timestamp: DateTime.now().subtract(const Duration(minutes: 6)),
     ),
     ChatMessage(
-      text: "Iste cursus voluptatum sed earum fugiat. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Odio quas minus consequatur qui ut et eum suscipit ratione. Cumque sapiente fugit dolor.",
+      text:
+          "Iste cursus voluptatum sed earum fugiat. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Odio quas minus consequatur qui ut et eum suscipit ratione. Cumque sapiente fugit dolor.",
       isUser: true,
       timestamp: DateTime.now().subtract(const Duration(minutes: 4)),
     ),
@@ -38,7 +41,8 @@ class _ChatBotPageState extends State<ChatBotPage> {
       timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
     ),
     ChatMessage(
-      text: "Possimus ut suscipit consectetur. Officiis ut enim ex ullam voluptas sint officiis ut libero id nulla quidaudem adipisci ut. Tenetur ut deserunt aut corporis at voluptas molestiae voluptas deseruta ab recusandae architecto atque ullam officia. Soluta quas quod rerum et voluptas molestiae in ut voluptas ut. Sed et vitae. Aua cum inventore rem velit rerum molestiae beatae.",
+      text:
+          "Possimus ut suscipit consectetur. Officiis ut enim ex ullam voluptas sint officiis ut libero id nulla quidaudem adipisci ut. Tenetur ut deserunt aut corporis at voluptas molestiae voluptas deseruta ab recusandae architecto atque ullam officia. Soluta quas quod rerum et voluptas molestiae in ut voluptas ut. Sed et vitae. Aua cum inventore rem velit rerum molestiae beatae.",
       isUser: true,
       timestamp: DateTime.now(),
     ),
@@ -46,7 +50,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
 
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
-    
+
     setState(() {
       messages.add(ChatMessage(
         text: _messageController.text.trim(),
@@ -54,11 +58,10 @@ class _ChatBotPageState extends State<ChatBotPage> {
         timestamp: DateTime.now(),
       ));
     });
-    
+
     _messageController.clear();
     _scrollToBottom();
-    
-    // Simulate bot response after a delay
+
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         messages.add(ChatMessage(
@@ -87,22 +90,47 @@ class _ChatBotPageState extends State<ChatBotPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 234, 236, 236),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1F2937),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(56),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Color(0xFF1F2937),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+          ),
+          child: SafeArea(
+            bottom: false,
+            child: Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  child: Row(
+    children: [
+      IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+            (route) => false,
+          );
+        },
+      ),
+      const Expanded(
+        child: Text(
           'ChatBot',
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
-        centerTitle: true,
+      ),
+      const SizedBox(width: 48),
+    ],
+  ),
+),
+
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -120,6 +148,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
               color: Color(0xFF1F2937),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Row(
               children: [
@@ -202,9 +231,8 @@ class ChatBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
-        mainAxisAlignment: message.isUser 
-            ? MainAxisAlignment.end 
-            : MainAxisAlignment.start,
+        mainAxisAlignment:
+            message.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!message.isUser) ...[
@@ -233,9 +261,7 @@ class ChatBubble extends StatelessWidget {
                 vertical: 12,
               ),
               decoration: BoxDecoration(
-                color: message.isUser 
-                    ? const Color(0xFF4ECDC4) 
-                    : Colors.white,
+                color: message.isUser ? const Color(0xFF4ECDC4) : Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(

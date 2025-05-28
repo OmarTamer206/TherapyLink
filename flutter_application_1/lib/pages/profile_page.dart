@@ -31,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         ),
         onPressed: () {
-          // TODO: Add logout logic
+Navigator.pushReplacementNamed(context, '/login');
         },
         child: const Text(
           'Log Out',

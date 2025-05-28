@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'session_feedback_page.dart';
+import 'upcoming_sessions.dart'; // Add this import
 
 class SessionsPage extends StatelessWidget {
   const SessionsPage({super.key});
@@ -126,7 +127,15 @@ class SessionsPage extends StatelessWidget {
                     ),
                   );
                 }
-              : null,
+              : () {
+                  // Navigate to upcoming sessions page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UpcomingSessionsPage(),
+                    ),
+                  );
+                },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
            child: Row(

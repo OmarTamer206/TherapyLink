@@ -7,7 +7,12 @@ import 'sessions_page.dart';
 import 'profile_page.dart';
 import 'choose_therapist.dart';
 import 'chat_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'doctors_page.dart';
+import 'emergency.dart';
+import 'upcoming_sessions.dart'; // Add this import
+import 'chatbot_welcome.dart'; // Add this import
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -160,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SessionsPage()),
+                    MaterialPageRoute(builder: (context) => const UpcomingSessionsPage()),
                   );
                 },
                 child: Container(
@@ -185,7 +190,7 @@ class HomeScreen extends StatelessWidget {
                         "Session With: Dr. Magdy",
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
@@ -195,6 +200,8 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black87,
+                                                fontWeight: FontWeight.bold,
+
                         ),
                       ),
                       const SizedBox(height: 40),
@@ -203,7 +210,7 @@ class HomeScreen extends StatelessWidget {
                         width: double.maxFinite,
                         margin: const EdgeInsets.symmetric(horizontal: 38),
                         child: const DynamicCountdownWidget(
-                          sessionTime: "2025-05-29 21:32:00",
+                          sessionTime: "2025-05-28 16:17:00",
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -242,37 +249,39 @@ class HomeScreen extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF00B4A6),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Text(
-              "TherapyLink",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+        Image.asset(
+  'assets/images/therapy.png',
+  height: 40, // adjust size as needed
+),
+
           Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE53E3E),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                child: const Row(
-                  children: [
-                    Icon(Icons.help_outline, size: 16, color: Colors.white),
-                    SizedBox(width: 4),
-                    Text("Need Help?", style: TextStyle(color: Colors.white, fontSize: 12)),
-                  ],
-                ),
-              ),
+            GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const EmergencyPage()), // Import EmergencyPage if not already
+    );
+  },
+  child: Container(
+    decoration: BoxDecoration(
+      color: const Color(0xFFE53E3E),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+    child: const Row(
+      children: [
+        Icon(Icons.warning_amber_rounded, size: 16, color: Colors.white),
+        SizedBox(width: 4),
+        Text(
+          "Emergency Support", // changed from “Need Help?”
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ],
+    ),
+  ),
+),
+
               const SizedBox(width: 12),
               const CircleAvatar(
                 radius: 17,
@@ -331,7 +340,7 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(
             color: Color(0xFF1F2937),
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -346,7 +355,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const ChatBotPage()),
+            MaterialPageRoute(builder: (context) => const ChatBotWelcomePage()),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -371,57 +380,85 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
 class DynamicCountdownWidget extends StatefulWidget {
   final String sessionTime;
 
   const DynamicCountdownWidget({super.key, required this.sessionTime});
 
   @override
-  _DynamicCountdownWidgetState createState() => _DynamicCountdownWidgetState();
+  State<DynamicCountdownWidget> createState() => _DynamicCountdownWidgetState();
 }
 
-class _DynamicCountdownWidgetState extends State<DynamicCountdownWidget>
-    with TickerProviderStateMixin {
+class _DynamicCountdownWidgetState extends State<DynamicCountdownWidget> with TickerProviderStateMixin {
   Timer? _timer;
   Duration _timeLeft = Duration.zero;
+  Duration _initialDuration = const Duration(seconds: 1);
+  late DateTime _sessionDateTime;
+
+  bool _hasEnded = false;
+  bool _isLoaded = false;
 
   late AnimationController _animationController;
   late AnimationController _colorController;
   late Animation<double> _animation;
   late Animation<Color?> _colorAnimation;
 
-  bool _hasEnded = false;
-
   @override
   void initState() {
     super.initState();
+    _setupAnimationControllers();
+    _loadSessionTime();
+  }
 
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    );
-
-    _colorController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    );
+  void _setupAnimationControllers() {
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _colorController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
-
     _colorAnimation = ColorTween(
-      begin: const Color(0xFFE5E7EB), // Original teal color
+      begin: const Color(0xFFE5E7EB),
       end: Colors.green,
     ).animate(_colorController);
+  }
 
-    _startCountdown();
+  Future<void> _loadSessionTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getString('saved_session_time');
+    final newTime = DateTime.parse(widget.sessionTime);
+
+    if (saved != null) {
+      final savedTime = DateTime.parse(saved);
+
+      // If developer updated the session time manually, override
+      if (!savedTime.isAtSameMomentAs(newTime)) {
+        _sessionDateTime = newTime;
+        await prefs.setString('saved_session_time', _sessionDateTime.toIso8601String());
+      } else {
+        _sessionDateTime = savedTime;
+      }
+    } else {
+      _sessionDateTime = newTime;
+      await prefs.setString('saved_session_time', _sessionDateTime.toIso8601String());
+    }
+
+    _initialDuration = _sessionDateTime.difference(DateTime.now());
+    _timeLeft = _initialDuration;
+
+    if (_timeLeft.isNegative) {
+      _timeLeft = Duration.zero;
+      _hasEnded = true;
+      _colorController.forward();
+    } else {
+      _startCountdown();
+    }
+
+    setState(() => _isLoaded = true);
   }
 
   void _startCountdown() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final sessionDateTime = DateTime.parse(widget.sessionTime);
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final now = DateTime.now();
-      final remaining = sessionDateTime.difference(now);
+      final remaining = _sessionDateTime.difference(now);
 
       setState(() {
         _timeLeft = remaining;
@@ -431,9 +468,7 @@ class _DynamicCountdownWidgetState extends State<DynamicCountdownWidget>
           _colorController.forward();
         }
 
-        _animationController.forward().then((_) {
-          _animationController.reset();
-        });
+        _animationController.forward().then((_) => _animationController.reset());
       });
     });
   }
@@ -446,38 +481,34 @@ class _DynamicCountdownWidgetState extends State<DynamicCountdownWidget>
     super.dispose();
   }
 
-   String _formatTimeLeft() {
-  if (_timeLeft.isNegative || _timeLeft == Duration.zero) {
-    return "Session Started";
-  }
+  String _formatTimeLeft() {
+    if (_timeLeft.isNegative || _timeLeft == Duration.zero) {
+      return "Session Started";
+    }
 
-  final days = _timeLeft.inDays;
-  final hours = _timeLeft.inHours % 24;
-  final minutes = _timeLeft.inMinutes % 60;
-  final seconds = _timeLeft.inSeconds % 60;
+    final days = _timeLeft.inDays;
+    final hours = _timeLeft.inHours % 24;
+    final minutes = _timeLeft.inMinutes % 60;
+    final seconds = _timeLeft.inSeconds % 60;
 
-  if (days > 0) {
-    return "$days d $hours h $minutes m $seconds s left";
-  } else if (hours > 0) {
-    return "$hours h $minutes m $seconds s left";
-  } else if (minutes > 0) {
-    return "$minutes m $seconds s left";
-  } else {
+    if (days > 0) return "$days d $hours h $minutes m $seconds s left";
+    if (hours > 0) return "$hours h $minutes m $seconds s left";
+    if (minutes > 0) return "$minutes m $seconds s left";
     return "$seconds seconds left";
   }
-}
-
 
   double _getProgressValue() {
-    if (_timeLeft.isNegative) return 1.0;
-
-    const totalMinutes = 120;
-    final minutesLeft = _timeLeft.inMinutes;
-    return (totalMinutes - minutesLeft) / totalMinutes;
+    if (_timeLeft.isNegative || _initialDuration.inSeconds <= 0) return 1.0;
+    final elapsed = _initialDuration - _timeLeft;
+    return elapsed.inSeconds / _initialDuration.inSeconds;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isLoaded) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return AnimatedBuilder(
       animation: Listenable.merge([_animation, _colorAnimation]),
       builder: (context, child) {
@@ -488,9 +519,9 @@ class _DynamicCountdownWidgetState extends State<DynamicCountdownWidget>
               height: 240,
               width: 240,
               child: CircularProgressIndicator(
-                value: _getProgressValue(),
-                backgroundColor: const Color(0xFF00B4A6), // Reverted light gray
-                color: _colorAnimation.value ?? const Color(0xFF00B4A6), // Teal to green
+                value: _getProgressValue().clamp(0.0, 1.0),
+                backgroundColor: const Color(0xFF00B4A6),
+                color: _colorAnimation.value ?? const Color(0xFF00B4A6),
                 strokeWidth: 15,
               ),
             ),
@@ -509,4 +540,3 @@ class _DynamicCountdownWidgetState extends State<DynamicCountdownWidget>
     );
   }
 }
-

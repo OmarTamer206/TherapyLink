@@ -137,7 +137,7 @@ class DoctorReviewPage extends StatelessWidget {
                 const SizedBox(height: 6),
                 const Text(
                   "I am Dr. Mark, a dedicated clinical psychologist specializing in helping individuals overcome mental health challenges through evidence-based and compassionate care.",
-                  style: TextStyle(fontSize: 12, color: mainColor),
+                  style: TextStyle(fontSize: 12, color: mainColor,),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -87,7 +87,7 @@ class _TherapistSelectionPageState extends State<TherapistSelectionPage> {
                         color: Colors.white,
                         border: Border.all(
                           color: isSelected
-                              ? const Color.fromARGB(255, 24, 41, 125)
+                              ? Color(0xFF1F2937)
                               : Colors.transparent,
                           width: 2,
                         ),
@@ -142,7 +142,7 @@ class _TherapistSelectionPageState extends State<TherapistSelectionPage> {
                         if (states.contains(MaterialState.disabled)) {
                           return Colors.grey.shade400;
                         }
-                        return const Color.fromARGB(255, 24, 41, 125);
+                        return Color(0xFF1F2937);
                       },
                     ),
                     minimumSize:

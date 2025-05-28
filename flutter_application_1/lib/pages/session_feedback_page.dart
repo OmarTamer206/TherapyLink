@@ -20,31 +20,32 @@ class SessionFeedbackPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Session Feedback',
+          'Old Sessions',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Session details
-            Text(
-              'Session With: $sessionWith',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Session With: $sessionWith',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const Text('30 minutes'),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Session Date: $sessionDate',
-              style: const TextStyle(fontSize: 16),
-            ),
+            const SizedBox(height: 4),
+            Text('Timing: $sessionDate'),
             const SizedBox(height: 20),
 
             // Blank White Container in the center of the screen
@@ -54,44 +55,42 @@ class SessionFeedbackPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
                 ),
               ),
             ),
 
-            // Rate & Feedback button
-            const Divider(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to the FeedbackPage
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FeedbackPage(),
+            // Rate & Feedback Button
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FeedbackPage(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1F2937),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF00A4A6),
-                  minimumSize: const Size(200, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-                child: const Text(
-                  'Rate & Provide Feedback',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  child: const Text(
+                    'Rate & Feedback',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

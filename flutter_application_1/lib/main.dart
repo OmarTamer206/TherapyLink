@@ -5,7 +5,7 @@ import 'pages/profile_page.dart';        // Profile Page
 import 'pages/edit_profile_page.dart';   // Edit Profile Page
 import 'pages/sessions_page.dart';       // Sessions Page
 import 'pages/my_journal_page.dart';     // My Journal Page
-     // Doctors Page
+import 'pages/chatbot_welcome.dart'; // ChatBot Welcome Page
 
 void main() {
   runApp(const TherapyLinkApp());
@@ -27,7 +27,7 @@ class TherapyLinkApp extends StatelessWidget {
         '/edit-profile': (context) => const EditProfilePage(),
         '/sessions': (context) => const SessionsPage(),
         '/journal': (context) => const MyJournalPage(),
-      
+        '/chatbot': (context) => ChatBotWelcomePage(),
       },
     );
   }

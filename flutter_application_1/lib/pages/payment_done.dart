@@ -44,13 +44,13 @@ class PaymentSuccessPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color.fromARGB(255, 24, 41, 125),
+                    color: const Color(0xFF1F2937),
                     width: 10,
                   ),
                 ),
                 child: Icon(
                   Icons.check,
-                  color: const Color.fromARGB(255, 24, 41, 125),
+                  color: const Color(0xFF1F2937),
                   size: 60,
                 ),
               ),

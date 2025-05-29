@@ -74,6 +74,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+
     // Redirect the user to the login page or handle accordingly
   }
 

@@ -30,7 +30,17 @@ router.get("/view-upcoming-sessions-patient", async (req, res) => {
       
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -48,7 +58,17 @@ router.get("/view-previous-sessions-patient", async (req, res) => {
       
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -59,7 +79,17 @@ router.get("/view-upcoming-sessions-doctor/:doctor_id", async (req, res) => {
     const result = await view_upcoming_Sessions_doctor(doctor_id);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -70,7 +100,17 @@ router.get("/view-old-sessions/:patient_id", async (req, res) => {
     const result = await view_old_Sessions(patient_id);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -105,7 +145,17 @@ router.get("/view-session-details/:session_id/", async (req, res) => {
     const result = await view_session_details(session_id, decoded.role);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -119,7 +169,17 @@ router.post("/initialize-communication", async (req, res) => {
     const result = await initialize_communication(session_id, session_type);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -130,7 +190,17 @@ router.post("/initialize-emergency-session/:patient_id", async (req, res) => {
     const result = await initalize_emergency_session(patient_id);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -153,7 +223,17 @@ router.post("/cancel-session", async (req, res) => {
     const result = await cancellSession(session_ID,decoded.role);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 

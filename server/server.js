@@ -16,6 +16,7 @@ const agentRoutes = require("./routes/agentRoutes");
 const { ChatController } = require("./controllers/chatController");
 const { CallController } = require("./controllers/callController");
 const { EmergencySocket } = require("./controllers/emergencySocket");
+const { authorizeRoles } = require("./middlewares/authMiddlewares");
 require("dotenv").config();
 
 const app = express();
@@ -42,13 +43,13 @@ app.use(express.json());
 
 // 📦 Routes
 app.use("/auth", authRoutes);
-app.use("/admin", adminRoutes);
-app.use("/manager", managerRoutes);
-app.use("/patient", patientRoutes);
-app.use("/session", sessionRoutes);
-app.use("/therapist", therapistRoutes);
-app.use("/emergency", emergencyRoutes);
-app.use("/agent", agentRoutes);
+app.use("/admin", authorizeRoles("admin" ,"manager"), adminRoutes);
+app.use("/manager", authorizeRoles("manager"), managerRoutes);
+app.use("/patient", authorizeRoles("patient"), patientRoutes);
+app.use("/session", authorizeRoles("patient","doctor","life_coach","emergency_team"), sessionRoutes);
+app.use("/therapist", authorizeRoles("doctor","life_coach","patient","emergency_team"), therapistRoutes);
+app.use("/emergency", authorizeRoles("emergency_team"), emergencyRoutes);
+app.use("/agent", authorizeRoles("patient"), agentRoutes);
 
 // 📁 Static file serving for uploads
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));

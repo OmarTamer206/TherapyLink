@@ -29,7 +29,17 @@ router.get("/total-doctors-count", async (req, res) => {
     const result = await get_total_doctors_count();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -39,7 +49,17 @@ router.get("/total-appointments-count", async (req, res) => {
     const result = await get_total_appointment_count();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -49,7 +69,17 @@ router.get("/total-patient-count", async (req, res) => {
     const result = await get_total_patient_count();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -59,7 +89,17 @@ router.get("/total-earnings-count", async (req, res) => {
     const result = await get_total_earnings_count();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -69,7 +109,17 @@ router.get("/patient-visit-data-by-month", async (req, res) => {
     const result = await get_patient_visit_data_by_month();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -83,7 +133,17 @@ router.get("/search-workforce", async (req, res) => {
     const result = await search_workforce(name, type);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -96,7 +156,17 @@ router.get("/get-workforce-data", async (req, res) => {
     const result = await get_workforce_data(id, type);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -106,7 +176,17 @@ router.get("/booked-session-data", async (req, res) => {
     const result = await get_booked_session_data();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -116,7 +196,17 @@ router.get("/available-session-data", async (req, res) => {
     const result = await get_available_sessions_data();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -125,7 +215,17 @@ router.get("/cancelled-session-data", async (req, res) => {
     const result = await get_cancelled_session_data();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -142,7 +242,17 @@ router.get("/get-admin-data", async (req, res) => {
     const result = await get_admin_data(decoded.id,decoded.role);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -157,7 +267,17 @@ router.post("/check-refunded", async (req, res) => {
     const result = await checkRefunded(session_id, doctor_type);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -166,7 +286,17 @@ router.get("/get-all-feedbacks", async (req, res) => {
     const result = await getAllFeedbacks();
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 
@@ -189,7 +319,17 @@ router.post("/reply-feedback", async (req, res) => {
     const result = await replyFeedback(data.feedback_ID, data.session_ID, data.patient_ID, data.doctor_type, data.response, data.IsRefunded);
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   }
 });
 

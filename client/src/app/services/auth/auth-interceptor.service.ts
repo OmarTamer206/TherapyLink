@@ -3,8 +3,10 @@ import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 export function AuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  const router = inject(Router);
   const authService = inject(AuthService); // Injecting the service using inject() function
   const accessToken = localStorage.getItem('accessToken');
 
@@ -18,14 +20,19 @@ export function AuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
   }
 
   return next(clonedReq).pipe(
-    catchError((error) => {
-      if (error.status === 401) {
-        console.error('Token expired or invalid');
-        return handleTokenExpiration(req, next);
-      }
-      return throwError(() => new Error(error));
-    })
-  );
+  catchError((error) => {
+    if (error.status === 401) {
+      console.error('Token expired or invalid');
+      authService.logout();
+      router.navigate(['/login']);
+      // Stop further processing by returning an EMPTY observable or throwError
+      return throwError(() => new Error('Unauthorized - Redirecting to login'));
+      // OR
+      // return EMPTY;
+    }
+    return throwError(() => new Error(error.message));
+  })
+);
 };
 
 const handleTokenExpiration = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {

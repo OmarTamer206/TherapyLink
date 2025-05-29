@@ -52,6 +52,8 @@ import { SessionEndedComponent } from './patient/session-ended/session-ended.com
 import { LifeCoachSessionEndedComponent } from './life-coach/session-ended/session-ended.component';
 import { EmergencySessionComponent } from './emergency-team/emergency-session/emergency-session.component';
 import { EmergencySessionPatientComponent } from './patient/emergency-session/emergency-session.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -100,6 +102,8 @@ export const routes: Routes = [
   {
     path: 'patient',
     component: PatientComponent,
+    canActivate:[AuthGuard],
+    data:{role : ["patient"]},
     children: [
       { path: 'home', component: HomeComponent },
       {
@@ -168,6 +172,8 @@ export const routes: Routes = [
   {
     path: 'doctor',
     component: DoctorComponent,
+    canActivate:[AuthGuard],
+    data:{role : ["doctor"]},
     children: [
       {
         path: 'dashboard',
@@ -199,6 +205,8 @@ export const routes: Routes = [
   {
     path: 'life-coach',
     component: LifeCoachComponent,
+    canActivate:[AuthGuard],
+    data:{role : ["life_coach"]},
     children: [
       {
         path: 'dashboard',
@@ -233,6 +241,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate:[AuthGuard],
+    data:{role : ["admin"]},
     children: [
       {
         path: 'dashboard',
@@ -264,6 +274,8 @@ export const routes: Routes = [
   {
     path: 'manager',
     component: ManagerComponent,
+    canActivate:[AuthGuard],
+    data:{role : ["manager"]},
     children: [
       {
         path: 'dashboard',
@@ -286,6 +298,8 @@ export const routes: Routes = [
   {
     path: 'emergency-team',
     component: EmergencyTeamComponent,
+    canActivate:[AuthGuard],
+    data:{role : ["emergency_team"]},
     children: [
       {
         path: 'emergency-team-dashboard',
@@ -305,12 +319,12 @@ export const routes: Routes = [
         component: EmergencySessionComponent,
       },
     ],
-  },
+  }
+  ,
   {
-    path: "chat",
-    component: ChatSectionComponent
+    path: "forbidden",
+    component: ForbiddenComponent
   },
-
   {
     path: '**',
     component: NotFoundComponent,

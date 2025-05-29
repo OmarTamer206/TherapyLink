@@ -18,10 +18,48 @@ password: string = '';
 errorFlag: string = '';
 
 
-  constructor(private router: Router , private authService:AuthService) {}
+  constructor(private router: Router , private authService:AuthService) {
+
+    this.checkLoggedIn()
+
+  }
   goToSignup() {
     this.router.navigate(['/signup']);
   }
+
+
+checkLoggedIn(){
+  const accessToken = localStorage.getItem('accessToken');
+
+  if(accessToken){
+    const payload = JSON.parse(atob(accessToken.split('.')[1]));
+    const role = payload.role
+    if(role === "patient"){
+            this.router.navigate(['/patient/home']);
+
+          }
+          else if(role === "doctor"){
+            this.router.navigate(['/doctor/dashboard']);
+          }
+          else if(role === "life_coach"){
+            this.router.navigate(['/life-coach/dashboard']);
+          }
+          else if(role === "admin"){
+            this.router.navigate(['/admin/dashboard']);
+          }
+          else if(role === "manager"){
+            this.router.navigate(['/manager/dashboard']);
+          }
+          else if(role === "emergency_team"){
+            this.router.navigate(['/emergency-team/emergency-team-dashboard']);
+          }
+          else{
+            console.log("Invalid role");
+          }
+
+  }
+
+}
 
   onSubmit() {
 

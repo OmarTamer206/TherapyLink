@@ -1,0 +1,62 @@
+/* Fullscreen layout */
+.container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5faff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Wrapper to space items equally */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem; /* Equal space between elements */
+  text-align: center;
+}
+
+.error-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 6rem;
+  font-weight: bold;
+  color: #2ca8e0;
+}
+
+.digit {
+  font-size: 6rem;
+}
+
+.icon {
+  width: 100px;
+  height: 100px;
+  background-color: #2ca8e0;
+  color: white;
+  font-size: 5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: #2ca8e0;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1e88c5;
+}

@@ -30,6 +30,13 @@ export function AuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
       // OR
       // return EMPTY;
     }
+    else if (error.status === 403) {
+          // Redirect or show an error page/modal
+          console.log('Access denied. You do not have permission to view this resource.');
+          router.navigate(['/forbidden']);  // Or any page you want
+         return throwError(() => new Error('Forbidden - Redirecting to Frobidden Page'));
+
+        }
     return throwError(() => new Error(error.message));
   })
 );

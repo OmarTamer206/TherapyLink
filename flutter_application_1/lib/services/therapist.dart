@@ -13,13 +13,12 @@ class TherapistApi {
         'Authorization': 'Bearer $token',
       };
 
-  // Get all therapists
-  Future<List<dynamic>?> getTherapists() async {
+  Future<List<dynamic>?> getTodaySessions() async {
     final token = await _getToken();
     if (token == null) return null;
 
     final response = await http.get(
-      Uri.parse('$_baseUrl/therapists'),
+      Uri.parse('$_baseUrl/therapist/today-sessions'),
       headers: _headers(token),
     );
 
@@ -29,13 +28,12 @@ class TherapistApi {
     return null;
   }
 
-  // Get therapist by ID
-  Future<Map<String, dynamic>?> getTherapistById(String id) async {
+  Future<List<dynamic>?> getUpcomingSessions() async {
     final token = await _getToken();
     if (token == null) return null;
 
     final response = await http.get(
-      Uri.parse('$_baseUrl/therapists/$id'),
+      Uri.parse('$_baseUrl/therapist/upcoming-sessions'),
       headers: _headers(token),
     );
 
@@ -45,44 +43,171 @@ class TherapistApi {
     return null;
   }
 
-  // Create therapist
-  Future<bool> createTherapist(Map<String, dynamic> therapistData) async {
+  Future<List<dynamic>?> getNewPatientsThisMonth() async {
     final token = await _getToken();
-    if (token == null) return false;
+    if (token == null) return null;
 
-    final response = await http.post(
-      Uri.parse('$_baseUrl/therapists'),
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapist/new-patients-this-month'),
       headers: _headers(token),
-      body: jsonEncode(therapistData),
     );
 
-    return response.statusCode == 201;
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
   }
 
-  // Update therapist
-  Future<bool> updateTherapist(String id, Map<String, dynamic> therapistData) async {
+  Future<dynamic> getTotalPatients() async {
+    final token = await _getToken();
+    if (token == null) return null;
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapist/total-patients'),
+      headers: _headers(token),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  Future<List<dynamic>?> getPatientsData(String sessionId) async {
+    final token = await _getToken();
+    if (token == null) return null;
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapist/patients-data/$sessionId'),
+      headers: _headers(token),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  Future<dynamic> getPatientData(String patientId) async {
+    // Note: Your backend does not require auth here. Add headers if needed.
+    final response =
+        await http.get(Uri.parse('$_baseUrl/therapist/patient-data/$patientId'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  Future<bool> updatePatientReport(
+      Map<String, dynamic> sessionData, Map<String, dynamic> report) async {
     final token = await _getToken();
     if (token == null) return false;
+
+    final body = jsonEncode({'session_data': sessionData, 'report': report});
 
     final response = await http.put(
-      Uri.parse('$_baseUrl/therapists/$id'),
+      Uri.parse('$_baseUrl/therapist/update-patient-report'),
       headers: _headers(token),
-      body: jsonEncode(therapistData),
+      body: body,
     );
 
     return response.statusCode == 200;
   }
 
-  // Delete therapist
-  Future<bool> deleteTherapist(String id) async {
+  Future<List<dynamic>?> viewAvailableTime(String date,
+      {String? doctorId, String? doctorType}) async {
+    final token = await _getToken();
+    if (token == null) return null;
+
+    Uri url;
+    if (doctorId != null && doctorType != null) {
+      url = Uri.parse('$_baseUrl/therapist/available-time/$date/$doctorId/$doctorType');
+    } else {
+      url = Uri.parse('$_baseUrl/therapist/available-time/$date');
+    }
+
+    final response = await http.get(url, headers: _headers(token));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  Future<bool> updateAvailableTime(String timestamp, {String? topic}) async {
     final token = await _getToken();
     if (token == null) return false;
 
-    final response = await http.delete(
-      Uri.parse('$_baseUrl/therapists/$id'),
+    final body = jsonEncode({'timestamp': timestamp, 'topic': topic});
+
+    final response = await http.put(
+      Uri.parse('$_baseUrl/therapist/update-available-time'),
       headers: _headers(token),
+      body: body,
     );
 
     return response.statusCode == 200;
+  }
+
+  Future<bool> deleteAvailableTime(String timestamp) async {
+    final token = await _getToken();
+    if (token == null) return false;
+
+    final body = jsonEncode({'timestamp': timestamp});
+
+    final response = await http.delete(
+      Uri.parse('$_baseUrl/therapist/delete-available-time'),
+      headers: _headers(token),
+      body: body,
+    );
+
+    return response.statusCode == 200;
+  }
+
+  Future<dynamic> getPatientAnalytics() async {
+    final token = await _getToken();
+    if (token == null) return null;
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapist/patient-analytics'),
+      headers: _headers(token),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  Future<dynamic> getTherapistData() async {
+    final token = await _getToken();
+    if (token == null) return null;
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapist/get-therapist-data'),
+      headers: _headers(token),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  Future<dynamic>? viewAllDoctors(
+      String doctorType, String doctorSpecialization) async {
+            final token = await _getToken();
+    if (token == null) return null;
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapist/all-doctors/$doctorType/$doctorSpecialization'),
+      headers: _headers(token),
+
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
   }
 }

@@ -71,7 +71,7 @@ async function loginStaff(data) {
     const token = jwt.sign(
       { ...userWithoutPassword, role: roleOfUser },
       process.env.JWT_SECRET,
-      { expiresIn: "2m" }
+      { expiresIn: "10h" }
     );
 
     const refreshToken = jwt.sign(
@@ -85,6 +85,7 @@ async function loginStaff(data) {
     return { token, refreshToken , roleOfUser };
   } catch (error) {
     console.error("Login Error:", error);
+    
     throw new Error("Login failed");
   }
 }

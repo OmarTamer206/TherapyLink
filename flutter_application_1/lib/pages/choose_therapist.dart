@@ -18,11 +18,9 @@ class _TherapistSelectionPageState extends State<TherapistSelectionPage> {
   String? selectedTherapist;
 
   final List<String> therapistTitles = [
-    "Clinical Psychologist",
-    "Counseling Psychologist",
-    "Trauma Therapist",
-    "Child and Adolescent Therapist",
-    "Couple Therapy",
+    "General Psychological Support",
+    "Mood and Anxiety Disorder Specialist",
+    "Clinical Depression and Crisis Prevention Specialist",
   ];
 
   @override

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class UpcomingSessionsPage extends StatefulWidget {
-  const UpcomingSessionsPage({Key? key}) : super(key: key);
+
+  final Map<String, dynamic> sessionData;
+
+  const UpcomingSessionsPage({Key? key , required this.sessionData}) : super(key: key);
 
   @override
   State<UpcomingSessionsPage> createState() => _UpcomingSessionsPageState();

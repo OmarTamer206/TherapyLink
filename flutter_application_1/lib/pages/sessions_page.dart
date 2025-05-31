@@ -129,12 +129,12 @@ class SessionsPage extends StatelessWidget {
                 }
               : () {
                   // Navigate to upcoming sessions page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UpcomingSessionsPage(),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const UpcomingSessionsPage(),
+                  //   ),
+                  // );
                 },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),

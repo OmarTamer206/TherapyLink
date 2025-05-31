@@ -1,121 +1,100 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class ApiService {
-  static const String baseUrl = 'http://localhost:3000'; // Replace with your IP and port
+class AuthApi {
+  static const _baseUrl = 'http://localhost:3000'; // <-- Change this to your backend base URL
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  // LOGIN
-  static Future<http.Response> loginStaff(String email, String password) {
-    return http.post(
-      Uri.parse('$baseUrl/login-staff'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+  // Save JWT token securely
+  Future<void> saveToken(String token) async {
+    await _storage.write(key: 'jwt_token', value: token);
   }
 
-  // REFRESH TOKEN
-  static Future<http.Response> refreshToken(String refreshToken) {
-    return http.post(
-      Uri.parse('$baseUrl/refresh-token'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'refreshToken': refreshToken}),
-    );
+  // Get JWT token
+  Future<String?> getToken() async {
+    return await _storage.read(key: 'jwt_token');
   }
 
-  // PATIENT REGISTRATION
-  static Future<http.Response> registerPatient(Map<String, dynamic> data) {
-    return http.post(
-      Uri.parse('$baseUrl/register'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(data),
-    );
+  // Delete JWT token (logout)
+  Future<void> deleteToken() async {
+    await _storage.delete(key: 'jwt_token');
   }
 
-  // THERAPIST REGISTRATION
-  static Future<http.Response> registerTherapist(Map<String, dynamic> data) {
-    return http.post(
-      Uri.parse('$baseUrl/register-therapist'),
+  // Login method - expects username & password, returns true if successful
+  Future<bool> login(String email, String password) async {
+    final url = Uri.parse('$_baseUrl/auth/login-staff');
+    final data = <String, dynamic>{'email': email, 'password': password};
+    final response = await http.post(
+      url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(data),
     );
+  print(response.body);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final token = data['token']; // Adjust key based on your backend response
+      if (token != null) {
+        await saveToken(token);
+        return true;
+      }
+    }
+    return false;
   }
 
-  // ADMIN REGISTRATION
-  static Future<http.Response> registerAdmin(Map<String, dynamic> data) {
-    return http.post(
-      Uri.parse('$baseUrl/register-admin'),
+  // Register method example (adjust fields as needed)
+  Future<bool> register(Map<String, dynamic> userData) async {
+    final url = Uri.parse('$_baseUrl/auth/register');
+    final data = userData;
+    final response = await http.post(
+      url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(data),
     );
+    return response.statusCode == 201;
   }
 
-  // EMERGENCY TEAM REGISTRATION
-  static Future<http.Response> registerEmergencyTeam(Map<String, dynamic> data) {
-    return http.post(
-      Uri.parse('$baseUrl/register-emergency-member'),
+  // Example: Get current user profile with token auth
+  Future<Map<String, dynamic>?> getProfile() async {
+    final url = Uri.parse('$_baseUrl/auth/profile');
+    final token = await getToken();
+    if (token == null) return null;
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  // Logout
+  Future<void> logout() async {
+    await deleteToken();
+  }
+
+
+  // Check if email is already registered (adjust endpoint as per your backend)
+  Future<String> checkEmailExists(String email) async {
+    final url = Uri.parse('$_baseUrl/auth/check-email');
+    final data = {"email":email};
+    final response = await http.post(
+      url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(data),
     );
+    print(response.body);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['data'];
+    }
+    return "error"; // Assume not existing on failure
   }
 
-  // UPDATES
-  static Future<http.Response> updatePatient(Map<String, dynamic> data) {
-    return http.put(
-      Uri.parse('$baseUrl/update'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(data),
-    );
-  }
-
-  static Future<http.Response> updateTherapist(Map<String, dynamic> data) {
-    return http.put(
-      Uri.parse('$baseUrl/update-therapist'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(data),
-    );
-  }
-
-  static Future<http.Response> updateAdmin(Map<String, dynamic> data) {
-    return http.put(
-      Uri.parse('$baseUrl/update-admin'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(data),
-    );
-  }
-
-  static Future<http.Response> updateEmergencyTeam(Map<String, dynamic> data) {
-    return http.put(
-      Uri.parse('$baseUrl/update-emergency-member'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(data),
-    );
-  }
-
-  // DELETE USER
-  static Future<http.Response> deleteUser(String id, String role) {
-    return http.delete(
-      Uri.parse('$baseUrl/delete-user'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'id': id, 'role': role}),
-    );
-  }
-
-  // CHECK EMAIL
-  static Future<http.Response> checkEmail(String email) {
-    return http.post(
-      Uri.parse('$baseUrl/check-email'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email}),
-    );
-  }
-
-  // UPLOAD PROFILE PICTURE
-  static Future<http.StreamedResponse> uploadProfilePicture(String filePath) async {
-    var request = http.MultipartRequest(
-      'POST',
-      Uri.parse('$baseUrl/upload-profile-pic'),
-    );
-    request.files.add(await http.MultipartFile.fromPath('file', filePath));
-    return request.send();
-  }
 }

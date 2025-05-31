@@ -1,6 +1,10 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/patient.dart';
+import 'package:flutter_application_1/services/session.dart';
 import 'dart:async';
 import 'group_sessions_page.dart';
 import 'sessions_page.dart';
@@ -111,13 +115,71 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _loading = true;
+  String? _patientName = "Emily"; // You can replace with fetched data
+  Map<String, dynamic>? _upcomingSession; // null means no session
+  late DateTime _sessionDateTime;
+
+  PatientApi _patientApi = PatientApi();
+  SessionApi _sessionApi = SessionApi();
+
+  var userData ;
+  var sessionData ;
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    // Simulate data fetching delay here or replace with real fetch calls
+    
+    userData = await _patientApi.getProfileData();
+    sessionData = await _sessionApi.getUpcomingSessionsPatient();
+
+    
+
+    print("data : " + sessionData.toString());
+    // Example: you should replace these with real fetched values
+    setState(() {
+      _patientName = userData["data"]["patient"][0]["Name"]; // fetched patient name
+      // Uncomment below to simulate a session present
+      if(sessionData.toString() != '[]'){
+        _upcomingSession = {
+        'doctor_name': 'Dr. ' + sessionData[0]["doctor_name"] ,
+        'scheduled_time': sessionData[0]["scheduled_time"],
+      };
+      }
+
+      // Uncomment below to simulate no upcoming session
+      // _upcomingSession = null;
+
+      if (_upcomingSession != null && _upcomingSession!['scheduled_time'] != null) {
+        _sessionDateTime = DateTime.parse(_upcomingSession!['scheduled_time']).toLocal();
+      }
+
+      _loading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -131,13 +193,13 @@ class HomeScreen extends StatelessWidget {
             children: [
               _buildAppBar(context),
               const SizedBox(height: 24),
-              const Padding(
-                padding: EdgeInsets.only(left: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Welcome Emily !",
-                    style: TextStyle(
+                    "Welcome ${_patientName ?? ''} !",
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
@@ -163,10 +225,12 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 6),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UpcomingSessionsPage()),
-                  );
+                  if (_upcomingSession != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UpcomingSessionsPage(sessionData: sessionData[0])),
+                    );
+                  }
                 },
                 child: Container(
                   width: double.maxFinite,
@@ -186,33 +250,53 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Session With: Dr. Magdy",
-                        style: TextStyle(
+                      Text(
+                        "Session With: ${_upcomingSession != null ? _upcomingSession!['doctor_name'] : 'N/A'}",
+                        style: const TextStyle(
                           fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 6),
-                      const Text(
-                        "Timing: 9/1/2025 , 7:00 PM",
-                        style: TextStyle(
+                      Text(
+                        _upcomingSession != null && _upcomingSession!['scheduled_time'] != null
+                            ? "Timing: ${_sessionDateTime.day}/${_sessionDateTime.month}/${_sessionDateTime.year} , "
+                              "${_sessionDateTime.hour % 12 == 0 ? 12 : _sessionDateTime.hour % 12}:"
+                              "${_sessionDateTime.minute.toString().padLeft(2, '0')} "
+                              "${_sessionDateTime.hour >= 12 ? 'PM' : 'AM'}"
+                            : "Timing: N/A",
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Colors.black87,
-                                                fontWeight: FontWeight.bold,
-
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 40),
-                      Container(
-                        height: 240,
-                        width: double.maxFinite,
-                        margin: const EdgeInsets.symmetric(horizontal: 38),
-                        child: const DynamicCountdownWidget(
-                          sessionTime: "2025-05-28 16:17:00",
+                      if (_upcomingSession != null && _upcomingSession!['scheduled_time'] != null)
+                        Container(
+                          height: 240,
+                          width: double.maxFinite,
+                          margin: const EdgeInsets.symmetric(horizontal: 38),
+                          child: DynamicCountdownWidget(
+                            sessionTime: _upcomingSession!['scheduled_time'],
+                          ),
+                        )
+                      else
+                        Container(
+                          height: 240,
+
+                          child: const Center(
+                            child: Text(
+                              "No Upcoming Sessions.",
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
                       const SizedBox(height: 30),
                     ],
                   ),
@@ -249,39 +333,37 @@ class HomeScreen extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-        Image.asset(
-  'assets/images/therapy.png',
-  height: 40, // adjust size as needed
-),
-
+          Image.asset(
+            'assets/images/therapy.png',
+            height: 40, // adjust size as needed
+          ),
           Row(
             children: [
-            GestureDetector(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const EmergencyPage()), // Import EmergencyPage if not already
-    );
-  },
-  child: Container(
-    decoration: BoxDecoration(
-      color: const Color(0xFFE53E3E),
-      borderRadius: BorderRadius.circular(10),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-    child: const Row(
-      children: [
-        Icon(Icons.warning_amber_rounded, size: 16, color: Colors.white),
-        SizedBox(width: 4),
-        Text(
-          "Emergency Support", // changed from “Need Help?”
-          style: TextStyle(color: Colors.white, fontSize: 12),
-        ),
-      ],
-    ),
-  ),
-),
-
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const EmergencyPage()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE53E3E),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.warning_amber_rounded, size: 16, color: Colors.white),
+                      SizedBox(width: 4),
+                      Text(
+                        "Emergency Support",
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
               const CircleAvatar(
                 radius: 17,
@@ -340,7 +422,7 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(
             color: Color(0xFF1F2937),
             fontSize: 14,
-                      fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -380,6 +462,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
 class DynamicCountdownWidget extends StatefulWidget {
   final String sessionTime;
 

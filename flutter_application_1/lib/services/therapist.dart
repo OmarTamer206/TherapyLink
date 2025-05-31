@@ -1,121 +1,88 @@
-// lib/api/therapist_api.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TherapistApi {
-static const String baseUrl = 'http://localhost:3000';
+  static const _baseUrl = 'http://localhost:3000'; // Update backend URL
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-static Future<http.Response> getTodaySessions(String token) {
-return http.get(
-Uri.parse('$baseUrl/therapist/today-sessions'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+  Future<String?> _getToken() async => await _storage.read(key: 'jwt_token');
 
-static Future<http.Response> getUpcomingSessions(String token) {
-return http.get(
-Uri.parse('$baseUrl/therapist/upcoming-sessions'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+  Map<String, String> _headers(String token) => {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
 
-static Future<http.Response> getNewPatientsThisMonth(String token) {
-return http.get(
-Uri.parse('$baseUrl/therapist/new-patients-this-month'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+  // Get all therapists
+  Future<List<dynamic>?> getTherapists() async {
+    final token = await _getToken();
+    if (token == null) return null;
 
-static Future<http.Response> getTotalPatients(String token) {
-return http.get(
-Uri.parse('$baseUrl/therapist/total-patients'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapists'),
+      headers: _headers(token),
+    );
 
-static Future<http.Response> getPatientsData(String token, String sessionId) {
-return http.get(
-Uri.parse('$baseUrl/therapist/patients-data/$sessionId'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
 
-static Future<http.Response> getPatientData(String patientId) {
-return http.get(
-Uri.parse('$baseUrl/therapist/patient-data/$patientId'),
-);
-}
+  // Get therapist by ID
+  Future<Map<String, dynamic>?> getTherapistById(String id) async {
+    final token = await _getToken();
+    if (token == null) return null;
 
-static Future<http.Response> updatePatientReport(
-String token, String report, Map<String, dynamic> sessionData) {
-return http.put(
-Uri.parse('$baseUrl/therapist/update-patient-report'),
-headers: {
-'Authorization': 'Bearer $token',
-'Content-Type': 'application/json'
-},
-body: jsonEncode({'report': report, 'session_data': sessionData}),
-);
-}
+    final response = await http.get(
+      Uri.parse('$_baseUrl/therapists/$id'),
+      headers: _headers(token),
+    );
 
-static Future<http.Response> viewAvailableTime(
-String token, String date, String id, String type) {
-return http.get(
-Uri.parse('$baseUrl/therapist/available-time/$date/$id/$type'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
 
-static Future<http.Response> viewAvailableTimeOwn(String token, String date) {
-return http.get(
-Uri.parse('$baseUrl/therapist/available-time/$date'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+  // Create therapist
+  Future<bool> createTherapist(Map<String, dynamic> therapistData) async {
+    final token = await _getToken();
+    if (token == null) return false;
 
-static Future<http.Response> updateAvailableTime(
-String token, String timestamp, String topic) {
-return http.put(
-Uri.parse('$baseUrl/therapist/update-available-time'),
-headers: {
-'Authorization': 'Bearer $token',
-'Content-Type': 'application/json'
-},
-body: jsonEncode({'timestamp': timestamp, 'topic': topic}),
-);
-}
+    final response = await http.post(
+      Uri.parse('$_baseUrl/therapists'),
+      headers: _headers(token),
+      body: jsonEncode(therapistData),
+    );
 
-static Future<http.Response> deleteAvailableTime(
-String token, String timestamp) {
-return http.delete(
-Uri.parse('$baseUrl/therapist/delete-available-time'),
-headers: {
-'Authorization': 'Bearer $token',
-'Content-Type': 'application/json'
-},
-body: jsonEncode({'timestamp': timestamp}),
-);
-}
+    return response.statusCode == 201;
+  }
 
-static Future<http.Response> getPatientAnalytics(String token) {
-return http.get(
-Uri.parse('$baseUrl/therapist/patient-analytics'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+  // Update therapist
+  Future<bool> updateTherapist(String id, Map<String, dynamic> therapistData) async {
+    final token = await _getToken();
+    if (token == null) return false;
 
-static Future<http.Response> getTherapistData(String token) {
-return http.get(
-Uri.parse('$baseUrl/therapist/get-therapist-data'),
-headers: {'Authorization': 'Bearer $token'},
-);
-}
+    final response = await http.put(
+      Uri.parse('$_baseUrl/therapists/$id'),
+      headers: _headers(token),
+      body: jsonEncode(therapistData),
+    );
 
-static Future<http.Response> viewAllDoctors(
-String doctorType, String doctorSpecialization) {
-return http.get(
-Uri.parse(
-'$baseUrl/therapist/all-doctors/$doctorType/$doctorSpecialization'),
-);
-}
+    return response.statusCode == 200;
+  }
+
+  // Delete therapist
+  Future<bool> deleteTherapist(String id) async {
+    final token = await _getToken();
+    if (token == null) return false;
+
+    final response = await http.delete(
+      Uri.parse('$_baseUrl/therapists/$id'),
+      headers: _headers(token),
+    );
+
+    return response.statusCode == 200;
+  }
 }

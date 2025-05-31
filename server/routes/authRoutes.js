@@ -350,7 +350,7 @@ router.put("/update-emergency-member", async (req, res) => {
     !data.id ||
     !data.name ||
     !data.email ||
-    !data.Date_Of_Birth ||
+    !data.Date_Of_Birth || 
     !data.phone_number 
   )
     return res.status(400).json({ error: "Missing data" });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/patient.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -22,6 +23,29 @@ class _TherapistSelectionPageState extends State<TherapistSelectionPage> {
     "Mood and Anxiety Disorder Specialist",
     "Clinical Depression and Crisis Prevention Specialist",
   ];
+
+  PatientApi _patientApi = PatientApi();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    final userData = await _patientApi.getProfileData();
+    print(userData["data"]["patient"][0]["Therapist_Preference"]);
+    if(userData["data"]["patient"][0]["Therapist_Preference"] != null)
+      setState(() {
+        selectedTherapist = userData["data"]["patient"][0]["Therapist_Preference"];
+      });
+    }
+
+  Future<void> _changeTherapistPreference() async {
+    final result = await _patientApi.changeTherapistPreference(selectedTherapist!);
+    print(result);
+    
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +149,8 @@ class _TherapistSelectionPageState extends State<TherapistSelectionPage> {
                 child: ElevatedButton(
                   onPressed: selectedTherapist != null
                       ? () {
+
+                          _changeTherapistPreference();
                           // Show SnackBar to confirm selection
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('Selected: $selectedTherapist'),

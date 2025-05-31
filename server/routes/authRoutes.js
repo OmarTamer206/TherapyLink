@@ -52,7 +52,35 @@ router.post('/upload-profile-pic', upload.single('file'), (req, res) => {
 });
 
 
+router.post("/login", async (req, res) => {
+  const data = req.body;
+  if (!data.email || !data.password)
+    return res.status(400).json({ error: "Missing data" });
 
+  try {
+    const result = await loginPatient(data);
+    if (!result) return res.status(401).json({ error: "Invalid credentials" });
+
+    res.json({
+      message: "Login successful",
+      token: result.token,
+      refreshToken: result.refreshToken,
+      role: result.roleOfUser
+    });
+  } catch (error) {
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  }
+});
 
 
 router.post("/login-staff", async (req, res) => {

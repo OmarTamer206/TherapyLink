@@ -1,77 +1,138 @@
-import 'package:flutter/material.dart';
-import 'HomePage.dart';
 
-class ChatBotPage extends StatefulWidget {
-  const ChatBotPage({Key? key}) : super(key: key);
+
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/agent.dart';
+import 'package:flutter_application_1/services/patient.dart';
+class ChatPage extends StatefulWidget {
+  const ChatPage({Key? key}) : super(key: key);
 
   @override
-  State<ChatBotPage> createState() => _ChatBotPageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatBotPageState extends State<ChatBotPage> {
+class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  List<ChatMessage> messages = [
-    ChatMessage(
-      text: "Magna suscipit eos et presentium odio et.",
-      isUser: false,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 10)),
-    ),
-    ChatMessage(
-      text:
-          "Iste cursus voluptatum sed earum fugiat. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Odio quas minus consequatur qui ut et eum suscipit ratione. Cumque sapiente fugit dolor.",
-      isUser: true,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 8)),
-    ),
-    ChatMessage(
-      text: "Magna suscipit eos et presentium odio et.",
-      isUser: false,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 6)),
-    ),
-    ChatMessage(
-      text:
-          "Iste cursus voluptatum sed earum fugiat. Velit cum id consequatur. Blanditiis suscipit facere eveniet sed. Incidunt quod modi illo nesciunt hic possimus. Odio quas minus consequatur qui ut et eum suscipit ratione. Cumque sapiente fugit dolor.",
-      isUser: true,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 4)),
-    ),
-    ChatMessage(
-      text: "Magna suscipit eos et presentium odio et.",
-      isUser: false,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
-    ),
-    ChatMessage(
-      text:
-          "Possimus ut suscipit consectetur. Officiis ut enim ex ullam voluptas sint officiis ut libero id nulla quidaudem adipisci ut. Tenetur ut deserunt aut corporis at voluptas molestiae voluptas deseruta ab recusandae architecto atque ullam officia. Soluta quas quod rerum et voluptas molestiae in ut voluptas ut. Sed et vitae. Aua cum inventore rem velit rerum molestiae beatae.",
-      isUser: true,
-      timestamp: DateTime.now(),
-    ),
-  ];
+  final AgentApi _agentService = AgentApi();
+  final PatientApi _patientService = PatientApi();
 
-  void _sendMessage() {
-    if (_messageController.text.trim().isEmpty) return;
+  List<ChatMessage> messages = [];
+  bool loading = false;
+  bool showSummary = false;
+  Map<String, dynamic>? summaryData;
+
+  String sessionId ="";
+  
+  String generateSessionId() {
+    final now = DateTime.now().millisecondsSinceEpoch; // Current time in ms
+    final randomPart = (10000 + (DateTime.now().microsecondsSinceEpoch % 89999)).toString(); // Some microseconds-based randomness
+    return now.toString() + randomPart;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    sessionId = generateSessionId();
+    _initializeChat();
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _initializeChat() async {
+    print(sessionId);
+    setState(() {
+      loading = true;
+      messages.clear();
+      showSummary = false;
+      summaryData = null;
+    });
+
+    try {
+      await _agentService.startChat(sessionId);
+      final questionResponse = await _agentService.getQuestion(sessionId);
+
+      if (questionResponse?['done'] == true) {
+        await _fetchSummary();
+      } else {
+        setState(() {
+          messages.add(ChatMessage(text: questionResponse?['question'], isUser: false));
+        });
+      }
+    } catch (e) {
+      setState(() {
+        messages.add(ChatMessage(text: "Failed to start chat: $e", isUser: false));
+      });
+    } finally {
+      setState(() {
+        loading = false;
+      });
+      _scrollToBottom();
+    }
+  }
+
+  Future<void> _sendMessage() async {
+    final text = _messageController.text.trim();
+    if (text.isEmpty || loading || showSummary) return;
 
     setState(() {
-      messages.add(ChatMessage(
-        text: _messageController.text.trim(),
-        isUser: true,
-        timestamp: DateTime.now(),
-      ));
+      messages.add(ChatMessage(text: text, isUser: true));
+      loading = true;
     });
 
     _messageController.clear();
     _scrollToBottom();
 
-    Future.delayed(const Duration(seconds: 1), () {
+    try {
+      await _agentService.respondToChat(sessionId, text);
+      final questionResponse = await _agentService.getQuestion(sessionId);
+
+      if (questionResponse?['done'] == true) {
+        await _fetchSummary();
+      } else {
+        setState(() {
+          messages.add(ChatMessage(text: questionResponse?['question'], isUser: false));
+        });
+      }
+    } catch (e) {
       setState(() {
-        messages.add(ChatMessage(
-          text: "Thanks for your message! This is an automated response.",
-          isUser: false,
-          timestamp: DateTime.now(),
-        ));
+        messages.add(ChatMessage(text: "Error: $e", isUser: false));
+      });
+    } finally {
+      setState(() {
+        loading = false;
       });
       _scrollToBottom();
+    }
+  }
+
+  Future<void> _fetchSummary() async {
+    setState(() {
+      loading = true;
     });
+
+    try {
+      final summary = await _agentService.getSummary(sessionId);
+      setState(() {
+        summaryData = summary;
+        showSummary = true;
+      });
+    } catch (e) {
+      setState(() {
+        messages.add(ChatMessage(text: "Failed to fetch summary: $e", isUser: false));
+      });
+    } finally {
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   void _scrollToBottom() {
@@ -88,112 +149,66 @@ class _ChatBotPageState extends State<ChatBotPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 234, 236, 236),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xFF1F2937),
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
-          ),
-          child: SafeArea(
-            bottom: false,
-            child: Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 16),
-  child: Row(
-    children: [
-      IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
-            (route) => false,
-          );
-        },
-      ),
-      const Expanded(
-        child: Text(
-          'ChatBot',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-      const SizedBox(width: 48),
-    ],
-  ),
-),
+    if (showSummary) {
+      return _buildSummaryScreen();
+    }
 
-          ),
-        ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFEAECEC),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1F2937),
+        title: const Text('ChatBot'),
+        centerTitle: true,
       ),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
-              padding: const EdgeInsets.all(16),
-              itemCount: messages.length,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              itemCount: messages.length + (loading ? 1 : 0),
               itemBuilder: (context, index) {
+                if (loading && index == messages.length) {
+                  return _buildLoadingMessage();
+                }
                 return ChatBubble(message: messages[index]);
               },
             ),
           ),
+          _buildInputArea(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoadingMessage() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            width: 32,
+            height: 32,
             decoration: const BoxDecoration(
-              color: Color(0xFF1F2937),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              color: Color(0xFF4ECDC4),
+              shape: BoxShape.circle,
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: TextField(
-                      controller: _messageController,
-                      decoration: const InputDecoration(
-                        hintText: 'Type Something...',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 12,
-                        ),
-                      ),
-                      onSubmitted: (_) => _sendMessage(),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: _sendMessage,
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.send,
-                      color: Color(0xFF4ECDC4),
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ],
+            child: const Icon(Icons.smart_toy, color: Colors.white, size: 18),
+          ),
+          const SizedBox(width: 8),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.75,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Text(
+              'Loading...',
+              style: TextStyle(fontSize: 16, color: Colors.black87, height: 1.4),
             ),
           ),
         ],
@@ -201,23 +216,117 @@ class _ChatBotPageState extends State<ChatBotPage> {
     );
   }
 
-  @override
-  void dispose() {
-    _messageController.dispose();
-    _scrollController.dispose();
-    super.dispose();
+  Widget _buildInputArea() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: const BoxDecoration(
+        color: Color(0xFF1F2937),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: TextField(
+                controller: _messageController,
+                decoration: const InputDecoration(
+                  hintText: 'Type Something...',
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                ),
+                onSubmitted: (_) => _sendMessage(),
+                enabled: !loading,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          GestureDetector(
+            onTap: _sendMessage,
+            child: Container(
+              width: 48,
+              height: 48,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.send, color: Color(0xFF4ECDC4), size: 24),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryScreen() {
+    if (summaryData == null) {
+      return const Scaffold(
+        body: Center(child: Text("No summary available")),
+      );
+    }
+
+    var probablePreference = summaryData!['most_probable_status'] ?? 'Unknown';
+    final finalScores = summaryData!['final_scores'] ?? {};
+
+      if(probablePreference =="Normal")
+        probablePreference = "General Psychological Support";
+      if(probablePreference =="Mood and Anxiety Disorders")
+        probablePreference = "Mood and Anxiety Disorder Specialist";
+      if(probablePreference =="Depression and Suicidal")
+        probablePreference = "Clinical Depression and Crisis Prevention Specialist";
+
+      final result = _patientService.changeTherapistPreference(probablePreference);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Summary'),
+        backgroundColor: const Color(0xFF1F2937),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Text(
+              "After analyzing your text, the most probable type you need is $probablePreference",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView(
+                children: finalScores.entries
+                    .map<Widget>((e) => ListTile(
+                          title: Text(e.key),
+                          trailing: Text(e.value.toString()),
+                        ))
+                    .toList(),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                int count = 0;
+                Navigator.popUntil(context, (route) {
+                  return count++ == 2; // pop until 2 pops have been done
+                });
+              },
+              child: const Text('Go to Home'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 class ChatMessage {
   final String text;
   final bool isUser;
-  final DateTime timestamp;
 
   ChatMessage({
     required this.text,
     required this.isUser,
-    required this.timestamp,
   });
 }
 
@@ -228,14 +337,15 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isUser = message.isUser;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
         mainAxisAlignment:
-            message.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!message.isUser) ...[
+          if (!isUser) ...[
             Container(
               width: 32,
               height: 32,
@@ -243,11 +353,7 @@ class ChatBubble extends StatelessWidget {
                 color: Color(0xFF4ECDC4),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.smart_toy,
-                color: Colors.white,
-                size: 18,
-              ),
+              child: const Icon(Icons.smart_toy, color: Colors.white, size: 18),
             ),
             const SizedBox(width: 8),
           ],
@@ -256,25 +362,22 @@ class ChatBubble extends StatelessWidget {
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.75,
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: message.isUser ? const Color(0xFF4ECDC4) : Colors.white,
+                color: isUser ? const Color(0xFF4ECDC4) : Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 message.text,
                 style: TextStyle(
-                  color: message.isUser ? Colors.white : Colors.black87,
+                  color: isUser ? Colors.white : Colors.black87,
                   fontSize: 16,
                   height: 1.4,
                 ),
               ),
             ),
           ),
-          if (message.isUser) ...[
+          if (isUser) ...[
             const SizedBox(width: 8),
             Container(
               width: 32,

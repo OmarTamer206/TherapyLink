@@ -4,32 +4,59 @@ const { executeQuery } = require("./databaseController");
 require("dotenv").config();
 
 // User Login
-// async function loginPatient(data) {
-//   try {
-//     const users = await executeQuery("SELECT * FROM patient WHERE email = ?", [
-//       data.email,
-//     ]);
-//     if (users.length === 0) return null;
+async function loginPatient(data) {
+  const staffRoles = [
+    "patient"
+  ];
+  try {
+    let users;
+    let roleOfUser;
+    for (const role in staffRoles) {
+      users = await executeQuery(
+        "SELECT * FROM " + staffRoles[role] + " WHERE email = ?",
+        [data.email]
+      );
 
-//     const user = users[0];
-//     const passwordMatch = await bcrypt.compare(
-//       data.password,
-//       users[0].Password
-//     );
-//     if (!passwordMatch) return null;
+      if (users.length !== 0) 
+      {
+        
+        roleOfUser = staffRoles[role]
+        break;
+      }
+    }
 
-//     const token = jwt.sign(
-//       { id: user.id, email: user.email },
-//       process.env.JWT_SECRET,
-//       { expiresIn: "1h" }
-//     );
+    if (users.length === 0) return null;
 
-//     return { token, user };
-//   } catch (error) {
-//     console.error("Login Error:", error);
-//     throw new Error("Login failed");
-//   }
-// }
+    const user = users[0];
+    const passwordMatch = await bcrypt.compare(
+      data.password,
+      users[0].Password
+    );
+    if (!passwordMatch) return null;
+
+    const { password, ...userWithoutPassword } = user;
+
+    const token = jwt.sign(
+      { ...userWithoutPassword, role: roleOfUser },
+      process.env.JWT_SECRET,
+      { expiresIn: "10h" }
+    );
+
+    const refreshToken = jwt.sign(
+      { ...userWithoutPassword , role: roleOfUser },
+      process.env.REFRESH_SECRET_KEY,
+      { expiresIn: '30d' } // Refresh token expires in 30 days
+    );
+
+    console.log(roleOfUser);
+    
+    return { token, refreshToken , roleOfUser };
+  } catch (error) {
+    console.error("Login Error:", error);
+    
+    throw new Error("Login failed");
+  }
+}
 
 async function loginStaff(data) {
   const staffRoles = [
@@ -517,6 +544,7 @@ async function findUserById(id,role){
 
 module.exports = {
   
+  loginPatient,
   loginStaff,
   registerPatient,
   registerAdmin,

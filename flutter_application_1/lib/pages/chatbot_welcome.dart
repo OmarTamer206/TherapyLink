@@ -63,7 +63,7 @@ class ChatBotWelcomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ChatBotPage()),
+                      MaterialPageRoute(builder: (context) => const ChatPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

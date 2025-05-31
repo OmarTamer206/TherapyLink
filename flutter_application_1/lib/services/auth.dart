@@ -23,7 +23,7 @@ class AuthApi {
 
   // Login method - expects username & password, returns true if successful
   Future<bool> login(String email, String password) async {
-    final url = Uri.parse('$_baseUrl/auth/login-staff');
+    final url = Uri.parse('$_baseUrl/auth/login');
     final data = <String, dynamic>{'email': email, 'password': password};
     final response = await http.post(
       url,

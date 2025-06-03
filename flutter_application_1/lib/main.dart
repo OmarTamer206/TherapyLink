@@ -10,20 +10,21 @@ import 'pages/login.dart';      // Add this
 import 'pages/signup.dart';  
    // Add this
 // ChatBot Welcome Page
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 void main() {
-  runApp(const TherapyLinkApp());
+  runApp(TherapyLinkApp());
 }
 
 class TherapyLinkApp extends StatelessWidget {
-  const TherapyLinkApp({super.key});
-
+  TherapyLinkApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TherapyLink',
       debugShowCheckedModeBanner: false,
 initialRoute: '/login',
+navigatorObservers: [routeObserver],
    routes: {
   '/login': (context) => const LoginPage(),
   '/signup': (context) => const SignUpPage(),
@@ -31,7 +32,7 @@ initialRoute: '/login',
   '/feedback': (context) => const FeedbackPage(),
   '/profile': (context) => const ProfilePage(),
   '/edit-profile': (context) => const EditProfilePage(),
-  '/sessions': (context) => const SessionsPage(),
+  '/sessions': (context) =>  SessionsPage(),
   '/journal': (context) => const MyJournalPage(),
   '/chatbot': (context) => ChatBotWelcomePage(),
 },

@@ -115,8 +115,7 @@ class TherapistApi {
     return response.statusCode == 200;
   }
 
-  Future<List<dynamic>?> viewAvailableTime(String date,
-      {String? doctorId, String? doctorType}) async {
+  Future<Map<String, dynamic>?> viewAvailableTime(String date, String? doctorId, String? doctorType) async {
     final token = await _getToken();
     if (token == null) return null;
 

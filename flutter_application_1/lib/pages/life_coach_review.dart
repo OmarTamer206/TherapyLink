@@ -76,7 +76,7 @@ class LifeCoachReviewPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MakeAppointmentCoachPage()),
+                  MaterialPageRoute(builder: (context) =>  MakeAppointmentCoachPage(doctorData:doctorData)),
                 );
               },
               style: ElevatedButton.styleFrom(

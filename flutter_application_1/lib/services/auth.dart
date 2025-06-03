@@ -21,16 +21,23 @@ class AuthApi {
   }
 
   // Login (patient)
-  Future<Map<String, dynamic>?> login(String email, String password) async {
+  Future<bool> login(String email, String password) async {
     final url = Uri.parse('$_baseUrl/auth/login');
     final res = await http.post(url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password})
     );
-    if (res.statusCode == 200) return jsonDecode(res.body);
-    return null;
+    
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body);
+      final token = data['token']; // Adjust key based on your backend response
+      if (token != null) {
+        await saveToken(token);
+        return true;
+      }
   }
-
+    return false;
+  }
   // Login (staff)
   Future<Map<String, dynamic>?> loginStaff(String email, String password) async {
     final url = Uri.parse('$_baseUrl/auth/login-staff');

@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/services/patient.dart';
+import 'package:flutter_application_1/services/therapist.dart';
 import 'payment_done.dart';
 
 class CheckoutCoachPage extends StatefulWidget {
-  const CheckoutCoachPage({super.key});
+  final Map<String, dynamic> doctorData;
+  DateTime selectedDate ;
+  String selectedTime;
+   CheckoutCoachPage({super.key , required this.doctorData ,required this.selectedDate,required this.selectedTime});
 
   @override
   State<CheckoutCoachPage> createState() => _CheckoutCoachPageState();
 }
 
 class _CheckoutCoachPageState extends State<CheckoutCoachPage> {
-  final String _selectedType = 'Video Call';
-  final String _selectedDuration = '1 hour';
+    String _selectedType = 'Voice / Video Call';
+  String _selectedDuration = '1 hour';
+  
+  var doctor_id;
+  var date ;
+  var time ;
+  var finalTimestamp;
+
+  double multipier = 1.0;
+  String? basePrice ;
+  double? price;
+
+    TherapistApi _therapistApi = TherapistApi();
+  PatientApi _patientApi = PatientApi();
 
   final TextEditingController _cardNumberController = TextEditingController();
   final TextEditingController _expiryController = TextEditingController();
@@ -19,6 +36,42 @@ class _CheckoutCoachPageState extends State<CheckoutCoachPage> {
   final TextEditingController _cardHolderController = TextEditingController();
 
   final Color mainColor = const Color(0xFF1F2937);
+
+      @override
+  void initState() {
+    super.initState();
+    doctor_id = widget.doctorData["doctor_data"]["id"];
+    date = widget.selectedDate;
+    time = widget.selectedTime;
+    basePrice = widget.doctorData["doctor_data"]["Session_price"].toString();
+    price = double.parse(basePrice!) * multipier;
+
+    print("price : $price");
+    finalTimestamp = generateTimestamp(date.toString(), time);
+  }
+
+    generateTimestamp(dateStr , timeStr){
+    // Parse the date in UTC, then convert to local time
+    DateTime date = DateTime.parse(dateStr).toLocal();
+
+    // Parse the time manually
+    TimeOfDay time = TimeOfDay(
+      hour: int.parse(timeStr.split(':')[0]) + (timeStr.contains('PM') && !timeStr.startsWith('12') ? 12 : 0) - (timeStr.contains('AM') && timeStr.startsWith('12') ? 12 : 0),
+      minute: int.parse(timeStr.split(':')[1].split(' ')[0]),
+    );
+
+    // Merge into final DateTime
+    DateTime finalDateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+
+    print(" Final : $finalDateTime"); // e.g., 2025-06-10 23:00:00.000 (in your local time zone)
+    return finalDateTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,24 +246,40 @@ class _CheckoutCoachPageState extends State<CheckoutCoachPage> {
 
   Widget _buildAmountSection() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children:  [
           Text('Total Amount:', style: TextStyle(fontWeight: FontWeight.bold)),
-          Text('LE 500.00', style: TextStyle(color: Color(0xFF01B5C5), fontWeight: FontWeight.bold)),
+          Text('${price}', style: TextStyle(color: Color(0xFF01B5C5), fontWeight: FontWeight.bold)),
         ],
       );
 
   Widget _buildCheckoutButton() => ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const PaymentSuccessPage()),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: mainColor,
-          minimumSize: const Size.fromHeight(50),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        ),
-        child: const Text('Check Out', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+    onPressed: () async {
+
+       if (_selectedDuration == '30 min') _selectedDuration = "30";
+              else if (_selectedDuration == '1 hour') _selectedDuration = "60";
+              else if (_selectedDuration == '2 hours') _selectedDuration = "120";
+
+      Map<String, dynamic> sessionData = {
+      "doctor_id": doctor_id,
+      "com_type": _selectedType,
+      "time": finalTimestamp.toString(),
+      "type": "life_coach",
+      "cost": price,
+      "duration": _selectedDuration,
+      };
+
+      await _patientApi.makeAppointment(sessionData);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const PaymentSuccessPage()),
       );
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: mainColor,
+      minimumSize: const Size.fromHeight(50),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+    ),
+    child: const Text('Check Out', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+  );
 }

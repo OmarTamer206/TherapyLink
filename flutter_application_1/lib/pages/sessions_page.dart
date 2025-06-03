@@ -1,25 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/patient.dart';
+import 'package:flutter_application_1/services/session.dart';
 import 'session_feedback_page.dart';
-import 'upcoming_sessions.dart'; // Add this import
+import 'upcoming_sessions.dart';
 
-class SessionsPage extends StatelessWidget {
-  const SessionsPage({super.key});
+class SessionsPage extends StatefulWidget {
+  SessionsPage({super.key});
 
-  final List<Map<String, String>> upcomingSessions = const [
-    {"date": "2/2/2025", "title": "Session with Dr. Mark", "time": "7:00PM"},
-    {"date": "3/6/2025", "title": "Session with Dr. Sara", "time": "5:00PM"},
-    {"date": "4/8/2025", "title": "Group Session", "time": "2:00PM"},
-    {"date": "5/2/2025", "title": "Session with Dr. Mark", "time": "6:00PM"},
-    {"date": "6/7/2025", "title": "Group Session", "time": "7:00PM"},
-  ];
+  @override
+  State<SessionsPage> createState() => _SessionsPageState();
+}
 
-  final List<Map<String, String>> previousSessions = const [
-    {"date": "2/2/2024", "title": "Session with Dr. Mark", "time": "7:00PM"},
-    {"date": "3/6/2024", "title": "Session with Dr. Sara", "time": "5:00PM"},
-    {"date": "4/8/2024", "title": "Group Session", "time": "2:00PM"},
-    {"date": "5/2/2024", "title": "Session with Dr. Mark", "time": "6:00PM"},
-    {"date": "6/7/2024", "title": "Group Session", "time": "7:00PM"},
-  ];
+class _SessionsPageState extends State<SessionsPage> {
+  List<Map<dynamic, dynamic>>? upcomingSessions;
+  List<Map<dynamic, dynamic>>? previousSessions;
+
+  bool isLoadingUpcoming = true;
+  bool isLoadingPrevious = true;
+
+  final SessionApi _sessionApi = SessionApi();
+
+  @override
+  void initState() {
+    super.initState();
+    getUpcomingSessions();
+    getPreviousSessions();
+  }
+
+  Future<void> getUpcomingSessions() async {
+    try {
+      final upcomingSessionsData = await _sessionApi.getUpcomingSessionsPatient();
+      setState(() {
+        upcomingSessions = upcomingSessionsData.map((upcomingSession) {
+          DateTime date = DateTime.parse(upcomingSession['scheduled_time']).toLocal();
+          String formattedDate = '${date.day}/${date.month}/${date.year}';
+
+          int hours24 = date.hour;
+          int minutes = date.minute;
+
+          int hours12 = hours24 % 12 == 0 ? 12 : hours24 % 12;
+          String ampm = hours24 >= 12 ? 'PM' : 'AM';
+          String paddedMinutes = minutes.toString().padLeft(2, '0');
+
+          String formattedTime = '$hours12:$paddedMinutes $ampm';
+
+          return {
+            ...upcomingSession,
+            'date': formattedDate,
+            'time': formattedTime,
+          };
+        }).toList();
+        isLoadingUpcoming = false;
+      });
+    } catch (error) {
+      print('Error fetching upcoming sessions: $error');
+      setState(() {
+        upcomingSessions = [];
+        isLoadingUpcoming = false;
+      });
+    }
+  }
+
+  Future<void> getPreviousSessions() async {
+    try {
+      final previousSessionsData = await _sessionApi.getPreviousSessionsPatient();
+      setState(() {
+        previousSessions = previousSessionsData.map((previousSession) {
+          DateTime date = DateTime.parse(previousSession['scheduled_time']).toLocal();
+          String formattedDate = '${date.day}/${date.month}/${date.year}';
+
+          int hours24 = date.hour;
+          int minutes = date.minute;
+
+          int hours12 = hours24 % 12 == 0 ? 12 : hours24 % 12;
+          String ampm = hours24 >= 12 ? 'PM' : 'AM';
+          String paddedMinutes = minutes.toString().padLeft(2, '0');
+
+          String formattedTime = '$hours12:$paddedMinutes $ampm';
+
+          return {
+            ...previousSession,
+            'date': formattedDate,
+            'time': formattedTime,
+          };
+        }).toList();
+        isLoadingPrevious = false;
+      });
+    } catch (error) {
+      print('Error fetching previous sessions: $error');
+      setState(() {
+        previousSessions = [];
+        isLoadingPrevious = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +138,13 @@ class SessionsPage extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Scrollbar(
-                    child: _buildSessionList(upcomingSessions, false, context),
-                  ),
+                  child: isLoadingUpcoming
+                      ? const Center(child: CircularProgressIndicator())
+                      : (upcomingSessions == null || upcomingSessions!.isEmpty)
+                          ? const Center(child: Text("No upcoming sessions"))
+                          : Scrollbar(
+                              child: _buildSessionList(upcomingSessions!, false, context),
+                            ),
                 ),
               ),
             ),
@@ -89,9 +167,13 @@ class SessionsPage extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Scrollbar(
-                    child: _buildSessionList(previousSessions, true, context),
-                  ),
+                  child: isLoadingPrevious
+                      ? const Center(child: CircularProgressIndicator())
+                      : (previousSessions == null || previousSessions!.isEmpty)
+                          ? const Center(child: Text("No previous sessions"))
+                          : Scrollbar(
+                              child: _buildSessionList(previousSessions!, true, context),
+                            ),
                 ),
               ),
             ),
@@ -102,7 +184,7 @@ class SessionsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSessionList(List<Map<String, String>> sessions, bool isPrevious, BuildContext context) {
+  Widget _buildSessionList(List<Map<dynamic, dynamic>> sessions, bool isPrevious, BuildContext context) {
     return ListView.separated(
       itemCount: sessions.length,
       shrinkWrap: true,
@@ -121,61 +203,54 @@ class SessionsPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => SessionFeedbackPage(
-                        sessionWith: session['title']!,
-                        sessionDate: session['date']!,
+                        sessionWith: session['doctor_name'] ?? '',
+                        sessionDate: session['date'] ?? '',
                       ),
                     ),
                   );
                 }
               : () {
-                  // Navigate to upcoming sessions page
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const UpcomingSessionsPage(),
-                  //   ),
-                  // );
+                  // TODO: Implement navigation for upcoming sessions if needed
                 },
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-           child: Row(
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    SizedBox(
-      width: 80, // fixed width for date
-      child: Text(
-        session['date']!,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    ),
-    Expanded(
-      child: Text(
-        session['title']!,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
-        textAlign: TextAlign.left, // left-aligned for consistency
-      ),
-    ),
-    SizedBox(
-      width: 70, // fixed width for time
-      child: Text(
-        session['time']!,
-        style: const TextStyle(
-          fontSize: 14,
-          color: Colors.black54,
-          fontWeight: FontWeight.w400,
-        ),
-        textAlign: TextAlign.right,
-      ),
-    ),
-  ],
-),
-
+            padding: const EdgeInsets.symmetric(vertical: 10 , horizontal: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 80, // fixed width for date
+                  child: Text(
+                    session['date'] ?? '',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    "Session with Dr. ${session['doctor_name'] ?? ''}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(
+                  width: 70, // fixed width for time
+                  child: Text(
+                    session['time'] ?? '',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

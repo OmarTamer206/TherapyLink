@@ -76,7 +76,7 @@ class DoctorReviewPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AppointmentPage()),
+                  MaterialPageRoute(builder: (context) =>  AppointmentPage(doctorData:doctorData)),
                 );
               },
               style: ElevatedButton.styleFrom(

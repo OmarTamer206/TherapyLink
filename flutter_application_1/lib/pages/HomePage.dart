@@ -3,6 +3,7 @@
 import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/services/patient.dart';
 import 'package:flutter_application_1/services/session.dart';
 import 'dart:async';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    const SessionsPage(),
+    SessionsPage(),
     const GroupSessionsPage(),
     const ProfilePage(),
   ];
@@ -124,7 +125,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>  with RouteAware {
   bool _loading = true;
   String? _patientName = "Emily"; // You can replace with fetched data
   Map<String, dynamic>? _upcomingSession; // null means no session
@@ -140,6 +141,25 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _fetchData();
   }
+
+    @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Called when coming back to this page
+    _fetchData(); // 🔁 REFRESH ON RETURN
+  }
+
 
   Future<void> _fetchData() async {
     // Simulate data fetching delay here or replace with real fetch calls

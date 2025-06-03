@@ -292,7 +292,7 @@ async function view_available_time(date, doctor_id, doctor_type) {
       query = `
       SELECT * FROM doctor_availability
       WHERE doctor_id = ?
-        AND DATE(available_date) = ?
+        AND DATE(available_date) = ? AND isReserved = 0
       ORDER BY available_date ASC
     `;
     }
@@ -300,7 +300,7 @@ async function view_available_time(date, doctor_id, doctor_type) {
       query = `
       SELECT * FROM lifecoach_availability
       WHERE life_coach_id = ?
-        AND DATE(available_date) = ? AND full = 0
+        AND DATE(available_date) = ? AND full = 0 
       ORDER BY available_date ASC
     `;
     }

@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/therapist.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'checkout_page.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: AppointmentPage(),
-  ));
-}
-
 class AppointmentPage extends StatefulWidget {
-  const AppointmentPage({super.key});
+  final Map<String, dynamic> doctorData;
+  const AppointmentPage({super.key, required this.doctorData});
 
   @override
   State<AppointmentPage> createState() => _AppointmentPageState();
@@ -20,13 +15,75 @@ class _AppointmentPageState extends State<AppointmentPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
   String? _selectedTime;
+  var doctor_id;
 
-  final List<String> times = [
-    '2:00 PM', '2:30 PM', '3:00 PM',
-    '3:30 PM', '4:00 PM', '4:30 PM',
-    '5:00 PM', '5:30 PM', '6:00 PM',
-    '6:30 PM', '7:00 PM', '8:30 PM',
+  TherapistApi _therapistApi = TherapistApi();
+  final List<String> allTimes = [
+    '9:00 AM', '11:00 AM', '1:00 PM',
+    '3:00 PM', '5:00 PM', '7:00 PM',
+    '9:00 PM', '11:00 PM', '1:00 AM'
   ];
+
+  List<Map<String, dynamic>> timeTable = [];
+
+  @override
+  void initState() {
+    super.initState();
+    doctor_id = widget.doctorData["doctor_data"]["id"];
+    _fetchAvailableTimes(_selectedDay!);
+  }
+
+  void _fetchAvailableTimes(DateTime selectedDay) async {
+    String date = "${selectedDay.year}-${selectedDay.month.toString().padLeft(2, '0')}-${selectedDay.day.toString().padLeft(2, '0')}";
+    var response = await _therapistApi.viewAvailableTime(date, "$doctor_id", "doctor");
+
+    List<Map<String, dynamic>> fetchedTimeTable = [];
+
+    if (response != null && response['success']) {
+      for (var item in response['data']) {
+        final utcDate = DateTime.parse(item['available_date']);
+        final localDate = utcDate.toLocal();
+        final time = TimeOfDay.fromDateTime(localDate).format(context);
+        fetchedTimeTable.add({
+          'time': time,
+          'isReserved': item['IsReserved'],
+          'fullTimestamp': item['available_date'],
+        });
+      }
+
+      for (String time in allTimes) {
+        if (!fetchedTimeTable.any((t) => t['time'] == time)) {
+          fetchedTimeTable.add({'time': time, 'isReserved': true, 'fullTimestamp': ''});
+        }
+      }
+    }
+
+    fetchedTimeTable.sort((a, b) {
+      final t1 = TimeOfDay(
+        hour: int.parse(_to24(a['time']).split(':')[0]),
+        minute: int.parse(_to24(a['time']).split(':')[1]),
+      );
+      final t2 = TimeOfDay(
+        hour: int.parse(_to24(b['time']).split(':')[0]),
+        minute: int.parse(_to24(b['time']).split(':')[1]),
+      );
+      return t1.hour != t2.hour ? t1.hour.compareTo(t2.hour) : t1.minute.compareTo(t2.minute);
+    });
+
+    setState(() {
+      timeTable = fetchedTimeTable;
+    });
+  }
+
+  String _to24(String time) {
+    final parts = time.split(RegExp(r'[:\s]'));
+    int hour = int.parse(parts[0]);
+    int min = int.parse(parts[1]);
+    String period = parts[2];
+    if (period == "PM" && hour != 12) hour += 12;
+    if (period == "AM" && hour == 12) hour = 0;
+    return "${hour.toString().padLeft(2, '0')}:${min.toString().padLeft(2, '0')}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +109,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            _buildDoctorCard(),
-            const SizedBox(height: 10),
             _buildCalendar(),
             const SizedBox(height: 20),
             const Align(
@@ -67,32 +122,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
             const SizedBox(height: 20),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildDoctorCard() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: const [
-          CircleAvatar(
-            radius: 24,
-            backgroundImage: AssetImage('assets/doctor.png'),
-          ),
-          SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Dr. Mark', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('Clinical Psychologist'),
-            ],
-          ),
-        ],
       ),
     );
   }
@@ -125,43 +154,60 @@ class _AppointmentPageState extends State<AppointmentPage> {
             _selectedDay = selectedDay;
             _focusedDay = focusedDay;
           });
+          _fetchAvailableTimes(selectedDay);
         },
       ),
     );
   }
 
   Widget _buildTimeGrid() {
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      children: times.map((time) {
-        bool isSelected = time == _selectedTime;
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedTime = time;
-            });
-          },
+  return GridView.count(
+    shrinkWrap: true,
+    crossAxisCount: 3,
+    crossAxisSpacing: 12,
+    childAspectRatio: 2.5, // Adjust this to make items shorte
+    mainAxisSpacing: 12,
+    physics: const NeverScrollableScrollPhysics(),
+    children: timeTable.map((slot) {
+      final bool isSelected = slot['time'] == _selectedTime;
+      final bool isDisabled = slot['isReserved'] == true;
+
+      return GestureDetector(
+        onTap: isDisabled
+            ? null
+            : () {
+                setState(() {
+                  _selectedTime = slot['time'];
+                });
+              },
+        child: SizedBox(
+          height: 60, // Reduced height
           child: Container(
-            width: 80,
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFF1F2937) : const Color(0xFF00B4A6),
+              color: isDisabled
+                  ? Colors.grey
+                  : isSelected
+                      ? const Color(0xFF1F2937)
+                      : const Color(0xFF00B4A6),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
-              time,
+              slot['time'],
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
+                fontSize: 12, // Optional: smaller text
               ),
             ),
           ),
-        );
-      }).toList(),
-    );
-  }
+        ),
+      );
+    }).toList(),
+  );
+}
+
 
   Widget _buildProceedButton(BuildContext context) {
     return ElevatedButton(
@@ -174,7 +220,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
         if (_selectedDay != null && _selectedTime != null) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const CheckoutPage()),
+            MaterialPageRoute(
+              builder: (context) => CheckoutPage(
+                doctorData: widget.doctorData,
+                selectedDate: _selectedDay!,
+                selectedTime: _selectedTime!,
+              ),
+            ),
           );
         }
       },

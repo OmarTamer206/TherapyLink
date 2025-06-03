@@ -64,6 +64,7 @@ setState(() {
     return {
       "name": doctorMap["doctor_data"]["Name"] ?? "Unknown",
       "rating": doctorMap["avgRating"] ?? 0.0,
+      ...doctorMap
     };
   }).toList();
   _loading = false;
@@ -127,6 +128,7 @@ setState(() {
                               const Divider(height: 16),
                           itemBuilder: (context, index) {
                             final doctor = doctors[index];
+                            print(doctor);
                             return Row(
                               children: [
                                 const CircleAvatar(
@@ -159,7 +161,7 @@ setState(() {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const DoctorReviewPage()),
+                                               DoctorReviewPage(doctorData:doctor)),
                                     );
                                   },
                                   child: const Text(

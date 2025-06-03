@@ -68,11 +68,11 @@ router.post("/login", async (req, res) => {
       role: result.roleOfUser
     });
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -99,11 +99,11 @@ router.post("/login-staff", async (req, res) => {
       role: result.roleOfUser
     });
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -163,11 +163,11 @@ router.post("/register", async (req, res) => {
     const result = await registerPatient(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -197,11 +197,11 @@ router.post("/register-therapist", async (req, res) => {
     const result = await registerTherapists(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -229,11 +229,11 @@ router.post("/register-admin", async (req, res) => {
     const result = await registerAdmin(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -259,11 +259,11 @@ router.post("/register-emergency-member", async (req, res) => {
     const result = await registerEmergencyTeamMember(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -292,11 +292,11 @@ router.put("/update", authorizeRoles("patient"), async (req, res) => {
     const result = await updatePatient(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -326,11 +326,11 @@ router.put("/update-therapist", async (req, res) => {
     const result = await updateTherapist(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -358,11 +358,11 @@ router.put("/update-admin", async (req, res) => {
     const result = await updateAdmin(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -387,11 +387,11 @@ router.put("/update-emergency-member", async (req, res) => {
     const result = await updateEmergencyTeamMember(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -412,11 +412,11 @@ router.delete("/delete-user", async (req, res) => {
     const result = await deleteUser(data);
     res.status(201).json(result);
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {
@@ -442,11 +442,11 @@ router.post("/check-email", async (req, res) => {
       data: result,
     });
   } catch (error) {
-    if (err.name === 'TokenExpiredError') {
+    if (error.name === 'TokenExpiredError') {
     // Token expired
     // Handle by sending 401 or redirecting user to login
     return res.status(401).json({ error: 'Token expired' });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     // Invalid token
     return res.status(401).json({ error: 'Invalid token' });
   } else {

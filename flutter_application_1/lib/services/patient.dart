@@ -84,7 +84,7 @@ class PatientApi {
   }
 
   // Get doctor sessions taken
-  Future<List<dynamic>> getDoctorSessionsTaken() async {
+  Future<Map<String, dynamic>> getDoctorSessionsTaken() async {
     final url = Uri.parse('$baseUrl/patient/doctor-sessions');
     final headers = await _headers();
 
@@ -96,7 +96,7 @@ class PatientApi {
   }
 
   // Get group sessions taken
-  Future<List<dynamic>> getGroupSessionsTaken() async {
+  Future<Map<String, dynamic>> getGroupSessionsTaken() async {
     final url = Uri.parse('$baseUrl/patient/group-sessions');
     final headers = await _headers();
 
@@ -108,7 +108,7 @@ class PatientApi {
   }
 
   // Get emergency team sessions taken
-  Future<List<dynamic>> getEmergencyTeamSessionsTaken() async {
+  Future<Map<String, dynamic>> getEmergencyTeamSessionsTaken() async {
     final url = Uri.parse('$baseUrl/patient/emergency-team-sessions');
     final headers = await _headers();
 

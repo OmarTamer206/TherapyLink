@@ -18,6 +18,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+
+
+
   String? _selectedGender;
   String? _selectedMaritalStatus;
 
@@ -139,7 +142,8 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   bool _isValidEmail(String email) {
-    final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  final regex = RegExp(r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
     return regex.hasMatch(email);
   }
 
@@ -151,7 +155,8 @@ class _SignUpPageState extends State<SignUpPage> {
       _generalError = null;
     });
 
-    String emailExists = await _authApi.checkEmailExists(_emailController.text.trim());
+   
+      String emailExists = await _authApi.checkEmail(_emailController.text.trim());
 
     if (emailExists == "taken") {
       setState(() {
@@ -160,6 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
       });
       return;
     }
+    
 
     final dobString = '${_selectedYear!.toString().padLeft(4, '0')}-'
         '${_selectedMonth!.toString().padLeft(2, '0')}-'
@@ -175,7 +181,7 @@ class _SignUpPageState extends State<SignUpPage> {
       'password': _passwordController.text,
     };
 
-    final success = await _authApi.register(userData);
+    final success = await _authApi.registerPatient(userData);
 
     setState(() {
       _isLoading = false;

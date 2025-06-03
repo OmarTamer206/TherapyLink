@@ -38,8 +38,8 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = false;
     });
-
-    if (success) {
+    
+    if (success!= null) {
       // Navigate to home on successful login
       Navigator.pushReplacementNamed(context, '/home');
     } else {

@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'make_appointment.dart';
 
 class DoctorReviewPage extends StatelessWidget {
-  const DoctorReviewPage({super.key});
+  final Map<String, dynamic> doctorData;
+  
+  const DoctorReviewPage({super.key , required this.doctorData});
 
   static const Color mainColor = Color(0xFF1F2937);
   static const Color bgColor = Color(0xFFDFF0F4);
-
+  
   @override
   Widget build(BuildContext context) {
+    print(doctorData);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
-        title: const Text(
-          "Dr. Mark’s Page",
-          style: TextStyle(color: mainColor, fontWeight: FontWeight.bold),
+        title: Text(
+          "Dr. "+ doctorData["name"] +"’s Page",
+          style: const TextStyle(color: mainColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -45,24 +48,21 @@ class DoctorReviewPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                _buildReview(
-                  "Dr. Mark",
-                  "Dr. Mark has been an incredible support throughout my therapy journey. He listens attentively and offers thoughtful advice that’s really helped me manage my anxiety. I always feel heard and understood after each session!",
-                ),
-                _buildReview(
-                  "Dr. Mark",
-                  "I was hesitant about online therapy, but Dr. Mark made me feel comfortable right away. His calm demeanor and practical suggestions have made a big difference in my life. I would highly recommend him to anyone seeking help!",
-                ),
-                _buildReview(
-                  "Dr. Mark",
-                  "Dr. Mark is very knowledgeable and compassionate. He helped me through a really tough time in my life, and I’ve made so much progress thanks to him. The online sessions are convenient and still feel very personal.",
-                ),
-              ],
+            child: ListView.separated(
+                          shrinkWrap: true, // Wrap content height
+                          physics:
+                              const NeverScrollableScrollPhysics(), // Disable internal scroll
+                          itemCount: doctorData["reviews"].length,
+                          separatorBuilder: (context, index) =>
+                              const Divider(height: 16),
+                          itemBuilder: (context, index) {
+                            final review = doctorData["reviews"][index];
+                            print(review);
+                            return _buildReview(review["content"], review["rating"]);
+                          },
+                        ),
             ),
-          ),
+          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: ElevatedButton(
@@ -95,6 +95,8 @@ class DoctorReviewPage extends StatelessWidget {
   }
 
   Widget _buildDoctorCard() {
+    
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(10),
@@ -114,9 +116,9 @@ class DoctorReviewPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: const [
+                  children:  [
                     Text(
-                      'Dr. Mark ',
+                      'Dr. '+ doctorData["name"] +' ',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -124,19 +126,19 @@ class DoctorReviewPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '★★★★★',
+                      '★' * double.parse(doctorData["avgRating"]).round() + "☆" * (5-double.parse(doctorData["avgRating"]).round()) ,
                       style: TextStyle(fontSize: 14, color: mainColor),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Clinical Psychologist',
+                 Text(
+                  doctorData["doctor_data"]["Specialization"],
                   style: TextStyle(fontSize: 13, color: mainColor),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  "I am Dr. Mark, a dedicated clinical psychologist specializing in helping individuals overcome mental health challenges through evidence-based and compassionate care.",
+                 Text(
+                  doctorData["doctor_data"]["Description"],
                   style: TextStyle(fontSize: 12, color: mainColor,),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
@@ -149,7 +151,7 @@ class DoctorReviewPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReview(String name, String content) {
+  Widget _buildReview(String content, int rating) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
@@ -161,7 +163,7 @@ class DoctorReviewPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            name,
+          '★' * double.parse(doctorData["avgRating"]).round() + "☆" * (5-double.parse(doctorData["avgRating"]).round()) ,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 15,
@@ -172,6 +174,7 @@ class DoctorReviewPage extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             content,
+
             style: const TextStyle(fontSize: 13, color: mainColor),
           ),
           const SizedBox(height: 12),

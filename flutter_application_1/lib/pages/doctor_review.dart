@@ -3,12 +3,12 @@ import 'make_appointment.dart';
 
 class DoctorReviewPage extends StatelessWidget {
   final Map<String, dynamic> doctorData;
-  
-  const DoctorReviewPage({super.key , required this.doctorData});
+
+  const DoctorReviewPage({super.key, required this.doctorData});
 
   static const Color mainColor = Color(0xFF1F2937);
   static const Color bgColor = Color(0xFFDFF0F4);
-  
+
   @override
   Widget build(BuildContext context) {
     print(doctorData);
@@ -18,7 +18,7 @@ class DoctorReviewPage extends StatelessWidget {
         backgroundColor: bgColor,
         elevation: 0,
         title: Text(
-          "Dr. "+ doctorData["name"] +"’s Page",
+          "Dr. ${doctorData["name"]}’s Page",
           style: const TextStyle(color: mainColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -48,21 +48,28 @@ class DoctorReviewPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: ListView.separated(
-                          shrinkWrap: true, // Wrap content height
-                          physics:
-                              const NeverScrollableScrollPhysics(), // Disable internal scroll
-                          itemCount: doctorData["reviews"].length,
-                          separatorBuilder: (context, index) =>
-                              const Divider(height: 16),
-                          itemBuilder: (context, index) {
-                            final review = doctorData["reviews"][index];
-                            print(review);
-                            return _buildReview(review["content"], review["rating"]);
-                          },
-                        ),
-            ),
-          
+            child: (doctorData["reviews"] == null || doctorData["reviews"].isEmpty)
+                ? const Center(
+                    child: Text(
+                      'There are no reviews yet.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontStyle: FontStyle.italic,
+                        color: mainColor,
+                      ),
+                    ),
+                  )
+                : ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: doctorData["reviews"].length,
+                    separatorBuilder: (context, index) => const Divider(height: 16),
+                    itemBuilder: (context, index) {
+                      final review = doctorData["reviews"][index];
+                      return _buildReview(review["content"], review["rating"]);
+                    },
+                  ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: ElevatedButton(
@@ -95,7 +102,7 @@ class DoctorReviewPage extends StatelessWidget {
   }
 
   Widget _buildDoctorCard() {
-    
+    final rating = double.tryParse(doctorData["avgRating"].toString()) ?? 0;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -116,30 +123,30 @@ class DoctorReviewPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children:  [
+                  children: [
                     Text(
-                      'Dr. '+ doctorData["name"] +' ',
-                      style: TextStyle(
+                      'Dr. ${doctorData["name"]} ',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: mainColor,
                       ),
                     ),
                     Text(
-                      '★' * double.parse(doctorData["avgRating"]).round() + "☆" * (5-double.parse(doctorData["avgRating"]).round()) ,
-                      style: TextStyle(fontSize: 14, color: mainColor),
+                      _buildStarString(rating),
+                      style: const TextStyle(fontSize: 14, color: mainColor),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
-                 Text(
+                Text(
                   doctorData["doctor_data"]["Specialization"],
-                  style: TextStyle(fontSize: 13, color: mainColor),
+                  style: const TextStyle(fontSize: 13, color: mainColor),
                 ),
                 const SizedBox(height: 6),
-                 Text(
+                Text(
                   doctorData["doctor_data"]["Description"],
-                  style: TextStyle(fontSize: 12, color: mainColor,),
+                  style: const TextStyle(fontSize: 12, color: mainColor),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -152,6 +159,8 @@ class DoctorReviewPage extends StatelessWidget {
   }
 
   Widget _buildReview(String content, int rating) {
+    final avgRating = double.tryParse(doctorData["avgRating"].toString()) ?? 0;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
@@ -163,7 +172,7 @@ class DoctorReviewPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-          '★' * double.parse(doctorData["avgRating"]).round() + "☆" * (5-double.parse(doctorData["avgRating"]).round()) ,
+            _buildStarString(avgRating),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 15,
@@ -171,10 +180,8 @@ class DoctorReviewPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          const SizedBox(height: 4),
           Text(
             content,
-
             style: const TextStyle(fontSize: 13, color: mainColor),
           ),
           const SizedBox(height: 12),
@@ -182,5 +189,10 @@ class DoctorReviewPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _buildStarString(double rating) {
+    final stars = rating.round().clamp(0, 5);
+    return '★' * stars + '☆' * (5 - stars);
   }
 }

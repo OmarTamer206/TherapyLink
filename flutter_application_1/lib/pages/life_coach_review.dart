@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 import 'make_appointment_coach.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: LifeCoachReviewPage(),
-  ));
-}
-
 class LifeCoachReviewPage extends StatelessWidget {
-  const LifeCoachReviewPage({super.key});
+  final Map<String, dynamic> doctorData;
+
+  const LifeCoachReviewPage({super.key, required this.doctorData});
 
   static const Color mainColor = Color(0xFF1F2937);
   static const Color bgColor = Color(0xFFDFF0F4);
 
   @override
   Widget build(BuildContext context) {
+    print(doctorData);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
-        title: const Text(
-          "Life Coach Page",
-          style: TextStyle(color: mainColor, fontWeight: FontWeight.bold),
+        title: Text(
+          "Dr. ${doctorData["name"]}’s Page",
+          style: const TextStyle(color: mainColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -33,7 +29,8 @@ class LifeCoachReviewPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          _buildLifeCoachCard(),
+          const SizedBox(height: 10),
+          _buildDoctorCard(),
           const SizedBox(height: 16),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -51,23 +48,27 @@ class LifeCoachReviewPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                _buildReviewCard(
-                  "Dr. Mohamed",
-                  "Dr. Mohamed helped me unlock my potential and work through many personal challenges. His insights were profound and helped me build a positive mindset.",
-                ),
-                _buildReviewCard(
-                  "Dr. Mohamed",
-                  "I was feeling lost and unmotivated, but Dr. Mohamed gave me actionable strategies that made me feel empowered and focused.",
-                ),
-                _buildReviewCard(
-                  "Dr. Mohamed",
-                  "His compassionate approach made me feel heard and understood. I felt supported throughout my journey and made significant progress.",
-                ),
-              ],
-            ),
+            child: (doctorData["reviews"] == null || doctorData["reviews"].isEmpty)
+                ? const Center(
+                    child: Text(
+                      'There are no reviews yet.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontStyle: FontStyle.italic,
+                        color: mainColor,
+                      ),
+                    ),
+                  )
+                : ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: doctorData["reviews"].length,
+                    separatorBuilder: (context, index) => const Divider(height: 16),
+                    itemBuilder: (context, index) {
+                      final review = doctorData["reviews"][index];
+                      return _buildReview(review["content"], review["rating"]);
+                    },
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -75,8 +76,7 @@ class LifeCoachReviewPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const MakeAppointmentCoachPage()),
+                  MaterialPageRoute(builder: (context) => const MakeAppointmentCoachPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -101,7 +101,9 @@ class LifeCoachReviewPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLifeCoachCard() {
+  Widget _buildDoctorCard() {
+    final rating = double.tryParse(doctorData["avgRating"].toString()) ?? 0;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(10),
@@ -113,38 +115,38 @@ class LifeCoachReviewPage extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 32,
-            backgroundImage: AssetImage('assets/life_coach.png'),
+            backgroundImage: AssetImage('assets/doctor.png'),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Row(
                   children: [
                     Text(
-                      'Dr. Mohamed ',
-                      style: TextStyle(
+                      'Dr. ${doctorData["name"]} ',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         color: mainColor,
                       ),
                     ),
                     Text(
-                      '★★★★★',
-                      style: TextStyle(fontSize: 14, color: mainColor),
+                      _buildStarString(rating),
+                      style: const TextStyle(fontSize: 14, color: mainColor),
                     ),
                   ],
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'Life Coach',
-                  style: TextStyle(fontSize: 13, color: mainColor),
+                  doctorData["doctor_data"]["Specialization"],
+                  style: const TextStyle(fontSize: 13, color: mainColor),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
-                  "I am Dr. Mohamed, a dedicated life coach specializing in empowering individuals to unlock their full potential and navigate life challenges with confidence.",
-                  style: TextStyle(fontSize: 12, color: mainColor),
+                  doctorData["doctor_data"]["Description"],
+                  style: const TextStyle(fontSize: 12, color: mainColor),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -156,7 +158,9 @@ class LifeCoachReviewPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewCard(String name, String content) {
+  Widget _buildReview(String content, int rating) {
+    final avgRating = double.tryParse(doctorData["avgRating"].toString()) ?? 0;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
@@ -168,7 +172,7 @@ class LifeCoachReviewPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            name,
+            _buildStarString(avgRating),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 15,
@@ -185,5 +189,10 @@ class LifeCoachReviewPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _buildStarString(double rating) {
+    final stars = rating.round().clamp(0, 5);
+    return '★' * stars + '☆' * (5 - stars);
   }
 }

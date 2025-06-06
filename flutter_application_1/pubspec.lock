@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  dart_webrtc:
+    dependency: transitive
+    description:
+      name: dart_webrtc
+      sha256: "5b76fd85ac95d6f5dee3e7d7de8d4b51bfbec1dc73804647c6aebb52d6297116"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.3+hotfix.2"
   fake_async:
     dependency: transitive
     description:
@@ -140,10 +148,18 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_web_plugins:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webrtc:
+    dependency: "direct main"
+    description:
+      name: flutter_webrtc
+      sha256: "2f17fb96e0c9c6ff75f6b1c36d94755461fc7f36a5c28386f5ee5a18b98688c8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.48+hotfix.1"
   http:
     dependency: "direct main"
     description:
@@ -248,6 +264,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      sha256: "50c5dd5b6e1aaf6fb3a78b33f6aa3afca52bf903a8a5298f53101fdaee55bbcd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.5"
+  path_provider_android:
+    dependency: transitive
+    description:
+      name: path_provider_android
+      sha256: d0d310befe2c8ab9e7f393288ccbb11b60c019c6b5afc21973eeee4dda2b35e9
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.17"
+  path_provider_foundation:
+    dependency: transitive
+    description:
+      name: path_provider_foundation
+      sha256: "4843174df4d288f5e29185bd6e72a6fbdf5a4a4602717eed565497429f179942"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.1"
   path_provider_linux:
     dependency: transitive
     description:
@@ -405,6 +445,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "0669c70faae6270521ee4f05bffd2919892d42d1276e6c495be80174b6bc0ef6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.1"
   table_calendar:
     dependency: "direct main"
     description:
@@ -461,6 +509,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  webrtc_interface:
+    dependency: transitive
+    description:
+      name: webrtc_interface
+      sha256: "86fe3afc81a08481dfb25cf14a5a94e27062ecef25544783f352c914e0bbc1ca"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.2+hotfix.2"
   xdg_directories:
     dependency: transitive
     description:

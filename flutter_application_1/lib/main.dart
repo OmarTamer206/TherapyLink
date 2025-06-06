@@ -13,6 +13,14 @@ import 'pages/signup.dart';
 final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 void main() {
+
+    FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    debugPrint('Error Caught by FlutterError: ${details.exception}');
+    debugPrint('Stack trace:\n${details.stack}');
+  };
+
+
   runApp(TherapyLinkApp());
 }
 

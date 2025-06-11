@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/call_section.dart';
+
 import 'dart:async';
 
-import 'package:flutter_application_1/pages/call_section.dart';
-import 'package:flutter_application_1/pages/chat_section.dart';
-import 'package:flutter_application_1/services/call.dart';
-import 'package:flutter_application_1/services/chat.dart';
+
 import 'package:flutter_application_1/services/patient.dart';
 
 class UpcomingSessionsPage extends StatefulWidget {
@@ -24,8 +23,6 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
   bool sessionEnded = false;
   bool _loading = true;
 
-  final ChatSocketService _chatSocketService = ChatSocketService();
-  final CallApi _callApi = CallApi();
   final PatientApi _patientApi = PatientApi();
 
   String? patient_name;
@@ -44,7 +41,7 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
       patient_name = patient_data["data"]["patient"][0]["Name"];
       _loading = false;
     });
-    _initSockets();
+    // _initSockets();
   }
 
   void _extractDataAndTime() {
@@ -85,43 +82,43 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
     }
   }
 
-  void _initSockets() {
-    final type = widget.sessionData['communication_type'];
-    final chatId = widget.sessionData['chat_ID']?.toString() ?? "";
-    final callId = widget.sessionData['call_ID']?.toString() ?? "";
-    final userId = widget.sessionData['patient_ID'].toString();
-    final userType = 'patient';
-    final userName = patient_name;
+  // void _initSockets() {
+  //   final type = widget.sessionData['communication_type'];
+  //   final chatId = widget.sessionData['chat_ID']?.toString() ?? "";
+  //   final callId = widget.sessionData['call_ID']?.toString() ?? "";
+  //   final userId = widget.sessionData['patient_ID'].toString();
+  //   final userType = 'patient';
+  //   final userName = patient_name;
 
-    if (type == 'Chatting') {
-      _chatSocketService.connect();
-      _chatSocketService.enterChat(chatId, userId, userType);
-      _chatSocketService.onSessionStart(() {
-        setState(() => sessionStarted = true);
-      });
-      _chatSocketService.onSessionEnded(() {
-        setState(() => sessionEnded = true);
-      });
-    } else if (type == 'Voice / Video Call') {
-      _callApi.connect();
+  //   if (type == 'Chatting') {
+  //     _chatSocketService.connect();
+  //     _chatSocketService.enterChat(chatId, userId, userType);
+  //     _chatSocketService.onSessionStart(() {
+  //       setState(() => sessionStarted = true);
+  //     });
+  //     _chatSocketService.onSessionEnded(() {
+  //       setState(() => sessionEnded = true);
+  //     });
+  //   } else if (type == 'Voice / Video Call') {
+  //     _callApi.connect();
 
-      // Wait for the doctor to start the session
-      _callApi.onSessionStarted(() {
-        _callApi.joinCall(callId, userId, userType, userName ?? "Unknown");
-        setState(() => sessionStarted = true);
-      });
+  //     // Wait for the doctor to start the session
+  //     _callApi.onSessionStarted(() {
+  //       _callApi.joinCall(callId, userId, userType, userName ?? "Unknown");
+  //       setState(() => sessionStarted = true);
+  //     });
 
-      _callApi.onCallEnded(() {
-        setState(() => sessionEnded = true);
-      });
-    }
-  }
+  //     _callApi.onCallEnded(() {
+  //       setState(() => sessionEnded = true);
+  //     });
+  //   }
+  // }
 
   @override
   void dispose() {
     _timer?.cancel();
-    _chatSocketService.disconnect();
-    _callApi.disconnect();
+    // _chatSocketService.disconnect();
+    // _callApi.disconnect();
     super.dispose();
   }
 
@@ -146,14 +143,16 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
         receiverId: widget.sessionData['doctor_ID'].toString(),
         receiverType: widget.sessionData['session_type'],
       );
-    } else if (type == 'Voice / Video Call') {
-      return CallWidget(
-        callId: widget.sessionData['call_ID'].toString(),
-        userId: widget.sessionData['patient_ID'].toString(),
-        userType: 'patient',
-        userName: patient_name ?? "Unknown",
-      );
-    } else {
+    } 
+    // else if (type == 'Voice / Video Call') {
+    //   return CallWidget(
+    //     callId: widget.sessionData['call_ID'].toString(),
+    //     userId: widget.sessionData['patient_ID'].toString(),
+    //     userType: 'patient',
+    //     userName: patient_name ?? "Unknown",
+    //   );
+    // } 
+    else {
       return const Text('Invalid session type');
     }
   }

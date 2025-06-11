@@ -25,7 +25,7 @@ const server = http.createServer(app);
 // 🔌 Initialize Socket.IO with CORS
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:4200", // Update with your Angular app origin
+    origin: "*", // Update with your Angular app origin
     methods: ["GET", "POST"]
   }
 });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/chat.dart';
+import 'dart:async';
 
 class ChatWidget extends StatefulWidget {
   final String chatId;
@@ -7,6 +8,7 @@ class ChatWidget extends StatefulWidget {
   final String userType;
   final String receiverId;
   final String receiverType;
+  final String? serverUrl;
 
   const ChatWidget({
     Key? key,
@@ -15,6 +17,7 @@ class ChatWidget extends StatefulWidget {
     required this.userType,
     required this.receiverId,
     required this.receiverType,
+    this.serverUrl,
   }) : super(key: key);
 
   @override
@@ -22,175 +25,421 @@ class ChatWidget extends StatefulWidget {
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
-  final ChatSocketService _chatSocketService = ChatSocketService();
-  final ScrollController _scrollController = ScrollController();
+  final ChatService _chatService = ChatService();
   final TextEditingController _messageController = TextEditingController();
-
-  List<dynamic> messages = [];
-  String typingStatus = '';
-  bool sessionStarted = false;
-  bool sessionEnded = false;
+  final ScrollController _scrollController = ScrollController();
+  
+  List<Map<String, dynamic>> _messages = [];
+  String _typingStatus = '';
+  bool _sessionStarted = false;
+  bool _sessionEnded = false;
+  bool _isSendDisabled = true;
+  
+  List<StreamSubscription> _subscriptions = [];
+  Timer? _typingTimer;
 
   @override
   void initState() {
     super.initState();
-    _chatSocketService.connect();
-    _chatSocketService.enterChat(widget.chatId, widget.userId, widget.userType);
-
-    _chatSocketService.onPreviousMessages((data) {
-      setState(() {
-        messages = data;
-      });
-      _scrollToBottom();
-    });
-
-    _chatSocketService.onSystemMessage((msg) {
-      setState(() {
-        messages.add(msg);
-      });
-      _scrollToBottom();
-    });
-
-    _chatSocketService.onMessage((msg) {
-      setState(() {
-        messages.add(msg);
-      });
-      _scrollToBottom();
-    });
-
-    _chatSocketService.onTyping((data) {
-      setState(() {
-        typingStatus = data['typing'] ? '${data['userName']} is typing...' : '';
-      });
-    });
-
-    _chatSocketService.onSessionStart(() {
-      setState(() {
-        sessionStarted = true;
-        sessionEnded = false;
-      });
-    });
-
-    _chatSocketService.onSessionEnded(() {
-      setState(() {
-        sessionEnded = true;
-        sessionStarted = false;
-      });
-    });
-
-    _chatSocketService.onErrorChat((msg) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Chat error: $msg')));
-    });
+    print(" ${widget.chatId}, ${widget.userId} , ${widget.userType} , $_isSendDisabled{widget.receiverId} ");
+    _initializeChat();
   }
 
-  @override
-  void dispose() {
-    _chatSocketService.exitChat(widget.chatId, widget.userId);
-    _chatSocketService.disconnect();
-    _scrollController.dispose();
-    _messageController.dispose();
-    super.dispose();
+  void _initializeChat() {
+    // Connect to socket
+    _chatService.connect(serverUrl: widget.serverUrl ?? 'http://localhost:3000');
+    
+    // Enter chat
+    _chatService.enterChat(widget.chatId, widget.userId, widget.userType);
+
+    // Set up listeners
+    _setupListeners();
+  }
+
+  void _setupListeners() {
+    // Previous messages
+    _subscriptions.add(
+      _chatService.onPreviousMessages.listen((prevMessages) {
+        setState(() {
+          _messages = [...prevMessages];
+        });
+        _scrollToBottom();
+      })
+    );
+
+    // System messages
+    _subscriptions.add(
+      _chatService.onSystemMessage.listen((msg) {
+        setState(() {
+          _messages.add(msg);
+        });
+        _scrollToBottom();
+      })
+    );
+
+    // Regular messages
+    _subscriptions.add(
+      _chatService.onMessage.listen((msg) {
+        setState(() {
+          _messages.add(msg);
+        });
+        _scrollToBottom();
+      })
+    );
+
+    // Typing status
+    _subscriptions.add(
+      _chatService.onTyping.listen((data) {
+        setState(() {
+          _typingStatus = data['typing'] == true 
+              ? '${data['userName']} is typing...' 
+              : '';
+        });
+      })
+    );
+
+    // Session start
+    _subscriptions.add(
+      _chatService.onSessionStart.listen((_) {
+        setState(() {
+          _sessionStarted = true;
+          _sessionEnded = false;
+        });
+        print('Session started!');
+      })
+    );
+
+    // Session ended
+    _subscriptions.add(
+      _chatService.onSessionEnded.listen((_) {
+        setState(() {
+          _sessionEnded = true;
+          _sessionStarted = false;
+        });
+        print('Session ended!');
+      })
+    );
+
+    // Error handling
+    _subscriptions.add(
+      _chatService.onErrorChat.listen((errorMsg) {
+        _showErrorDialog('Chat error: $errorMsg');
+      })
+    );
   }
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       }
     });
   }
 
+  void _onInputChange(String value) {
+    setState(() {
+      _isSendDisabled = value.trim().isEmpty;
+    });
+  }
+
+  void _onTyping() {
+    _chatService.typing(widget.chatId, widget.userId, widget.userType);
+    
+    // Cancel previous timer and set new one
+    _typingTimer?.cancel();
+    _typingTimer = Timer(const Duration(seconds: 2), () {
+      _chatService.stopTyping(widget.chatId, widget.userId);
+    });
+  }
+
+  void _stopTyping() {
+    _typingTimer?.cancel();
+    _chatService.stopTyping(widget.chatId, widget.userId);
+  }
+
   void _sendMessage() {
     final message = _messageController.text.trim();
-    if (message.isEmpty || sessionEnded) return;
+    if (message.isEmpty || _sessionEnded) return;
 
-    _chatSocketService.sendMessage(
-      widget.chatId,
-      widget.userId,
-      widget.userType,
-      widget.receiverId,
-      widget.receiverType,
-      message,
+    _chatService.sendMessage(
+      chatId: widget.chatId,
+      senderId: widget.userId,
+      senderType: widget.userType,
+      receiverId: widget.receiverId,
+      receiverType: widget.receiverType,
+      message: message,
     );
+
     _messageController.clear();
-    _chatSocketService.stopTyping(widget.chatId, widget.userId);
+    setState(() {
+      _isSendDisabled = true;
+    });
+    _stopTyping();
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessage(Map<String, dynamic> msg) {
+    final isSystem = msg['senderType'] == 'system';
+    final isSent = msg['senderId'] == widget.userId && !isSystem;
+    final isReceived = msg['senderId'] != widget.userId && !isSystem;
+
+    if (isSystem) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              msg['message'],
+              style: TextStyle(
+                color: Colors.grey[700],
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      child: Row(
+        mainAxisAlignment: isSent ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isSent ? Colors.blue[500] : Colors.grey[300],
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!isSystem && msg['senderName'] != null)
+                    Text(
+                      msg['senderName'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: isSent ? Colors.white : Colors.black87,
+                        fontSize: 12,
+                      ),
+                    ),
+                  const SizedBox(height: 2),
+                  Text(
+                    msg['message'],
+                    style: TextStyle(
+                      color: isSent ? Colors.white : Colors.black87,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (!isSystem)
+                        Text(
+                          msg['senderType'] ?? '',
+                          style: TextStyle(
+                            color: isSent ? Colors.white70 : Colors.grey[600],
+                            fontSize: 10,
+                          ),
+                        ),
+                      const SizedBox(width: 8),
+                      Text(
+                        _formatTimestamp(msg['timestamp']),
+                        style: TextStyle(
+                          color: isSent ? Colors.white70 : Colors.grey[600],
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatTimestamp(dynamic timestamp) {
+    if (timestamp == null) return '';
+    
+    try {
+      DateTime dateTime;
+      if (timestamp is String) {
+        dateTime = DateTime.parse(timestamp);
+      } else if (timestamp is DateTime) {
+        dateTime = timestamp;
+      } else {
+        return '';
+      }
+      
+      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return '';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text('Chat', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        if (typingStatus.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Text(typingStatus, style: const TextStyle(fontStyle: FontStyle.italic)),
-          ),
-        Expanded(
-          child: ListView.builder(
-            controller: _scrollController,
-            itemCount: messages.length,
-            itemBuilder: (context, index) {
-              final msg = messages[index];
-              final isSystem = msg['senderType'] == 'system';
-              final isSelf = msg['senderId'] == widget.userId;
-
-              return Align(
-                alignment: isSystem
-                    ? Alignment.center
-                    : isSelf
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Chat'),
+        backgroundColor: Colors.blue[600],
+        foregroundColor: Colors.white,
+        elevation: 1,
+        bottom: _typingStatus.isNotEmpty
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(30),
                 child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: isSystem
-                        ? Colors.grey[300]
-                        : isSelf
-                            ? Colors.blue[100]
-                            : Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  child: Row(
                     children: [
-                      if (!isSystem) Text('${msg['senderName']}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                      Text(msg['message']),
-                      if (!isSystem)
-                        Text(msg['timestamp'] ?? '',
-                            style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                      Text(
+                        _typingStatus,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              );
-            },
+              )
+            : null,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollController,
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                return _buildMessage(_messages[index]);
+              },
+            ),
           ),
-        ),
-        if (!sessionEnded)
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _messageController,
-                  onChanged: (_) => _chatSocketService.typing(widget.chatId, widget.userId),
-                  onEditingComplete: () => _chatSocketService.stopTyping(widget.chatId, widget.userId),
-                  decoration: const InputDecoration(hintText: 'Type a message...'),
+          if (!_sessionEnded)
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(color: Colors.grey[300]!),
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.send),
-                onPressed: _sendMessage,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _messageController,
+                          onChanged: _onInputChange,
+                          onTap: _onTyping,
+                          onEditingComplete: _stopTyping,
+                          decoration: InputDecoration(
+                            hintText: 'Type a message...',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: BorderSide(color: Colors.grey[300]!),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: BorderSide(color: Colors.grey[300]!),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: BorderSide(color: Colors.blue[500]!),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                          ),
+                          onSubmitted: (_) => _sendMessage(),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      FloatingActionButton(
+                        onPressed: _isSendDisabled ? null : _sendMessage,
+                        backgroundColor: _isSendDisabled 
+                            ? Colors.grey[300] 
+                            : Colors.blue[500],
+                        mini: true,
+                        child: Icon(
+                          Icons.send,
+                          color: _isSendDisabled ? Colors.grey[600] : Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
-        if (sessionEnded)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text('The session has ended. Chat is closed.',
-                style: TextStyle(color: Colors.grey)),
-          ),
-      ],
+            ),
+          if (_sessionEnded)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                border: Border(
+                  top: BorderSide(color: Colors.grey[300]!),
+                ),
+              ),
+              child: const Text(
+                'The session has ended. Chat is closed.',
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+        ],
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _typingTimer?.cancel();
+    _chatService.exitChat(widget.chatId, widget.userId);
+    for (var subscription in _subscriptions) {
+      subscription.cancel();
+    }
+    _chatService.dispose();
+    _messageController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 }

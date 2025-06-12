@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/services/chat.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:async';
 
 class ChatWidget extends StatefulWidget {
@@ -8,7 +8,7 @@ class ChatWidget extends StatefulWidget {
   final String userType;
   final String receiverId;
   final String receiverType;
-  final String? serverUrl;
+  final String serverUrl;
 
   const ChatWidget({
     Key? key,
@@ -17,7 +17,7 @@ class ChatWidget extends StatefulWidget {
     required this.userType,
     required this.receiverId,
     required this.receiverType,
-    this.serverUrl,
+    this.serverUrl = 'http://localhost:3000',
   }) : super(key: key);
 
   @override
@@ -25,10 +25,14 @@ class ChatWidget extends StatefulWidget {
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
-  final ChatService _chatService = ChatService();
+  // Socket connection
+  IO.Socket? _socket;
+  
+  // UI Controllers
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   
+  // State variables
   List<Map<String, dynamic>> _messages = [];
   String _typingStatus = '';
   bool _sessionStarted = false;
@@ -38,96 +42,234 @@ class _ChatWidgetState extends State<ChatWidget> {
   List<StreamSubscription> _subscriptions = [];
   Timer? _typingTimer;
 
+  // Socket connection status
+  bool get isConnected => _socket?.connected ?? false;
+
   @override
   void initState() {
     super.initState();
-    print(" ${widget.chatId}, ${widget.userId} , ${widget.userType} , $_isSendDisabled{widget.receiverId} ");
+    print("Chat initialized: ${widget.chatId}, ${widget.userId}, ${widget.userType}, ${widget.receiverId}");
     _initializeChat();
   }
 
   void _initializeChat() {
-    // Connect to socket
-    _chatService.connect(serverUrl: widget.serverUrl ?? 'http://localhost:3000');
+    _connectSocket();
+    // Don't call _enterChat() here, it will be called after connection
+  }
+
+  void _connectSocket() {
+    if (_socket != null && _socket!.connected) {
+      _socket!.clearListeners();
+    _socket!.disconnect();
+    _socket = null;
+      return;
+    }
+
+    _socket = IO.io(widget.serverUrl, <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': true,
+    });
+
+    _setupSocketEventListeners();
+
+    _socket!.onConnect((_) {
+      print('Socket connected: ${_socket!.id}');
+    _enterChat();
+    });
+
+    _socket!.onDisconnect((_) {
+      print('Socket disconnected');
+      _socket!.clearListeners();
+    _socket!.disconnect();
+    _socket = null;
+    });
+  }
+
+  void _setupSocketEventListeners() {
+    _socket!.on('receiveMessage', (data) {
+      print('Received message: $data');
+      setState(() {
+        _messages.add(Map<String, dynamic>.from(data));
+      });
+      _scrollToBottom();
+    });
+
+    _socket!.on('previousMessages', (data) {
+      print('Received previous messages: ${data.length} messages');
+      final messages = List<Map<String, dynamic>>.from(
+        data.map((msg) => Map<String, dynamic>.from(msg))
+      );
+      setState(() {
+        _messages = [...messages];
+      });
+      _scrollToBottom();
+    });
+
+    _socket!.on('systemMessage', (data) {
+      print('Received system message: $data');
+      try {
+        Map<String, dynamic> systemMessage;
+        if (data is List && data.isNotEmpty) {
+          systemMessage = Map<String, dynamic>.from(data[0]);
+        } else if (data is Map) {
+          systemMessage = Map<String, dynamic>.from(data);
+        } else {
+          print('Unexpected system message format: $data');
+          return;
+        }
+        
+        setState(() {
+          _messages.add(systemMessage);
+        });
+        _scrollToBottom();
+      } catch (e) {
+        print('Error processing system message: $e');
+      }
+    });
+
+    _socket!.on('participantTyping', (data) {
+      print('Typing status received: $data');
+      try {
+        Map<String, dynamic> typingData;
+        if (data is List && data.isNotEmpty) {
+          typingData = Map<String, dynamic>.from(data[0]);
+        } else if (data is Map) {
+          typingData = Map<String, dynamic>.from(data);
+        } else {
+          print('Unexpected typing data format: $data');
+          return;
+        }
+        
+        // Only show typing status for other users, not yourself
+        if (typingData['userId'] != widget.userId) {
+          setState(() {
+            _typingStatus = typingData['typing'] == true 
+                ? '${typingData['userName'] ?? 'Someone'} is typing...' 
+                : '';
+          });
+        }
+      } catch (e) {
+        print('Error processing typing status: $e');
+      }
+    });
+
+    _socket!.on('sessionStart', (_) {
+      print('Session started');
+      setState(() {
+        _sessionStarted = true;
+        _sessionEnded = false;
+      });
+    });
+
+    _socket!.on('sessionEnded', (_) {
+      print('Session ended');
+      setState(() {
+        _sessionEnded = true;
+        _sessionStarted = false;
+      });
+    });
+
+    _socket!.on('errorChat', (data) {
+      print('Chat error: $data');
+      _showErrorDialog('Chat error: ${data.toString()}');
+    });
+  }
+
+  // Socket emit methods
+  void _enterChat() {
+    if (!isConnected) {
+      print('Cannot enter chat: Socket not connected');
+      return;
+    }
     
-    // Enter chat
-    _chatService.enterChat(widget.chatId, widget.userId, widget.userType);
-
-    // Set up listeners
-    _setupListeners();
+    print('Entering chat room: ${widget.chatId}');
+    _socket?.emit('enterChat', {
+      'chatId': widget.chatId,
+      'userId': widget.userId,
+      'userType': widget.userType,
+    });
   }
 
-  void _setupListeners() {
-    // Previous messages
-    _subscriptions.add(
-      _chatService.onPreviousMessages.listen((prevMessages) {
-        setState(() {
-          _messages = [...prevMessages];
-        });
-        _scrollToBottom();
-      })
-    );
-
-    // System messages
-    _subscriptions.add(
-      _chatService.onSystemMessage.listen((msg) {
-        setState(() {
-          _messages.add(msg);
-        });
-        _scrollToBottom();
-      })
-    );
-
-    // Regular messages
-    _subscriptions.add(
-      _chatService.onMessage.listen((msg) {
-        setState(() {
-          _messages.add(msg);
-        });
-        _scrollToBottom();
-      })
-    );
-
-    // Typing status
-    _subscriptions.add(
-      _chatService.onTyping.listen((data) {
-        setState(() {
-          _typingStatus = data['typing'] == true 
-              ? '${data['userName']} is typing...' 
-              : '';
-        });
-      })
-    );
-
-    // Session start
-    _subscriptions.add(
-      _chatService.onSessionStart.listen((_) {
-        setState(() {
-          _sessionStarted = true;
-          _sessionEnded = false;
-        });
-        print('Session started!');
-      })
-    );
-
-    // Session ended
-    _subscriptions.add(
-      _chatService.onSessionEnded.listen((_) {
-        setState(() {
-          _sessionEnded = true;
-          _sessionStarted = false;
-        });
-        print('Session ended!');
-      })
-    );
-
-    // Error handling
-    _subscriptions.add(
-      _chatService.onErrorChat.listen((errorMsg) {
-        _showErrorDialog('Chat error: $errorMsg');
-      })
-    );
+  void _exitChat() {
+    _socket?.emit('exitChat', {
+      'chatId': widget.chatId,
+      'userId': widget.userId,
+    });
   }
 
+  void _sendSocketMessage({
+    required String chatId,
+    required String senderId,
+    required String senderType,
+    required String receiverId,
+    required String receiverType,
+    required String message,
+  }) {
+    if (!isConnected) {
+      print('Cannot send message: Socket not connected');
+      _showErrorDialog('Connection lost. Please try again.');
+      return;
+    }
+    
+    print('Sending message: $message');
+    _socket?.emit('sendMessage', {
+      'chatId': chatId,
+      'senderId': senderId,
+      'senderType': senderType,
+      'receiverId': receiverId,
+      'receiverType': receiverType,
+      'message': message,
+    });
+  }
+
+  void _emitTyping() {
+    if (!isConnected) return;
+    
+    _socket?.emit('typing', {
+      'chatId': widget.chatId,
+      'userId': widget.userId,
+      'userType': widget.userType,
+    });
+  }
+
+  void _emitStopTyping() {
+    if (!isConnected) return;
+    
+    _socket?.emit('stopTyping', {
+      'chatId': widget.chatId,
+      'userId': widget.userId,
+    });
+  }
+
+  void _patientReady() {
+    _socket?.emit('patientReady', {
+      'chatId': widget.chatId,
+    });
+  }
+
+  void _doctorReady(int sessionDurationMinutes) {
+    _socket?.emit('doctorReady', {
+      'chatId': widget.chatId,
+      'sessionDurationMinutes': sessionDurationMinutes,
+    });
+  }
+
+  void _doctorEndSession() {
+    _socket?.emit('doctorEndSession', {
+      'chatId': widget.chatId,
+      'userId': widget.userId,
+    });
+  }
+
+  void _disconnectSocket() {
+    if (_socket != null) {
+      _socket!.disconnect();
+      _socket = null;
+      print('Socket disconnected');
+    }
+  }
+
+  // UI Event Handlers
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -147,25 +289,25 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 
   void _onTyping() {
-    _chatService.typing(widget.chatId, widget.userId, widget.userType);
+    _emitTyping();
     
     // Cancel previous timer and set new one
     _typingTimer?.cancel();
     _typingTimer = Timer(const Duration(seconds: 2), () {
-      _chatService.stopTyping(widget.chatId, widget.userId);
+      _emitStopTyping();
     });
   }
 
   void _stopTyping() {
     _typingTimer?.cancel();
-    _chatService.stopTyping(widget.chatId, widget.userId);
+    _emitStopTyping();
   }
 
   void _sendMessage() {
     final message = _messageController.text.trim();
     if (message.isEmpty || _sessionEnded) return;
 
-    _chatService.sendMessage(
+    _sendSocketMessage(
       chatId: widget.chatId,
       senderId: widget.userId,
       senderType: widget.userType,
@@ -312,7 +454,7 @@ class _ChatWidgetState extends State<ChatWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat'),
+        title: Text('Chat - ${isConnected ? 'Connected' : 'Disconnected'}'),
         backgroundColor: Colors.blue[600],
         foregroundColor: Colors.white,
         elevation: 1,
@@ -433,11 +575,11 @@ class _ChatWidgetState extends State<ChatWidget> {
   @override
   void dispose() {
     _typingTimer?.cancel();
-    _chatService.exitChat(widget.chatId, widget.userId);
+    _exitChat();
     for (var subscription in _subscriptions) {
       subscription.cancel();
     }
-    _chatService.dispose();
+    _disconnectSocket();
     _messageController.dispose();
     _scrollController.dispose();
     super.dispose();

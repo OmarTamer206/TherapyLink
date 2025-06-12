@@ -1,0 +1,46 @@
+<section class="chat-container">
+  <header class="chat-header">
+    <h3>Chat</h3>
+    <span class="typing-indicator">{{ typingStatus }}</span>
+  </header>
+
+  <div class="chat-messages" #messageContainer>
+    <div
+      *ngFor="let msg of messages"
+      [ngClass]="{
+        message: true,
+        sent: msg.senderId === userId && msg.senderType !== 'system',
+        received: msg.senderId !== userId && msg.senderType !== 'system',
+        system: msg.senderType === 'system'
+      }"
+    >
+      <div *ngIf="msg.senderType !== 'system'" class="message-header">
+        <strong>{{ msg.senderName }}</strong> <!-- Display sender name -->
+      </div>
+      <div class="message-content">{{ msg.message }}</div>
+      <div *ngIf="msg.senderType !== 'system'" class="message-meta">
+        <span class="sender-type">{{ msg.senderType }}</span>
+        <span class="timestamp">{{ msg.timestamp | date: 'shortTime' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <form class="chat-input" *ngIf="!sessionEnded" (submit)="sendMessage(); $event.preventDefault()">
+    <input
+      type="text"
+      name="message"
+      [(ngModel)]="message"
+      (input)="onInputChange()"
+      (keydown)="onTyping()"
+      (blur)="stopTyping()"
+      placeholder="Type a message..."
+      autocomplete="off"
+      required
+    />
+    <button type="submit" >Send</button>
+  </form>
+
+  <div *ngIf="sessionEnded" class="session-ended-message">
+    <em>The session has ended. Chat is closed.</em>
+  </div>
+</section>

@@ -3,7 +3,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
   IO.Socket? _socket;
-  
+
   // Stream controllers for different events
   final StreamController<Map<String, dynamic>> _messageController = StreamController.broadcast();
   final StreamController<List<Map<String, dynamic>>> _previousMessagesController = StreamController.broadcast();
@@ -25,20 +25,17 @@ class ChatService {
   bool get isConnected => _socket?.connected ?? false;
 
   void connect({String serverUrl = 'http://localhost:3000'}) {
-    if (_socket?.connected == true) {
+    if (_socket != null && _socket!.connected) {
       print('Socket already connected');
       return;
     }
 
     _socket = IO.io(serverUrl, <String, dynamic>{
       'transports': ['websocket'],
-      'autoConnect': false,
+      'autoConnect': true, // <-- Enable auto connect
     });
 
-    _socket!.connect();
-
-    // Set up event listeners
-    _setupEventListeners();
+    _setupEventListeners(); // Moved here before connect
 
     _socket!.onConnect((_) {
       print('Socket connected: ${_socket!.id}');
@@ -94,14 +91,6 @@ class ChatService {
     _socket!.on('errorChat', (data) {
       print('Chat error: $data');
       _errorChatController.add(data.toString());
-    });
-
-    _socket!.on('connect', (_) {
-      print('Socket connected successfully');
-    });
-
-    _socket!.on('disconnect', (_) {
-      print('Socket disconnected');
     });
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/call_section.dart';
+import 'package:flutter_application_1/pages/chat_web.dart';
 
 import 'dart:async';
 
@@ -131,18 +132,23 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
   Widget _buildSessionWidget() {
     final type = widget.sessionData['communication_type'];
 
-    if (!sessionStarted) {
-      return Center(child: Text('$type will be available after session starts'));
-    }
+    
 
     if (type == 'Chatting') {
-      return ChatWidget(
-        chatId: widget.sessionData['chat_ID'].toString(),
-        userId: widget.sessionData['patient_ID'].toString(),
-        userType: 'patient',
-        receiverId: widget.sessionData['doctor_ID'].toString(),
-        receiverType: widget.sessionData['session_type'],
-      );
+      // return ChatWidget(
+      //   chatId: widget.sessionData['chat_ID'].toString(),
+      //   userId: widget.sessionData['patient_ID'].toString(),
+      //   userType: 'patient',
+      //   receiverId: widget.sessionData['doctor_ID'].toString(),
+      //   receiverType: widget.sessionData['session_type'],
+      // );
+      return ChatWeb(
+         chatId: widget.sessionData['chat_ID'].toString(),
+         userId: widget.sessionData['patient_ID'].toString(),
+         userType: 'patient',
+         receiverId: widget.sessionData['doctor_ID'].toString(),
+         receiverType: widget.sessionData['session_type'],
+       );
     } 
     // else if (type == 'Voice / Video Call') {
     //   return CallWidget(
@@ -206,11 +212,8 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: const EdgeInsets.all(16),
+                
+                padding: const EdgeInsets.all(0),
                 child: _buildSessionWidget(),
               ),
             ),

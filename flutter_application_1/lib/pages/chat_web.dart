@@ -9,14 +9,16 @@ import 'dart:ui' as ui;
 import 'package:flutter_application_1/pages/feedback_page.dart';
 
 class ChatWeb extends StatefulWidget {
+  var sessionData;
   final String chatId;
   final String userId;
   final String userType;
   final String receiverId;
   final String receiverType;
 
-  const ChatWeb({
+   ChatWeb({
     Key? key,
+    required this.sessionData,
     required this.chatId,
     required this.userId,
     required this.userType,
@@ -76,7 +78,17 @@ class _ChatWebState extends State<ChatWeb> with SingleTickerProviderStateMixin {
             statusMessage = '❌ Session Ended.';
           });
           Future.delayed(const Duration(seconds: 0), () {
-            if (mounted) Navigator.of(context).push(   MaterialPageRoute(builder: (context) => FeedbackPage()));
+              var sessionWith = 'Dr. ${widget.sessionData["doctor_name"]}' ?? "Unknown";
+              var sessionDate = '${widget.sessionData["date"]} , ${widget.sessionData["time"]} ' ?? "Unknown";
+              var sessionDuration  = '${widget.sessionData["duration"]} Minutes' ?? "Unknown";
+              var sessionCommunication = widget.sessionData["communication_type"] ?? "Unknown";
+            if (mounted) Navigator.of(context).push(   MaterialPageRoute(builder: (context) => FeedbackPage(
+                          sessionData: widget.sessionData,
+                          sessionWith: sessionWith,
+                          sessionDate:sessionDate,
+                          sessionDuration:sessionDuration,
+                          sessionCommunication : sessionCommunication,
+                        ),));
           });
         }
       }

@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/patient.dart';
 
 
 
 class FeedbackPage extends StatefulWidget {
-  const FeedbackPage({super.key});
+
+  var sessionData;
+  late String sessionWith;
+  late String sessionDate;
+  var sessionDuration ;
+  var sessionCommunication ;
+
+   FeedbackPage({super.key , required this.sessionData, required this.sessionWith,
+                          required this.sessionDate,
+                          required this.sessionDuration,
+                          required this.sessionCommunication,});
 
   @override
   State<FeedbackPage> createState() => _FeedbackPageState();
@@ -11,6 +22,29 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage> {
   int selectedRating = 0;
+  final TextEditingController _feedbackTextField = TextEditingController();
+  var editState = false;
+  final PatientApi _patientApi = PatientApi();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _fetchOldFeedback();
+
+  }
+
+  void _fetchOldFeedback() async{
+    var oldFeedback = await _patientApi.checkFeedback( widget.sessionData['session_ID'],widget.sessionData['session_type']);
+    print("oldFeedback : $oldFeedback");
+    if (oldFeedback["data"].length != 0) {
+          setState(() {
+            selectedRating = oldFeedback["data"][0]["rating"];
+          _feedbackTextField.text = oldFeedback["data"][0]["reason"];
+          editState = true;
+          });
+        }
+  }
 
   void _showNoRatingDialog() {
     showDialog(
@@ -29,7 +63,37 @@ class _FeedbackPageState extends State<FeedbackPage> {
       },
     );
   }
+  void _submitFeedback() async {
 
+              // Here you can handle the feedback submission logic
+              // For example, send the rating and feedback to your backend or API
+              print('Rating: $selectedRating');
+              print('Feedback: ${_feedbackTextField.text}');
+
+              // Show a confirmation message
+
+    await _patientApi.submitFeedback(
+                session: widget.sessionData,
+                rating : selectedRating,
+                feedback : _feedbackTextField.text,
+                editState: editState
+              );
+
+              // Show a success message
+
+
+    ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Thank you for your feedback!'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              Future.delayed(const Duration(seconds: 2), () {
+              Navigator.of(context).popUntil((route) => route.isFirst); // Pops all routes and goes back to the first (Home)
+
+              });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +106,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Old Sessions',
+          'Old Session',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -54,22 +118,30 @@ class _FeedbackPageState extends State<FeedbackPage> {
       const SizedBox(height: 20), // Increased from 10 → pushes "Session With"
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children:  [
           Text(
-            'Session With: Dr. Magdy',
+            'Session With: ${widget.sessionWith}',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Padding(
             padding: EdgeInsets.only(top: 4), // pushes down "30 minutes"
-            child: Text('30 minutes'),
+            child: Text('${widget.sessionDuration} minutes'),
           ),
         ],
       ),
       const SizedBox(height: 6),
-      const Align(
-        alignment: Alignment.centerLeft,
-        child: Text('Timing: 9/1/2025 , 7:00 PM'),
-      ),
+       Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+         children: [
+           Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Timing: ${widget.sessionDate}'),
+                 ),
+                Text('Comm. Type : ${widget.sessionCommunication}'),
+
+         ],
+       ),
       const SizedBox(height: 40),
 
       // Feedback Container
@@ -83,10 +155,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
         ),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Icon(Icons.close, size: 24),
-            ),
+            
             const SizedBox(height: 10),
 
             // Star Row
@@ -130,7 +199,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 border: Border.all(color: Colors.black),
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: const TextField(
+              child:  TextField(
+                controller: _feedbackTextField,
                 maxLines: 3,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -150,19 +220,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
         height: 50,
         child: ElevatedButton(
           onPressed: () {
-            if (selectedRating == 0) {
+            if (selectedRating == 0 || _feedbackTextField.text.isEmpty) {
               _showNoRatingDialog();
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Thank you for your feedback!'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-              Future.delayed(const Duration(seconds: 2), () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              });
+              _submitFeedback();
             }
           },
           style: ElevatedButton.styleFrom(
@@ -171,15 +232,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
               borderRadius: BorderRadius.circular(6),
             ),
           ),
-          child: const Text(
-            'Submit',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.white,
-            ),
-          ),
+          child: editState
+              ? const Text(
+                  'Update Feedback',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                )
+              : const Text(
+                  'Submit Feedback',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
         ),
+        ),
+
       ),
       const SizedBox(height: 20),
     ],

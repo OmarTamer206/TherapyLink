@@ -143,6 +143,7 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
       //   receiverType: widget.sessionData['session_type'],
       // );
       return ChatWeb(
+         sessionData:widget.sessionData,
          chatId: widget.sessionData['chat_ID'].toString(),
          userId: widget.sessionData['patient_ID'].toString(),
          userType: 'patient',

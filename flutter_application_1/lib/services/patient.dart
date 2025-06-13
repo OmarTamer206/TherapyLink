@@ -43,7 +43,7 @@ class PatientApi {
 
   // Submit feedback
   Future<bool> submitFeedback({
-    required String session,
+    required var session,
     required int rating,
     required String feedback,
     required bool editState,
@@ -62,7 +62,7 @@ class PatientApi {
   }
 
   // Check feedback
-  Future<Map<String, dynamic>> checkFeedback(String sessionID, String sessionType) async {
+  Future<Map<String, dynamic>> checkFeedback(var sessionID, var sessionType) async {
     final url = Uri.parse('$baseUrl/patient/check-feedback/$sessionID/$sessionType');
     final headers = await _headers();
 

@@ -203,8 +203,7 @@ class _SessionsPageState extends State<SessionsPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => SessionFeedbackPage(
-                        sessionWith: session['doctor_name'] ?? '',
-                        sessionDate: session['date'] ?? '',
+                       sessionData: session,
                       ),
                     ),
                   );

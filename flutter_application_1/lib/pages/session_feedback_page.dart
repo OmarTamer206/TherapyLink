@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
-import 'feedback_page.dart'; // Import the FeedbackPage
+import 'feedback_page.dart';
 
-class SessionFeedbackPage extends StatelessWidget {
-  final String sessionWith;
-  final String sessionDate;
+class SessionFeedbackPage extends StatefulWidget {
+  final dynamic sessionData;
 
   const SessionFeedbackPage({
     Key? key,
-    required this.sessionWith,
-    required this.sessionDate,
+    required this.sessionData,
   }) : super(key: key);
+
+  @override
+  State<SessionFeedbackPage> createState() => _SessionFeedbackPageState();
+}
+
+class _SessionFeedbackPageState extends State<SessionFeedbackPage> {
+  late String sessionWith;
+  late String sessionDate;
+  var sessionDuration ;
+  var sessionCommunication ;
+  @override
+  void initState() {
+    super.initState();
+
+    // Extract and assign values from sessionData
+    sessionWith = 'Dr. ${widget.sessionData["doctor_name"]}' ?? "Unknown";
+    sessionDate = '${widget.sessionData["date"]} , ${widget.sessionData["time"]} ' ?? "Unknown";
+    sessionDuration  = '${widget.sessionData["duration"]} Minutes' ?? "Unknown";
+    sessionCommunication = widget.sessionData["communication_type"] ?? "Unknown";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +41,7 @@ class SessionFeedbackPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Old Sessions',
+          'Old Session',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -41,11 +59,18 @@ class SessionFeedbackPage extends StatelessWidget {
                   'Session With: $sessionWith',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                const Text('30 minutes'),
+                 Text('Duration : ${sessionDuration}'),
               ],
             ),
             const SizedBox(height: 4),
-            Text('Timing: $sessionDate'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              children: [
+                Text('Timing: $sessionDate'),
+                Text('Comm. Type : $sessionCommunication'),
+              ],
+            ),
             const SizedBox(height: 20),
 
             // Blank White Container in the center of the screen
@@ -70,7 +95,13 @@ class SessionFeedbackPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const FeedbackPage(),
+                        builder: (context) => FeedbackPage(
+                          sessionData: widget.sessionData,
+                          sessionWith: sessionWith,
+                          sessionDate:sessionDate,
+                          sessionDuration:sessionDuration,
+                          sessionCommunication : sessionCommunication,
+                        ),
                       ),
                     );
                   },

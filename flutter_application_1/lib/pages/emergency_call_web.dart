@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/HomePage.dart';
+import 'package:flutter_application_1/pages/emergency_session_ended.dart';
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 
@@ -8,9 +9,9 @@ import 'package:flutter_application_1/pages/feedback_page.dart';
 import 'package:flutter_application_1/services/auth.dart';
 
 class EmergencyCallWeb extends StatefulWidget {
-  final String userId;
+    var userId;
 
-  const EmergencyCallWeb({
+   EmergencyCallWeb({
     Key? key,
     required this.userId,
   }) : super(key: key);
@@ -91,12 +92,12 @@ class _EmergencyCallWebState extends State<EmergencyCallWeb> with SingleTickerPr
             statusMessage = '❌ Session Ended.';
           });
 
-          Future.delayed(const Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 0), () {
             if (mounted) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(
+                  builder: (context) => SessionEndedPage(
                     
                   ),
                 ),

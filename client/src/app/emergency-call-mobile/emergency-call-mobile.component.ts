@@ -101,6 +101,8 @@ export class EmergencyCallMobileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log('EmergencyCallMobileComponent destroyed');
+
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

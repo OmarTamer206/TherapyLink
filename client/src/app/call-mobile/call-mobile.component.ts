@@ -76,6 +76,8 @@ export class CallMobileComponent implements OnInit, OnDestroy {
 
     this.callService.onParticipantsUpdate().subscribe(p => this.participants = p);
     this.callService.onCallEnded().subscribe(() => {
+      console.log('Call ended');
+        console.log("5");
       this.callEnded = true;
         window.parent.postMessage({ type: 'sessionEnded' }, '*');
 

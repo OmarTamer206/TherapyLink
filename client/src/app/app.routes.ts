@@ -57,6 +57,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { ChatMobileComponent } from './chat-mobile/chat-mobile.component';
 import { OldChatMobileComponent } from './old-chat-mobile/old-chat-mobile.component';
 import { CallMobileComponent } from './call-mobile/call-mobile.component';
+import { EmergencyCallMobileComponent } from './emergency-call-mobile/emergency-call-mobile.component';
 
 export const routes: Routes = [
   {
@@ -331,6 +332,10 @@ export const routes: Routes = [
   {
     path: "call/:call_ID/:userId/:userType/:userName",
     component: CallMobileComponent
+  },
+  {
+    path: "emergency-call/:userId",
+    component: EmergencyCallMobileComponent
   },
   {
     path: "old-chat/:chatId/:userId",

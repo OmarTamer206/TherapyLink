@@ -26,7 +26,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*", // Update with your Angular app origin
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+    credentials: true,
   }
 });
 
@@ -45,7 +46,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/admin", authorizeRoles("admin" ,"manager"), adminRoutes);
 app.use("/manager", authorizeRoles("manager"), managerRoutes);
-app.use("/patient", authorizeRoles("patient"), patientRoutes);
+app.use("/patient", patientRoutes);
 app.use("/session", authorizeRoles("patient","doctor","life_coach","emergency_team"), sessionRoutes);
 app.use("/therapist", authorizeRoles("doctor","life_coach","patient","emergency_team"), therapistRoutes);
 app.use("/emergency", authorizeRoles("emergency_team"), emergencyRoutes);

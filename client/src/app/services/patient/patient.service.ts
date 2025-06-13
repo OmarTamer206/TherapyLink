@@ -56,4 +56,7 @@ export class PatientService {
   getProfileData(): Observable<any> {
     return this.http.get(`${this.apiUrl}/get-profile-data`);
   }
+  getProfileDataByID(patientID:any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-profile-data/${patientID}`);
+  }
 }

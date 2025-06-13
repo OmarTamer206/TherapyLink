@@ -7,6 +7,8 @@ function EmergencySocket(io) {
     console.log('Emergency Team connected:', socket.id);
 
     socket.on('requestEmergency', async (patientData) => {
+      console.log('Emergency request init:');
+
         socket.join(socket.id)
 
           const exists = emergencyRequests.find(r => r.requestId === patientData.id);
@@ -19,6 +21,9 @@ function EmergencySocket(io) {
         socketId: socket.id,
       };
       emergencyRequests.push(request);
+      console.log('Emergency request received:', request);
+      
+
       io.emit('newEmergencyRequest', request); // broadcast to team
     });
 

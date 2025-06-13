@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter_application_1/pages/emergency_call_web.dart';
+
 class EmergencyPage extends StatefulWidget {
-  const EmergencyPage({Key? key}) : super(key: key);
+  var userId;
+  EmergencyPage({Key? key ,required this.userId}) : super(key: key);
 
   @override
   State<EmergencyPage> createState() => _EmergencyPageState();
@@ -89,13 +92,9 @@ class _EmergencyPageState extends State<EmergencyPage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 100),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                // No timer or label inside
-                child: const SizedBox.shrink(),
+                
+                padding: const EdgeInsets.all(0),
+                child: EmergencyCallWeb(userId: widget.userId,),
               ),
             ),
 

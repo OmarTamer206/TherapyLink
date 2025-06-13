@@ -128,6 +128,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>  with RouteAware {
   bool _loading = true;
   String? _patientName = "Emily"; // You can replace with fetched data
+  var _patientId ; // You can replace with fetched data
   Map<String, dynamic>? _upcomingSession; // null means no session
   late DateTime _sessionDateTime;
 
@@ -176,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen>  with RouteAware {
     // Example: you should replace these with real fetched values
     setState(() {
       _patientName = userData["data"]["patient"][0]["Name"]; // fetched patient name
+      _patientId = userData["data"]["patient"][0]["id"]; // fetched patient name
       // Uncomment below to simulate a session present
       if(sessionData.toString() != '[]'){
         _upcomingSession = {
@@ -368,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen>  with RouteAware {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const EmergencyPage()),
+                    MaterialPageRoute(builder: (context) =>  EmergencyPage(userId: _patientId,)),
                   );
                 },
                 child: Container(

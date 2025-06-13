@@ -300,4 +300,30 @@ router.get("/get-profile-data", async (req, res) => {
   }
 });
 
+
+router.get("/get-profile-data/:patientID", async (req, res) => {
+  const { patientID } = req.params;
+  if (!patientID) return res.status(400).json({ error: "patientID  is required" });
+    
+    
+    try {
+   
+    const result = await getProfileData(patientID);
+    res.status(200).json(result);
+  } catch (error) {
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  }
+});
+
+
 module.exports = router;

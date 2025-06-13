@@ -1,0 +1,61 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="call-wrapper">
+
+  <!-- Main video area -->
+  <div class="video-area" #videoArea>
+    <!-- Sidebar for participants -->
+    <div class="sidebar" [class.hidden]="sidebarHidden">
+      <h3>Participants</h3>
+      <div class="participant-list">
+        <div class="participant-card" *ngFor="let participant of participants | keyvalue">
+          <div *ngIf="participant.value.userType != 'patient'" class="avatar">Dr</div>
+          <div *ngIf="participant.value.userType == 'patient'" class="avatar">{{ participant.value.userName.charAt(0) }}</div>
+          <div class="participant-info">
+            <strong *ngIf="participant.value.userType != 'patient'">Dr. {{ participant.value.userName }}</strong>
+            <strong *ngIf="participant.value.userType == 'patient'">{{ participant.value.userName }}</strong>
+            <small>{{ participant.value.userType }}</small>
+            <div class="status-icons">
+              <span [class.active]="!participant.value.muted">🎤</span>
+              <span [class.active]="participant.value.videoOn">📹</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <video #remoteVideo autoplay playsinline class="video remote"></video>
+    <video #localVideo autoplay playsinline muted class="video local"></video>
+
+    <!-- Controls -->
+    <div class="call-controls">
+  <!-- Mute/Unmute -->
+  <button class="control-btn" (click)="toggleMute()">
+    <span class="material-icons">
+      {{ muted ? 'mic_off' : 'mic' }}
+    </span>
+  </button>
+
+  <!-- Video On/Off -->
+  <button class="control-btn" (click)="toggleVideo()">
+    <span class="material-icons">
+      {{ videoOn ? 'videocam_off' : 'videocam' }}
+    </span>
+  </button>
+
+  <!-- Toggle Participants Sidebar -->
+  <button class="control-btn" (click)="sidebarHidden = !sidebarHidden">
+    <span class="material-icons">
+      {{ sidebarHidden ? 'group' : 'group_off' }}
+    </span>
+  </button>
+
+  <!-- Fullscreen -->
+  <button class="control-btn" (click)="toggleFullScreen()">
+    <span class="material-icons">
+      {{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}
+    </span>
+  </button>
+</div>
+
+  </div>
+</div>

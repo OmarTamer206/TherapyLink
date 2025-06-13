@@ -1,0 +1,155 @@
+
+.call-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.video-area {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  background-color: #000;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.local {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 120px;
+  height: 80px;
+  border: 2px solid white;
+  border-radius: 8px;
+}
+
+.sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 300px;
+  background-color: black;
+  color: white;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  z-index: 10;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+.participant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.participant-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  background: #fff;
+  color: black;
+  border-radius: 8px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #2196f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.status-icons span {
+  opacity: 0.3;
+}
+
+.status-icons span.active {
+  opacity: 1;
+}
+
+.call-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  width: 65%;
+  padding: 12px;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 20;
+
+}
+
+.control-btn {
+  background-color: #1976d2;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.control-btn:hover {
+  background-color: #115293;
+}
+
+.toggle-sidebar {
+  background-color: #455a64;
+}
+
+.material-icons {
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .local {
+    width: 100px;
+    height: 60px;
+    bottom: 12px;
+    right: 12px;
+  }
+  .control-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .sidebar {
+    max-width: 240px;
+  }
+  .participant-card {
+    flex-direction: row;
+  }
+}

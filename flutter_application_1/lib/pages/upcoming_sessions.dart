@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/call_section.dart';
+import 'package:flutter_application_1/pages/call_web.dart';
 import 'package:flutter_application_1/pages/chat_web.dart';
 
 import 'dart:async';
@@ -151,14 +152,15 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
          receiverType: widget.sessionData['session_type'],
        );
     } 
-    // else if (type == 'Voice / Video Call') {
-    //   return CallWidget(
-    //     callId: widget.sessionData['call_ID'].toString(),
-    //     userId: widget.sessionData['patient_ID'].toString(),
-    //     userType: 'patient',
-    //     userName: patient_name ?? "Unknown",
-    //   );
-    // } 
+    else if (type == 'Voice / Video Call') {
+      return CallWeb(
+         sessionData:widget.sessionData,
+        call_ID: widget.sessionData['call_ID'].toString(),
+        userId: widget.sessionData['patient_ID'].toString(),
+        userType: 'patient',
+        userName: patient_name ?? "Unknown",
+      );
+    } 
     else {
       return const Text('Invalid session type');
     }

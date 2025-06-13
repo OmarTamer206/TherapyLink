@@ -55,6 +55,8 @@ import { EmergencySessionPatientComponent } from './patient/emergency-session/em
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ChatMobileComponent } from './chat-mobile/chat-mobile.component';
+import { OldChatMobileComponent } from './old-chat-mobile/old-chat-mobile.component';
+import { CallMobileComponent } from './call-mobile/call-mobile.component';
 
 export const routes: Routes = [
   {
@@ -325,6 +327,14 @@ export const routes: Routes = [
   {
     path: "chat/:chatId/:userId/:userType/:receiverId/:receiverType",
     component: ChatMobileComponent
+  },
+  {
+    path: "call/:call_ID/:userId/:userType/:userName",
+    component: CallMobileComponent
+  },
+  {
+    path: "old-chat/:chatId/:userId",
+    component: OldChatMobileComponent
   },
   {
     path: "forbidden",

@@ -38,7 +38,8 @@ class _SessionFeedbackPageState extends State<SessionFeedbackPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => { Navigator.of(context).popUntil((route) => route.isFirst)} // Pops all routes and goes back to the first (Home)
+,
         ),
         title: const Text(
           'Old Session',

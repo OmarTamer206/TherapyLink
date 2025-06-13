@@ -157,7 +157,10 @@ class _HomeScreenState extends State<HomeScreen>  with RouteAware {
   @override
   void didPopNext() {
     // Called when coming back to this page
-    _fetchData(); // 🔁 REFRESH ON RETURN
+    setState(() {
+      print("Returning to HomeScreen");
+      _fetchData(); // 🔁 REFRESH ON RETURN
+    });
   }
 
 
@@ -299,8 +302,10 @@ class _HomeScreenState extends State<HomeScreen>  with RouteAware {
                           width: double.maxFinite,
                           margin: const EdgeInsets.symmetric(horizontal: 38),
                           child: DynamicCountdownWidget(
+                            key: ValueKey(_upcomingSession!['scheduled_time']),
                             sessionTime: _upcomingSession!['scheduled_time'],
                           ),
+
                         )
                       else
                         Container(

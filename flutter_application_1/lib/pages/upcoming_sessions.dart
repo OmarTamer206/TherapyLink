@@ -9,7 +9,7 @@ import 'dart:async';
 import 'package:flutter_application_1/services/patient.dart';
 
 class UpcomingSessionsPage extends StatefulWidget {
-  final Map<String, dynamic> sessionData;
+  final Map<dynamic, dynamic> sessionData;
 
   const UpcomingSessionsPage({Key? key, required this.sessionData}) : super(key: key);
 

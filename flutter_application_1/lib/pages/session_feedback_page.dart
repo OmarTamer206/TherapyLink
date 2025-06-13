@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/old_chat_web.dart';
 import 'feedback_page.dart';
 
 class SessionFeedbackPage extends StatefulWidget {
@@ -27,6 +28,32 @@ class _SessionFeedbackPageState extends State<SessionFeedbackPage> {
     sessionDate = '${widget.sessionData["date"]} , ${widget.sessionData["time"]} ' ?? "Unknown";
     sessionDuration  = '${widget.sessionData["duration"]} Minutes' ?? "Unknown";
     sessionCommunication = widget.sessionData["communication_type"] ?? "Unknown";
+  }
+
+   Widget _buildSessionWidget() {
+    final type = widget.sessionData['communication_type'];
+
+    
+
+    if (type == 'Chatting') {
+      
+      return OldChatWeb(
+         sessionData:widget.sessionData,
+         chatId: widget.sessionData['chat_ID'].toString(),
+         userId: widget.sessionData['patient_ID'].toString(),
+       );
+    } 
+    else if (type == 'Voice / Video Call') {
+      return Center(
+        child: Text(
+          "Voice / Video Call sessions can't be viewed.",
+          style: TextStyle(color: Colors.black, fontSize: 16),
+        ),
+      );
+    } 
+    else {
+      return const Text('Invalid session type');
+    }
   }
 
   @override
@@ -75,15 +102,15 @@ class _SessionFeedbackPageState extends State<SessionFeedbackPage> {
             const SizedBox(height: 20),
 
             // Blank White Container in the center of the screen
-            Expanded(
+           Expanded(
               child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                width: double.infinity,
+                
+                padding: const EdgeInsets.all(0),
+                child: _buildSessionWidget(),
               ),
             ),
+            const SizedBox(height: 20),
 
             // Rate & Feedback Button
             Padding(

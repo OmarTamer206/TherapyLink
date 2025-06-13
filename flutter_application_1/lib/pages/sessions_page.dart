@@ -210,6 +210,14 @@ class _SessionsPageState extends State<SessionsPage> {
                 }
               : () {
                   // TODO: Implement navigation for upcoming sessions if needed
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpcomingSessionsPage(
+                       sessionData: session,
+                      ),
+                    ),
+                  );
                 },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10 , horizontal: 20),

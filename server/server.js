@@ -41,7 +41,7 @@ EmergencySocket(io); // Add this below your ChatController initialization
 // 🌐 Middleware
 app.use(cors());
 app.use(express.json());
-
+ 
 // 📦 Routes
 app.use("/auth", authRoutes);
 app.use("/admin", authorizeRoles("admin" ,"manager"), adminRoutes);

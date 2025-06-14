@@ -68,6 +68,7 @@ flutter:
     - assets/images/chatbot.png
     - assets/images/therapy.png
     - assets/images/welcome.png
+    - assets/images/sessionEnded.png
 
   fonts:
     - family: ScriptMTBold

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class SessionEndedPage extends StatelessWidget {
   const SessionEndedPage({super.key});
 
@@ -7,7 +8,7 @@ class SessionEndedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Automatically navigate back after 5 seconds
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.of(context).popUntil((route) => route.isFirst); // Pops all routes and goes back to the first (Home)
     });
 
     return Scaffold(
@@ -16,80 +17,68 @@ class SessionEndedPage extends StatelessWidget {
         backgroundColor: const Color(0xFFDFF0F4),
         elevation: 0,
         centerTitle: true,
-        automaticallyImplyLeading: false,
         title: const Text(
           'Session Ended',
           style: TextStyle(
-            color: Color(0xFF1F2937),
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        automaticallyImplyLeading: false,  // Ensures no back button
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Stylish Circle Icon
+              // Checkmark Icon
               Container(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.all(40),
                 decoration: BoxDecoration(
-                  color: Colors.white,
                   shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
                   border: Border.all(
                     color: const Color(0xFF1F2937),
-                    width: 8,
+                    width: 10,
                   ),
                 ),
-                child: const Icon(
-                  Icons.check_circle_outline,
-                  color: Color(0xFF1F2937),
-                  size: 70,
+                child: Icon(
+                  Icons.sms_outlined,
+                  color: const Color(0xFF1F2937),
+                  size: 60,
                 ),
-              ),
-              const SizedBox(height: 36),
-
-              // Success Message
-              const Text(
-                'Session Ended!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Color(0xFF1F2937),
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              const Text(
-                'Hope you feel better!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                ),
-              ),
-              const SizedBox(height: 30),
-
-              // Themed Divider
-              Container(
-                height: 2,
-                width: 100,
-                color: const Color(0xFF1F2937),
               ),
               const SizedBox(height: 40),
 
-              // Optional space for future content
+              // Payment Success Message
+              const Text(
+                'Session Ended!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // Transaction Number
+              const Text(
+                'Hope you feel better!',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Divider
+              const Divider(
+                color: Colors.teal,
+                thickness: 1,
+              ),
+              const SizedBox(height: 16),
+
+              // Amount Paid
+              
             ],
           ),
         ),

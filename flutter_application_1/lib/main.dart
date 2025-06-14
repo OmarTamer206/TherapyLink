@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/emergency_session_ended.dart';
 import 'pages/HomePage.dart';           // Home Page
 import 'pages/feedback_page.dart';       // Feedback Page
 import 'pages/profile_page.dart';        // Profile Page
@@ -42,6 +43,7 @@ navigatorObservers: [routeObserver],
   '/sessions': (context) =>  SessionsPage(),
   '/journal': (context) => const MyJournalPage(),
   '/chatbot': (context) => ChatBotWelcomePage(),
+  '/sessionEnded': (context) => SessionEndedPage(),
 },
 
     );

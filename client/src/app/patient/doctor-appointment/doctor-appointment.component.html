@@ -27,14 +27,16 @@
           </div>
           <button class="today-btn" (click)="goToToday()">Today</button>
           <div class="days">
-            <span
-            *ngFor="let day of days"
-            [class.active]="day === selectedDay"
-            (click)="selectDay(day)"
-            >
-            {{ day }}
-          </span>
-        </div>
+  <span
+    *ngFor="let day of days"
+    [class.active]="day === selectedDay"
+    (click)="selectDay(day)"
+    class="calendar-day"
+  >
+    <span>{{ day }}</span>
+    <div *ngIf="availableDays.includes(day)" class="dot"></div>
+  </span>
+</div>
       </div>
     </div>
 

@@ -21,6 +21,7 @@ export class DoctorAppointmentComponent implements OnInit {
   currentDate = new Date();
   selectedDay: number = 1;
   days: number[] = [];
+  availableDays: number[] = []; // <-- Array version
 
   availableTimes: any[] = [
   '9:00 AM', '11:00 AM', '1:00 PM', '3:00 PM',
@@ -47,6 +48,7 @@ export class DoctorAppointmentComponent implements OnInit {
     }
       this.generateDays();
       this.goToToday();
+      this.getAvailableDays();
       this.loading = true;
   }
 
@@ -55,6 +57,38 @@ export class DoctorAppointmentComponent implements OnInit {
 
   }
 
+  getAvailableDays() {
+    this.therapistService.viewAvailableDays(this.doctor_id, "doctor").subscribe(
+      (response) => {
+        console.log("Days : ", response);
+        if (response.success) {
+          const availableDates = response.data;
+
+          this.availableDays = []; // reset
+
+          availableDates.forEach((item: any) => {
+            const date = new Date(item.available_date);
+            if (
+              date.getMonth() === this.currentDate.getMonth() &&
+              date.getFullYear() === this.currentDate.getFullYear()
+            ) {
+              const day = date.getDate();
+              if (!this.availableDays.includes(day)) {
+                this.availableDays.push(day);
+              }
+            }
+          });
+
+        } else {
+          alert("Failed to fetch available days");
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        alert("Failed to fetch available days");
+      }
+    );
+  }
 
 getAvailableTimes(){
   this.timeTable=[];
@@ -137,6 +171,7 @@ getAvailableTimes(){
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.generateDays();
     this.selectedDay = 1;
+    this.getAvailableDays(); // update days with availability in new month
     this.getAvailableTimes();
 
   }
@@ -145,6 +180,7 @@ getAvailableTimes(){
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.generateDays();
     this.selectedDay = 1;
+    this.getAvailableDays(); // update days with availability in new month
     this.getAvailableTimes();
 
   }
@@ -157,6 +193,7 @@ getAvailableTimes(){
     this.currentDate = new Date();
     this.generateDays();
     this.selectedDay = this.currentDate.getDate();
+    this.getAvailableDays(); // update days with availability in new month
     this.getAvailableTimes();
 
   }

@@ -31,6 +31,7 @@ export class LifeCoachAppointmentComponent {
   selectedDoctor: any;
   avgRating: number = 1;
   sessionTopic = "";
+  availableDays: any;
 
 
 
@@ -48,6 +49,7 @@ export class LifeCoachAppointmentComponent {
     }
       this.generateDays();
       this.goToToday();
+      this.getAvailableDays();
       this.loading = true;
   }
 
@@ -56,6 +58,38 @@ export class LifeCoachAppointmentComponent {
 
   }
 
+    getAvailableDays() {
+    this.therapistService.viewAvailableDays(this.doctor_id, "life_coach").subscribe(
+      (response) => {
+        console.log("Days : ", response);
+        if (response.success) {
+          const availableDates = response.data;
+
+          this.availableDays = []; // reset
+
+          availableDates.forEach((item: any) => {
+            const date = new Date(item.available_date);
+            if (
+              date.getMonth() === this.currentDate.getMonth() &&
+              date.getFullYear() === this.currentDate.getFullYear()
+            ) {
+              const day = date.getDate();
+              if (!this.availableDays.includes(day)) {
+                this.availableDays.push(day);
+              }
+            }
+          });
+
+        } else {
+          alert("Failed to fetch available days");
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        alert("Failed to fetch available days");
+      }
+    );
+  }
 
 getAvailableTimes(){
   this.timeTable=[];
@@ -141,6 +175,8 @@ getAvailableTimes(){
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.generateDays();
     this.selectedDay = 1;
+      this.getAvailableDays();
+
     this.getAvailableTimes();
 
   }
@@ -149,6 +185,8 @@ getAvailableTimes(){
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.generateDays();
     this.selectedDay = 1;
+      this.getAvailableDays();
+
     this.getAvailableTimes();
 
   }
@@ -161,6 +199,8 @@ getAvailableTimes(){
     this.currentDate = new Date();
     this.generateDays();
     this.selectedDay = this.currentDate.getDate();
+      this.getAvailableDays();
+
     this.getAvailableTimes();
 
   }

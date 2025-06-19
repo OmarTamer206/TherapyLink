@@ -52,8 +52,13 @@ export class TherapistService {
     else
     return this.http.get(`${this.apiUrl}/available-time/${date}`);
   }
-  // viewAvailableTimeAll(id: any,type:any): Observable<any> {
-  // }
+
+  viewAvailableDays(id: any,type:any): Observable<any> {
+
+      return this.http.get(`${this.apiUrl}/available-days/${id}/${type}`);
+
+
+    }
 
   // Update available time for a doctor or life coach
   updateAvailableTime(timestamp: string[] , topic = null ): Observable<any> {

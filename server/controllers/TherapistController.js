@@ -284,6 +284,39 @@ async function update_patient_report(report, session_data , doctor_type) {
   }
 }
 
+async function view_available_days( doctor_id, doctor_type) {
+  try {
+    let query =""
+    if (doctor_type === "doctor") {
+      query = `
+      SELECT * FROM doctor_availability
+      WHERE doctor_id = ?
+        AND DATE(available_date) >= CURDATE() AND isReserved = 0
+      ORDER BY available_date ASC
+    `;
+    }
+    else{
+      query = `
+      SELECT * FROM lifecoach_availability
+      WHERE life_coach_id = ?
+        AND DATE(available_date)  >= CURDATE() AND full = 0 
+      ORDER BY available_date ASC
+    `;
+    }
+    
+    const result = await executeQuery(query, [doctor_id]);
+
+    return { success: true, data: result };
+    }
+   catch (error) {
+    return {
+      success: false,
+      message: "Error retrieving available times.",
+      error: error.message,
+    };
+  }
+}
+
 // View available time slots for a specific date
 async function view_available_time(date, doctor_id, doctor_type) {
   try {
@@ -643,6 +676,7 @@ module.exports = {
   get_patient_data,
   update_patient_report,
   view_available_time,
+  view_available_days,
   update_available_time,
   delete_available_time,
   get_patient_analytics,

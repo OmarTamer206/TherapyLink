@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../services/admin/admin.service';
+import { EmailService } from '../../services/email/email.service';
+import { PatientService } from '../../services/patient/patient.service';
 
 @Component({
   selector: 'app-admin-refund',
@@ -22,8 +24,9 @@ export class AdminRefundComponent {
   doctor: any;
 
   loading= false
+  patientEmail: any;
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService ,private patientService: PatientService, private emailService: EmailService) {
     this.getAllFeedbacks();
   }
 
@@ -67,6 +70,24 @@ export class AdminRefundComponent {
 
     console.log(data);
 
+    this.patientService.getProfileDataByID(data.patient_ID).subscribe((response) => {
+      console.log('Patient Profile Data:', response);
+      this.patientEmail = response.data.patient[0].Email;
+      console.log('Patient Email:', this.patientEmail);
+
+    }
+    , (error) => {
+      console.error('Error fetching patient profile data:', error);
+    });
+
+
+    this.emailService.sendEmail(this.patientEmail , `Feedback Response For Session with Dr.${this.reports[index].doctor_info.Name}` , this.responseText).subscribe((response) => {
+      console.log('Email sent successfully:', response);
+    }
+    , (error) => {
+      console.error('Error sending email:', error);
+    });
+
     this.adminService.replyFeedback(data).subscribe((response) => {
       console.log(response);
 
@@ -74,6 +95,7 @@ export class AdminRefundComponent {
       this.responseText = '';
       this.cancelRefundButtonState = false;
 
+      this.selectedReportIndex = -1;
       this.getAllFeedbacks();
     });
   }

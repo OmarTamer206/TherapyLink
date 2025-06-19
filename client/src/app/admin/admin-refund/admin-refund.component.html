@@ -24,9 +24,9 @@
   <div class="report-details-box" *ngIf="selectedReportIndex !== -1">
     <h3>Refund</h3>
     <div class="doctor-info">
-      <p><strong>Doctor</strong></p>
+      <p><strong>Dr. {{ reports[selectedReportIndex].doctor_info.Name }}</strong></p>
       <p>
-        {{ reports[selectedReportIndex].doctor_info.Name }}<br />{{
+        {{
           reports[selectedReportIndex].doctor_info.Email
         }}<br />
         <a

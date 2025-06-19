@@ -41,7 +41,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
 
     if (response != null && response['success']) {
       for (var item in response['data']) {
-        final utcDate = DateTime.parse(item['available_date']);
+        if(item['IsReserved'] != 1){
+          final utcDate = DateTime.parse(item['available_date']);
         final localDate = utcDate.toLocal();
         final time = TimeOfDay.fromDateTime(localDate).format(context);
         fetchedTimeTable.add({
@@ -49,6 +50,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
           'isReserved': item['IsReserved'],
           'fullTimestamp': item['available_date'],
         });
+        }
       }
 
       for (String time in allTimes) {

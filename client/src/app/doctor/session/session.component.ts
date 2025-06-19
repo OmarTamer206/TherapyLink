@@ -190,12 +190,20 @@ export class SessionComponent implements OnInit, OnDestroy {
     this.sessionService.viewSessionDetails(this.sessionID).subscribe(
       (response) => {
         console.log('Session Data:', response);
+        if(response.success == false){
+          window.location.href = '/doctor/dashboard';
+
+        }
         this.sessionData = response.data;
         this.comm_type = this.sessionData.communication_type;
         this.callId = this.sessionData.call_ID;
 
         if(this.sessionData.ended == 1){
           this.router.navigate(['/doctor/dashboard']);
+        }
+        if(this.sessionData.doctor_ID != this.userId){
+          window.location.href = '/doctor/dashboard';
+
         }
 
         this.therapistService.getPatientData(response.data.patient_ID).subscribe(
@@ -239,6 +247,7 @@ export class SessionComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.error('Error getting session data:', error);
+
       }
     );
   }

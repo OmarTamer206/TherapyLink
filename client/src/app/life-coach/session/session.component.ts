@@ -151,6 +151,11 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
     gatherSessionData(){
       this.sessionService.viewSessionDetails(this.sessionID).subscribe((response) => {
         console.log("session : ",response);
+        if(response.success == false){
+          window.location.href = '/life-coach/dashboard';
+
+        }
+
         this.sessionData = response.data;
 
 
@@ -159,6 +164,10 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
 
         if(this.sessionData.ended == 1){
           this.router.navigate(['/life-coach/dashboard']);
+        }
+        if(this.sessionData.coach_ID != this.userId){
+        window.location.href = '/life-coach/dashboard';
+
         }
 
           this.therapistService.getPatientsData(this.sessionID).subscribe((response) => {
@@ -206,7 +215,8 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
 
 
       },(error)=>{
-        console.log("error",error);
+        console.log("error loading the session",error);
+
       });
 
     }

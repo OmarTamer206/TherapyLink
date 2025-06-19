@@ -12,6 +12,7 @@ const sessionRoutes = require("./routes/sessionRoutes");
 const therapistRoutes = require("./routes/therapistRoutes");
 const emergencyRoutes = require("./routes/emergencyRoutes");
 const agentRoutes = require("./routes/agentRoutes");
+const emailRoutes = require("./routes/emailRoutes");
 
 const { ChatController } = require("./controllers/chatController");
 const { CallController } = require("./controllers/callController");
@@ -51,6 +52,7 @@ app.use("/session", authorizeRoles("patient","doctor","life_coach","emergency_te
 app.use("/therapist", authorizeRoles("doctor","life_coach","patient","emergency_team"), therapistRoutes);
 app.use("/emergency", authorizeRoles("emergency_team"), emergencyRoutes);
 app.use("/agent", authorizeRoles("patient"), agentRoutes);
+app.use("/email", emailRoutes);
 
 // 📁 Static file serving for uploads
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));

@@ -115,6 +115,20 @@ class TherapistApi {
     return response.statusCode == 200;
   }
 
+  Future<Map<String, dynamic>?> viewAvailableDays( String? doctorId, String? doctorType) async {
+    final token = await _getToken();
+    if (token == null) return null;
+
+    Uri url;
+      url = Uri.parse('$_baseUrl/therapist/available-days/$doctorId/$doctorType');
+    
+    final response = await http.get(url, headers: _headers(token));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
   Future<Map<String, dynamic>?> viewAvailableTime(String date, String? doctorId, String? doctorType) async {
     final token = await _getToken();
     if (token == null) return null;

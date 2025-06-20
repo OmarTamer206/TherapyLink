@@ -192,7 +192,7 @@ getAvailableTimes(){
   }
 
   getMonthYear() {
-    return this.currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+    return this.currentDate.toLocaleString('emad', { month: 'long', year: 'numeric' });
   }
 
   goToToday() {

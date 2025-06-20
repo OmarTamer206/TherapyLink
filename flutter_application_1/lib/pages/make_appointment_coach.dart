@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/therapist.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'checkout_coach_page.dart'; // Import the Checkout page
+import 'checkout_coach_page.dart';
 
 class MakeAppointmentCoachPage extends StatefulWidget {
   final Map<String, dynamic> doctorData;
@@ -12,12 +12,13 @@ class MakeAppointmentCoachPage extends StatefulWidget {
 }
 
 class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
- DateTime _focusedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
   String? _selectedTime;
   var doctor_id;
 
   TherapistApi _therapistApi = TherapistApi();
+
   final List<String> allTimes = [
     '9:00 AM', '11:00 AM', '1:00 PM',
     '3:00 PM', '5:00 PM', '7:00 PM',
@@ -25,12 +26,35 @@ class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
   ];
 
   List<Map<String, dynamic>> timeTable = [];
+  List<DateTime> availableDays = [];
 
   @override
   void initState() {
     super.initState();
     doctor_id = widget.doctorData["doctor_data"]["id"];
+    _fetchAvailableDays();
     _fetchAvailableTimes(_selectedDay!);
+  }
+
+  void _fetchAvailableDays() async {
+    var response = await _therapistApi.viewAvailableDays("$doctor_id", "life_coach");
+
+    if (response != null && response['success']) {
+      List<DateTime> days = [];
+
+      for (var item in response['data']) {
+        final utcDate = DateTime.parse(item['available_date']);
+        final localDate = utcDate.toLocal();
+        final dateOnly = DateTime(localDate.year, localDate.month, localDate.day);
+        if (!days.contains(dateOnly)) {
+          days.add(dateOnly);
+        }
+      }
+
+      setState(() {
+        availableDays = days;
+      });
+    }
   }
 
   void _fetchAvailableTimes(DateTime selectedDay) async {
@@ -94,14 +118,9 @@ class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Appointment',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
+        title: const Text('Appointment', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -126,64 +145,170 @@ class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
     );
   }
 
-  Widget _buildCalendar() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TableCalendar(
-        firstDay: DateTime.utc(2020, 1, 1),
-        lastDay: DateTime.utc(2030, 12, 31),
-        focusedDay: _focusedDay,
-        calendarStyle: const CalendarStyle(
-          todayDecoration: BoxDecoration(),
-          selectedDecoration: BoxDecoration(
-            color: Color(0xFF1F2937),
-            shape: BoxShape.circle,
-          ),
-          selectedTextStyle: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+Widget _buildCalendar() {
+  return Container(
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: TableCalendar(
+      firstDay: DateTime.utc(2020, 1, 1),
+      lastDay: DateTime.utc(2030, 12, 31),
+      focusedDay: _focusedDay,
+      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+      onDaySelected: (selectedDay, focusedDay) {
+        setState(() {
+          _selectedDay = selectedDay;
+          _focusedDay = focusedDay;
+        });
+        _fetchAvailableTimes(selectedDay);
+      },
+      calendarFormat: CalendarFormat.month,
+  availableCalendarFormats: const {
+    CalendarFormat.month: 'Month',
+  },
+      calendarStyle: const CalendarStyle(
+        todayDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.fromBorderSide(
+            BorderSide(color: Color(0xFF1F2937), width: 2),
           ),
         ),
-        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-        onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
-          _fetchAvailableTimes(selectedDay);
+        todayTextStyle: TextStyle(
+          color: Color(0xFF1F2937),
+          fontWeight: FontWeight.bold,
+        ),
+        selectedDecoration: BoxDecoration(
+          color: Color(0xFF1F2937),
+          shape: BoxShape.circle,
+        ),
+        selectedTextStyle: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      calendarBuilders: CalendarBuilders(
+        defaultBuilder: (context, day, focusedDay) {
+          bool isAvailable = availableDays.any((d) =>
+              d.year == day.year && d.month == day.month && d.day == day.day);
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('${day.day}', style: const TextStyle(color: Colors.black)),
+              const SizedBox(height: 2),
+              if (isAvailable)
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF00B4A6),
+                  ),
+                ),
+            ],
+          );
+        },
+
+        todayBuilder: (context, day, focusedDay) {
+          bool isAvailable = availableDays.any((d) =>
+              d.year == day.year && d.month == day.month && d.day == day.day);
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 35,
+                height: 35,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Color(0xFF1F2937), width: 2),
+                ),
+                child: Text(
+                  '${day.day}',
+                  style: const TextStyle(
+                    color: Color(0xFF1F2937),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 2),
+              if (isAvailable)
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF00B4A6),
+                  ),
+                ),
+            ],
+          );
+        },
+
+        selectedBuilder: (context, day, focusedDay) {
+          bool isAvailable = availableDays.any((d) =>
+              d.year == day.year && d.month == day.month && d.day == day.day);
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 35,
+                height: 35,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF1F2937),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '${day.day}',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 2),
+              if (isAvailable)
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                ),
+            ],
+          );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildTimeGrid() {
-  return GridView.count(
-    shrinkWrap: true,
-    crossAxisCount: 3,
-    crossAxisSpacing: 12,
-    childAspectRatio: 2.5, // Adjust this to make items shorte
-    mainAxisSpacing: 12,
-    physics: const NeverScrollableScrollPhysics(),
-    children: timeTable.map((slot) {
-      final bool isSelected = slot['time'] == _selectedTime;
-      final bool isDisabled = slot['isReserved'] == true;
 
-      return GestureDetector(
-        onTap: isDisabled
-            ? null
-            : () {
-                setState(() {
-                  _selectedTime = slot['time'];
-                });
-              },
-        child: SizedBox(
-          height: 60, // Reduced height
+
+ Widget _buildTimeGrid() {
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      crossAxisSpacing: 12,
+      childAspectRatio: 2.5,
+      mainAxisSpacing: 12,
+      physics: const NeverScrollableScrollPhysics(),
+      children: timeTable.map((slot) {
+        final bool isSelected = slot['time'] == _selectedTime;
+        final bool isDisabled = slot['isReserved'] == true;
+
+        return GestureDetector(
+          onTap: isDisabled
+              ? null
+              : () {
+                  setState(() {
+                    _selectedTime = slot['time'];
+                  });
+                },
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: isDisabled
@@ -198,16 +323,14 @@ class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 12, // Optional: smaller text
+                fontSize: 12,
               ),
             ),
           ),
-        ),
-      );
-    }).toList(),
-  );
-}
-
+        );
+      }).toList(),
+    );
+  }
 
   Widget _buildProceedButton(BuildContext context) {
     return ElevatedButton(

@@ -203,6 +203,15 @@ setCircleDasharray() {
       this.patientData = response.data.patient[0];
       this.selectedTherapist = response.data.patient[0].Therapist_Preference
 
+      if(response.data.patient[0].first_time_login == true){
+        this.goToChatbot();
+        this.patientService.changeFirstLogin().subscribe((response)=>{
+          console.log(response);
+        },(error)=>{
+          console.log(error);
+        })
+      }
+
       console.log(this.selectedTherapist);
 
        this.selectedIndex = this.therapists.findIndex(

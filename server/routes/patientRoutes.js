@@ -11,6 +11,7 @@ const {
   delete_from_journal,
   getProfileData,
   check_Feedback,
+  changeFirstLogin,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -324,6 +325,38 @@ router.get("/get-profile-data/:patientID", async (req, res) => {
   }
   }
 });
+
+router.put("/change-first-login" , async (req, res) => {
+
+ try {
+  const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).json({ message: 'Access denied' });
+    
+    
+    
+    console.log("1",process.env.JWT_SECRET);
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+   
+    const result = await changeFirstLogin(decoded.id);
+    res.status(200).json(result);
+  } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (error.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  }
+
+
+});
+
 
 
 module.exports = router;

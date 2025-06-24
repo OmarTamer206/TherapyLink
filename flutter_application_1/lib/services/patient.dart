@@ -149,4 +149,15 @@ class PatientApi {
     }
     throw Exception('Failed to get profile data');
   }
+
+  Future<Map<String, dynamic>> changeFirstLogin() async {
+    final url = Uri.parse('$baseUrl/patient/change-first-login');
+    final headers = await _headers();
+
+    final response = await _handleRequest(http.put(url, headers: headers));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    throw Exception('Failed to change first login state');
+  }
 }

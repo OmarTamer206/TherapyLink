@@ -59,4 +59,7 @@ export class PatientService {
   getProfileDataByID(patientID:any): Observable<any> {
     return this.http.get(`${this.apiUrl}/get-profile-data/${patientID}`);
   }
+  changeFirstLogin(): Observable<any> {
+    return this.http.put(`${this.apiUrl}/change-first-login`, {});
+  }
 }

@@ -374,6 +374,31 @@ async function getProfileData(patient_ID){
 
 }
 
+async function changeFirstLogin(patient_ID){
+
+  try {
+    const query = `
+      UPDATE patient
+      SET first_time_login = 0
+      WHERE id = ?
+    `;
+    const result = await executeQuery(query, [patient_ID]);
+
+    if (result.affectedRows > 0) {
+      return { success: true, message: "First login status updated successfully." };
+    } else {
+      return { success: false, message: "No changes made. Patient not found or already updated." };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to update first login status.",
+      error: error.message,
+    };
+  }
+
+}
+
 module.exports = {
   Change_Therapist_Preference,
   Make_Feedback,
@@ -384,5 +409,6 @@ module.exports = {
   get_emergency_team_sessions_taken,
   Write_in_journal,
   delete_from_journal,
-  getProfileData
+  getProfileData,
+  changeFirstLogin
 };

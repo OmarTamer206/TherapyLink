@@ -171,7 +171,14 @@ class _HomeScreenState extends State<HomeScreen>  with RouteAware {
     userData = await _patientApi.getProfileData();
     sessionData = await _sessionApi.getUpcomingSessionsPatient();
 
-    
+    if(userData["data"]["patient"][0]["first_time_login"] == 1){
+      Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChatBotWelcomePage()),
+          );
+
+       _patientApi.changeFirstLogin();
+    }
 
     print("data : " + sessionData.toString());
     // Example: you should replace these with real fetched values

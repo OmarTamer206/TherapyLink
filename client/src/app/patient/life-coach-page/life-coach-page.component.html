@@ -7,7 +7,7 @@
       @for (doctor of doctors; track $index) {
         <div class="doctor-item">
         <div>
-          <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
+          <img [src]="doctor.doctor_data.profile_pic_url ? 'http://localhost:3000/uploads/'+doctor.doctor_data.profile_pic_url : 'profile png.png'" alt="Dr. Mark" class="doctor-photo" />
           <div class="doctor-details">
             <span>Dr. {{doctor.doctor_data.Name}}</span>
             <span>4.5 ★</span>
@@ -23,7 +23,7 @@
     <!-- Right Section: Doctor Profile -->
     <div class="doctor-profile">
       <div class="doctor-info">
-        <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
+        <img [src]="selectedDoctor.doctor_data.profile_pic_url ? 'http://localhost:3000/uploads/'+selectedDoctor.doctor_data.profile_pic_url : 'profile png.png'" alt="Dr. Mark" class="doctor-photo" />
         <div class="doctor-details">
           <h4>Dr. {{selectedDoctor.doctor_data.Name}}</h4>
           <p>{{selectedDoctor.doctor_data.Specialization}}</p>

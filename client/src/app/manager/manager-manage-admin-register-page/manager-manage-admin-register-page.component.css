@@ -145,9 +145,10 @@ button:hover {
 }
 
 .admin-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .admin-name {

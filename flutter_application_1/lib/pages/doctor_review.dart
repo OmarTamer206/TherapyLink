@@ -113,10 +113,34 @@ class DoctorReviewPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 32,
-            backgroundImage: AssetImage('assets/doctor.png'),
-          ),
+          CircleAvatar(
+                                      radius: 24,
+                                      backgroundColor: Colors.grey[300],
+                                      child: ClipOval(
+                                        child: (doctorData['doctor_data']['profile_pic_url'] != null &&
+                                                doctorData['doctor_data']['profile_pic_url'].toString().isNotEmpty)
+                                            ? Image.network(
+                                                'http://localhost:3000/uploads/${doctorData['doctor_data']['profile_pic_url']}',
+                                                width: 60,
+                                                height: 60,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/images/profile png.png', // Local fallback
+                                                    width: 60,
+                                                    height: 60,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                              )
+                                            : Image.asset(
+                                                'assets/images/profile png.png', // Fallback when URL is null or empty
+                                                width: 60,
+                                                height: 60,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                    ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

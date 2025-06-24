@@ -177,8 +177,8 @@
       <div class="admin-list">
         <div *ngFor="let result of results" class="admin-item">
           <div class="admin-info">
-            <img src="profile png.png" alt="Workforce Image" class="admin-avatar" />
-            <div class="admin-name">{{ result.Name }}</div>
+            <img [src]="result.Profile_pic_url ? 'http://localhost:3000/uploads/'+result.Profile_pic_url : result.profile_pic_url ? 'http://localhost:3000/uploads/'+result.profile_pic_url : 'profile png.png' " alt="Workforce Image" class="admin-avatar" />
+            <div class="admin-name">Dr. {{ result.Name }}</div>
           </div>
           <div class="admin-actions">
             <button class="edit-button" (click)="onEdit(result.id,jobDescription)">🖊️</button>

@@ -45,6 +45,7 @@ Future<void> _fetchDoctors() async {
   }
 
   final doctorListRaw = await _therapistApi.viewAllDoctors("life_coach", _therapistPreference!);
+
   if (doctorListRaw == null) {
     setState(() {
       doctors = [];
@@ -58,6 +59,8 @@ Future<void> _fetchDoctors() async {
 final List<dynamic> doctorList = doctorListRaw['data'] ?? [];
 
 print("doctor List : " + doctorList.toString());
+// print("doctor one : " + doctorList[0]['profile_pic_url']);
+
 // Now map doctorList safely
 setState(() {
   doctors = doctorList.map<Map<String, dynamic>>((doc) {
@@ -127,10 +130,35 @@ setState(() {
                             print(doctor);
                             return Row(
                               children: [
-                                const CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: Colors.grey,
-                                ),
+                               CircleAvatar(
+                                      radius: 24,
+                                      backgroundColor: Colors.grey[300],
+                                      child: ClipOval(
+                                        child: (doctor['doctor_data']['profile_pic_url'] != null &&
+                                                doctor['doctor_data']['profile_pic_url'].toString().isNotEmpty)
+                                            ? Image.network(
+                                                'http://localhost:3000/uploads/${doctor['doctor_data']['profile_pic_url']}',
+                                                width: 48,
+                                                height: 48,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/images/profile png.png', // Local fallback
+                                                    width: 48,
+                                                    height: 48,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                              )
+                                            : Image.asset(
+                                                'assets/images/profile png.png', // Fallback when URL is null or empty
+                                                width: 48,
+                                                height: 48,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                    ),
+
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(

@@ -11,7 +11,7 @@
       <!-- Left Section: Doctor Info and Calendar -->
       <div class="doctor-info">
         <div class="doctor-details">
-          <img src="dr.png" alt="Dr. Mark" class="doctor-photo" />
+          <img [src]="selectedDoctor.doctor_data.profile_pic_url ? 'http://localhost:3000/uploads/'+selectedDoctor.doctor_data.profile_pic_url : 'profile png.png'" alt="Dr. Mark" class="doctor-photo" />
           <div class="doctor-text">
             <h3>Dr. {{selectedDoctor.doctor_data.Name}}</h3>
             <p>{{selectedDoctor.doctor_data.Specialization}}</p>

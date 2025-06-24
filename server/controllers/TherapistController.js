@@ -7,7 +7,7 @@ async function get_today_sessions(doctor_id, type) {
 
     if (type === "doctor") {
       query = `
-        SELECT s.*, p.name AS patient_name
+        SELECT s.*, p.name AS patient_name , p.Profile_pic_url AS patient_image
         FROM ${type}_session s
         JOIN patient p ON s.patient_id = p.id
         WHERE s.${type}_ID = ? AND DATE(s.scheduled_time) = CURDATE() AND s.isCancelled = 0 AND s.ended = 0
@@ -239,7 +239,7 @@ async function get_patient_data(patient_id) {
       
     }
       const journalQuery = `SELECT * FROM journal WHERE patient_id = ?`;
-      const patientQuery = `SELECT id ,Name,Therapist_Preference FROM patient WHERE id = ?`;
+      const patientQuery = `SELECT id ,Name,Therapist_Preference , Profile_pic_url FROM patient WHERE id = ?`;
     const journals = await executeQuery(journalQuery, [patient_id]);
     const patient = await executeQuery(patientQuery, [patient_id]);
     console.log("patient : ", patient_id);
@@ -599,7 +599,7 @@ async function View_all_doctors(doctor_type, doctor_specialization) {
     // Step 1: Check doctor_type and create dynamic queries
     if (doctor_type === 'doctor') {
       doctorQuery = `
-        SELECT id , Name, Specialization, Description, id , Session_price
+        SELECT id , Name, Specialization, Description, id , Session_price , profile_pic_url
         FROM doctor
         WHERE Specialization = ?;
       `;
@@ -610,7 +610,7 @@ async function View_all_doctors(doctor_type, doctor_specialization) {
       `;
     } else if (doctor_type === 'life_coach') {
       doctorQuery = `
-        SELECT id ,Name, Specialization, Description, id , Session_price
+        SELECT id ,Name, Specialization, Description, id , Session_price , Profile_pic_url
         FROM life_coach
         WHERE Specialization = ?;
       `;
@@ -646,7 +646,8 @@ async function View_all_doctors(doctor_type, doctor_specialization) {
           Name: doctor.Name,
           Specialization: doctor.Specialization,
           Description: doctor.Description,
-          Session_price : doctor.Session_price
+          Session_price : doctor.Session_price,
+          profile_pic_url : doctor.profile_pic_url || doctor.Profile_pic_url
         },
         reviews: reviews,
         avgRating: avgRating

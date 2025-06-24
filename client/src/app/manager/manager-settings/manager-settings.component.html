@@ -1,8 +1,14 @@
 <div class="form-container">
   <div class="profile">
     <!-- Add profile-image class to ensure the image is circular -->
-    <img src="doctor.jpeg" alt="settings" class="profile-image" />
-    <h3 class="doctor-name">Yasser Maged</h3>
+     <div class="image-upload-container">
+      <label for="profilePic" class="upload-label">
+        <img [src]="profilePic" alt="Profile Picture" class="profile-pic-preview" />
+      </label>
+      <input type="file" id="profilePic" (change)="onImageChange($event)" accept="image/*" hidden />
+    </div>
+    <p>Press on Image to change it</p>
+    <h3 class="doctor-name">Dr. {{name}}</h3>
     <span>{{errorFlag}}</span>
     <span>{{successFlag}}</span>
   </div>
@@ -114,17 +120,7 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="pic">Profile Picture</label>
-          <input
-            type="file"
-            id="pic"
-            name="pic"
-            class="form-control"
-            [(ngModel)]="profile_pic"
-            required
-          />
-        </div>
+
       </div>
     </div>
   </form>

@@ -10,7 +10,10 @@
   <div class="left">
     <div class="container first">
       <div class="session-info">
-        <div class="image-placeholder"></div>
+        <div class="image-placeholder">
+            <img [src]="patientData.patient[0].Profile_pic_url ? 'http://localhost:3000/uploads/'+patientData.patient[0].Profile_pic_url : 'profile png.png'" alt="" class="patient-image">
+
+        </div>
         <div class="info">
           <p class="name">{{patientData.patient[0].Name}}</p>
           <p class="specialization">{{patientData.patient[0].Therapist_Preference}}</p>
@@ -25,9 +28,7 @@
       </div>
     </div>
 
-    <div class="container second">
 
-    </div>
 
     <div class="container third">
 

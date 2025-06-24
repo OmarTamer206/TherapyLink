@@ -1,8 +1,14 @@
 <div class="form-container">
   <div class="profile">
     <!-- Add profile-image class to ensure the image is circular -->
-    <img src="doctor.jpeg" alt="settings" class="profile-image" />
-    <h3 class="doctor-name">Yasser Maged</h3>
+     <div class="image-upload-container">
+      <label for="profilePic" class="upload-label">
+        <img [src]="profilePic" alt="Profile Picture" class="profile-pic-preview" />
+      </label>
+      <input type="file" id="profilePic" (change)="onImageChange($event)" accept="image/*" hidden />
+    </div>
+    <p>Press on Image to change it</p>
+    <h3 class="doctor-name">Dr. {{name}}</h3>
     <span>{{errorFlag}}</span>
     <span>{{successFlag}}</span>
   </div>
@@ -23,6 +29,47 @@
             required
           />
         </div>
+
+        <div class="form-group date-of-birth">
+          <label for="date">Date Of Birth</label>
+          <div class="date-of-birth-fields">
+            <select [(ngModel)]="birthMonth" name="birthMonth" class="input-field" required>
+              <option value="" disabled selected>MM</option>
+              <option *ngFor="let month of months" [value]="month">
+                {{ month }}
+              </option>
+            </select>
+            <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
+              <option value="" disabled selected>DD</option>
+              <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+            </select>
+            <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
+              <option value="" disabled selected>YYYY</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            class="form-control"
+            [(ngModel)]="phone"
+            placeholder="+20 30100214231"
+            required
+          />
+        </div>
+
+      </div>
+
+      <!-- Right Panel -->
+      <div class="right">
+
 
         <div class="form-group">
           <label for="email">Email</label>
@@ -62,58 +109,9 @@
             required
           />
         </div>
-      </div>
-
-      <!-- Right Panel -->
-      <div class="right">
-        <div class="form-group date-of-birth">
-          <label for="date">Date Of Birth</label>
-          <div class="date-of-birth-fields">
-            <select [(ngModel)]="birthMonth" name="birthMonth" class="input-field" required>
-              <option value="" disabled selected>MM</option>
-              <option *ngFor="let month of months" [value]="month">
-                {{ month }}
-              </option>
-            </select>
-            <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
-              <option value="" disabled selected>DD</option>
-              <option *ngFor="let day of days" [value]="day">{{ day }}</option>
-            </select>
-            <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
-              <option value="" disabled selected>YYYY</option>
-              <option *ngFor="let year of years" [value]="year">
-                {{ year }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            class="form-control"
-            [(ngModel)]="phone"
-            placeholder="+20 30100214231"
-            required
-          />
-        </div>
 
 
 
-        <div class="form-group">
-          <label for="pic">Profile Picture</label>
-          <input
-            type="file"
-            id="pic"
-            name="pic"
-            class="form-control"
-            [(ngModel)]="profile_pic"
-            required
-          />
-        </div>
       </div>
     </div>
   </form>

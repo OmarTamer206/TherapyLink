@@ -209,6 +209,7 @@ export class SessionComponent implements OnInit, OnDestroy {
         this.therapistService.getPatientData(response.data.patient_ID).subscribe(
           (response) => {
             this.patientData = response.data;
+            console.log('Patient Data:', this.patientData);
             this.receiverId = this.patientData.patient[0].id;
             console.log('ReceiverId set to:', this.receiverId);
 

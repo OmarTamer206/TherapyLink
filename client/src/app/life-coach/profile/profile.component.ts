@@ -41,6 +41,9 @@ export class lifeProfileComponent {
     successFlag: string = "";
 
     user:any;
+      profilePic: any;
+  selectedFile: any;
+  newPhotofileName: any;
 
     constructor(private authService: AuthService,private therapistService: TherapistService) {
 
@@ -69,6 +72,19 @@ export class lifeProfileComponent {
         this.specialization = this.user.Specialization
         this.sessionPrice = this.user.Session_price
 
+        console.log("photo" , this.user.Profile_pic_url);
+
+
+        // Set the profile picture URL if it exists, otherwise use a default image
+
+
+      if(this.user.Profile_pic_url != null && this.user.Profile_pic_url != undefined && this.user.Profile_pic_url != "") {
+          this.profilePic = `http://localhost:3000/uploads/${this.user.Profile_pic_url}`;
+        }
+        else{
+          this.profilePic = "profileDefault.png";
+
+        }
 
         },(error)=>{
           console.error("Error fetching admin data: ", error);
@@ -88,6 +104,12 @@ export class lifeProfileComponent {
       return; // Exit if validation fails
     }
 
+    if (this.selectedFile) {
+     await this.uploadProfilePic()
+    }
+
+    console.log(this.newPhotofileName);
+
     let data ={
       id:this.user.id,
       name:this.name,
@@ -96,7 +118,7 @@ export class lifeProfileComponent {
       Date_Of_Birth: `${this.birthYear}-${(this.months.indexOf(`${this.birthMonth}`)+ 1)}-${this.birthDay}`,
       Gender:this.gender,
       phone_number:this.phone,
-      profile_pic:this.profile_pic,
+      Profile_pic_url:this.newPhotofileName,
       Description: this.description ,
       Specialization : this.specialization,
       Session_price : this.sessionPrice,
@@ -211,5 +233,36 @@ export class lifeProfileComponent {
         );
       });
     }
-
+ onImageChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.profilePic = reader.result as string; // Update the preview
+      };
+      reader.readAsDataURL(file); // Read the file as data URL
+    }
   }
+
+  uploadProfilePic(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+
+    this.authService.uploadProfilePic(this.selectedFile).subscribe(
+        (response) => {
+          // Get the uploaded file name and update the profile
+          console.log('Profile picture uploaded successfully', response);
+          this.newPhotofileName = response.fileName;
+          console.log("fileName" ,this.newPhotofileName);
+          resolve(true)
+          // You can update the profile in the backend with the returned fileName here
+        },
+        (error) => {
+          console.error('Error uploading profile picture', error);
+          resolve(false)
+        }
+      );
+  })
+}
+
+}

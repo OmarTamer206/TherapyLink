@@ -108,7 +108,7 @@
       <div class="admin-list">
         <div *ngFor="let result of results" class="admin-item">
           <div class="admin-info">
-            <img src="profile png.png" alt="Workforce Image" class="admin-avatar" />
+            <img [src]="result.Profile_pic_url ? 'http://localhost:3000/uploads/'+result.Profile_pic_url : 'profile png.png'" alt="Workforce Image" class="admin-avatar" />
             <div class="admin-name">{{ result.Name }}</div>
           </div>
           <div class="admin-actions">

@@ -1,3 +1,4 @@
+
 /* app.component.css */
 .checkout-container {
   background-color: #f0f9ff;
@@ -35,6 +36,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .doctor-text h3 {

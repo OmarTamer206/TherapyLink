@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/call_section.dart';
 import 'package:flutter_application_1/pages/call_web.dart';
 import 'package:flutter_application_1/pages/chat_web.dart';
-
 import 'dart:async';
-
-
 import 'package:flutter_application_1/services/patient.dart';
 
 class UpcomingSessionsPage extends StatefulWidget {
   final Map<dynamic, dynamic> sessionData;
-
   const UpcomingSessionsPage({Key? key, required this.sessionData}) : super(key: key);
 
   @override
@@ -18,15 +14,17 @@ class UpcomingSessionsPage extends StatefulWidget {
 }
 
 class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
-  Timer? _timer;
+  Timer? _countdownTimer;
   Duration _remaining = Duration.zero;
+
+  Timer? _elapsedTimer;
+  Duration _elapsed = Duration.zero;
 
   bool sessionStarted = false;
   bool sessionEnded = false;
   bool _loading = true;
 
   final PatientApi _patientApi = PatientApi();
-
   String? patient_name;
 
   @override
@@ -43,20 +41,17 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
       patient_name = patient_data["data"]["patient"][0]["Name"];
       _loading = false;
     });
-    // _initSockets();
   }
 
   void _extractDataAndTime() {
     DateTime date = DateTime.parse(widget.sessionData['scheduled_time']).toLocal();
     String formattedDate = '${date.day}/${date.month}/${date.year}';
-
     int hours24 = date.hour;
     int minutes = date.minute;
     int hours12 = hours24 % 12 == 0 ? 12 : hours24 % 12;
     String ampm = hours24 >= 12 ? 'PM' : 'AM';
     String paddedMinutes = minutes.toString().padLeft(2, '0');
     String formattedTime = '$hours12:$paddedMinutes $ampm';
-
     widget.sessionData['date'] = formattedDate;
     widget.sessionData['time'] = formattedTime;
   }
@@ -68,13 +63,10 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
       final diff = scheduledTime.difference(now);
       _remaining = diff > Duration.zero ? diff : Duration.zero;
 
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_remaining.inSeconds <= 1) {
           timer.cancel();
-          setState(() {
-            _remaining = Duration.zero;
-            sessionStarted = true;
-          });
+          setState(() => _remaining = Duration.zero);
         } else {
           setState(() {
             _remaining = Duration(seconds: _remaining.inSeconds - 1);
@@ -84,43 +76,20 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
     }
   }
 
-  // void _initSockets() {
-  //   final type = widget.sessionData['communication_type'];
-  //   final chatId = widget.sessionData['chat_ID']?.toString() ?? "";
-  //   final callId = widget.sessionData['call_ID']?.toString() ?? "";
-  //   final userId = widget.sessionData['patient_ID'].toString();
-  //   final userType = 'patient';
-  //   final userName = patient_name;
-
-  //   if (type == 'Chatting') {
-  //     _chatSocketService.connect();
-  //     _chatSocketService.enterChat(chatId, userId, userType);
-  //     _chatSocketService.onSessionStart(() {
-  //       setState(() => sessionStarted = true);
-  //     });
-  //     _chatSocketService.onSessionEnded(() {
-  //       setState(() => sessionEnded = true);
-  //     });
-  //   } else if (type == 'Voice / Video Call') {
-  //     _callApi.connect();
-
-  //     // Wait for the doctor to start the session
-  //     _callApi.onSessionStarted(() {
-  //       _callApi.joinCall(callId, userId, userType, userName ?? "Unknown");
-  //       setState(() => sessionStarted = true);
-  //     });
-
-  //     _callApi.onCallEnded(() {
-  //       setState(() => sessionEnded = true);
-  //     });
-  //   }
-  // }
+  void startElapsedTimerFromChild() {
+    if (_elapsedTimer != null) return;
+    setState(() => sessionStarted = true);
+    _elapsedTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _elapsed += const Duration(seconds: 1);
+      });
+    });
+  }
 
   @override
   void dispose() {
-    _timer?.cancel();
-    // _chatSocketService.disconnect();
-    // _callApi.disconnect();
+    _countdownTimer?.cancel();
+    _elapsedTimer?.cancel();
     super.dispose();
   }
 
@@ -130,38 +99,33 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
     return 'Starts in : ${twoDigits(duration.inDays)}:${twoDigits(duration.inHours.remainder(24))}:${twoDigits(duration.inMinutes.remainder(60))}:${twoDigits(duration.inSeconds.remainder(60))}';
   }
 
+  String _formatElapsed(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    return 'Elapsed time: ${twoDigits(duration.inHours)}:${twoDigits(duration.inMinutes.remainder(60))}:${twoDigits(duration.inSeconds.remainder(60))}';
+  }
+
   Widget _buildSessionWidget() {
     final type = widget.sessionData['communication_type'];
-
-    
-
     if (type == 'Chatting') {
-      // return ChatWidget(
-      //   chatId: widget.sessionData['chat_ID'].toString(),
-      //   userId: widget.sessionData['patient_ID'].toString(),
-      //   userType: 'patient',
-      //   receiverId: widget.sessionData['doctor_ID'].toString(),
-      //   receiverType: widget.sessionData['session_type'],
-      // );
       return ChatWeb(
-         sessionData:widget.sessionData,
-         chatId: widget.sessionData['chat_ID'].toString(),
-         userId: widget.sessionData['patient_ID'].toString(),
-         userType: 'patient',
-         receiverId: widget.sessionData['doctor_ID'].toString(),
-         receiverType: widget.sessionData['session_type'],
-       );
-    } 
-    else if (type == 'Voice / Video Call') {
+        sessionData: widget.sessionData,
+        chatId: widget.sessionData['chat_ID'].toString(),
+        userId: widget.sessionData['patient_ID'].toString(),
+        userType: 'patient',
+        receiverId: widget.sessionData['doctor_ID'].toString(),
+        receiverType: widget.sessionData['session_type'],
+        onSessionStart: startElapsedTimerFromChild,
+      );
+    } else if (type == 'Voice / Video Call') {
       return CallWeb(
-         sessionData:widget.sessionData,
+        sessionData: widget.sessionData,
         call_ID: widget.sessionData['call_ID'].toString(),
         userId: widget.sessionData['patient_ID'].toString(),
         userType: 'patient',
         userName: patient_name ?? "Unknown",
+        onSessionStart: startElapsedTimerFromChild,
       );
-    } 
-    else {
+    } else {
       return const Text('Invalid session type');
     }
   }
@@ -169,14 +133,12 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
   @override
   Widget build(BuildContext context) {
     final session = widget.sessionData;
-
     if (_loading) {
       return const Scaffold(
         backgroundColor: Color(0xFFDFF0F4),
         body: Center(child: CircularProgressIndicator()),
       );
     }
-
     return Scaffold(
       backgroundColor: const Color(0xFFDFF0F4),
       appBar: AppBar(
@@ -215,7 +177,6 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                
                 padding: const EdgeInsets.all(0),
                 child: _buildSessionWidget(),
               ),
@@ -229,7 +190,7 @@ class _UpcomingSessionsPageState extends State<UpcomingSessionsPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                _formatDuration(_remaining),
+                sessionStarted ? _formatElapsed(_elapsed) : _formatDuration(_remaining),
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
               ),

@@ -57,6 +57,10 @@ export class SessionComponent implements OnInit, OnDestroy {
   duration: any;
   comm_type: any;
 
+   elapsedTime: string = '';
+ elapsedIntervalId: any;
+ sessionStartTime: Date | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -91,6 +95,10 @@ export class SessionComponent implements OnInit, OnDestroy {
           this.socketService.onSessionStart().subscribe(() => {
             this.sessionStarted = true;
             this.isExpired = false;
+
+            this.sessionStartTime = new Date(); // start from now
+          this.startElapsedTimer();
+
             console.log('Session started (socket event)');
           })
         );
@@ -100,6 +108,10 @@ export class SessionComponent implements OnInit, OnDestroy {
             this.sessionStarted = false;
             this.sessionEnded = true;
             this.isExpired = true;
+
+            clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
+
             console.log('Session ended (socket event)');
           })
         );
@@ -113,6 +125,9 @@ export class SessionComponent implements OnInit, OnDestroy {
           if (rejoin) {
             this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
             this.sessionStarted = true;
+
+            this.sessionStartTime = new Date(); // start from now
+          this.startElapsedTimer();
 
            setTimeout(() => {
               const comp = document.querySelector('app-call') as any;
@@ -133,6 +148,9 @@ export class SessionComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
           this.callService.onCallEnded().subscribe(() => {
             this.sessionEnded = true;
+
+            clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
 
           })
         );
@@ -312,6 +330,10 @@ export class SessionComponent implements OnInit, OnDestroy {
     if(this.chatId!= null){
       this.socketService.doctorReady(this.chatId, this.duration);
       this.sessionStarted = true;
+
+      this.sessionStartTime = new Date(); // start from now
+          this.startElapsedTimer();
+
     }
     if(this.callId!= null){
       console.log(this.userName);
@@ -321,6 +343,9 @@ export class SessionComponent implements OnInit, OnDestroy {
       this.sessionStarted = true;
       this.callService.emitSessionStarted(this.callId,"doctor",this.duration);
 
+      this.sessionStartTime = new Date(); // start from now
+          this.startElapsedTimer();
+
 
     }
   }
@@ -329,9 +354,16 @@ export class SessionComponent implements OnInit, OnDestroy {
     ; // fallback to 30
     if(this.chatId!= null){
       this.socketService.doctorEndSession(this.chatId,this.userId);
+
+      clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
     }
     if(this.callId!= null){
       this.callService.endCall(this.callId, this.userId);
+
+      clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
+
     }
     this.sessionEnded = true;
   }
@@ -353,6 +385,21 @@ export class SessionComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+   private startElapsedTimer(): void {
+  if (!this.sessionStartTime) return;
+
+  this.elapsedIntervalId = setInterval(() => {
+    const now = new Date();
+    const diff = now.getTime() - this.sessionStartTime!.getTime();
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    this.elapsedTime = `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+  }, 1000);
+}
 
   checkLoading() {
     if (this.check1 && this.check2) {

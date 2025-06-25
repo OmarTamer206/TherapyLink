@@ -43,6 +43,10 @@ export class SessionPageComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   patient_name: any;
 
+  elapsedTime: string = '';
+ elapsedIntervalId: any;
+ sessionStartTime: Date | null = null;
+
   constructor(
     private sessionService: SessionService,
     private router: Router,
@@ -88,6 +92,10 @@ export class SessionPageComponent implements OnInit, OnDestroy {
       this.socketService.onSessionStart().subscribe(() => {
         this.sessionStarted = true;
         this.isExpired = false;
+
+          this.sessionStartTime = new Date(); // start from now
+          this.startElapsedTimer();
+
         console.log('Session started by doctor or patient');
       })
     );
@@ -97,10 +105,15 @@ export class SessionPageComponent implements OnInit, OnDestroy {
         this.sessionStarted = false;
         console.log("sdasdasd");
 
+        clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
+
+
         this.isExpired = true;
         console.log('Session ended');
         // this.router.navigate(['/patient/session-ended'],{ state: { session:this.session } ,replaceUrl: true });
-        window.location.href = '/patient/session-ended';
+       this.router.navigate(['/patient/session-ended'], { state: { session: this.session }, replaceUrl: true });
+
 
       })
     );
@@ -128,6 +141,9 @@ export class SessionPageComponent implements OnInit, OnDestroy {
         this.callService.joinCall(this.callId, this.userId, this.userType, this.patient_name);
         this.sessionStarted = true;
 
+        this.sessionStartTime = new Date(); // start from now
+        this.startElapsedTimer();
+
         setTimeout(() => {
           const comp = document.querySelector('app-call') as any;
           comp?.startMediaAndConnect?.();
@@ -140,6 +156,10 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.callService.onCallEnded().subscribe(() => {
         this.sessionEnded = true;
+
+        clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
+
         this.router.navigate(['/patient/session-ended'], { state: { session: this.session }, replaceUrl: true });
       })
     );
@@ -217,6 +237,22 @@ ngOnDestroy(): void {
   goHome() {
   this.router.navigate(['patient/home']); // adjust route path as needed
 }
+
+  private startElapsedTimer(): void {
+  if (!this.sessionStartTime) return;
+
+  this.elapsedIntervalId = setInterval(() => {
+    const now = new Date();
+    const diff = now.getTime() - this.sessionStartTime!.getTime();
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    this.elapsedTime = `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+  }, 1000);
+}
+
 
 
   checkLoading(): void {

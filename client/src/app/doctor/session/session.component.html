@@ -23,7 +23,9 @@
         <button *ngIf="!isExpired" class="session-timer-btn">Session Starts in <br>{{timeLeft}}</button>
         <button class="start-session" (click)="startSession()" [disabled]="!startButtonState">Start Session</button>
       </div>
+
       <div class="end-session-container" [ngClass]="{'display-none': !sessionStarted , 'display-flex':sessionStarted }">
+        <button *ngIf="!isExpired" class="session-timer-btn">Elapsed Time <br>{{elapsedTime}}</button>
         <button class="start-session" (click)="endSession()">End Session</button>
       </div>
     </div>

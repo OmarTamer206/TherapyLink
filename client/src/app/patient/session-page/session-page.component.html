@@ -61,5 +61,8 @@
     <div *ngIf="!sessionStarted && isExpired" class="session-timer">
       <span>Waiting for the doctor to start the session</span>
     </div>
+    <div *ngIf="sessionStarted && !sessionEnded" class="session-timer">
+      <span>Elapsed Time: {{ elapsedTime }}</span>
+    </div>
   </div>
 </div>

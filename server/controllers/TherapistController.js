@@ -10,13 +10,13 @@ async function get_today_sessions(doctor_id, type) {
         SELECT s.*, p.name AS patient_name , p.Profile_pic_url AS patient_image
         FROM ${type}_session s
         JOIN patient p ON s.patient_id = p.id
-        WHERE s.${type}_ID = ? AND DATE(s.scheduled_time) = CURDATE() AND s.isCancelled = 0 AND s.ended = 0
+        WHERE s.${type}_ID = ? AND DATE(s.scheduled_time) = CURDATE() AND s.isCancelled = 0 AND s.ended = 0 AND s.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR)
         ORDER BY s.scheduled_time ASC
       `;
     } else {
       query = `
         SELECT * FROM ${type}_session
-        WHERE coach_ID = ? AND DATE(scheduled_time) = CURDATE() AND isCancelled = 0 AND ended = 0
+        WHERE coach_ID = ? AND DATE(scheduled_time) = CURDATE() AND isCancelled = 0 AND ended = 0 AND scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR)
         ORDER BY scheduled_time ASC
       `;
     }

@@ -19,6 +19,7 @@
         <button class="start-session" (click)="startSession()" [disabled]="!startButtonState">Start Session</button>
       </div>
       <div class="end-session-container" [ngClass]="{'display-none': !sessionStarted , 'display-flex':sessionStarted }">
+        <button *ngIf="!isExpired" class="session-timer-btn">Elapsed Time <br>{{elapsedTime}}</button>
         <button class="start-session" (click)="endSession()">End Session</button>
       </div>
       </div>
@@ -26,7 +27,9 @@
     <!-- Session Date & Time -->
     <div class="session-info-row">
       <span class="session-date">Session Date: {{sessionData.date}}</span>
-      <span class="session-time">Duration: {{sessionData.time}}</span>
+      <span class="session-duration">Time: {{sessionData.time}}</span>
+
+      <span class="session-time">Duration: {{sessionData.Duration}} minutes</span>
     </div>
 
     <!-- Video Call Section -->

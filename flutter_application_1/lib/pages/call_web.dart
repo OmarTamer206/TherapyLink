@@ -14,6 +14,7 @@ class CallWeb extends StatefulWidget {
   final String userId;
   final String userType;
   final String userName;
+  final VoidCallback? onSessionStart; // ✅ Add this
 
   const CallWeb({
     Key? key,
@@ -22,6 +23,7 @@ class CallWeb extends StatefulWidget {
     required this.userId,
     required this.userType,
     required this.userName,
+    this.onSessionStart,
   }) : super(key: key);
 
   @override
@@ -68,6 +70,10 @@ class _CallWebState extends State<CallWeb> with SingleTickerProviderStateMixin {
             statusMessage = '✅ Session Started!';
           });
           _fadeController.forward();
+
+          // ✅ Notify the parent
+  widget.onSessionStart?.call();
+
           Future.delayed(const Duration(seconds: 0), () {
             if (mounted) setState(() => statusMessage = null);
           });

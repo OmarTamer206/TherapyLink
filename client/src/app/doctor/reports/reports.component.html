@@ -14,6 +14,7 @@
             <th>No</th>
             <th>Name</th>
             <th>Date Of The Session</th>
+            <th>Time Of The Session</th>
             <th>Duration of the Session</th>
             <th>Reports/Journals</th>
             <th>View Session</th>
@@ -25,6 +26,7 @@
             <td>{{ i + 1 }}</td>
             <td>{{ patient.patient_name }}</td>
             <td>{{ patient.date }}</td>
+            <td>{{ patient.time }}</td>
             <td>{{ patient.Duration }} mins</td>
             <td>
               <button class="report-btn" (click)="openModal(patient, 'report',patient.patient_ID)">Report</button>

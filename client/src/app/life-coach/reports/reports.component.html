@@ -14,6 +14,7 @@
             <th>No</th>
               <th>Session's Topic</th>
               <th>Date Of The Session</th>
+              <th>Time Of The Session</th>
               <th>Duration</th>
               <th>Patients Count</th>
               <th>View Session</th>
@@ -26,6 +27,7 @@
             <td>{{ i + 1 }}</td>
             <td >{{ patient.topic }}</td>
             <td >{{ patient.date }}</td>
+            <td >{{ patient.time }}</td>
             <td >{{ patient.Duration }} mins</td>
             <td >{{ patient.patient_count }}  </td>
             <td><button class="view-btn" (click)="goToSession(patient.session_ID)">View Session</button></td>

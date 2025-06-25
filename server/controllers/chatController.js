@@ -30,6 +30,11 @@ function ChatController(io) {
   // Close session logic - notify clients and cleanup
   async function closeSession(chatId) {
     io.to(chatId).emit('sessionEnded');
+
+    const sessionTable = `doctor_session`;
+    await executeQuery(`UPDATE ${sessionTable} SET ended = 1 WHERE chat_ID = ?`, [chatId]);
+
+
     delete chats[chatId];
     delete chatParticipants[chatId];
   }

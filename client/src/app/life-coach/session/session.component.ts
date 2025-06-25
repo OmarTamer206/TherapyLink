@@ -51,6 +51,9 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   duration: any;
 
+  elapsedTime: string = '';
+ elapsedIntervalId: any;
+ sessionStartTime: Date | null = null;
 
     constructor(private route:ActivatedRoute, private therapistService:TherapistService , private sessionService:SessionService ,private callService: CallService , private router:Router) {
 
@@ -77,6 +80,9 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
             this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
             this.sessionStarted = true;
 
+            this.sessionStartTime = new Date(); // start from now
+          this.startElapsedTimer();
+
            setTimeout(() => {
               const comp = document.querySelector('app-call') as any;
               comp?.startMediaAndConnect?.();
@@ -96,6 +102,9 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
           this.callService.onCallEnded().subscribe(() => {
             this.sessionEnded = true;
+             clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
+
 
           })
         );
@@ -274,6 +283,9 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
     if(this.callId!= null){
       console.log(this.userName);
 
+      this.sessionStartTime = new Date(); // start from now
+          this.startElapsedTimer();
+
       this.callService.joinCall(this.callId, this.userId, this.userType, this.userName);
       this.sessionStarted = true;
       this.callService.emitSessionStarted(this.callId,"doctor",this.duration);
@@ -286,6 +298,9 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
     ; // fallback to 30
     if(this.callId!= null){
       this.callService.endCall(this.callId, this.userId);
+       clearInterval(this.elapsedIntervalId);
+        this.elapsedTime = '';
+
     }
     this.sessionEnded = true;
 
@@ -293,7 +308,20 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
   }
 
 
+   private startElapsedTimer(): void {
+  if (!this.sessionStartTime) return;
 
+  this.elapsedIntervalId = setInterval(() => {
+    const now = new Date();
+    const diff = now.getTime() - this.sessionStartTime!.getTime();
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    this.elapsedTime = `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+  }, 1000);
+}
 
     checkLoading(){
 

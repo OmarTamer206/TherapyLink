@@ -15,6 +15,7 @@ class ChatWeb extends StatefulWidget {
   final String userType;
   final String receiverId;
   final String receiverType;
+  final VoidCallback? onSessionStart; // ✅ Add this
 
    ChatWeb({
     Key? key,
@@ -24,6 +25,7 @@ class ChatWeb extends StatefulWidget {
     required this.userType,
     required this.receiverId,
     required this.receiverType,
+    this.onSessionStart,
   }) : super(key: key);
 
   @override
@@ -70,6 +72,10 @@ class _ChatWebState extends State<ChatWeb> with SingleTickerProviderStateMixin {
             statusMessage = '✅ Session Started!';
           });
           _fadeController.forward();
+
+          // ✅ Notify the parent
+  widget.onSessionStart?.call();
+
           Future.delayed(const Duration(seconds: 0), () {
             if (mounted) setState(() => statusMessage = null);
           });

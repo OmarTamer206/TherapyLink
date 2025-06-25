@@ -58,6 +58,18 @@
   flex-direction: column;
 
   min-height: 450px;
+  height: 100%;
+}
+
+.videoMessage{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.videoMessage p {
+  font-size: 26px;
 }
 
 .chat {

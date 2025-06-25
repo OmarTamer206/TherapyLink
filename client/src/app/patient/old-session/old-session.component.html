@@ -6,17 +6,25 @@
       <div class="session-info">
         <span class="session-title">Session With: Dr. {{session.doctor_name}}</span>
         <span class="session-time">Timing: {{session.date}} , {{session.time}}</span>
-      <span class="session-duration">Duration : {{session.duration}} minutes &nbsp; , &nbsp;  Session Method : {{session.communication_type}}</span>
+        <span class="session-duration">Duration : {{session.duration}} minutes &nbsp; , &nbsp;  Session Method : {{session.communication_type}}</span>
 
       </div>
 
       <div class="session-details chat-box">
-        <app-old-chat
-          [chatId]="chatId"
-          [userId]="userId"
-          style="width: 100%; height: 100%;">
+        @if (session.communication_type === 'Chatting') {
 
-        </app-old-chat>
+          <app-old-chat
+            [chatId]="chatId"
+            [userId]="userId"
+            style="width: 100%; height: 100%;">
+          </app-old-chat>
+
+        }
+        @else {
+          <div class="videoMessage">
+            <p >{{session.communication_type}} Can't be viewed</p>
+          </div>
+        }
       </div>
 
       <div class="rate-and-feedback" (click)="toggleFeedback()">

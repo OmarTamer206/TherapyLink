@@ -119,6 +119,11 @@
   cursor: pointer;
 }
 
+.add-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 .report-card {
   display: flex;
   align-items: center;

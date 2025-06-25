@@ -23,7 +23,8 @@
     <div class="patient-reports">
       <div class="header">
         <h3>Available Schedule</h3>
-        <button class="add-btn" (click)="addAvailableTime()">Add</button>
+        <button class="add-btn" (click)="addAvailableTime()" [disabled]="isPastDay()">Add</button>
+
       </div>
 
       <div class="report-card" *ngFor="let slot of timeTable">

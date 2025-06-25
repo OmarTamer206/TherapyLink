@@ -240,6 +240,18 @@ export class lifeScheduleManagementComponent {
       });
     }
 
+    isPastDay(): boolean {
+  const today = new Date();
+  const selectedDate = new Date(
+    this.currentDate.getFullYear(),
+    this.currentDate.getMonth(),
+    this.selectedDay
+  );
+
+  // Compare only date parts (year, month, day)
+  return selectedDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+}
+
 
 
   }

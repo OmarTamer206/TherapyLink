@@ -17,11 +17,32 @@ const {
   checkRefunded,
   getAllFeedbacks,
   replyFeedback,
+  get_average_patients_count_per_day,
 } = require("../controllers/adminController");
 
 const { authorizeRoles } = require("../middlewares/authMiddlewares");
 
 const router = express.Router();
+
+
+router.get("/average-patients-count-per-day", async (req, res) => {
+  try {
+    const result = await get_average_patients_count_per_day();
+    res.status(200).json(result);
+  } catch (error) {
+    if (err.name === 'TokenExpiredError') {
+    // Token expired
+    // Handle by sending 401 or redirecting user to login
+    return res.status(401).json({ error: 'Token expired' });
+  } else if (err.name === 'JsonWebTokenError') {
+    // Invalid token
+    return res.status(401).json({ error: 'Invalid token' });
+  } else {
+    // Other errors
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  }
+});
 
 // Get total doctors count
 router.get("/total-doctors-count", async (req, res) => {

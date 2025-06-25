@@ -120,10 +120,7 @@ class _TherapistSelectionPageState extends State<TherapistSelectionPage> {
                           Container(
                             height: 50,
                             width: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                            child: Image.asset("assets/images/therapyist${index+1}.png"),
                           ),
                           const SizedBox(width: 16),
                           Expanded(

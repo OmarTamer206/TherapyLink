@@ -18,6 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var _therapistSessionsTaken;
   var _groupSessionsTaken;
   var _emergencySessionsTaken;
+  var _wallet;
   late DateTime _patientJoinDate;
 
   bool _loading = true;
@@ -36,6 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       _patientName = userData["data"]["patient"][0]["Name"];
+      _wallet = userData["data"]["patient"][0]["wallet"];
       _patientJoinDate = DateTime.parse(userData["data"]["patient"][0]["Created_at"]).toLocal();
       if(userData["data"]["patient"][0]["Profile_pic_url"] != null){
         _patientPhoto = "http://localhost:3000/uploads/${userData["data"]["patient"][0]["Profile_pic_url"]}";
@@ -95,6 +97,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 8),
                     Text(
                       'Joined at : ${_patientJoinDate.day} - ${_patientJoinDate.month} - ${_patientJoinDate.year}',
+                      style: const TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      'Wallet : ${_wallet} ',
                       style: const TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(height: 26),

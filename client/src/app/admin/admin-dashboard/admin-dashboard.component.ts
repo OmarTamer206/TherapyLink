@@ -22,16 +22,16 @@ loading = false;
 total_doctors:any;
 total_appointments:any;
 total_patients:any;
-total_earnings:any;
 
 patientDataByMonth: any[] = [];
 monthCounts: any[] = [];
+  average_patients: any;
 
 constructor(private adminService: AdminService) {
   this.getTotalDoctors();
   this.getTotalAppoitments();
   this.getTotalPatients();
-  this.getTotalEarnings();
+  this.getAveragePatientsCountPerDay();
   this.getTotalPatientsByMonth()
 
 }
@@ -72,16 +72,15 @@ getTotalPatients(){
 
 }
 
-getTotalEarnings(){
-  this.adminService.getTotalEarningsCount().subscribe((response)=>{
-    this.total_earnings = response.data.total_cost;
-    console.log("total_earnings Count : ",response.data.total_cost);
+getAveragePatientsCountPerDay(){
+  this.adminService.getAveragePatientsCountPerDay().subscribe((response)=>{
+    console.log("Average Patients Count Per Day : ",response);
+    this.average_patients = response.data;
     this.check4 = true;
     this.checkLoading();
   },(error)=>{
-    console.error("Error fetching total_earnings count: ", error);
+    console.error("Error fetching Average Patients Count Per Day: ", error);
   });
-
 }
 
 getTotalPatientsByMonth(){

@@ -326,6 +326,7 @@ async function view_available_time(date, doctor_id, doctor_type) {
       SELECT * FROM doctor_availability
       WHERE doctor_id = ?
         AND DATE(available_date) = ? 
+        AND DATE(available_date) >= CURDATE()
       ORDER BY available_date ASC
     `;
     }
@@ -334,6 +335,7 @@ async function view_available_time(date, doctor_id, doctor_type) {
       SELECT * FROM lifecoach_availability
       WHERE life_coach_id = ?
         AND DATE(available_date) = ? AND full = 0 
+        AND DATE(available_date) >= CURDATE()
       ORDER BY available_date ASC
     `;
     }
@@ -526,7 +528,16 @@ async function get_patient_analytics(doctor_id, type) {
 
     // Execute all queries in parallel
     const ratingResult = await executeQuery(ratingQuery, [doctor_id]);
-    const returningPatientsResult = await executeQuery(returningPatientsQuery, [doctor_id, doctor_id]);
+    let returningPatientsResult;
+    if(type == "doctor"){
+     returningPatientsResult = await executeQuery(returningPatientsQuery, [doctor_id]);
+
+    }
+    else{
+     returningPatientsResult = await executeQuery(returningPatientsQuery, [doctor_id, doctor_id]);
+
+    }
+
     const totalPatientsResult = await executeQuery(totalPatientsQuery, [doctor_id]);
 
     const ratingCounts = ratingResult.reduce((acc, { rating, rating_count }) => {

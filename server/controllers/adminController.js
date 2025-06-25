@@ -1,5 +1,39 @@
 const { executeQuery } = require("./databaseController"); // Adjust path if needed
 
+
+// Get average patient count per day
+async function get_average_patients_count_per_day() {
+  try {
+    const query = `
+    SELECT AVG(daily_count) AS count
+FROM (
+  -- Doctor Sessions
+  SELECT DATE(scheduled_time) AS day, COUNT(patient_ID) AS daily_count
+  FROM doctor_session
+  GROUP BY day
+
+  UNION ALL
+
+  -- Life Coach Sessions
+  SELECT DATE(lcs.scheduled_time) AS day, COUNT(pls.patient_ID) AS daily_count
+  FROM life_coach_session lcs
+  JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
+  GROUP BY day
+) AS combined_sessions;
+
+  `;
+    const result = await executeQuery(query);
+
+    return { success: true, data: result[0]?.count || 0 };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error retrieving average patient count.",
+      error: error.message,
+    };
+  }
+}
+
 // Get total doctors count
 async function get_total_doctors_count() {
   try {
@@ -455,6 +489,7 @@ async function checkRefunded(session_ID,doctor_type) {
 
 
 module.exports = {
+  get_average_patients_count_per_day,
   get_total_doctors_count,
   get_total_appointment_count,
   get_total_patient_count,

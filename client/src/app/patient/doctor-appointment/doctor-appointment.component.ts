@@ -163,6 +163,7 @@ getAvailableTimes(){
   }
 
   selectDay(day: number) {
+
     this.selectedDay = day;
     this.getAvailableTimes();
   }

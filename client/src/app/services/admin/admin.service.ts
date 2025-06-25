@@ -10,6 +10,10 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
+    getAveragePatientsCountPerDay(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/average-patients-count-per-day`);
+  }
+
   // Get total doctors count
   getTotalDoctorsCount(): Observable<any> {
     return this.http.get(`${this.apiUrl}/total-doctors-count`);

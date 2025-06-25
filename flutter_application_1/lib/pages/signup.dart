@@ -119,10 +119,14 @@ class _SignUpPageState extends State<SignUpPage> {
       valid = false;
     }
 
-    if (_phoneController.text.trim().isEmpty) {
-      _phoneError = 'Phone Number cannot be empty';
-      valid = false;
-    }
+      final phone = _phoneController.text.trim();
+  if (phone.isEmpty) {
+    _phoneError = 'Phone Number cannot be empty';
+    valid = false;
+  } else if (!RegExp(r'^01[0125][0-9]{8}$').hasMatch(phone)) {
+    _phoneError = 'Invalid Egyptian phone number';
+    valid = false;
+  }
 
     if (_passwordController.text.isEmpty) {
       _passwordError = 'Password cannot be empty';

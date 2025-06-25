@@ -107,7 +107,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _emailError = _emailController.text.trim().isEmpty
           ? 'Email cannot be empty'
           : (!_isValidEmail(_emailController.text.trim()) ? 'Invalid email format' : null);
-      _phoneError = _phoneController.text.trim().isEmpty ? 'Phone Number cannot be empty' : null;
+      
+     final phone = _phoneController.text.trim();
+    if (phone.isEmpty) {
+      _phoneError = 'Phone Number cannot be empty';
+    } else if (!RegExp(r'^01[0125][0-9]{8}$').hasMatch(phone)) {
+      _phoneError = 'Invalid Egyptian phone number';
+    } else {
+      _phoneError = null;
+    }
+
      if(!_passwordController.text.isEmpty || !_confirmPasswordController.text.isEmpty){
        _passwordError = _passwordController.text.isEmpty ? 'Password cannot be empty' : null;
       _confirmPasswordError = _confirmPasswordController.text.isEmpty

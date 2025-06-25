@@ -6,6 +6,8 @@ function EmergencySocket(io) {
  io.on('connection', (socket) => {
     console.log('Emergency Team connected:', socket.id);
 
+      socket.emit('allPendingEmergencyRequests', emergencyRequests);
+
     socket.on('requestEmergency', async (patientData) => {
       console.log('Emergency request init:');
 

@@ -27,6 +27,11 @@ export class EmergencyTeamDashboardComponent implements OnInit, OnDestroy {
 
     this.emergencySocket.connect();
 
+    this.emergencySocket.onAllPendingRequests().subscribe((requests) => {
+      console.log("All pending requests:", requests);
+      this.requests = requests;
+    });
+
     this.emergencySocket.onNewRequest().subscribe((request) => {
       console.log(request);
 
@@ -77,5 +82,6 @@ export class EmergencyTeamDashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // Optional: disconnect socket on destroy
+    this.emergencySocket.disconnect();
   }
 }

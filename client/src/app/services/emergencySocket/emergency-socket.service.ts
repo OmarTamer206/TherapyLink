@@ -44,5 +44,15 @@ export class EmergencyTeamSocketService {
       this.socket.on('emergencyAccepted', (data) => observer.next(data));
     });
   }
-
+onAllPendingRequests(): Observable<any[]> {
+    return new Observable((observer) => {
+      this.socket.on('allPendingEmergencyRequests', (data) => observer.next(data));
+    });
+  }
+  disconnect(): void {
+  if (this.socket && this.socket.connected) {
+    this.socket.disconnect();
+    console.log('Socket disconnected');
+  }
+}
 }

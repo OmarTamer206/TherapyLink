@@ -125,6 +125,12 @@ export class SignupComponent {
       return false;
     }
 
+    const phoneRegex = /^01[0125][0-9]{8}$/;
+    if (!phoneRegex.test(this.phoneNumber)) {
+      this.errorFlag = 'Invalid Egyptian phone number';
+      return false;
+    }
+
 
       if(this.password === '') {
         this.errorFlag = 'Password is required'

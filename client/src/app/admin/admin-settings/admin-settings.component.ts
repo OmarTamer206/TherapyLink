@@ -169,6 +169,12 @@ async editProfile(){
       return false;
     }
 
+    const phoneRegex = /^01[0125][0-9]{8}$/;
+    if (!phoneRegex.test(this.phone)) {
+      this.errorFlag = 'Invalid Egyptian phone number';
+      return false;
+    }
+
     if(this.password!=="" || this.confirmPassword!==""){
       if(this.password === '') {
         this.errorFlag = 'Password is required'

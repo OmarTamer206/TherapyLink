@@ -296,7 +296,7 @@ class _CheckoutCoachPageState extends State<CheckoutCoachPage> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const PaymentSuccessPage()),
+        MaterialPageRoute(builder: (context) =>  PaymentSuccessPage(price: price)),
       );
     },
     style: ElevatedButton.styleFrom(

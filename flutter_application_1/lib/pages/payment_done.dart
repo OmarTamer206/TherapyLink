@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: PaymentSuccessPage(),
-  ));
+class PaymentSuccessPage extends StatefulWidget {
+  var price;
+
+   PaymentSuccessPage({super.key, required this.price});
+
+  @override
+  State<PaymentSuccessPage> createState() => _PaymentSuccessPageState();
 }
 
-class PaymentSuccessPage extends StatelessWidget {
-  const PaymentSuccessPage({super.key});
+class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Automatically navigate back after 5 seconds
+    Future.delayed(const Duration(seconds: 5), () {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Automatically navigate back after 5 seconds
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.of(context).popUntil((route) => route.isFirst); // Pops all routes and goes back to the first (Home)
-    });
-
     return Scaffold(
       backgroundColor: const Color(0xFFDFF0F4),
       appBar: AppBar(
         backgroundColor: const Color(0xFFDFF0F4),
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: const Text(
           'Payment',
           style: TextStyle(
@@ -30,7 +36,6 @@ class PaymentSuccessPage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        automaticallyImplyLeading: false,  // Ensures no back button
       ),
       body: Center(
         child: Padding(
@@ -48,15 +53,14 @@ class PaymentSuccessPage extends StatelessWidget {
                     width: 10,
                   ),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.check,
-                  color: const Color(0xFF1F2937),
+                  color: Color(0xFF1F2937),
                   size: 60,
                 ),
               ),
               const SizedBox(height: 40),
 
-              // Payment Success Message
               const Text(
                 'Session Payment Successful!',
                 style: TextStyle(
@@ -66,7 +70,6 @@ class PaymentSuccessPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              // Transaction Number
               const Text(
                 'Transaction Number: 123456789',
                 style: TextStyle(
@@ -76,18 +79,16 @@ class PaymentSuccessPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Divider
               const Divider(
                 color: Colors.teal,
                 thickness: 1,
               ),
               const SizedBox(height: 16),
 
-              // Amount Paid
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Amount Paid: ',
                     style: TextStyle(
                       fontSize: 16,
@@ -95,8 +96,8 @@ class PaymentSuccessPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'LE 500.00',
-                    style: TextStyle(
+                    'LE ${widget.price}',
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Color(0xFF01B5C5),
                       fontWeight: FontWeight.bold,

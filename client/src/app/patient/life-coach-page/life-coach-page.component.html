@@ -4,13 +4,16 @@
     <!-- Left Section: Doctor List -->
     <div class="doctor-list">
       <h3>{{specialization}}</h3>
+      @if( doctors.length > 0) {
+
       @for (doctor of doctors; track $index) {
         <div class="doctor-item">
         <div>
           <img [src]="doctor.doctor_data.profile_pic_url ? 'http://localhost:3000/uploads/'+doctor.doctor_data.profile_pic_url : 'profile png.png'" alt="Dr. Mark" class="doctor-photo" />
           <div class="doctor-details">
             <span>Dr. {{doctor.doctor_data.Name}}</span>
-            <span>4.5 ★</span>
+            <span>{{doctor.avgRating}} ★</span>
+
           </div>
         </div>
         <a class="view-link" (click)="selectDoctor(doctor)">View Doctor</a>
@@ -18,11 +21,16 @@
       }
 
       <!-- Add more doctor items as needed -->
+    } @else {
+        <p class="no-doctors">No Life Coaches found for this specialization.</p>
+      }
     </div>
 
     <!-- Right Section: Doctor Profile -->
     <div class="doctor-profile">
-      <div class="doctor-info">
+
+      @if (selectedDoctor ) {
+        <div class="doctor-info">
         <img [src]="selectedDoctor.doctor_data.profile_pic_url ? 'http://localhost:3000/uploads/'+selectedDoctor.doctor_data.profile_pic_url : 'profile png.png'" alt="Dr. Mark" class="doctor-photo" />
         <div class="doctor-details">
           <h4>Dr. {{selectedDoctor.doctor_data.Name}}</h4>
@@ -56,6 +64,14 @@
       <button (click)="goToMakeAppointmentPage(selectedDoctor)" class="make-appointment-btn">
         Make Appointment
       </button>
+      } @else {
+
+        <p class="no-doctors">More Life Coaches will be added soon.</p>
+
+      }
+
+
+
     </div>
   </div>
 </div>

@@ -27,6 +27,7 @@ class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
 
   List<Map<String, dynamic>> timeTable = [];
   List<DateTime> availableDays = [];
+  var topic = "";
 
   @override
   void initState() {
@@ -64,6 +65,15 @@ class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
     List<Map<String, dynamic>> fetchedTimeTable = [];
 
     if (response != null && response['success']) {
+      if(response['data'].isNotEmpty){
+      print("Response Data: ${response['data']}");
+
+        topic = response['data'][0]['topic'] ?? 'No Topic';
+      }
+      else{
+        topic = "";
+      }
+      print("Response Data: ${response['data']}");
       for (var item in response['data']) {
         final utcDate = DateTime.parse(item['available_date']);
         final localDate = utcDate.toLocal();
@@ -129,6 +139,11 @@ class _MakeAppointmentCoachPageState extends State<MakeAppointmentCoachPage> {
           children: [
             const SizedBox(height: 10),
             _buildCalendar(),
+            const SizedBox(height: 20),
+             Align(
+              alignment: Alignment.center,
+              child: topic != "" ? Text("Topic : $topic", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)): Text(""),
+            ),
             const SizedBox(height: 20),
             const Align(
               alignment: Alignment.centerLeft,

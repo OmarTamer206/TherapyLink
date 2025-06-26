@@ -7,6 +7,12 @@ router.post('/send', async (req, res) => {
   const { to, subject, message } = req.body;
 
   if (!to || !subject || !message) {
+    console.log(to);
+    console.log(subject);
+    console.log(message);
+    
+    
+    
     return res.status(400).json({ success: false, message: 'Missing email fields' });
   }
 

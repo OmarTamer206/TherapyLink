@@ -75,18 +75,18 @@ export class AdminRefundComponent {
       this.patientEmail = response.data.patient[0].Email;
       console.log('Patient Email:', this.patientEmail);
 
+      this.emailService.sendEmail(this.patientEmail , `Feedback Response For Session with Dr.${this.reports[index].doctor_info.Name}` , this.responseText).subscribe((response) => {
+        console.log('Email sent successfully:', response);
+      }
+
+      , (error) => {
+        console.error('Error sending email:', error);
+      });
     }
     , (error) => {
       console.error('Error fetching patient profile data:', error);
     });
 
-
-    this.emailService.sendEmail(this.patientEmail , `Feedback Response For Session with Dr.${this.reports[index].doctor_info.Name}` , this.responseText).subscribe((response) => {
-      console.log('Email sent successfully:', response);
-    }
-    , (error) => {
-      console.error('Error sending email:', error);
-    });
 
     this.adminService.replyFeedback(data).subscribe((response) => {
       console.log(response);

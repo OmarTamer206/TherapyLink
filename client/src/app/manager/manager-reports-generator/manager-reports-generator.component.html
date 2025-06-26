@@ -11,8 +11,13 @@
       @if(chartType == 'line') {
         <app-line-chart [data]="lineChartData"></app-line-chart>
       }
-      @else if(chartType == 'pie') {
+      @else if(chartType == 'pie' && isAllZeros == false) {
         <app-pie-chart [chartData]="pieChartData" [chartLabels]="pieChartLabels"></app-pie-chart>
+      }
+      @else if(chartType == 'pie' && isAllZeros == true) {
+        <div class="no-data">
+          <p>No data available for the selected date range.</p>
+        </div>
       }
     </div>
 

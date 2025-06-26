@@ -19,6 +19,7 @@ export class PatientAnalyticsComponent {
   averageRating:any=0;
   totalRatingCount:any=0;
   ratingPercentages:any;
+  disablePieChart = false;
 
 
   ratings = [
@@ -44,6 +45,10 @@ export class PatientAnalyticsComponent {
       console.log(response);
       this.totalPatients = response.TotalPatientsByMonth;  // Assuming this is the structure of the response
       this.ReturningPatients = response.returningPatientsResult[0];  // Assuming this is the structure of the response
+
+      if(this.ReturningPatients.total_patients == 0 && this.ReturningPatients.returning_patients == 0){
+        this.disablePieChart = true;
+      }
 
       this.pieChartData = [(this.ReturningPatients.total_patients - this.ReturningPatients.returning_patients ), this.ReturningPatients.returning_patients]
 

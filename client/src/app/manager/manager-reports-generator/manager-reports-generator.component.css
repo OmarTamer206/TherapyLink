@@ -54,3 +54,13 @@
 .date-range input {
   width: 160px;
 }
+
+.no-data{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 24px;
+  color: #999;
+  font-weight: bold;
+}

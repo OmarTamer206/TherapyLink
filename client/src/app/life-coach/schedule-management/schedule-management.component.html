@@ -45,8 +45,8 @@
     </div>
   </div>
 
-  <!-- Modal Backdrop -->
-<div class="modal-backdrop" *ngIf="showModal">
+  <!-- Modal Backdrop OLD -->
+<!-- <div class="modal-backdrop" *ngIf="showModal">
   <div class="modal-content">
     <h3>What is the Session Topic</h3>
     <input type="text" [(ngModel)]="topic" name="topic" id="topic" />
@@ -57,6 +57,33 @@
         <input type="checkbox" [value]="time" (change)="toggleTimeSelection(time, $event)" />
         {{ time }}
       </label>
+    </div>
+
+    <button class="submit-btn" (click)="submitTimes()">Submit</button>
+  </div>
+</div> -->
+
+  <!-- Modal Backdrop -->
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Choose Time Options</h3>
+      <button class="close-btn" (click)="showModal = false">✖</button>
+    </div>
+    <div class="modal-topic">
+      <h3>What is the Session Topic</h3>
+    <input type="text" [(ngModel)]="topic" name="topic" id="topic" />
+    </div>
+    <div class="time-options-grid">
+      <div
+        class="time-box"
+        *ngFor="let time of availableTimes"
+        [class.selected]="selectedTimes.includes(time)"
+        (click)="toggleTime(time)"
+      >
+        {{ time }}
+      </div>
     </div>
 
     <button class="submit-btn" (click)="submitTimes()">Submit</button>

@@ -25,6 +25,7 @@ export class ManagerReportsGeneratorComponent {
    lineChartData: any; // Data for the chart
    pieChartData: any; // Data for the chart
    pieChartLabels: string[] = []
+  isAllZeros: any;
 
    constructor(private managerService : ManagerService){
     this.generateReport()
@@ -101,6 +102,11 @@ export class ManagerReportsGeneratorComponent {
     this.pieChartData = data.map(item => item.count);
     console.log(this.pieChartData);
     console.log(this.pieChartLabels);
+
+    this.isAllZeros = this.pieChartData.every((num:any)=> num == 0);
+    console.log("is all zeros",this.isAllZeros);
+
+
     this.chartType = 'pie'; // Set to pie chart for other types of reports
 
   }

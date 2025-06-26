@@ -252,6 +252,15 @@ export class lifeScheduleManagementComponent {
   return selectedDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
 }
 
+toggleTime(time: string) {
+  const index = this.selectedTimes.indexOf(time);
+  if (index === -1) {
+    this.selectedTimes.push(time);
+  } else {
+    this.selectedTimes.splice(index, 1);
+  }
+}
+
 
 
   }

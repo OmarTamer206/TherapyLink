@@ -41,7 +41,7 @@ export class ManagerManageAdminRegisterPageComponent {
    salary: number = 0;  // Salary field declaration
 
    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-   days = Array.from({length: 31}, (_, i) => i + 1); // Days 1-31
+   days = Array.from({length: 30}, (_, i) => i + 1); // Days 1-31
    years = Array.from({length: 101}, (_, i) => 1920 + i); // Years 1920-2020
 
   results : any
@@ -422,6 +422,19 @@ export class ManagerManageAdminRegisterPageComponent {
        );
      });
    }
+
+   updateDaysForMonth() {
+  const monthIndex = this.months.indexOf(this.birthMonth); // 0 for Jan, 1 for Feb, etc.
+  const year = this.birthYear;
+  const lastDay = new Date(year, monthIndex + 1, 0).getDate(); // Get last day of selected month
+
+  this.days = Array.from({ length: lastDay }, (_, i) => i + 1);
+
+  // Ensure selected birthDay is within the valid range
+  if (this.birthDay > lastDay) {
+    this.birthDay = lastDay;
+  }
+}
 
 
  }

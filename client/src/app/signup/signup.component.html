@@ -35,17 +35,17 @@
       <label for="full-name">Date Of Birth</label>
       <div class="date-of-birth">
 
-        <select [(ngModel)]="birthMonth" name="birthMonth"  class="input-field" required>
+        <select [(ngModel)]="birthMonth" (change)="updateDaysForMonth()" name="birthMonth"  class="input-field" required>
           <option value="" disabled selected>MM</option>
           <option *ngFor="let month of months" [value]="month">
             {{ month }}
           </option>
         </select>
-        <select [(ngModel)]="birthDay" name="birthDay" class="input-field" required>
+        <select [(ngModel)]="birthDay" (change)="updateDaysForMonth()" name="birthDay" class="input-field" required>
           <option value="" disabled selected>DD</option>
           <option *ngFor="let day of days" [value]="day">{{ day }}</option>
         </select>
-        <select [(ngModel)]="birthYear" name="birthYear" class="input-field" required>
+        <select [(ngModel)]="birthYear" (change)="updateDaysForMonth()" name="birthYear" class="input-field" required>
           <option value="" disabled selected>YYYY</option>
           <option *ngFor="let year of years" [value]="year">
             {{ year }}

@@ -1,6 +1,6 @@
 <!-- doctor-checkout.component.html -->
 <div *ngIf="showSuccess" class="payment-success">
-  <h2>Payment</h2>
+  <h2>Session Schedule Refused</h2>
   <div class="checkmark-circle">✔</div>
   <h3>Session Payment Successful!</h3>
   <p class="transaction">Transaction Number: 123456789</p>
@@ -8,7 +8,13 @@
   <p class="amount">Amount Paid: <span>LE 500.00</span></p>
 </div>
 
-<div *ngIf="!showSuccess" class="checkout-container">
+<div *ngIf="showDuplicate" class="payment-success">
+  <h2>Payment</h2>
+  <div class="checkmark-circle">X</div>
+  <h3>This Session is already Scheduled</h3>
+</div>
+
+<div *ngIf="!showSuccess && !showDuplicate" class="checkout-container">
   <div class="checkout-content">
     <!-- Left Section: Doctor Info and Appointment Details -->
     <div class="doctor-info">

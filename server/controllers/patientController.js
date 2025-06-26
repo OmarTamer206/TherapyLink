@@ -203,6 +203,12 @@ async function Make_an_appointment(patient_ID, sessionData) {
         VALUES (?, ?);
       `;
       result = await executeQuery(query, [patient_ID, sessionID]);
+      
+      if (result.affectedRows === 1) {
+  console.log("Insertion successful.");
+} else {
+  console.log("Insertion was ignored (probably duplicate).");
+}
 
       // Insert into the call table for life coach (if applicable)
       query = `INSERT INTO \`call\` () VALUES ()`;
@@ -213,9 +219,13 @@ async function Make_an_appointment(patient_ID, sessionData) {
     }
 
     if (result.affectedRows > 0) {
-      return { success: true, message: "Appointment scheduled successfully." };
-    } else {
-      return { success: false, message: "Failed to schedule appointment." };
+      return { success: true,duplciate : false, message: "Appointment scheduled successfully." };
+    } 
+    else if (result.affectedRows == 0) {
+      return { success: true,duplciate : true, message: "Appointment is already schedulled." };
+    } 
+    else {
+      return { success: false,duplciate : false, message: "Failed to schedule appointment." };
     }
   } catch (error) {
     return {

@@ -25,6 +25,7 @@ export class LifeCoachCheckoutComponent {
   sessionPrice: number =1;
   multiplier: number =1 ;
   sessionTopic="";
+  showDuplicate = false;
 
    ngOnInit(): void {
     // Access the state data from window.history
@@ -83,10 +84,16 @@ export class LifeCoachCheckoutComponent {
 
       this.patientService.makeAppointment(sessionData).subscribe((response)=>{
         console.log(response);
+        if(response.duplciate){
 
+          this.showDuplicate = true;
+        }
+        else{
+
+          this.showSuccess = true;
+        }
       })
 
-      this.showSuccess = true;
 
       // After 5 seconds, redirect
       setTimeout(() => {

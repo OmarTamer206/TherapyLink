@@ -40,8 +40,12 @@ class _ProfilePageState extends State<ProfilePage> {
       _wallet = userData["data"]["patient"][0]["wallet"];
       _patientJoinDate = DateTime.parse(userData["data"]["patient"][0]["Created_at"]).toLocal();
       if(userData["data"]["patient"][0]["Profile_pic_url"] != null){
-        _patientPhoto = "http://localhost:3000/uploads/${userData["data"]["patient"][0]["Profile_pic_url"]}";
+        _patientPhoto =  NetworkImage('"http://localhost:3000/uploads/${userData["data"]["patient"][0]["Profile_pic_url"]}"');
       }
+      else{
+         _patientPhoto = AssetImage('assets/images/profile png.png');
+      }
+     
      _therapistSessionsTaken = _therapistSessionsTaken["data"].length;
     _groupSessionsTaken = _groupSessionsTaken["data"].length;
     _emergencySessionsTaken = _emergencySessionsTaken["data"].length;
@@ -87,7 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 48),
                      CircleAvatar(
                       radius: 75,
-                      backgroundImage: NetworkImage('$_patientPhoto'),
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: _patientPhoto,
                     ),
                     const SizedBox(height: 28),
                     Text(

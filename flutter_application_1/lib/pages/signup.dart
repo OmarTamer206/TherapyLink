@@ -49,7 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    final currentYear = DateTime.now().year;
+    final currentYear = 2013;
     _years = List.generate(currentYear - 1925, (index) => currentYear - index);
   }
 
@@ -59,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         _days = List.generate(daysInMonth, (index) => index + 1);
         // Reset day if current selection invalid
-        if (_selectedDay != null && _selectedDay! > daysInMonth) {
+        if (_selectedDay! > daysInMonth) {
           _selectedDay = null;
         }
       });

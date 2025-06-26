@@ -151,7 +151,7 @@ class _CheckoutCoachPageState extends State<CheckoutCoachPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Dr. Mohamed', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Dr. ${widget.doctorData["doctor_data"]["Name"]}', style: TextStyle(fontWeight: FontWeight.bold)),
                 Text('Life Coach'),
               ],
             ),

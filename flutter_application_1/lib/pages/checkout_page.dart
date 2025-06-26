@@ -154,7 +154,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Dr. Mark', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Dr. ${widget.doctorData["doctor_data"]["Name"]}', style: TextStyle(fontWeight: FontWeight.bold)),
             Text('Clinical Psychologist'),
           ],
         ),

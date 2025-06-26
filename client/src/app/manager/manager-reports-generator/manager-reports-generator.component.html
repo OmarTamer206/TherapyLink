@@ -7,7 +7,8 @@
 @else {
 
   <div class="report-container">
-    <div class="chart-container">
+    @if (!invalidDateRange) {
+      <div class="chart-container">
       @if(chartType == 'line') {
         <app-line-chart [data]="lineChartData"></app-line-chart>
       }
@@ -20,6 +21,16 @@
         </div>
       }
     </div>
+    } @else {
+      <div class="chart-container">
+
+
+        <div class="no-data">
+          <p>Date Range is Invalid.</p>
+        </div>
+
+    </div>
+    }
 
     <div class="query-options">
       <div class="query-side">

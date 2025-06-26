@@ -26,6 +26,7 @@ export class ManagerReportsGeneratorComponent {
    pieChartData: any; // Data for the chart
    pieChartLabels: string[] = []
   isAllZeros: any;
+  invalidDateRange= false;
 
    constructor(private managerService : ManagerService){
     this.generateReport()
@@ -33,6 +34,19 @@ export class ManagerReportsGeneratorComponent {
 
    generateReport() {
 
+     const fromDate = new Date(this.dateFrom + '-01');
+    const toDate = new Date(this.dateTo + '-01');
+
+    if (fromDate >= toDate) {
+      this.invalidDateRange = true;
+      this.chartType = '';
+      this.pieChartData = [];
+      this.lineChartData = [];
+      this.isAllZeros = false;
+      return;
+    } else {
+      this.invalidDateRange = false;
+    }
 
     this.managerService.generateReport(this.queryOption, this.dateFrom, this.dateTo).subscribe(
       (response) => {

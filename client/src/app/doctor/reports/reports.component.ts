@@ -80,6 +80,8 @@ export class ReportsComponent {
     this.selectedPatient = patient;
     this.modalType = type;  // Set which content to show in the modal (Report or Journal)
     this.modalVisible = true;  // Show the modal
+    console.log(this.selectedPatient);
+    console.log(this.selectedPatient.data.patient[0].Name);
 
   }
 

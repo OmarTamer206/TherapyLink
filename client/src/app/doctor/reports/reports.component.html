@@ -45,14 +45,14 @@
       <button class="close-btn" (click)="closeModal()">X</button>
 
       <div *ngIf="modalType === 'report'">
-        <h3>Report for {{ selectedPatient.Name }}</h3>
+        <h3>Report for {{ selectedPatient.patient_name }}</h3>
         <!-- Add your report content here -->
         <app-report [doctorReport] = "patientData.reports"></app-report>
 
       </div>
 
       <div *ngIf="modalType === 'journal'">
-        <h3>Journal for {{ selectedPatient.Name }}</h3>
+        <h3>Journal for {{ selectedPatient.patient_name }}</h3>
         <!-- Add your journal content here -->
         <app-journal [journalEntries] = "patientData.journals"></app-journal>
 

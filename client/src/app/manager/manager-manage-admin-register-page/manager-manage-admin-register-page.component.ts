@@ -38,7 +38,7 @@ export class ManagerManageAdminRegisterPageComponent {
    confirmPassword: string = '';
 
    gender: string = '';
-   salary: number = 0;  // Salary field declaration
+   salary: any;  // Salary field declaration
 
    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
    days = Array.from({length: 30}, (_, i) => i + 1); // Days 1-31
@@ -387,10 +387,14 @@ export class ManagerManageAdminRegisterPageComponent {
 
 
 
-       if(this.salary === 0) {
-         this.errorFlag = 'Salary is required'
-         return false;
-       }
+        if(this.salary == undefined || this.salary  == null) {
+        this.errorFlag = 'Salary is required'
+        return false;
+      }
+      if(this.salary <= 0) {
+        this.errorFlag = 'Salary is cannot be zero or negative'
+        return false;
+      }
 
 
 

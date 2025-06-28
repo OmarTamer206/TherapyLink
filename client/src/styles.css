@@ -40,6 +40,13 @@ app-root {
   animation: spin 1s linear infinite;
 }
 
+@font-face {
+  font-family: 'ScriptMTBold';
+  src: url('/fonts/ScriptMTBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Spinner rotation animation */
 @keyframes spin {
   0% { transform: rotate(0deg); }

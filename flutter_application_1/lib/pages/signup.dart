@@ -338,7 +338,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   const Text('Already have an account? ', style: TextStyle(fontSize: 14, color: Colors.black87)),
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/login'),
+                    onTap: () => Navigator.pop(context),
                     child: const Text('Log In', style: TextStyle(fontSize: 14, color: Color(0xFF0891B2), fontWeight: FontWeight.w600)),
                   ),
                 ],

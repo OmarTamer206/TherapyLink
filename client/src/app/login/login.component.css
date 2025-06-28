@@ -29,7 +29,7 @@
 
 .tagline {
   font-size: 25px;
-  font-style: italic, bold;
+  font-family: 'ScriptMTBold', sans-serif;
   color: #00b8b8;
   text-align: center;
   margin-top: 20px;

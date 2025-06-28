@@ -130,7 +130,7 @@ async function registerPatient(data) {
         data.Date_Of_Birth,
         data.phone_number,
         data.Marital_Status,
-        data.Therapist_Preference || null,
+        'General Psychological Support',
         data.Diagnosis || null,
         data.Gender,
         data.Profile_pic_url || null,

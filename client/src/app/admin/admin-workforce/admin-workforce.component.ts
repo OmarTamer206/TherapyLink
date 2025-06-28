@@ -36,9 +36,9 @@ export class AdminWorkforceComponent {
   confirmPassword: string = '';
   specialization: string = '';
   description: string = '';
-  sessionPrice: string = '';
+  sessionPrice: any;
   gender: string = '';
-  salary: number = 0;  // Salary field declaration
+  salary: any;  // Salary field declaration
 
   months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   days = Array.from({length: 31}, (_, i) => i + 1); // Days 1-31
@@ -147,7 +147,7 @@ edit_old_email_verification:string = ""
     this.confirmPassword = '';
     this.specialization = '';
     this.description = '';
-    this.sessionPrice = '';
+    this.sessionPrice = 0;
     this.gender = '';
     this.salary = 0;  // Reset salary field
 
@@ -215,7 +215,7 @@ edit_old_email_verification:string = ""
     this.confirmPassword = '';
     this.specialization = '';
     this.description = '';
-    this.sessionPrice = '';
+    this.sessionPrice = 0;
     this.gender = '';
     this.salary = 0;  // Reset salary field
 
@@ -375,7 +375,7 @@ edit_old_email_verification:string = ""
     this.confirmPassword = '';
     this.specialization = '';
     this.description = '';
-    this.sessionPrice = '';
+    this.sessionPrice = 0;
     this.gender = '';
     this.salary = 0;  // Reset salary field
     }
@@ -428,7 +428,7 @@ edit_old_email_verification:string = ""
       this.confirmPassword = '';
       this.specialization = '';
       this.description = '';
-      this.sessionPrice = '';
+      this.sessionPrice = 0;
       this.gender = '';
       this.salary = 0;  // Reset salary field
     }
@@ -454,7 +454,7 @@ edit_old_email_verification:string = ""
       this.confirmPassword = '';
       this.specialization = '';
       this.description = '';
-      this.sessionPrice = '';
+      this.sessionPrice = 0;
       this.gender = '';
       this.salary = 0;
 
@@ -549,15 +549,23 @@ edit_old_email_verification:string = ""
         this.errorFlag = 'Description is required'
         return false;
       }
-      if(this.sessionPrice === '') {
+      if(this.sessionPrice == undefined || this.sessionPrice == null ) {
         this.errorFlag = 'Session price is required'
+        return false;
+      }
+      if(this.sessionPrice <= 0) {
+        this.errorFlag = 'Session price cannot be zero or negative'
         return false;
       }
 
     }
     else{
-      if(this.salary === 0) {
+      if(this.salary == undefined || this.salary  == null) {
         this.errorFlag = 'Salary is required'
+        return false;
+      }
+      if(this.salary <= 0) {
+        this.errorFlag = 'Salary is cannot be zero or negative'
         return false;
       }
     }

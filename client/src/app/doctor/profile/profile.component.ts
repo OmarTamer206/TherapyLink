@@ -207,6 +207,16 @@ async editProfile(){
     }
 
 
+     if(this.sessionPrice == undefined || this.sessionPrice  == null) {
+        this.errorFlag = 'Session Price is required'
+        return false;
+      }
+      if(this.sessionPrice <= 0) {
+        this.errorFlag = 'Session Price cannot be zero or negative'
+        return false;
+      }
+
+
     this.errorFlag = "";
     this.edit_old_email_verification= ""
     return true

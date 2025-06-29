@@ -399,10 +399,7 @@ class _HomeScreenState extends State<HomeScreen>  with RouteAware {
                 ),
               ),
               const SizedBox(width: 12),
-              const CircleAvatar(
-                radius: 17,
-                backgroundImage: NetworkImage("https://i.pravatar.cc/100"),
-              ),
+              
             ],
           ),
         ],

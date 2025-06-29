@@ -363,6 +363,7 @@ Widget _buildCalendar() {
                 doctorData: widget.doctorData,
                 selectedDate: _selectedDay!,
                 selectedTime: _selectedTime!,
+                topic : topic
               ),
             ),
           );

@@ -40,7 +40,8 @@ class _ProfilePageState extends State<ProfilePage> {
       _wallet = userData["data"]["patient"][0]["wallet"];
       _patientJoinDate = DateTime.parse(userData["data"]["patient"][0]["Created_at"]).toLocal();
       if(userData["data"]["patient"][0]["Profile_pic_url"] != null){
-        _patientPhoto =  NetworkImage('"http://localhost:3000/uploads/${userData["data"]["patient"][0]["Profile_pic_url"]}"');
+        _patientPhoto =  NetworkImage('http://localhost:3000/uploads/${userData["data"]["patient"][0]["Profile_pic_url"]}');
+        print(_patientPhoto);
       }
       else{
          _patientPhoto = AssetImage('assets/images/profile png.png');

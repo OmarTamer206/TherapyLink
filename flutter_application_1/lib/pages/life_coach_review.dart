@@ -59,16 +59,18 @@ class LifeCoachReviewPage extends StatelessWidget {
                       ),
                     ),
                   )
-                : ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: doctorData["reviews"].length,
-                    separatorBuilder: (context, index) => const Divider(height: 16),
-                    itemBuilder: (context, index) {
-                      final review = doctorData["reviews"][index];
-                      return _buildReview(review["content"], review["rating"]);
-                    },
-                  ),
+                : SingleChildScrollView(
+                  child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: doctorData["reviews"].length,
+                      separatorBuilder: (context, index) => const Divider(height: 16),
+                      itemBuilder: (context, index) {
+                        final review = doctorData["reviews"][index];
+                        return _buildReview(review["content"], review["rating"]);
+                      },
+                    ),
+                ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -182,8 +184,8 @@ class LifeCoachReviewPage extends StatelessWidget {
     );
   }
 
-  Widget _buildReview(String content, int rating) {
-    final avgRating = double.tryParse(doctorData["avgRating"].toString()) ?? 0;
+  Widget _buildReview(String content, double rating) {
+    // final avgRating = double.tryParse(doctorData["avgRating"].toString()) ?? 0;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -196,7 +198,7 @@ class LifeCoachReviewPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _buildStarString(avgRating),
+            _buildStarString(rating),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 15,

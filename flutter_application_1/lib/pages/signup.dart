@@ -192,7 +192,7 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     if (success) {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pop(context);
     } else {
       setState(() {
         _generalError = 'Sign Up failed. Please try again.';

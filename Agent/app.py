@@ -97,38 +97,77 @@ def get_question():
         return jsonify({"error": "Session not found"}), 400
 
     data = session_data[session_id]
-
-    # If max questions reached or session completed, send done
-    if data['completed'] or data['questions_asked_count'] >= MAX_QUESTIONS:
-        data['completed'] = True
-        return jsonify({
-            "done": True,
-            "message": "Max questions reached.",
-            "final_scores": data['scores'],
-            "most_probable_status": max(data['scores'], key=data['scores'].get),
-            "total_questions": data['questions_asked_count']
-        })
-
     category = data["current_category"]
     asked = data["asked_questions"]
-    available_questions = [q for q in questions[category] if q not in asked]
 
-    if not available_questions:
-        # If no questions left in category, also consider session done
-        data['completed'] = True
+    def top_two_tied(scores_dict):
+        values = sorted(scores_dict.values(), reverse=True)
+        return len(values) >= 2 and values[0] == values[1]
+
+    # If session is marked completed, or no questions left
+    if data['completed']:
         return jsonify({
             "done": True,
-            "message": "No more questions in this category.",
+            "message": "Session already completed.",
             "final_scores": data['scores'],
             "most_probable_status": max(data['scores'], key=data['scores'].get),
             "total_questions": data['questions_asked_count']
         })
 
-    question = random.choice(available_questions)
-    asked.add(question)
-    data['questions_asked_count'] += 1
+    # NORMAL QUESTIONS PHASE (within limit)
+    if data['questions_asked_count'] < MAX_QUESTIONS:
+        available_questions = [q for q in questions[category] if q not in asked]
+        if not available_questions:
+            data['completed'] = True
+            return jsonify({
+                "done": True,
+                "message": "No more questions in this category.",
+                "final_scores": data['scores'],
+                "most_probable_status": max(data['scores'], key=data['scores'].get),
+                "total_questions": data['questions_asked_count']
+            })
 
-    return jsonify({"question": question, "category": category})
+        question = random.choice(available_questions)
+        asked.add(question)
+        data['questions_asked_count'] += 1
+
+        return jsonify({
+            "question": question,
+            "category": category
+        })
+
+    # TIE-BREAKER PHASE (after max questions reached)
+    if top_two_tied(data['scores']):
+        available_questions = [q for q in questions[category] if q not in asked]
+        if not available_questions:
+            data['completed'] = True
+            return jsonify({
+                "done": True,
+                "message": "No more questions in this category to break the tie.",
+                "final_scores": data['scores'],
+                "most_probable_status": max(data['scores'], key=data['scores'].get),
+                "total_questions": data['questions_asked_count']
+            })
+
+        question = random.choice(available_questions)
+        asked.add(question)
+        data['questions_asked_count'] += 1
+
+        return jsonify({
+            "question": question,
+            "category": category,
+            "tie_breaker": True
+        })
+
+    # Final check — not tied anymore
+    data['completed'] = True
+    return jsonify({
+        "done": True,
+        "message": "Max questions reached and no tie remains.",
+        "final_scores": data['scores'],
+        "most_probable_status": max(data['scores'], key=data['scores'].get),
+        "total_questions": data['questions_asked_count']
+    })
 
 @app.route('/respond', methods=['POST'])
 def classify_response():

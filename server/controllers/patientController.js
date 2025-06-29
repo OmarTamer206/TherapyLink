@@ -161,7 +161,9 @@ async function Make_an_appointment(patient_ID, sessionData) {
         sessionData.doctor_id,
         sessionData.time,
       ]);
+      console.log(sessionData);
 
+      
       // If session exists, get its session_ID, else insert a new session
       if (result.length > 0) {
         sessionID = result[0].session_ID;

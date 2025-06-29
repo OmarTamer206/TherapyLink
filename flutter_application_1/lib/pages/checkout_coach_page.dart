@@ -8,7 +8,8 @@ class CheckoutCoachPage extends StatefulWidget {
   final Map<String, dynamic> doctorData;
   DateTime selectedDate ;
   String selectedTime;
-   CheckoutCoachPage({super.key , required this.doctorData ,required this.selectedDate,required this.selectedTime});
+  var topic;
+   CheckoutCoachPage({super.key , required this.doctorData ,required this.selectedDate,required this.selectedTime , required this.topic});
 
   @override
   State<CheckoutCoachPage> createState() => _CheckoutCoachPageState();
@@ -288,6 +289,7 @@ class _CheckoutCoachPageState extends State<CheckoutCoachPage> {
       "com_type": _selectedType,
       "time": finalTimestamp.toString(),
       "type": "life_coach",
+      "topic": widget.topic,
       "cost": price,
       "duration": _selectedDuration,
       };

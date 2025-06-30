@@ -254,7 +254,7 @@ export class lifeSessionComponent implements OnInit, OnDestroy {
       }
 
       // Set startButtonState to true if less than 60 minutes left (5 * 60 * 1000 ms)
-      this.startButtonState = diff <= 60 * 60 * 1000;
+      this.startButtonState = diff <= 5 * 60 * 1000;
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

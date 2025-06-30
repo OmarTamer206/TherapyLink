@@ -304,7 +304,7 @@ export class SessionComponent implements OnInit, OnDestroy {
       return;
     }
 // Enable start button only within last 60 minutes and if session not started
-    this.startButtonState = diff <= 60 * 60 * 1000;
+    this.startButtonState = diff <= 5 * 60 * 1000;
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

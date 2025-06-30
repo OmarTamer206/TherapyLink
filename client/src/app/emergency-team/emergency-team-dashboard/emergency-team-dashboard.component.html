@@ -1,5 +1,8 @@
 <div class="container">
   <h1>Emergency Requests</h1>
+  <div class="no-requests" *ngIf="requests.length <= 0 ">
+    <p>There are currently no emergency requests at this time...</p>
+  </div>
   <div class="request-list">
     <div class="request-item" *ngFor="let request of requests">
       <div class="profile-info">

@@ -31,6 +31,7 @@ availableTimes: string[] = [
 ];
 
 timeTable: any[]=[];
+  errorFlag: string = "";
 
   constructor(private therapistService:TherapistService) {
     this.generateDays();
@@ -91,10 +92,18 @@ toggleTimeSelection(time: string, event: any) {
 // Open modal
 addAvailableTime() {
   this.showModal = true;
+  this.errorFlag = "";
 }
 
 // Submit and close modal
 submitTimes() {
+
+  if (this.selectedTimes.length <=0){
+      this.errorFlag = "Select Time of the session";
+      return
+    }
+
+    this.errorFlag = "";
   this.showModal = false;
   console.log('Selected Times:', this.selectedTimes);
   console.log('Selected Day:', this.selectedDay);

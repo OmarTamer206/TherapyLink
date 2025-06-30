@@ -297,3 +297,9 @@
   color: white;
   border-color: #0099a8;
 }
+
+.errorFlag{
+  color: red;
+    font-size: 20px;
+    margin: 20px 0px;
+}

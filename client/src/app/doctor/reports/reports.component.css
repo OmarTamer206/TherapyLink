@@ -90,6 +90,8 @@ button {
   margin-right: 5px;
 }
 
+
+
 .journal-btn {
   background-color: #0c717d;
   color: white;
@@ -133,7 +135,16 @@ button {
   cursor: pointer;
 }
 
-.modal-overlay button {
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+}
+
+
+/* .modal-overlay button {
   padding: 10px;
   color: black;
   cursor: pointer;
@@ -141,7 +152,7 @@ button {
       font-size: 24px;
     font-weight: bold;
     background-color: transparent;
-}
+} */
 
 .delete-btn {
   background: #e74c3c;

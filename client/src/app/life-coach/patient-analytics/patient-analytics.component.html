@@ -33,7 +33,12 @@
     <div *ngIf="activeTab === 'count' " class="chart-section">
       <canvas id="patientChart"></canvas>
     </div>
-    <div *ngIf="activeTab === 'returning'" class="chart-section">
+    <div *ngIf="activeTab === 'returning' && disablePieChart == false" class="chart-section">
       <app-pie-chart [chartData]="pieChartData" [chartLabels]="pieChartLabels"></app-pie-chart>
+    </div>
+    <div *ngIf="activeTab === 'returning' && disablePieChart == true" class="chart-section">
+      <div class="no-data">
+        <p>No data available for Total / Returning patients.</p>
+      </div>
     </div>
   </div>

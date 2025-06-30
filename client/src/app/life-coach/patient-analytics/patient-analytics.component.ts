@@ -34,6 +34,7 @@ export class lifePatientAnalyticsComponent {
    pieChartLabels:any = ["Single-Visit Patients","Returning Patients"];
    pieChartData:any;
 
+     disablePieChart = false;
 
    constructor(private therapistService: TherapistService) {
      this.getPatientAnalytics();
@@ -44,6 +45,10 @@ export class lifePatientAnalyticsComponent {
        console.log(response);
        this.totalPatients = response.TotalPatientsByMonth;  // Assuming this is the structure of the response
        this.ReturningPatients = response.returningPatientsResult[0];  // Assuming this is the structure of the response
+
+       if(this.ReturningPatients.total_patients == 0 && this.ReturningPatients.returning_patients == 0){
+        this.disablePieChart = true;
+      }
 
        this.pieChartData = [(this.ReturningPatients.total_patients - this.ReturningPatients.returning_patients ), this.ReturningPatients.returning_patients]
 

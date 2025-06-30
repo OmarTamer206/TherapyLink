@@ -2,6 +2,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { TherapistService } from '../../services/therapist/therapist.service';
 import { FormsModule } from '@angular/forms';
+import { isEmpty } from 'rxjs';
 
 @Component({
   selector: 'app-schedule-management',
@@ -33,6 +34,7 @@ export class lifeScheduleManagementComponent {
 
   timeTable: any[]=[];
   topic :any;
+  errorFlag: string = "";
 
 
 
@@ -97,10 +99,23 @@ export class lifeScheduleManagementComponent {
   // Open modal
   addAvailableTime() {
     this.showModal = true;
+    this.errorFlag = "";
   }
 
   // Submit and close modal
   submitTimes() {
+
+    if(this.topic == null || this.topic.trim() == ""){
+      this.errorFlag = "Topic is Required";
+      return
+    }
+    else if (this.selectedTimes.length <=0){
+      this.errorFlag = "Select Time of the session";
+      return
+    }
+
+    this.errorFlag = "";
+
     this.showModal = false;
     console.log('Selected Times:', this.selectedTimes);
     console.log('Selected Day:', this.selectedDay);

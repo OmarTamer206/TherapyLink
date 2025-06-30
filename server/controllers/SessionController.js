@@ -19,7 +19,7 @@ SELECT
   d.Name AS doctor_name
 FROM doctor_session ds
 JOIN doctor d ON ds.doctor_ID = d.id
-WHERE ds.patient_ID = ?  AND ds.ended = 0
+WHERE ds.patient_ID = ?  AND ds.ended = 0 AND ds.isCancelled = 0
   AND ds.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR) -- 2 hours before current time
   
 
@@ -39,7 +39,7 @@ SELECT
 FROM life_coach_session lcs
 JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
 JOIN life_coach lc ON lcs.coach_ID = lc.id
-WHERE pls.patient_ID = ? AND lcs.ended = 0
+WHERE pls.patient_ID = ? AND lcs.ended = 0 AND lcs.isCancelled = 0
   AND lcs.scheduled_time >= DATE_SUB(NOW(), INTERVAL 2 HOUR) -- 2 hours before current time
 
 ORDER BY scheduled_time
@@ -75,7 +75,7 @@ SELECT
 FROM doctor_session ds
 JOIN doctor d ON ds.doctor_ID = d.id
 WHERE ds.patient_ID = ? 
-  AND ds.scheduled_time < NOW()
+  AND (ds.scheduled_time < NOW() OR ds.ended = 1)
 
 UNION ALL
 
@@ -94,7 +94,7 @@ FROM life_coach_session lcs
 JOIN patient_lifecoach_session pls ON lcs.session_ID = pls.session_ID
 JOIN life_coach lc ON lcs.coach_ID = lc.id
 WHERE pls.patient_ID = ? 
-  AND lcs.scheduled_time < NOW()
+  AND (lcs.scheduled_time < NOW() OR lcs.ended = 1)
 
 ORDER BY scheduled_time DESC;
 

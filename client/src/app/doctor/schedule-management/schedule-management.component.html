@@ -48,7 +48,9 @@
 <!-- Modal Backdrop -->
 <div class="modal-backdrop" *ngIf="showModal">
   <div class="modal-content">
+    <span class="errorFlag">{{errorFlag}}</span>
     <div class="modal-header">
+
       <h3>Choose Time Options</h3>
       <button class="close-btn" (click)="showModal = false">✖</button>
     </div>

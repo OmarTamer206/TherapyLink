@@ -72,6 +72,8 @@
       <button class="close-btn" (click)="showModal = false">✖</button>
     </div>
     <div class="modal-topic">
+          <span class="errorFlag">{{errorFlag}}</span>
+
       <h3>What is the Session Topic</h3>
     <input type="text" [(ngModel)]="topic" name="topic" id="topic" />
     </div>

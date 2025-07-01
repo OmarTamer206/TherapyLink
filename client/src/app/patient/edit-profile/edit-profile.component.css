@@ -142,3 +142,16 @@ input[type="file"] {
   display: none;
 }
 
+.successFlag{
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  color: green;
+}
+
+.errorFlag{
+ width: 100%;
+  text-align: center;
+  font-size: 30px;
+  color: red;
+}

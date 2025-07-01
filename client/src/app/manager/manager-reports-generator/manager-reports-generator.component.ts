@@ -19,8 +19,8 @@ export class ManagerReportsGeneratorComponent {
 
   loading = true;
    queryOption = 'Revenue'; // For example, revenue report
-   dateFrom = '2025-03';
-   dateTo = '2025-06';
+   dateFrom = '2025-06';
+   dateTo = '2025-08';
    chartType = 'line';
    lineChartData: any; // Data for the chart
    pieChartData: any; // Data for the chart

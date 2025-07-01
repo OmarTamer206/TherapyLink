@@ -240,11 +240,12 @@
             placeholder="Confirm Password "
             [(ngModel)]="confirmPassword"
           />
-          <input
-            type="text"
-            placeholder="Specialization"
-            [(ngModel)]="specialization"
-          />
+          <select [(ngModel)]="specialization" class="input-field" required>
+            <option value="" disabled >Specialization</option>
+            <option value="General Psychological Support" selected>General Psychological Support</option>
+            <option value="Mood and Anxiety Disorder Specialist">Mood and Anxiety Disorder Specialist</option>
+            <option value="Clinical Depression and Crisis Prevention Specialist">Clinical Depression and Crisis Prevention Specialist</option>
+          </select>
           <input
             type="text"
             placeholder="Description"

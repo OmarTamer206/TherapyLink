@@ -44,7 +44,7 @@
         <h4>Reviews</h4>
         @for ( review of selectedDoctor.reviews; track $index) {
           <div class="review">
-          <span>Rating : {{review.rating}}</span>
+          <span>Rating : {{review.rating}} out of 5</span>
 
           <p>
             {{review.content}}

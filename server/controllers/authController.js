@@ -327,9 +327,9 @@ async function updateAdmin(data) {
       fields.push("phone_number = ?");
       values.push(data.phone_number);
     }
-    if (data.Salary) {
+    if (data.salary) {
       fields.push("Salary = ?");
-      values.push(data.Salary);
+      values.push(data.salary);
     }
     if (data.Profile_pic_url !== undefined) {
       fields.push("Profile_pic_url = ?");

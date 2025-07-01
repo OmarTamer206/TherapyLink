@@ -104,5 +104,6 @@ export class EmergencyCallMobileComponent implements OnInit, OnDestroy {
     console.log('EmergencyCallMobileComponent destroyed');
 
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.emergencySocketService.cancelEmergencyRequest(this.userId);
   }
 }
